@@ -1050,47 +1050,8 @@ footer {
       <a class="section-link" href="#">View all categories <span>→</span></a>
     </div>
 
-    <div class="cat-grid">
-      <div class="cat-item active" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#FEF3EC;">🍔</div>
-        <div class="cat-name">Food & Drink</div>
-        <div class="cat-count">142 places</div>
-      </div>
-      <div class="cat-item" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#F0F9FF;">☕</div>
-        <div class="cat-name">Coffee</div>
-        <div class="cat-count">48 places</div>
-      </div>
-      <div class="cat-item" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#FFF8EC;">🍺</div>
-        <div class="cat-name">Bars & Nightlife</div>
-        <div class="cat-count">61 places</div>
-      </div>
-      <div class="cat-item" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#F0FFF4;">💆</div>
-        <div class="cat-name">Health & Wellness</div>
-        <div class="cat-count">93 places</div>
-      </div>
-      <div class="cat-item" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#FFF0F6;">💇</div>
-        <div class="cat-name">Beauty & Salons</div>
-        <div class="cat-count">77 places</div>
-      </div>
-      <div class="cat-item" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#F5F0FF;">🛍️</div>
-        <div class="cat-name">Retail & Shops</div>
-        <div class="cat-count">104 places</div>
-      </div>
-      <div class="cat-item" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#EFF8FF;">🔧</div>
-        <div class="cat-name">Home Services</div>
-        <div class="cat-count">89 places</div>
-      </div>
-      <div class="cat-item" onclick="filterCat(this)">
-        <div class="cat-icon" style="background:#FFFBEC;">🎭</div>
-        <div class="cat-name">Arts & Events</div>
-        <div class="cat-count">56 places</div>
-      </div>
+    <div class="cat-grid" id="cat-grid">
+      <!-- Populated dynamically from database -->
     </div>
   </div>
 </section>
@@ -1785,5 +1746,54 @@ window.addEventListener('scroll', () => {
 </script>
 
 <script src="815local-analytics-tracker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async function loadCategories() {
+  const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const CATS = [
+    { name: 'Food & Drink',    icon: '🍔', bg: '#FEF3EC' },
+    { name: 'Bars & Nightlife',icon: '🍺', bg: '#FFF8EC' },
+    { name: 'Home Services',   icon: '🔧', bg: '#EFF8FF' },
+    { name: 'Beauty & Salons', icon: '💇', bg: '#FFF0F6' },
+    { name: 'Coffee',          icon: '☕', bg: '#F0F9FF' },
+    { name: 'Health & Wellness',icon:'💆', bg: '#F0FFF4' },
+    { name: 'Retail & Shops',  icon: '🛍️', bg: '#F5F0FF' },
+    { name: 'Arts & Events',   icon: '🎭', bg: '#FFFBEC' },
+  ];
+
+  try {
+    const { data } = await db
+      .from('businesses')
+      .select('category')
+      .eq('is_active', true);
+
+    // Count per category
+    const counts = {};
+    (data || []).forEach(b => { counts[b.category] = (counts[b.category] || 0) + 1; });
+
+    const grid = document.getElementById('cat-grid');
+    if (!grid) return;
+
+    let first = true;
+    grid.innerHTML = CATS
+      .filter(c => (counts[c.name] || 0) > 0)
+      .map(c => {
+        const n = counts[c.name] || 0;
+        const cls = first ? 'cat-item active' : 'cat-item';
+        first = false;
+        return `<div class="${cls}" onclick="filterCat(this)" data-cat="${c.name}">
+          <div class="cat-icon" style="background:${c.bg};">${c.icon}</div>
+          <div class="cat-name">${c.name}</div>
+          <div class="cat-count">${n} place${n !== 1 ? 's' : ''}</div>
+        </div>`;
+      }).join('');
+  } catch(e) {
+    console.error('Category load error:', e);
+  }
+})();
+</script>
 </body>
 </html>
