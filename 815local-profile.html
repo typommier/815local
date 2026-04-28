@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile — 815local</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-light:  #E07A48;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --shadow-sm:     0 2px 8px rgba(30,27,24,0.08);
+  --shadow-md:     0 6px 24px rgba(30,27,24,0.12);
+  --shadow-lg:     0 16px 48px rgba(30,27,24,0.18);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--charcoal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; border: none; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover { background: var(--orange-light); box-shadow: var(--shadow-md); }
+.btn-outline { background: white; color: var(--charcoal); border: 1.5px solid var(--gray-light); }
+.btn-outline:hover { border-color: var(--charcoal); }
+.btn-ghost { background: transparent; color: var(--orange); border: 1.5px solid var(--orange); }
+.btn-ghost:hover { background: var(--orange); color: white; }
+.stars { color: var(--orange); }
+.tag { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 500; background: var(--cream-dark); color: var(--charcoal-mid); }
+
+/* ── NAV ── */
+#main-nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.nav-inner { display: flex; align-items: center; height: 110px; }
+.nav-logo { flex-shrink: 0; margin-right: 36px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); transition: filter 0.2s; }
+.nav-logo img:hover { filter: drop-shadow(0 4px 16px rgba(196,98,45,0.55)); }
+.nav-links { display: flex; align-items: center; gap: 4px; margin-right: auto; }
+.nav-link { padding: 8px 16px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); border-radius: 100px; transition: all 0.15s; cursor: pointer; }
+.nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.08); }
+.nav-search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 100px; padding: 8px 16px; gap: 10px; margin-right: 16px; min-width: 200px; }
+.nav-search-bar span { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+/* ── PROFILE HERO BANNER ── */
+.profile-banner {
+  background: var(--charcoal);
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+.profile-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(135deg, transparent, transparent 40px, rgba(196,98,45,0.04) 40px, rgba(196,98,45,0.04) 41px);
+}
+.profile-banner::after {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(196,98,45,0.18) 0%, transparent 70%);
+}
+.banner-edit {
+  position: absolute; bottom: 16px; right: 24px; z-index: 2;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: white; border-radius: 100px; padding: 7px 16px;
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.banner-edit:hover { background: rgba(255,255,255,0.2); }
+
+/* ── PROFILE HEADER ── */
+.profile-header-wrap { background: var(--white); border-bottom: 1px solid var(--cream-dark); }
+.profile-header { display: flex; align-items: flex-end; gap: 24px; padding: 0 0 24px; position: relative; }
+.profile-avatar-wrap { position: relative; flex-shrink: 0; margin-top: -56px; }
+.profile-avatar {
+  width: 112px; height: 112px; border-radius: 50%;
+  background: var(--orange);
+  border: 5px solid var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 44px; font-weight: 700; color: white;
+  box-shadow: var(--shadow-md);
+  position: relative; z-index: 1;
+}
+.avatar-edit {
+  position: absolute; bottom: 4px; right: 4px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--orange); border: 2px solid white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; cursor: pointer; z-index: 2;
+  box-shadow: var(--shadow-sm);
+}
+.profile-info { flex: 1; padding-top: 16px; }
+.profile-name { font-size: 32px; font-weight: 900; margin-bottom: 4px; }
+.profile-handle { font-size: 14px; color: var(--gray); margin-bottom: 10px; }
+.profile-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.profile-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 100px;
+  font-size: 12px; font-weight: 600;
+}
+.badge-guide { background: var(--orange-pale); color: var(--orange); }
+.badge-verified { background: rgba(45,106,79,0.12); color: #2D6A4F; }
+.badge-member { background: var(--cream-dark); color: var(--charcoal-mid); }
+.profile-actions { display: flex; gap: 10px; align-items: flex-end; padding-top: 16px; flex-shrink: 0; }
+
+/* Profile stats row */
+.profile-stats { display: flex; gap: 32px; padding: 16px 0 0; border-top: 1px solid var(--cream-dark); margin-top: 20px; }
+.profile-stat { text-align: center; }
+.profile-stat-num { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--charcoal); }
+.profile-stat-lbl { font-size: 12px; color: var(--gray); }
+
+/* Profile tabs */
+.profile-tabs { display: flex; gap: 0; border-top: 1px solid var(--cream-dark); margin-top: 16px; }
+.profile-tab { padding: 14px 24px; font-size: 14px; font-weight: 600; color: var(--gray); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s; white-space: nowrap; }
+.profile-tab:hover { color: var(--charcoal); }
+.profile-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+/* ── MAIN LAYOUT ── */
+.profile-body { padding: 32px 0 80px; }
+.profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 32px; align-items: start; }
+
+/* ── LEFT SIDEBAR ── */
+.profile-sidebar { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 98px; }
+.sidebar-card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; }
+.sidebar-section { padding: 20px; border-bottom: 1px solid var(--cream-dark); }
+.sidebar-section:last-child { border-bottom: none; }
+.sidebar-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 14px; }
+
+/* Nav menu */
+.sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sidebar-menu li { display: flex; }
+.sidebar-menu-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  transition: all 0.15s; width: 100%; color: var(--charcoal-mid);
+}
+.sidebar-menu-item:hover { background: var(--cream); }
+.sidebar-menu-item.active { background: var(--orange-pale); color: var(--orange); font-weight: 600; }
+.sidebar-menu-item .menu-icon { font-size: 18px; flex-shrink: 0; }
+.sidebar-menu-item .menu-badge { margin-left: auto; background: var(--orange); color: white; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 100px; }
+
+/* About card */
+.about-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: var(--charcoal-light); border-bottom: 1px solid var(--cream-dark); }
+.about-item:last-child { border-bottom: none; }
+.about-icon { font-size: 16px; flex-shrink: 0; }
+
+/* ── RIGHT CONTENT ── */
+.profile-content { display: flex; flex-direction: column; gap: 24px; }
+
+/* Tab panels */
+.tab-panel { display: none; }
+.tab-panel.active { display: flex; flex-direction: column; gap: 24px; }
+
+/* ── OVERVIEW TAB ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.stat-card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); padding: 20px; text-align: center; transition: all 0.2s; cursor: pointer; }
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: transparent; }
+.stat-card-icon { font-size: 28px; margin-bottom: 8px; }
+.stat-card-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--orange); }
+.stat-card-lbl { font-size: 13px; color: var(--gray); margin-top: 4px; }
+
+/* Activity feed */
+.feed-card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; }
+.feed-header { padding: 20px 24px; border-bottom: 1px solid var(--cream-dark); display: flex; align-items: center; justify-content: space-between; }
+.feed-title { font-size: 18px; font-weight: 700; }
+.feed-link { font-size: 13px; font-weight: 600; color: var(--orange); }
+.feed-item { display: flex; gap: 16px; align-items: flex-start; padding: 16px 24px; border-bottom: 1px solid var(--cream-dark); transition: background 0.15s; cursor: pointer; }
+.feed-item:last-child { border-bottom: none; }
+.feed-item:hover { background: var(--cream); }
+.feed-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--orange-pale); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.feed-body { flex: 1; }
+.feed-action { font-size: 14px; line-height: 1.5; }
+.feed-action strong { font-weight: 700; }
+.feed-action .biz { color: var(--orange); font-weight: 600; }
+.feed-meta { font-size: 12px; color: var(--gray); margin-top: 4px; }
+.feed-stars { color: var(--orange); font-size: 13px; }
+.feed-right { flex-shrink: 0; }
+.feed-thumb { width: 56px; height: 56px; border-radius: var(--radius-sm); background: var(--cream-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+
+/* ── REVIEWS TAB ── */
+.reviews-list { display: flex; flex-direction: column; gap: 16px; }
+.my-review-card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; transition: all 0.2s; }
+.my-review-card:hover { box-shadow: var(--shadow-md); border-color: transparent; }
+.mrc-header { display: flex; gap: 14px; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--cream-dark); }
+.mrc-biz-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--cream-dark); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.mrc-biz-name { font-size: 16px; font-weight: 700; }
+.mrc-biz-cat { font-size: 12px; color: var(--gray); }
+.mrc-stars { margin-left: auto; color: var(--orange); font-size: 16px; }
+.mrc-body { padding: 16px 20px; }
+.mrc-text { font-size: 14px; color: var(--charcoal-light); line-height: 1.7; font-style: italic; margin-bottom: 12px; }
+.mrc-footer { display: flex; align-items: center; justify-content: space-between; }
+.mrc-date { font-size: 12px; color: var(--gray); }
+.mrc-helpful { font-size: 13px; color: var(--gray); }
+.mrc-actions { display: flex; gap: 8px; }
+.mrc-action-btn { padding: 5px 14px; border-radius: 100px; border: 1.5px solid var(--gray-light); font-size: 12px; font-weight: 600; cursor: pointer; background: white; transition: all 0.15s; }
+.mrc-action-btn:hover { border-color: var(--orange); color: var(--orange); }
+.mrc-action-btn.delete:hover { border-color: #e53e3e; color: #e53e3e; }
+
+/* ── SAVED TAB ── */
+.saved-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.saved-card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; transition: all 0.2s; cursor: pointer; }
+.saved-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.saved-photo { height: 140px; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; color: var(--charcoal-light); font-size: 12px; position: relative; }
+.saved-photo svg { opacity: 0.2; }
+.saved-unsave { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; box-shadow: var(--shadow-sm); transition: all 0.15s; }
+.saved-unsave:hover { background: var(--orange-pale); color: var(--orange); }
+.saved-body { padding: 14px 16px; }
+.saved-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--orange); margin-bottom: 4px; }
+.saved-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.saved-rating { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray); }
+.saved-stars { color: var(--orange); font-size: 13px; }
+.saved-dist { font-size: 12px; color: var(--gray); margin-top: 6px; }
+
+/* ── SETTINGS TAB ── */
+.settings-card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+.settings-section { padding: 24px; border-bottom: 1px solid var(--cream-dark); }
+.settings-section:last-child { border-bottom: none; }
+.settings-section-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.settings-section-icon { font-size: 20px; }
+.settings-row { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--cream-dark); }
+.settings-row:last-child { border-bottom: none; }
+.settings-label { font-size: 14px; font-weight: 600; flex: 1; }
+.settings-value { font-size: 14px; color: var(--gray); flex: 1; }
+.settings-edit-btn { font-size: 13px; font-weight: 600; color: var(--orange); cursor: pointer; white-space: nowrap; padding: 4px 12px; border-radius: 100px; border: 1.5px solid var(--orange); transition: all 0.15s; }
+.settings-edit-btn:hover { background: var(--orange); color: white; }
+.settings-input { flex: 1; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); padding: 8px 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.15s; }
+.settings-input:focus { border-color: var(--orange); }
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--cream-dark); }
+.toggle-row:last-child { border-bottom: none; }
+.toggle-info {}
+.toggle-label { font-size: 14px; font-weight: 600; }
+.toggle-sub { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.toggle-switch { width: 48px; height: 26px; border-radius: 100px; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle-switch.on { background: var(--orange); }
+.toggle-switch.off { background: var(--gray-light); }
+.toggle-knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: white; box-shadow: var(--shadow-sm); transition: transform 0.2s; }
+.toggle-switch.on .toggle-knob { transform: translateX(22px); }
+.danger-zone { background: #fff5f5; border: 1.5px solid #fed7d7; border-radius: var(--radius); padding: 20px 24px; }
+.danger-title { font-size: 16px; font-weight: 700; color: #c53030; margin-bottom: 8px; }
+.danger-sub { font-size: 13px; color: #718096; margin-bottom: 16px; }
+.danger-btn { padding: 9px 20px; border-radius: 100px; border: 1.5px solid #fc8181; color: #c53030; font-size: 13px; font-weight: 600; cursor: pointer; background: white; transition: all 0.15s; }
+.danger-btn:hover { background: #c53030; color: white; border-color: #c53030; }
+
+/* ── EVENTS TAB ── */
+.events-list { display: flex; flex-direction: column; gap: 12px; }
+.my-event-card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: all 0.2s; }
+.my-event-card:hover { box-shadow: var(--shadow-md); border-color: transparent; }
+.mec-date { background: var(--charcoal); border-radius: var(--radius-sm); padding: 10px 14px; text-align: center; flex-shrink: 0; }
+.mec-month { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); }
+.mec-day { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: white; line-height: 1; }
+.mec-body { flex: 1; }
+.mec-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--orange); margin-bottom: 2px; }
+.mec-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.mec-meta { font-size: 13px; color: var(--gray); }
+.mec-status { padding: 5px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+.mec-going { background: rgba(45,106,79,0.12); color: #2D6A4F; }
+.mec-saved { background: var(--orange-pale); color: var(--orange); }
+.mec-maybe { background: var(--cream-dark); color: var(--charcoal-mid); }
+
+/* ── TWEAKS ── */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border: 1.5px solid var(--gray-light); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-lg); z-index: 999; min-width: 220px; font-family: 'Plus Jakarta Sans', sans-serif; }
+#tweaks-panel h3 { font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+.tweak-group { margin-bottom: 14px; }
+.tweak-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 8px; }
+.tweak-color { display: flex; gap: 8px; }
+.tweak-swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s; }
+.tweak-swatch:hover, .tweak-swatch.active { transform: scale(1.15); border-color: var(--charcoal); }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-sidebar { position: static; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .saved-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+  .nav-links, .nav-search-bar { display: none; }
+  .profile-header { flex-wrap: wrap; }
+  .profile-actions { width: 100%; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .profile-tabs { overflow-x: auto; }
+  .profile-tab { white-space: nowrap; padding: 12px 16px; font-size: 13px; }
+}
+
+/* ══ MOBILE BOTTOM NAV ══ */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--charcoal);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  z-index: 200;
+  padding: 0 0 env(safe-area-inset-bottom, 0);
+  justify-content: space-around;
+  align-items: stretch;
+}
+.mbn-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; padding: 10px 12px;
+  cursor: pointer; flex: 1;
+  color: rgba(255,255,255,0.45);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.mbn-item.active, .mbn-item:hover { color: var(--orange); }
+.mbn-icon { font-size: 22px; line-height: 1; }
+.mbn-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+@media (max-width: 680px) {
+  .mobile-bottom-nav { display: flex; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0)); }
+  footer { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0)); }
+  /* Bigger touch targets */
+  .btn { min-height: 44px; }
+  .nav-inner { height: 90px; }
+  /* Tighter hero text */
+  .hero-title { font-size: 36px !important; }
+  /* Hide desktop-only elements */
+  .nav-links, .nav-search-bar, .nav-search { display: none !important; }
+}
+
+
+@media (max-width: 680px) {
+  .profile-banner { height: 120px !important; }
+  .profile-avatar { width: 84px !important; height: 84px !important; font-size: 32px !important; }
+  .profile-name { font-size: 24px !important; }
+  .profile-layout { grid-template-columns: 1fr !important; }
+  .profile-sidebar { display: none !important; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .saved-grid { grid-template-columns: 1fr !important; }
+  .profile-actions { flex-direction: column !important; }
+  .profile-stats { gap: 16px !important; flex-wrap: wrap !important; }
+  .footer-grid { grid-template-columns: 1fr !important; }
+  .settings-row { flex-wrap: wrap !important; gap: 8px !important; }
+  .settings-value { min-width: 0 !important; flex: 1 1 100% !important; }
+  .my-event-card { flex-wrap: wrap !important; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local">
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Explore</a>
+        <a class="nav-link" href="815local-directory.html">Browse</a>
+        <a class="nav-link" href="815local-events.html">Events</a>
+        <a class="nav-link" href="#">Blog</a>
+        <a class="nav-link active" href="#">My Profile</a>
+      </div>
+      <div class="nav-search-bar" style="flex:1;max-width:260px;margin-right:16px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Search 815local...</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:white;cursor:pointer;">M</div>
+        <a class="btn btn-primary" href="#" style="font-size:13px;padding:9px 18px;">+ List Business</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ BANNER ══ -->
+<div class="profile-banner">
+  <button class="banner-edit">✏️ Edit Cover Photo</button>
+</div>
+
+<!-- ══ PROFILE HEADER ══ -->
+<div class="profile-header-wrap">
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">M</div>
+        <div class="avatar-edit">📷</div>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">Marcus Williams</div>
+        <div class="profile-handle">@marcuswilliams · Member since March 2023</div>
+        <div class="profile-badges">
+          <span class="profile-badge badge-guide">⭐ Local Guide</span>
+          <span class="profile-badge badge-verified">✓ Verified Reviewer</span>
+          <span class="profile-badge badge-member">815 Original</span>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn btn-outline" onclick="switchTab('settings')">⚙️ Settings</button>
+        <button class="btn btn-primary">✏️ Edit Profile</button>
+      </div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-num">48</div>
+        <div class="profile-stat-lbl">Reviews Written</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-num">312</div>
+        <div class="profile-stat-lbl">Helpful Votes</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-num">27</div>
+        <div class="profile-stat-lbl">Places Saved</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-num">14</div>
+        <div class="profile-stat-lbl">Events Attended</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-num">3.2K</div>
+        <div class="profile-stat-lbl">Profile Views</div>
+      </div>
+    </div>
+
+    <div class="profile-tabs">
+      <div class="profile-tab active" onclick="switchTab('overview')">Overview</div>
+      <div class="profile-tab" onclick="switchTab('reviews')">Reviews (48)</div>
+      <div class="profile-tab" onclick="switchTab('saved')">Saved Places (27)</div>
+      <div class="profile-tab" onclick="switchTab('events')">My Events (14)</div>
+      <div class="profile-tab" onclick="switchTab('settings')">Settings</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="profile-body">
+  <div class="container">
+    <div class="profile-layout">
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="profile-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-section">
+            <ul class="sidebar-menu">
+              <li><div class="sidebar-menu-item active" onclick="switchTab('overview')"><span class="menu-icon">🏠</span> Overview</div></li>
+              <li><div class="sidebar-menu-item" onclick="switchTab('reviews')"><span class="menu-icon">⭐</span> My Reviews <span class="menu-badge">48</span></div></li>
+              <li><div class="sidebar-menu-item" onclick="switchTab('saved')"><span class="menu-icon">❤️</span> Saved Places <span class="menu-badge">27</span></div></li>
+              <li><div class="sidebar-menu-item" onclick="switchTab('events')"><span class="menu-icon">📅</span> My Events</div></li>
+              <li><div class="sidebar-menu-item" onclick="switchTab('settings')"><span class="menu-icon">⚙️</span> Settings</div></li>
+            </ul>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">About Me</div>
+            <div class="about-item"><span class="about-icon">📍</span> Rockford, IL</div>
+            <div class="about-item"><span class="about-icon">🏢</span> Works in Healthcare</div>
+            <div class="about-item"><span class="about-icon">🍽️</span> Loves Italian food</div>
+            <div class="about-item"><span class="about-icon">🎵</span> Live music enthusiast</div>
+            <div class="about-item"><span class="about-icon">🗓️</span> Joined March 2023</div>
+          </div>
+        </div>
+
+        <!-- Local Guide card -->
+        <div class="sidebar-card" style="background:var(--charcoal);">
+          <div style="padding:20px;">
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--orange);margin-bottom:8px;">Local Guide Status</div>
+            <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white;margin-bottom:4px;">⭐ Level 3</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:14px;">188 points to Level 4</div>
+            <!-- Progress bar -->
+            <div style="background:rgba(255,255,255,0.1);border-radius:100px;height:6px;margin-bottom:12px;">
+              <div style="width:62%;height:100%;background:var(--orange);border-radius:100px;"></div>
+            </div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4);">Write 4 more reviews to level up</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── MAIN CONTENT ── -->
+      <div class="profile-content">
+
+        <!-- ── OVERVIEW TAB ── -->
+        <div class="tab-panel active" id="panel-overview">
+          <!-- Stats grid -->
+          <div class="stats-grid">
+            <div class="stat-card" onclick="switchTab('reviews')">
+              <div class="stat-card-icon">⭐</div>
+              <div class="stat-card-num">48</div>
+              <div class="stat-card-lbl">Reviews Written</div>
+            </div>
+            <div class="stat-card" onclick="switchTab('saved')">
+              <div class="stat-card-icon">❤️</div>
+              <div class="stat-card-num">27</div>
+              <div class="stat-card-lbl">Places Saved</div>
+            </div>
+            <div class="stat-card" onclick="switchTab('events')">
+              <div class="stat-card-icon">📅</div>
+              <div class="stat-card-num">14</div>
+              <div class="stat-card-lbl">Events Attended</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon">👍</div>
+              <div class="stat-card-num">312</div>
+              <div class="stat-card-lbl">Helpful Votes</div>
+            </div>
+          </div>
+
+          <!-- Recent activity -->
+          <div class="feed-card">
+            <div class="feed-header">
+              <span class="feed-title">Recent Activity</span>
+              <span class="feed-link" onclick="switchTab('reviews')">View all →</span>
+            </div>
+            <div class="feed-item">
+              <div class="feed-avatar">⭐</div>
+              <div class="feed-body">
+                <div class="feed-action">Reviewed <span class="biz">Rosario's Tavern</span> <span class="feed-stars">★★★★★</span></div>
+                <div style="font-size:13px;color:var(--charcoal-light);margin-top:2px;font-style:italic;">"The tiramisu alone is worth the trip…"</div>
+                <div class="feed-meta">April 14, 2026 · 24 found helpful</div>
+              </div>
+              <div class="feed-right"><div class="feed-thumb">🍝</div></div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-avatar">❤️</div>
+              <div class="feed-body">
+                <div class="feed-action">Saved <span class="biz">Riverbend Brewing Co.</span> to favorites</div>
+                <div class="feed-meta">April 12, 2026</div>
+              </div>
+              <div class="feed-right"><div class="feed-thumb">🍺</div></div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-avatar">📅</div>
+              <div class="feed-body">
+                <div class="feed-action">RSVP'd to <span class="biz">Spring Gallery Night Art Walk</span></div>
+                <div class="feed-meta">April 10, 2026 · April 26 event</div>
+              </div>
+              <div class="feed-right"><div class="feed-thumb">🎨</div></div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-avatar">⭐</div>
+              <div class="feed-body">
+                <div class="feed-action">Reviewed <span class="biz">Oak Street Coffee Co.</span> <span class="feed-stars">★★★★★</span></div>
+                <div style="font-size:13px;color:var(--charcoal-light);margin-top:2px;font-style:italic;">"Best latte in the 815…"</div>
+                <div class="feed-meta">April 8, 2026 · 17 found helpful</div>
+              </div>
+              <div class="feed-right"><div class="feed-thumb">☕</div></div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-avatar">❤️</div>
+              <div class="feed-body">
+                <div class="feed-action">Saved <span class="biz">Bianca's Bakehouse</span> to favorites</div>
+                <div class="feed-meta">April 5, 2026</div>
+              </div>
+              <div class="feed-right"><div class="feed-thumb">🥐</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── REVIEWS TAB ── -->
+        <div class="tab-panel" id="panel-reviews">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">My Reviews</div>
+              <h2 style="font-size:28px;font-weight:700;">48 reviews written</h2>
+            </div>
+            <a href="815local-business.html" class="btn btn-primary">✏️ Write a Review</a>
+          </div>
+          <div class="reviews-list">
+            <div class="my-review-card">
+              <div class="mrc-header">
+                <div class="mrc-biz-icon">🍝</div>
+                <div>
+                  <div class="mrc-biz-name">Rosario's Tavern</div>
+                  <div class="mrc-biz-cat">Italian · Bar · Lincoln Ave</div>
+                </div>
+                <div class="mrc-stars">★★★★★</div>
+              </div>
+              <div class="mrc-body">
+                <p class="mrc-text">"The tiramisu alone is worth the trip. Been coming here every anniversary for 12 years and it never disappoints. The pasta is handmade, the staff treats you like family, and the atmosphere is that rare thing — warm without being cheesy."</p>
+                <div class="mrc-footer">
+                  <span class="mrc-date">April 14, 2026</span>
+                  <span class="mrc-helpful">👍 24 found this helpful</span>
+                  <div class="mrc-actions">
+                    <button class="mrc-action-btn">✏️ Edit</button>
+                    <button class="mrc-action-btn delete">🗑️ Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="my-review-card">
+              <div class="mrc-header">
+                <div class="mrc-biz-icon">☕</div>
+                <div>
+                  <div class="mrc-biz-name">Oak Street Coffee Co.</div>
+                  <div class="mrc-biz-cat">Café · Breakfast · Oak St.</div>
+                </div>
+                <div class="mrc-stars">★★★★★</div>
+              </div>
+              <div class="mrc-body">
+                <p class="mrc-text">"Best latte in the 815, hands down. The atmosphere is cozy, staff actually knows your order by week two. My unofficial office — I've written half my emails here."</p>
+                <div class="mrc-footer">
+                  <span class="mrc-date">April 8, 2026</span>
+                  <span class="mrc-helpful">👍 17 found this helpful</span>
+                  <div class="mrc-actions">
+                    <button class="mrc-action-btn">✏️ Edit</button>
+                    <button class="mrc-action-btn delete">🗑️ Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="my-review-card">
+              <div class="mrc-header">
+                <div class="mrc-biz-icon">🎵</div>
+                <div>
+                  <div class="mrc-biz-name">Riverbend Brewing Co.</div>
+                  <div class="mrc-biz-cat">Brewery · Bar · River Rd.</div>
+                </div>
+                <div class="mrc-stars" style="color:var(--orange);">★★★★☆</div>
+              </div>
+              <div class="mrc-body">
+                <p class="mrc-text">"The taproom has the best atmosphere in town. Always a new rotation of local brews. Came on a Tuesday for live music night and stayed two hours longer than planned. Cacio e pepe was the best I've had outside of Rome."</p>
+                <div class="mrc-footer">
+                  <span class="mrc-date">March 22, 2026</span>
+                  <span class="mrc-helpful">👍 11 found this helpful</span>
+                  <div class="mrc-actions">
+                    <button class="mrc-action-btn">✏️ Edit</button>
+                    <button class="mrc-action-btn delete">🗑️ Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:8px;">
+            <button class="btn btn-outline">Load more reviews (45)</button>
+          </div>
+        </div>
+
+        <!-- ── SAVED TAB ── -->
+        <div class="tab-panel" id="panel-saved">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">Saved Places</div>
+              <h2 style="font-size:28px;font-weight:700;">27 places saved</h2>
+            </div>
+            <a href="815local-directory.html" class="btn btn-primary">🔍 Browse More</a>
+          </div>
+          <div class="saved-grid">
+            <div class="saved-card" onclick="window.location='815local-business.html'">
+              <div class="saved-photo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                <div class="saved-unsave" onclick="event.stopPropagation();this.textContent='♡'">❤️</div>
+              </div>
+              <div class="saved-body">
+                <div class="saved-cat">Italian · Bar</div>
+                <div class="saved-name">Rosario's Tavern</div>
+                <div class="saved-rating"><span class="saved-stars">★★★★★</span> 4.9 · (312)</div>
+                <div class="saved-dist">📍 0.4 mi · Lincoln Ave</div>
+              </div>
+            </div>
+            <div class="saved-card">
+              <div class="saved-photo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                <div class="saved-unsave" onclick="event.stopPropagation();this.textContent='♡'">❤️</div>
+              </div>
+              <div class="saved-body">
+                <div class="saved-cat">Café · Breakfast</div>
+                <div class="saved-name">Oak Street Coffee Co.</div>
+                <div class="saved-rating"><span class="saved-stars">★★★★★</span> 4.8 · (204)</div>
+                <div class="saved-dist">📍 0.7 mi · Oak St.</div>
+              </div>
+            </div>
+            <div class="saved-card">
+              <div class="saved-photo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                <div class="saved-unsave" onclick="event.stopPropagation();this.textContent='♡'">❤️</div>
+              </div>
+              <div class="saved-body">
+                <div class="saved-cat">Brewery · Bar</div>
+                <div class="saved-name">Riverbend Brewing Co.</div>
+                <div class="saved-rating"><span class="saved-stars">★★★★☆</span> 4.6 · (89)</div>
+                <div class="saved-dist">📍 0.9 mi · River Rd.</div>
+              </div>
+            </div>
+            <div class="saved-card">
+              <div class="saved-photo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                <div class="saved-unsave" onclick="event.stopPropagation();this.textContent='♡'">❤️</div>
+              </div>
+              <div class="saved-body">
+                <div class="saved-cat">Bakery · Café</div>
+                <div class="saved-name">Bianca's Bakehouse</div>
+                <div class="saved-rating"><span class="saved-stars">★★★★★</span> 4.8 · (256)</div>
+                <div class="saved-dist">📍 1.5 mi · State St.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── EVENTS TAB ── -->
+        <div class="tab-panel" id="panel-events">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">My Events</div>
+              <h2 style="font-size:28px;font-weight:700;">Upcoming & past events</h2>
+            </div>
+            <a href="815local-events.html" class="btn btn-primary">📅 Browse Events</a>
+          </div>
+          <div class="events-list">
+            <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray);padding:4px 0;">Upcoming</div>
+            <div class="my-event-card">
+              <div class="mec-date"><div class="mec-month">Apr</div><div class="mec-day">26</div></div>
+              <div class="mec-body">
+                <div class="mec-type">🎨 Arts</div>
+                <div class="mec-title">Spring Gallery Night Art Walk</div>
+                <div class="mec-meta">📍 Main Street District · 5–9pm · Free</div>
+              </div>
+              <span class="mec-status mec-going">✓ Going</span>
+            </div>
+            <div class="my-event-card">
+              <div class="mec-date"><div class="mec-month">May</div><div class="mec-day">1</div></div>
+              <div class="mec-body">
+                <div class="mec-type">🤝 Community</div>
+                <div class="mec-title">Community Cleanup & Cookout</div>
+                <div class="mec-meta">📍 Riverfront Park · 9am–2pm · Free</div>
+              </div>
+              <span class="mec-status mec-going">✓ Going</span>
+            </div>
+            <div class="my-event-card">
+              <div class="mec-date"><div class="mec-month">May</div><div class="mec-day">10</div></div>
+              <div class="mec-body">
+                <div class="mec-type">🎵 Music</div>
+                <div class="mec-title">815 Music Festival</div>
+                <div class="mec-meta">📍 Coronado Performing Arts · From $25</div>
+              </div>
+              <span class="mec-status mec-saved">♡ Saved</span>
+            </div>
+            <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray);padding:12px 0 4px;">Past Events</div>
+            <div class="my-event-card" style="opacity:0.65;">
+              <div class="mec-date" style="background:var(--charcoal-mid);"><div class="mec-month">Apr</div><div class="mec-day">20</div></div>
+              <div class="mec-body">
+                <div class="mec-type">🌿 Market</div>
+                <div class="mec-title">Sunday Farmers Market</div>
+                <div class="mec-meta">📍 Downtown Plaza · 8am–1pm</div>
+              </div>
+              <span class="mec-status mec-maybe">Attended</span>
+            </div>
+            <div class="my-event-card" style="opacity:0.65;">
+              <div class="mec-date" style="background:var(--charcoal-mid);"><div class="mec-month">Apr</div><div class="mec-day">22</div></div>
+              <div class="mec-body">
+                <div class="mec-type">🎵 Live Music</div>
+                <div class="mec-title">Live Music Night at Rosario's</div>
+                <div class="mec-meta">📍 Rosario's Tavern · $10 cover</div>
+              </div>
+              <span class="mec-status mec-maybe">Attended</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SETTINGS TAB ── -->
+        <div class="tab-panel" id="panel-settings">
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">Settings</div>
+            <h2 style="font-size:28px;font-weight:700;">Account Settings</h2>
+          </div>
+
+          <!-- Profile info -->
+          <div class="settings-card">
+            <div class="settings-section">
+              <div class="settings-section-title"><span class="settings-section-icon">👤</span> Profile Information</div>
+              <div class="settings-row">
+                <span class="settings-label">Full Name</span>
+                <span class="settings-value">Marcus Williams</span>
+                <span class="settings-edit-btn" onclick="editField(this)">Edit</span>
+              </div>
+              <div class="settings-row">
+                <span class="settings-label">Username</span>
+                <span class="settings-value">@marcuswilliams</span>
+                <span class="settings-edit-btn" onclick="editField(this)">Edit</span>
+              </div>
+              <div class="settings-row">
+                <span class="settings-label">Location</span>
+                <span class="settings-value">Rockford, IL</span>
+                <span class="settings-edit-btn" onclick="editField(this)">Edit</span>
+              </div>
+              <div class="settings-row">
+                <span class="settings-label">Bio</span>
+                <span class="settings-value" style="font-style:italic;">Rockford native. Always chasing the best latte in the 815.</span>
+                <span class="settings-edit-btn" onclick="editField(this)">Edit</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account security -->
+          <div class="settings-card">
+            <div class="settings-section">
+              <div class="settings-section-title"><span class="settings-section-icon">🔒</span> Account & Security</div>
+              <div class="settings-row">
+                <span class="settings-label">Email</span>
+                <span class="settings-value">marcus@email.com</span>
+                <span class="settings-edit-btn" onclick="editField(this)">Change</span>
+              </div>
+              <div class="settings-row">
+                <span class="settings-label">Password</span>
+                <span class="settings-value">••••••••••</span>
+                <span class="settings-edit-btn" onclick="editField(this)">Change</span>
+              </div>
+              <div class="settings-row">
+                <span class="settings-label">Two-Factor Auth</span>
+                <span class="settings-value" style="color:#2D6A4F;font-weight:600;">✓ Enabled</span>
+                <span class="settings-edit-btn" onclick="editField(this)">Manage</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications -->
+          <div class="settings-card">
+            <div class="settings-section">
+              <div class="settings-section-title"><span class="settings-section-icon">🔔</span> Notifications</div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Weekly Digest Email</div>
+                  <div class="toggle-sub">New spots, deals & events every Sunday</div>
+                </div>
+                <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Review Helpful Notifications</div>
+                  <div class="toggle-sub">When someone marks your review helpful</div>
+                </div>
+                <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">New Business Alerts</div>
+                  <div class="toggle-sub">When a new business opens in your area</div>
+                </div>
+                <div class="toggle-switch off" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Event Reminders</div>
+                  <div class="toggle-sub">24h before events you've saved</div>
+                </div>
+                <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Marketing Emails</div>
+                  <div class="toggle-sub">Deals and promotions from local businesses</div>
+                </div>
+                <div class="toggle-switch off" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Privacy -->
+          <div class="settings-card">
+            <div class="settings-section">
+              <div class="settings-section-title"><span class="settings-section-icon">🔏</span> Privacy</div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Public Profile</div>
+                  <div class="toggle-sub">Others can see your reviews and activity</div>
+                </div>
+                <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-label">Show Saved Places</div>
+                  <div class="toggle-sub">Display your saved places on your profile</div>
+                </div>
+                <div class="toggle-switch off" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger zone -->
+          <div class="danger-zone">
+            <div class="danger-title">⚠️ Danger Zone</div>
+            <p class="danger-sub">These actions are permanent and cannot be undone. Please be absolutely sure before proceeding.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="danger-btn">Deactivate Account</button>
+              <button class="danger-btn">Delete Account Permanently</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /profile-content -->
+    </div><!-- /profile-layout -->
+  </div><!-- /container -->
+</div><!-- /profile-body -->
+
+<!-- ══ TWEAKS ══ -->
+<div id="tweaks-panel">
+  <h3>⚙️ Tweaks</h3>
+  <div class="tweak-group">
+    <div class="tweak-label">Accent Color</div>
+    <div class="tweak-color">
+      <div class="tweak-swatch active" style="background:#C4622D;" onclick="setAccent('#C4622D',this)"></div>
+      <div class="tweak-swatch" style="background:#2D6A4F;" onclick="setAccent('#2D6A4F',this)"></div>
+      <div class="tweak-swatch" style="background:#1A6B9A;" onclick="setAccent('#1A6B9A',this)"></div>
+      <div class="tweak-swatch" style="background:#7B2D8B;" onclick="setAccent('#7B2D8B',this)"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"accentColor":"#C4622D"}/*EDITMODE-END*/;
+
+function switchTab(tab) {
+  // Tabs
+  document.querySelectorAll('.profile-tab').forEach((t, i) => {
+    const tabs = ['overview','reviews','saved','events','settings'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  // Panels
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('panel-' + tab);
+  if (panel) panel.classList.add('active');
+  // Sidebar menu
+  document.querySelectorAll('.sidebar-menu-item').forEach(item => {
+    const map = { overview: 0, reviews: 1, saved: 2, events: 3, settings: 4 };
+    item.classList.remove('active');
+  });
+  const menuItems = document.querySelectorAll('.sidebar-menu-item');
+  const menuMap = { overview: 0, reviews: 1, saved: 2, events: 3, settings: 4 };
+  if (menuMap[tab] !== undefined) menuItems[menuMap[tab]]?.classList.add('active');
+  localStorage.setItem('815local_profile_tab', tab);
+}
+
+function editField(btn) {
+  const row = btn.closest('.settings-row');
+  const valSpan = row.querySelector('.settings-value');
+  if (btn.textContent === 'Edit' || btn.textContent === 'Change') {
+    const input = document.createElement('input');
+    input.className = 'settings-input';
+    input.value = valSpan.textContent;
+    row.replaceChild(input, valSpan);
+    btn.textContent = 'Save';
+    input.focus();
+  } else {
+    const span = document.createElement('span');
+    span.className = 'settings-value';
+    span.textContent = row.querySelector('.settings-input').value;
+    row.replaceChild(span, row.querySelector('.settings-input'));
+    btn.textContent = 'Edit';
+  }
+}
+
+function toggleSwitch(el) {
+  el.classList.toggle('on');
+  el.classList.toggle('off');
+}
+
+function setAccent(color, el) {
+  document.documentElement.style.setProperty('--orange', color);
+  document.querySelectorAll('.tweak-swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: color } }, '*');
+}
+
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').style.display = 'block';
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+window.addEventListener('scroll', () => {
+  document.getElementById('main-nav').style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none';
+});
+
+// Restore tab
+const saved = localStorage.getItem('815local_profile_tab');
+if (saved) switchTab(saved);
+const savedScroll = localStorage.getItem('815local_profile_scroll');
+if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
+window.addEventListener('scroll', () => localStorage.setItem('815local_profile_scroll', window.scrollY), { passive: true });
+</script>
+
+<!-- ══ MOBILE BOTTOM NAV ══ -->
+<nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+  <a href="index.html" class="mbn-item" data-page="home">
+    <div class="mbn-icon">🏠</div>
+    <div class="mbn-label">Home</div>
+  </a>
+  <a href="815local-directory.html" class="mbn-item" data-page="browse">
+    <div class="mbn-icon">🔍</div>
+    <div class="mbn-label">Browse</div>
+  </a>
+  <a href="815local-events.html" class="mbn-item" data-page="events">
+    <div class="mbn-icon">📅</div>
+    <div class="mbn-label">Events</div>
+  </a>
+  <a href="815local-profile.html" class="mbn-item" data-page="profile">
+    <div class="mbn-icon">👤</div>
+    <div class="mbn-label">Profile</div>
+  </a>
+</nav>
+
+<script id="mobile-nav-init">
+(function() {
+  var active = 'profile';
+  document.querySelectorAll('.mbn-item').forEach(function(el) {
+    if (el.dataset.page === active) el.classList.add('active');
+  });
+})();
+</script>
+
+<script src="815local-analytics-tracker.js"></script>
+</body>
+</html>

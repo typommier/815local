@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>815local.com — Wireframes</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #C4622D;
+    --orange-light: #E8956A;
+    --cream: #F5EFE0;
+    --cream-dark: #EBE0C8;
+    --charcoal: #2D2826;
+    --charcoal-light: #5A5350;
+    --gray: #B0A89E;
+    --white: #FDFAF5;
+    --sketch: #2D2826;
+  }
+
+  body {
+    background: var(--cream);
+    font-family: 'Caveat', cursive;
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--orange);
+  }
+  .logo-text {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 26px;
+    color: var(--orange);
+    letter-spacing: 1px;
+  }
+  .logo-text span { color: var(--cream); }
+  .header-label {
+    font-size: 16px;
+    color: var(--gray);
+    margin-left: auto;
+  }
+  .badge {
+    background: var(--orange);
+    color: white;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 32px;
+    background: var(--charcoal);
+    border-bottom: 2px solid var(--charcoal-light);
+  }
+  .tab {
+    padding: 10px 28px;
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--gray);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .tab:hover { color: var(--cream); }
+  .tab.active {
+    color: var(--orange);
+    border-bottom: 3px solid var(--orange);
+  }
+
+  /* ── ANNOTATION LEGEND ── */
+  .legend {
+    display: flex;
+    gap: 20px;
+    padding: 12px 32px;
+    background: var(--cream-dark);
+    border-bottom: 1px dashed var(--gray);
+    font-size: 15px;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot {
+    width: 14px; height: 14px; border-radius: 3px;
+    border: 2px solid var(--charcoal);
+  }
+
+  /* ── MAIN CANVAS ── */
+  .canvas-wrap {
+    padding: 32px;
+    display: none;
+  }
+  .canvas-wrap.active { display: block; }
+
+  .variation-label {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 32px;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+  .variation-desc {
+    font-size: 18px;
+    color: var(--charcoal-light);
+    margin-bottom: 28px;
+    max-width: 700px;
+    line-height: 1.4;
+  }
+
+  /* ── DUAL FRAME (desktop + mobile) ── */
+  .dual-frame {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .frame-wrap {
+    flex: 1;
+    min-width: 280px;
+  }
+  .frame-title {
+    font-size: 18px;
+    color: var(--charcoal-light);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .frame-title::before {
+    content: '';
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  /* Desktop wireframe */
+  .desktop-frame {
+    background: var(--white);
+    border: 2.5px solid var(--charcoal);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 5px 5px 0 var(--charcoal);
+    max-width: 900px;
+  }
+  /* Mobile frame */
+  .mobile-frame {
+    background: var(--white);
+    border: 2.5px solid var(--charcoal);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--charcoal);
+    width: 320px;
+    flex-shrink: 0;
+  }
+  .mobile-bar {
+    background: var(--charcoal);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .mobile-notch {
+    width: 60px; height: 12px;
+    background: #111;
+    border-radius: 0 0 8px 8px;
+  }
+
+  /* ── SKETCH PRIMITIVES ── */
+  .sk-nav {
+    background: var(--charcoal);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sk-logo {
+    font-family: 'Caveat Brush', cursive;
+    font-size: 18px;
+    color: var(--orange);
+  }
+  .site-logo {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+  .site-logo-sm {
+    height: 26px;
+    width: auto;
+    display: block;
+  }
+  .site-logo-lg {
+    height: 48px;
+    width: auto;
+    display: block;
+  }
+  .sk-navlinks {
+    display: flex; gap: 10px; margin-left: 16px;
+  }
+  .sk-navlink {
+    font-size: 13px;
+    color: var(--gray);
+    padding: 3px 8px;
+    border: 1px dashed var(--gray);
+    border-radius: 4px;
+  }
+  .sk-search-bar {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border: 1.5px dashed var(--gray);
+    border-radius: 4px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+    color: var(--gray);
+    gap: 6px;
+  }
+  .sk-btn {
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-family: 'Caveat', cursive;
+    font-size: 13px;
+    cursor: default;
+  }
+  .sk-btn-outline {
+    background: transparent;
+    color: var(--orange);
+    border: 1.5px solid var(--orange);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-family: 'Caveat', cursive;
+    font-size: 13px;
+  }
+
+  /* Placeholder blocks */
+  .ph {
+    border: 2px dashed var(--gray);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--gray);
+    background: var(--cream);
+    text-align: center;
+    padding: 4px;
+  }
+  .ph-img {
+    background: var(--cream-dark);
+    border: 2px solid var(--charcoal-light);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--charcoal-light);
+    overflow: hidden;
+    position: relative;
+  }
+  .ph-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent, transparent 6px,
+      rgba(0,0,0,0.05) 6px, rgba(0,0,0,0.05) 7px
+    );
+  }
+  .ph-orange {
+    background: rgba(196,98,45,0.12);
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .ph-dark {
+    background: var(--charcoal);
+    border-color: var(--charcoal);
+    color: var(--cream);
+  }
+
+  /* Annotation pin */
+  .ann {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .ann-list {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ann-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  /* Stars */
+  .stars { color: var(--orange); font-size: 11px; letter-spacing: 1px; }
+
+  /* Section labels */
+  .section-label {
+    font-size: 11px;
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 2px 6px;
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    background: rgba(196,98,45,0.08);
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+
+  /* Tags/pills */
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    border: 1.5px solid var(--charcoal-light);
+    color: var(--charcoal-light);
+    background: var(--white);
+  }
+  .pill.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1.5px dashed var(--gray);
+    margin: 12px 0;
+  }
+
+  /* Card */
+  .sk-card {
+    border: 2px solid var(--charcoal);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 3px 3px 0 var(--charcoal-light);
+  }
+
+  /* Tweak panel */
+  #tweaks-panel {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--white);
+    border: 2px solid var(--charcoal);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 4px 4px 0 var(--charcoal);
+    z-index: 999;
+    font-family: 'Caveat', cursive;
+    min-width: 220px;
+  }
+  #tweaks-panel h3 { font-size: 20px; margin-bottom: 12px; color: var(--charcoal); }
+  .tweak-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .tweak-row label { font-size: 15px; color: var(--charcoal-light); }
+  .tweak-row select, .tweak-row input[type=range] { width: 100%; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .dual-frame { flex-direction: column; }
+    .mobile-frame { width: 100%; max-width: 340px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo-lg" alt="815 Local">
+  <div style="font-size:16px; color:var(--gray);">Homepage Wireframes</div>
+  <div class="header-label">3 Variations · Desktop + Mobile<span class="badge">Draft</span></div>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" onclick="showTab(0)">V1 — The Hub</button>
+  <button class="tab" onclick="showTab(1)">V2 — The Spotlight</button>
+  <button class="tab" onclick="showTab(2)">V3 — The Neighborhood</button>
+</nav>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--cream-dark)"></div> Image Placeholder</div>
+  <div class="legend-item"><div class="legend-dot" style="background:rgba(196,98,45,0.12); border-color:var(--orange)"></div> Interactive / CTA</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--charcoal)"></div> Navigation / Footer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--cream); border-color:var(--gray)"></div> Content Block</div>
+  <div style="margin-left:auto; font-size:15px; color:var(--charcoal-light)">🎨 Burnt Orange · Cream · Charcoal</div>
+</div>
+
+<!-- ═══════════════════ V1: THE HUB ═══════════════════ -->
+<div class="canvas-wrap active" id="tab-0">
+  <div class="variation-label">V1 — "The Hub"</div>
+  <div class="variation-desc">A bold, search-first homepage. Users land and immediately find what they need. Categories drive discovery; card grid shows top picks. Clean and functional — community at scale.</div>
+
+  <div class="dual-frame">
+
+    <!-- DESKTOP -->
+    <div class="frame-wrap">
+      <div class="frame-title">Desktop</div>
+      <div class="desktop-frame">
+
+        <!-- NAV -->
+        <div class="sk-nav">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo" alt="815 Local">
+          <div class="sk-navlinks">
+            <div class="sk-navlink">Explore</div>
+            <div class="sk-navlink">Restaurants</div>
+            <div class="sk-navlink">Events</div>
+            <div class="sk-navlink">Blog</div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="sk-btn-outline">Sign In</div>
+          <div class="sk-btn">List a Business</div>
+        </div>
+
+        <!-- HERO -->
+        <div style="background: var(--charcoal); padding: 40px 32px 32px; position:relative; overflow:hidden;">
+          <!-- bg texture lines -->
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 20px,rgba(196,98,45,0.06) 20px,rgba(196,98,45,0.06) 21px);pointer-events:none;"></div>
+          <div style="position:relative; z-index:1;">
+            <div style="display:inline-block; background:var(--orange); color:white; font-size:13px; padding:3px 12px; border-radius:20px; margin-bottom:10px;">📍 Serving the 815 Community</div>
+            <div style="font-family:'Caveat Brush',cursive; font-size:38px; color:var(--cream); line-height:1.1; margin-bottom:8px;">
+              Your Local<br><span style="color:var(--orange);">Everything.</span>
+            </div>
+            <div style="font-size:16px; color:var(--gray); margin-bottom:20px;">Reviews · Restaurants · Services · Events — all in one place</div>
+
+            <!-- Big search bar -->
+            <div style="display:flex; gap:0; background:white; border-radius:8px; overflow:hidden; border: 2.5px solid var(--charcoal); max-width:640px;">
+              <div style="display:flex; align-items:center; padding:0 14px; font-size:13px; color:var(--gray); gap:6px; border-right:1.5px dashed var(--gray); white-space:nowrap;">
+                📂 Category
+              </div>
+              <div style="flex:1; display:flex; align-items:center; padding:0 14px; font-size:13px; color:var(--gray);">
+                🔍 Search businesses, restaurants, services...
+              </div>
+              <div style="display:flex; align-items:center; padding:0 14px; font-size:13px; color:var(--gray); border-left:1.5px dashed var(--gray); white-space:nowrap;">
+                📍 Near me
+              </div>
+              <div class="sk-btn" style="border-radius:0; padding:10px 20px; font-size:15px;">Search</div>
+            </div>
+
+            <!-- Quick tags -->
+            <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+              <span style="font-size:13px; color:var(--gray);">Popular:</span>
+              <span class="pill active">🍕 Pizza</span>
+              <span class="pill" style="color:var(--cream); border-color:var(--gray);">☕ Coffee</span>
+              <span class="pill" style="color:var(--cream); border-color:var(--gray);">💇 Salons</span>
+              <span class="pill" style="color:var(--cream); border-color:var(--gray);">🏠 Plumbers</span>
+            </div>
+          </div>
+
+          <!-- Hero image strip -->
+          <div style="position:absolute; right:24px; top:20px; display:flex; gap:8px;">
+            <div class="ph-img" style="width:100px; height:90px; font-size:11px;">📸<br>Local spot</div>
+            <div class="ph-img" style="width:100px; height:90px; font-size:11px;">📸<br>Restaurant</div>
+            <div class="ph-img" style="width:100px; height:90px; font-size:11px;">📸<br>Community</div>
+          </div>
+        </div>
+
+        <!-- TRUST BAR -->
+        <div style="background:var(--orange); padding:10px 32px; display:flex; gap:32px; justify-content:center;">
+          <div style="font-size:14px; color:white; display:flex; gap:6px; align-items:center;">⭐ 2,400+ Reviews</div>
+          <div style="font-size:14px; color:white; display:flex; gap:6px; align-items:center;">🏪 680+ Local Businesses</div>
+          <div style="font-size:14px; color:white; display:flex; gap:6px; align-items:center;">🗺️ Covering the full 815 area</div>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div style="padding: 24px 32px 16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <div style="font-family:'Caveat Brush',cursive; font-size:22px;">Browse Categories</div>
+            <div style="font-size:14px; color:var(--orange);">View All →</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(8,1fr); gap:10px;">
+            
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">🍔</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Food</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">☕</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Coffee</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">🍺</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Bars</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">💆</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Wellness</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">🛍️</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Retail</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">🔧</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Services</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">🎭</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Arts</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="ph-img" style="width:60px;height:60px;font-size:20px;border-radius:50%;">📅</div>
+      <div style="font-size:12px;text-align:center;color:var(--charcoal-light);">Events</div>
+    </div>
+          </div>
+        </div>
+
+        <hr class="divider" style="margin:0 32px;">
+
+        <!-- FEATURED BUSINESSES -->
+        <div style="padding: 16px 32px 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <div style="font-family:'Caveat Brush',cursive; font-size:22px;">⭐ Community Favorites</div>
+            <div style="font-size:14px; color:var(--orange);">See All →</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+            ${[
+              {name:'Rosario\'s Tavern', cat:'Restaurant · Bar', rating:'4.9', rev:'312'},
+              {name:'Oak Street Coffee', cat:'Café · Breakfast', rating:'4.8', rev:'204'},
+              {name:'Elm City Barbershop', cat:'Salon · Grooming', rating:'4.7', rev:'178'}
+            ].map(b=>`
+              <div class="sk-card">
+                <div class="ph-img" style="height:90px;width:100%;border-radius:0;font-size:13px;">📸 ${b.name}</div>
+                <div style="padding:10px 12px;">
+                  <div style="font-size:15px;font-weight:700;">${b.name}</div>
+                  <div style="font-size:12px;color:var(--gray);">${b.cat}</div>
+                  <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+                    <span class="stars">★★★★★</span>
+                    <span style="font-size:13px;font-weight:700;">${b.rating}</span>
+                    <span style="font-size:12px;color:var(--gray);">(${b.rev} reviews)</span>
+                  </div>
+                  <div style="display:flex;gap:6px;margin-top:8px;">
+                    <span class="pill" style="font-size:11px;">Open Now</span>
+                    <span class="pill" style="font-size:11px;">$ Moderate</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- EVENTS STRIP -->
+        <div style="background:var(--cream-dark); padding:16px 32px; border-top:1.5px dashed var(--gray); border-bottom:1.5px dashed var(--gray);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="font-family:'Caveat Brush',cursive; font-size:22px;">📅 Upcoming Events</div>
+            <div style="font-size:14px; color:var(--orange);">Full Calendar →</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px;">
+            ${[
+              {date:'Apr 20', name:'Farmers Market', loc:'Downtown Plaza'},
+              {date:'Apr 22', name:'Live Music Nite', loc:'Rosario\'s Tavern'},
+              {date:'Apr 26', name:'Art Walk', loc:'Main St.'},
+              {date:'May 1', name:'Community Cleanup', loc:'Riverfront Park'}
+            ].map(e=>`
+              <div style="background:white; border:1.5px solid var(--charcoal); border-radius:8px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:2px 2px 0 var(--charcoal-light);">
+                <div style="background:var(--orange); color:white; border-radius:6px; padding:6px 8px; text-align:center; flex-shrink:0;">
+                  <div style="font-size:11px;">${e.date.split(' ')[0]}</div>
+                  <div style="font-size:18px; font-weight:700;">${e.date.split(' ')[1]}</div>
+                </div>
+                <div>
+                  <div style="font-size:14px; font-weight:700;">${e.name}</div>
+                  <div style="font-size:12px; color:var(--gray);">📍 ${e.loc}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- RECENT REVIEWS -->
+        <div style="padding: 20px 32px 24px;">
+          <div style="font-family:'Caveat Brush',cursive; font-size:22px; margin-bottom:14px;">💬 Recent Reviews</div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+            ${[
+              {user:'Maria T.', biz:'Oak Street Coffee', text:'"Best latte in the 815, hands down!"', rating:'★★★★★'},
+              {user:'Jake R.', biz:'Elm City Barbershop', text:'"Clean cuts, great vibes. My go-to spot."', rating:'★★★★★'},
+              {user:'Sarah M.', biz:'Rosario\'s Tavern', text:'"The pasta is incredible, always packed on weekends."', rating:'★★★★☆'}
+            ].map(r=>`
+              <div style="border:1.5px solid var(--gray); border-radius:8px; padding:12px; background:var(--white);">
+                <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+                  <div class="ph-img" style="width:32px;height:32px;border-radius:50%;font-size:14px;">👤</div>
+                  <div>
+                    <div style="font-size:14px;font-weight:700;">${r.user}</div>
+                    <div style="font-size:12px;color:var(--gray);">${r.biz}</div>
+                  </div>
+                  <div style="margin-left:auto;font-size:13px;color:var(--orange);">${r.rating}</div>
+                </div>
+                <div style="font-size:14px; color:var(--charcoal-light); font-style:italic;">${r.text}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- BLOG STRIP -->
+        <div style="background:var(--charcoal); padding:20px 32px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <div style="font-family:'Caveat Brush',cursive; font-size:22px; color:var(--cream);">📰 From the Community</div>
+            <div style="font-size:14px; color:var(--orange);">All Stories →</div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+            ${[
+              '5 New Spots Opening This Spring',
+              'Best Patios for Outdoor Dining',
+              'Hidden Gems: Underrated Local Shops'
+            ].map(h=>`
+              <div style="background:rgba(255,255,255,0.05); border:1.5px solid var(--charcoal-light); border-radius:8px; overflow:hidden;">
+                <div class="ph-img" style="height:70px;width:100%;border-radius:0;font-size:12px;color:var(--gray);">📸 Article image</div>
+                <div style="padding:10px;">
+                  <div style="font-size:14px;color:var(--cream);line-height:1.3;">${h}</div>
+                  <div style="font-size:12px;color:var(--gray);margin-top:4px;">Read More →</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- NEWSLETTER -->
+        <div style="background:var(--cream-dark); padding:20px 32px; display:flex; align-items:center; gap:24px; justify-content:center; border-top:1.5px dashed var(--gray);">
+          <div>
+            <div style="font-family:'Caveat Brush',cursive; font-size:24px;">Stay in the loop 📬</div>
+            <div style="font-size:14px; color:var(--charcoal-light);">Weekly picks, new openings & events — straight to your inbox</div>
+          </div>
+          <div style="display:flex; gap:0; background:white; border-radius:6px; overflow:hidden; border:2px solid var(--charcoal);">
+            <div style="padding:8px 16px; font-size:13px; color:var(--gray);">📧 your@email.com</div>
+            <div class="sk-btn" style="border-radius:0; padding:8px 16px;">Subscribe</div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="background:var(--charcoal); padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo-sm" alt="815 Local">
+          <div style="display:flex; gap:20px;">
+            <div style="font-size:13px;color:var(--gray);">About</div><div style="font-size:13px;color:var(--gray);">Advertise</div><div style="font-size:13px;color:var(--gray);">Privacy</div><div style="font-size:13px;color:var(--gray);">Contact</div>
+          </div>
+          <div style="font-size:13px;color:var(--gray);">© 2026 815local.com</div>
+        </div>
+
+      </div><!-- /desktop-frame -->
+    </div><!-- /frame-wrap desktop -->
+
+    <!-- MOBILE V1 -->
+    <div class="frame-wrap" style="flex:0 0 auto;">
+      <div class="frame-title">Mobile</div>
+      <div class="mobile-frame">
+        <div class="mobile-bar"><div class="mobile-notch"></div></div>
+
+        <!-- mobile nav -->
+        <div style="background:var(--charcoal); padding:8px 14px; display:flex; align-items:center; justify-content:space-between;">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo-sm" alt="815 Local">
+          <div style="display:flex;gap:8px;">
+            <div style="color:var(--gray); font-size:14px;">🔍</div>
+            <div style="color:var(--gray); font-size:14px;">☰</div>
+          </div>
+        </div>
+
+        <!-- mobile hero -->
+        <div style="background:var(--charcoal); padding:20px 14px 16px;">
+          <div style="font-family:'Caveat Brush',cursive; font-size:26px; color:var(--cream); line-height:1.1;">Your Local<br><span style="color:var(--orange);">Everything.</span></div>
+          <div style="font-size:13px; color:var(--gray); margin:6px 0 12px;">Reviews · Eats · Services</div>
+          <div style="background:white; border-radius:6px; border:2px solid var(--charcoal); display:flex; overflow:hidden;">
+            <div style="flex:1; padding:8px 10px; font-size:12px; color:var(--gray);">🔍 Search 815...</div>
+            <div class="sk-btn" style="border-radius:0; padding:8px 12px; font-size:13px;">Go</div>
+          </div>
+        </div>
+
+        <!-- mobile orange bar -->
+        <div style="background:var(--orange); padding:6px 14px; font-size:12px; color:white; display:flex; gap:12px; overflow-x:auto;">
+          <span>⭐ 2,400+ Reviews</span>
+          <span>🏪 680+ Businesses</span>
+        </div>
+
+        <!-- mobile categories scroll -->
+        <div style="padding:14px;">
+          <div style="font-family:'Caveat Brush',cursive; font-size:18px; margin-bottom:8px;">Categories</div>
+          <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px;">
+            ${['🍔 Food','☕ Coffee','🍺 Bars','💆 Spa','🛍️ Shop'].map(c=>`
+              <div style="flex-shrink:0; display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div class="ph-img" style="width:44px;height:44px;border-radius:50%;font-size:18px;">${c[0]}</div>
+                <div style="font-size:10px;color:var(--charcoal-light);">${c.split(' ')[1]}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- mobile featured card -->
+        <div style="padding:0 14px 14px;">
+          <div style="font-family:'Caveat Brush',cursive; font-size:18px; margin-bottom:8px;">⭐ Top Picks</div>
+          ${[
+            {name:"Rosario's Tavern", cat:"Restaurant", rating:"4.9"},
+            {name:"Oak Street Coffee", cat:"Café", rating:"4.8"}
+          ].map(b=>`
+            <div class="sk-card" style="margin-bottom:10px; display:flex; overflow:hidden;">
+              <div class="ph-img" style="width:70px;height:70px;border-radius:0;flex-shrink:0;font-size:12px;">📸</div>
+              <div style="padding:8px 10px;">
+                <div style="font-size:14px;font-weight:700;">${b.name}</div>
+                <div style="font-size:11px;color:var(--gray);">${b.cat}</div>
+                <div style="font-size:12px;color:var(--orange);">★★★★★ ${b.rating}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- mobile events -->
+        <div style="background:var(--cream-dark); padding:14px; border-top:1.5px dashed var(--gray);">
+          <div style="font-family:'Caveat Brush',cursive; font-size:18px; margin-bottom:8px;">📅 Events</div>
+          ${[
+            {date:'Apr 20', name:'Farmers Market'},
+            {date:'Apr 22', name:'Live Music Nite'}
+          ].map(e=>`
+            <div style="background:white; border:1.5px solid var(--charcoal); border-radius:6px; padding:8px 10px; margin-bottom:8px; display:flex; gap:10px; align-items:center;">
+              <div style="background:var(--orange);color:white;border-radius:4px;padding:4px 6px;text-align:center;flex-shrink:0;font-size:12px;">${e.date}</div>
+              <div style="font-size:13px;font-weight:700;">${e.name}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- mobile bottom nav -->
+        <div style="background:var(--charcoal); padding:10px 14px; display:flex; justify-content:space-around; border-top:2px solid var(--charcoal-light);">
+          
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Home</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Explore</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Events</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Me</div>
+    </div>
+        </div>
+      </div><!-- /mobile-frame -->
+    </div><!-- /frame-wrap mobile -->
+  </div><!-- /dual-frame -->
+
+  <div class="ann-list">
+    <div class="ann-item"><span class="ann">1</span> <strong>Power Search:</strong> Category dropdown + keyword + location — the main entry point. Sticky on scroll.</div>
+    <div class="ann-item"><span class="ann">2</span> <strong>Trust Bar:</strong> Instant social proof below the hero. Key stats build confidence for new visitors.</div>
+    <div class="ann-item"><span class="ann">3</span> <strong>Category Grid:</strong> 8-icon row drives discovery. On mobile, becomes a horizontal scroll strip.</div>
+    <div class="ann-item"><span class="ann">4</span> <strong>Community Favorites:</strong> Algorithm + editorial picks shown as rich cards with photos, rating, tags.</div>
+    <div class="ann-item"><span class="ann">5</span> <strong>Events Strip:</strong> Calendar-style mini cards in cream background; separates the vibe from listings.</div>
+    <div class="ann-item"><span class="ann">6</span> <strong>Bottom Nav (mobile):</strong> Home / Explore / Events / Profile — persistent access to key flows.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ V2: THE SPOTLIGHT ═══════════════════ -->
+<div class="canvas-wrap" id="tab-1">
+  <div class="variation-label">V2 — "The Spotlight"</div>
+  <div class="variation-desc">Editorial-first. A featured business hero rotates through top picks, with a split layout. Curated recommendations feel like a trusted local magazine. Great for building loyalty and showcasing partners.</div>
+
+  <div class="dual-frame">
+
+    <!-- DESKTOP V2 -->
+    <div class="frame-wrap">
+      <div class="frame-title">Desktop</div>
+      <div class="desktop-frame">
+
+        <!-- NAV -->
+        <div class="sk-nav" style="justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo" alt="815 Local">
+            <div style="width:1px;height:20px;background:var(--charcoal-light);">  </div>
+            <div style="display:flex;gap:8px;">
+              <div style="font-size:13px;color:var(--gray); padding:3px 6px;">Restaurants</div><div style="font-size:13px;color:var(--gray); padding:3px 6px;">Services</div><div style="font-size:13px;color:var(--gray); padding:3px 6px;">Events</div><div style="font-size:13px;color:var(--gray); padding:3px 6px;">Blog</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <div class="sk-search-bar" style="width:200px;">🔍 Search...</div>
+            <div class="sk-btn">+ Add Business</div>
+          </div>
+        </div>
+
+        <!-- SPLIT HERO -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; height:320px;">
+          <!-- Left: featured business -->
+          <div class="ph-img" style="border-radius:0; position:relative; min-height:320px;">
+            <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(45,40,38,0.9) 40%, transparent); z-index:1; display:flex; flex-direction:column; justify-content:flex-end; padding:24px;">
+              <div style="font-size:12px;color:var(--orange);margin-bottom:4px;">⭐ BUSINESS OF THE WEEK</div>
+              <div style="font-family:'Caveat Brush',cursive; font-size:28px; color:white; line-height:1.1;">Rosario's Tavern</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.7);margin:4px 0;">Italian Restaurant · Bar · $$</div>
+              <div style="font-size:14px; color:var(--orange); margin:4px 0;">★★★★★  4.9  (312 reviews)</div>
+              <div style="display:flex;gap:8px;margin-top:10px;">
+                <div class="sk-btn">View Business</div>
+                <div class="sk-btn-outline" style="color:white; border-color:white;">Get Directions</div>
+              </div>
+              <!-- carousel dots -->
+              <div style="display:flex;gap:4px;margin-top:12px;">
+                <div style="width:20px;height:4px;background:var(--orange);border-radius:2px;"></div>
+                <div style="width:8px;height:4px;background:rgba(255,255,255,0.4);border-radius:2px;"></div>
+                <div style="width:8px;height:4px;background:rgba(255,255,255,0.4);border-radius:2px;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Right: search + quick picks -->
+          <div style="background:var(--cream); padding:24px; display:flex; flex-direction:column; gap:16px;">
+            <div style="font-family:'Caveat Brush',cursive; font-size:22px; color:var(--charcoal);">Find it in the 815</div>
+            <div style="display:flex; gap:0; background:white; border-radius:6px; overflow:hidden; border:2px solid var(--charcoal);">
+              <div style="flex:1;padding:9px 12px;font-size:13px;color:var(--gray);">🔍 Restaurant, café, shop...</div>
+              <div class="sk-btn" style="border-radius:0;padding:9px 14px;">Find</div>
+            </div>
+            <div>
+              <div style="font-size:14px; color:var(--charcoal-light); margin-bottom:8px;">Browse by mood:</div>
+              <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                
+    <span class="pill" style="font-size:12px;">🌮 Quick Bite</span>
+    <span class="pill" style="font-size:12px;">☕ Coffee Run</span>
+    <span class="pill" style="font-size:12px;">🍷 Date Night</span>
+    <span class="pill" style="font-size:12px;">💅 Self-Care</span>
+    <span class="pill" style="font-size:12px;">🔨 Fix It</span>
+    <span class="pill" style="font-size:12px;">🎉 Party Planning</span>
+              </div>
+            </div>
+            <hr class="divider">
+            <div style="font-size:14px; color:var(--charcoal-light); margin-bottom:6px; font-weight:700;">🔥 Trending Now</div>
+            
+    <div style="display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px dashed var(--gray);">
+      <div style="font-family:'Caveat Brush',cursive; font-size:22px; color:var(--cream-dark);">1</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;">Bianca's Bakehouse</div>
+        <div style="font-size:11px;color:var(--gray);">★★★★☆  Open Now</div>
+      </div>
+      <div style="margin-left:auto; font-size:12px; color:var(--orange);">→</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px dashed var(--gray);">
+      <div style="font-family:'Caveat Brush',cursive; font-size:22px; color:var(--cream-dark);">2</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;">The Rusty Nail Bar</div>
+        <div style="font-size:11px;color:var(--gray);">★★★★☆  Open Now</div>
+      </div>
+      <div style="margin-left:auto; font-size:12px; color:var(--orange);">→</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px dashed var(--gray);">
+      <div style="font-family:'Caveat Brush',cursive; font-size:22px; color:var(--cream-dark);">3</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;">Harmony Yoga Studio</div>
+        <div style="font-size:11px;color:var(--gray);">★★★★☆  Open Now</div>
+      </div>
+      <div style="margin-left:auto; font-size:12px; color:var(--orange);">→</div>
+    </div>
+          </div>
+        </div>
+
+        <!-- CATEGORIES PILLS ROW -->
+        <div style="padding:14px 32px; display:flex; gap:10px; align-items:center; border-bottom:1.5px dashed var(--gray); overflow-x:auto;">
+          <span style="font-size:14px; color:var(--charcoal-light); white-space:nowrap;">Browse:</span>
+          
+    <span class="pill active" style="white-space:nowrap; font-size:13px;">All</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">🍔 Restaurants</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">☕ Cafés</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">🍺 Bars</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">💆 Wellness</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">🛍️ Retail</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">🔧 Home Services</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">🎭 Entertainment</span>
+    <span class="pill " style="white-space:nowrap; font-size:13px;">💇 Beauty</span>
+        </div>
+
+        <!-- EDITORIAL GRID -->
+        <div style="padding: 20px 32px 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:16px;">
+            <div style="font-family:'Caveat Brush',cursive; font-size:22px;">Local Editor's Picks</div>
+            <div style="font-size:13px; color:var(--charcoal-light);">Curated by the 815local team</div>
+          </div>
+
+          <!-- Big feature + 2 small -->
+          <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:16px;">
+            <!-- big card -->
+            <div class="sk-card">
+              <div class="ph-img" style="height:160px;border-radius:0;font-size:14px;">📸 Featured Business Photo</div>
+              <div style="padding:14px;">
+                <div class="section-label">EDITOR'S PICK</div>
+                <div style="font-size:18px;font-weight:700;margin-top:4px;">Oak Street Coffee Co.</div>
+                <div style="font-size:13px;color:var(--gray);">Café · Breakfast · Workspace</div>
+                <div style="font-size:14px;color:var(--charcoal-light);margin-top:8px;line-height:1.4;">"The hidden gem of downtown — great espresso, cozy vibe, and they know your name."</div>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
+                  <span class="stars">★★★★★</span>
+                  <span style="font-size:13px;">4.8 · 204 reviews</span>
+                  <span class="sk-btn" style="margin-left:auto;font-size:12px;padding:4px 10px;">See Review</span>
+                </div>
+              </div>
+            </div>
+            <!-- 2 small cards -->
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              ${[
+                {name:'Harmony Yoga Studio', cat:'Wellness · Classes', rating:'4.7'},
+                {name:'Riverbend Brewing Co.', cat:'Bar · Craft Beer', rating:'4.8'}
+              ].map(b=>`
+                <div class="sk-card" style="display:flex;overflow:hidden;flex:1;">
+                  <div class="ph-img" style="width:90px;flex-shrink:0;border-radius:0;font-size:12px;">📸</div>
+                  <div style="padding:10px 12px;">
+                    <div class="section-label">PICK</div>
+                    <div style="font-size:15px;font-weight:700;">${b.name}</div>
+                    <div style="font-size:12px;color:var(--gray);">${b.cat}</div>
+                    <div style="font-size:12px;color:var(--orange);margin-top:4px;">★★★★★ ${b.rating}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- MAP TEASE -->
+        <div style="margin: 0 32px 24px; border:2px dashed var(--gray); border-radius:8px; overflow:hidden; display:flex; height:140px;">
+          <div class="ph-img" style="flex:1;border-radius:0;font-size:14px;color:var(--gray);">🗺️ Interactive Map — businesses near you</div>
+          <div style="background:var(--charcoal); width:180px; padding:16px; display:flex; flex-direction:column; gap:8px; justify-content:center;">
+            <div style="font-size:16px;font-weight:700;color:var(--cream);">Explore the Map</div>
+            <div style="font-size:12px;color:var(--gray);">Find what's close to you</div>
+            <div class="sk-btn" style="text-align:center;">Open Map →</div>
+          </div>
+        </div>
+
+        <!-- EVENTS + BLOG 2-col -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1.5px dashed var(--gray);">
+          <div style="padding:20px 32px; border-right:1.5px dashed var(--gray);">
+            <div style="font-family:'Caveat Brush',cursive; font-size:20px; margin-bottom:12px;">📅 Events This Week</div>
+            ${[
+              {date:'Apr 20', name:'Sunday Farmers Market', loc:'Downtown'},
+              {date:'Apr 22', name:'Live Music at Rosario\'s', loc:'Lincoln Ave'},
+              {date:'Apr 26', name:'Gallery Night Art Walk', loc:'Main St.'}
+            ].map(e=>`
+              <div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--gray);">
+                <div style="background:var(--orange);color:white;border-radius:4px;padding:4px 8px;font-size:12px;text-align:center;flex-shrink:0;min-width:44px;">${e.date}</div>
+                <div>
+                  <div style="font-size:14px;font-weight:700;">${e.name}</div>
+                  <div style="font-size:12px;color:var(--gray);">📍 ${e.loc}</div>
+                </div>
+              </div>
+            `).join('')}
+            <div style="font-size:13px;color:var(--orange);margin-top:10px;">View full calendar →</div>
+          </div>
+          <div style="padding:20px 32px;">
+            <div style="font-family:'Caveat Brush',cursive; font-size:20px; margin-bottom:12px;">📰 Community Stories</div>
+            ${[
+              '10 Must-Try Brunch Spots This Spring',
+              'New Brewery Opens on Oak Street',
+              'Local Artist Makes National News'
+            ].map(h=>`
+              <div style="padding:8px 0;border-bottom:1px dashed var(--gray);">
+                <div style="font-size:14px;line-height:1.3;">${h}</div>
+                <div style="font-size:12px;color:var(--orange);margin-top:2px;">Read More →</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="background:var(--charcoal); padding:16px 32px; display:flex; justify-content:space-between; align-items:center;">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo-sm" alt="815 Local">
+          <div style="display:flex;gap:20px;"><div style="font-size:13px;color:var(--gray);">About</div><div style="font-size:13px;color:var(--gray);">Advertise</div><div style="font-size:13px;color:var(--gray);">Privacy</div></div>
+          <div style="font-size:13px;color:var(--gray);">© 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILE V2 -->
+    <div class="frame-wrap" style="flex:0 0 auto;">
+      <div class="frame-title">Mobile</div>
+      <div class="mobile-frame">
+        <div class="mobile-bar"><div class="mobile-notch"></div></div>
+        <div class="sk-nav" style="padding:8px 14px; justify-content:space-between;">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo-sm" alt="815 Local">
+          <div style="display:flex;gap:10px;font-size:16px;color:var(--gray);">🔍 ☰</div>
+        </div>
+
+        <!-- mobile full-bleed featured -->
+        <div class="ph-img" style="height:160px;border-radius:0;position:relative;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(45,40,38,0.85),transparent);z-index:1;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;">
+            <div style="font-size:10px;color:var(--orange);">⭐ BUSINESS OF THE WEEK</div>
+            <div style="font-family:'Caveat Brush',cursive;font-size:20px;color:white;">Rosario's Tavern</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);">★★★★★  4.9 · Italian</div>
+            <div class="sk-btn" style="margin-top:6px;font-size:12px;width:fit-content;padding:4px 10px;">View →</div>
+          </div>
+        </div>
+
+        <!-- mobile search -->
+        <div style="padding:12px 14px;background:var(--cream);">
+          <div style="background:white;border:2px solid var(--charcoal);border-radius:6px;display:flex;overflow:hidden;">
+            <div style="flex:1;padding:8px 10px;font-size:12px;color:var(--gray);">🔍 Find it in the 815...</div>
+            <div class="sk-btn" style="border-radius:0;padding:8px 10px;font-size:12px;">Go</div>
+          </div>
+          <!-- mood pills scroll -->
+          <div style="display:flex;gap:6px;margin-top:8px;overflow-x:auto;padding-bottom:2px;">
+            <span class="pill" style="font-size:11px;white-space:nowrap;">🌮 Bite</span><span class="pill" style="font-size:11px;white-space:nowrap;">☕ Coffee</span><span class="pill" style="font-size:11px;white-space:nowrap;">🍷 Dinner</span><span class="pill" style="font-size:11px;white-space:nowrap;">💅 Care</span>
+          </div>
+        </div>
+
+        <!-- trending -->
+        <div style="padding:12px 14px;">
+          <div style="font-family:'Caveat Brush',cursive;font-size:18px;margin-bottom:8px;">🔥 Trending</div>
+          
+    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--gray);">
+      <div style="font-family:'Caveat Brush',cursive;font-size:20px;color:var(--cream-dark);">1</div>
+      <div style="font-size:13px;font-weight:700;">Bianca's Bakehouse</div>
+      <div style="margin-left:auto;font-size:12px;color:var(--orange);">→</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed var(--gray);">
+      <div style="font-family:'Caveat Brush',cursive;font-size:20px;color:var(--cream-dark);">2</div>
+      <div style="font-size:13px;font-weight:700;">The Rusty Nail Bar</div>
+      <div style="margin-left:auto;font-size:12px;color:var(--orange);">→</div>
+    </div>
+        </div>
+
+        <!-- events -->
+        <div style="background:var(--cream-dark);padding:12px 14px;border-top:1.5px dashed var(--gray);">
+          <div style="font-family:'Caveat Brush',cursive;font-size:18px;margin-bottom:8px;">📅 This Week</div>
+          ${[
+            {date:'Apr 20',name:'Farmers Market'},
+            {date:'Apr 22',name:'Live Music Night'}
+          ].map(e=>`
+            <div style="background:white;border:1.5px solid var(--charcoal);border-radius:6px;padding:7px 10px;margin-bottom:6px;display:flex;gap:8px;align-items:center;">
+              <div style="background:var(--orange);color:white;border-radius:4px;padding:3px 6px;font-size:11px;flex-shrink:0;">${e.date}</div>
+              <div style="font-size:13px;font-weight:700;">${e.name}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- bottom nav -->
+        <div style="background:var(--charcoal);padding:10px 14px;display:flex;justify-content:space-around;border-top:2px solid var(--charcoal-light);">
+          
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Home</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Map</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Events</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Me</div>
+    </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dual-frame -->
+
+  <div class="ann-list">
+    <div class="ann-item"><span class="ann">1</span> <strong>Featured Business Hero:</strong> Full-bleed photo carousel of top-rated or sponsored businesses. Rotates every 6 seconds. Sets editorial tone.</div>
+    <div class="ann-item"><span class="ann">2</span> <strong>Mood-Based Browse:</strong> "Quick Bite / Date Night / Self-Care" — lower cognitive load than raw categories. Feels personal.</div>
+    <div class="ann-item"><span class="ann">3</span> <strong>Editor's Picks Grid:</strong> Asymmetric layout signals curation — not just a search engine, but a trusted local guide.</div>
+    <div class="ann-item"><span class="ann">4</span> <strong>Map Tease:</strong> Encourages exploration; drives to a dedicated map/directory page.</div>
+    <div class="ann-item"><span class="ann">5</span> <strong>Mobile Hero:</strong> Full-bleed featured business is powerful on mobile — great first impression, swipeable.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ V3: THE NEIGHBORHOOD ═══════════════════ -->
+<div class="canvas-wrap" id="tab-2">
+  <div class="variation-label">V3 — "The Neighborhood"</div>
+  <div class="variation-desc">Community-led, photo-rich. The homepage feels like a local magazine front page: real people, real places, big vibes. Reviews, photos, and stories lead. Search is secondary — discovery is the experience.</div>
+
+  <div class="dual-frame">
+
+    <!-- DESKTOP V3 -->
+    <div class="frame-wrap">
+      <div class="frame-title">Desktop</div>
+      <div class="desktop-frame">
+
+        <!-- TOP UTILITY BAR -->
+        <div style="background:var(--orange);padding:5px 32px;display:flex;justify-content:space-between;font-size:12px;color:white;">
+          <span>📍 Serving Rockford, Joliet, DeKalb & the 815 region</span>
+          <span>Sign In · Create Account · List Your Business</span>
+        </div>
+
+        <!-- NAV -->
+        <div style="background:var(--charcoal);padding:12px 32px;display:flex;align-items:center;gap:16px;">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo" alt="815 Local">
+          <div style="height:24px;width:1px;background:var(--charcoal-light);"></div>
+          <div style="display:flex;gap:12px;">
+            <div style="font-size:14px;color:var(--gray);">Eat & Drink</div><div style="font-size:14px;color:var(--gray);">Services</div><div style="font-size:14px;color:var(--gray);">Events</div><div style="font-size:14px;color:var(--gray);">People</div><div style="font-size:14px;color:var(--gray);">Blog</div>
+          </div>
+          <div style="flex:1;margin:0 16px;background:rgba(255,255,255,0.08);border:1.5px dashed var(--charcoal-light);border-radius:6px;padding:7px 14px;font-size:13px;color:var(--gray);">
+            🔍 Search the neighborhood...
+          </div>
+          <div class="sk-btn">+ Add Business</div>
+        </div>
+
+        <!-- PHOTO MOSAIC HERO -->
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:160px 120px;gap:3px;position:relative;">
+          <div class="ph-img" style="grid-row:span 2;border-radius:0;font-size:14px;">📸 Hero: Busy local restaurant scene</div>
+          <div class="ph-img" style="border-radius:0;font-size:12px;">📸 Community event</div>
+          <div class="ph-img" style="border-radius:0;font-size:12px;">📸 Local shop</div>
+          <div class="ph-img" style="border-radius:0;font-size:12px;">📸 Neighborhood street</div>
+          <div class="ph-img" style="border-radius:0;font-size:12px;">📸 Local faces</div>
+          <!-- overlay text -->
+          <div style="position:absolute;bottom:20px;left:20px;z-index:2;">
+            <div style="background:rgba(45,40,38,0.85);border-radius:8px;padding:16px 20px;backdrop-filter:blur(4px);">
+              <div style="font-family:'Caveat Brush',cursive;font-size:32px;color:var(--cream);line-height:1.1;">
+                This is your <span style="color:var(--orange);">neighborhood.</span>
+              </div>
+              <div style="font-size:14px;color:rgba(255,255,255,0.7);margin:6px 0 12px;">Discover local businesses, reviews & events in the 815.</div>
+              <div style="display:flex;gap:8px;">
+                <div class="sk-btn" style="font-size:14px;padding:8px 20px;">Explore Now</div>
+                <div class="sk-btn-outline" style="color:white;border-color:rgba(255,255,255,0.5);font-size:14px;padding:8px 20px;">Browse Events</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEIGHBORHOOD SECTIONS TABS -->
+        <div style="background:var(--cream-dark);padding:0 32px;display:flex;gap:0;border-bottom:2px solid var(--charcoal);">
+          
+    <div style="padding:12px 20px;font-size:15px;background:var(--charcoal);color:var(--orange);border-right:1px dashed var(--gray);">🍽️ Eat & Drink</div>
+    <div style="padding:12px 20px;font-size:15px;color:var(--charcoal-light);border-right:1px dashed var(--gray);">🏪 Shop Local</div>
+    <div style="padding:12px 20px;font-size:15px;color:var(--charcoal-light);border-right:1px dashed var(--gray);">💆 Feel Good</div>
+    <div style="padding:12px 20px;font-size:15px;color:var(--charcoal-light);border-right:1px dashed var(--gray);">🎭 Go Out</div>
+    <div style="padding:12px 20px;font-size:15px;color:var(--charcoal-light);border-right:1px dashed var(--gray);">🔧 Get It Done</div>
+        </div>
+
+        <!-- MAIN CONTENT: 3-col editorial -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1.5px dashed var(--gray);">
+
+          <!-- LEFT COL: Top Picks list -->
+          <div style="padding:20px 24px;border-right:1.5px dashed var(--gray);">
+            <div class="section-label">TOP PICKS THIS WEEK</div>
+            <div style="font-family:'Caveat Brush',cursive;font-size:20px;margin:6px 0 14px;">Best in the 815</div>
+            ${[
+              {rank:1,name:"Rosario's Tavern",cat:"Italian · $$",stars:"4.9"},
+              {rank:2,name:"Oak Street Coffee",cat:"Café · $",stars:"4.8"},
+              {rank:3,name:"Elm City Barbershop",cat:"Grooming · $$",stars:"4.7"},
+              {rank:4,name:"Harmony Yoga",cat:"Wellness · $$",stars:"4.7"},
+            ].map(b=>`
+              <div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--gray);">
+                <div style="font-family:'Caveat Brush',cursive;font-size:28px;color:var(--cream-dark);flex-shrink:0;width:28px;text-align:center;">${b.rank}</div>
+                <div class="ph-img" style="width:44px;height:44px;border-radius:6px;flex-shrink:0;font-size:16px;">📸</div>
+                <div style="flex:1;">
+                  <div style="font-size:14px;font-weight:700;">${b.name}</div>
+                  <div style="font-size:11px;color:var(--gray);">${b.cat}</div>
+                </div>
+                <div style="font-size:13px;color:var(--orange);font-weight:700;">${b.stars}</div>
+              </div>
+            `).join('')}
+            <div style="font-size:13px;color:var(--orange);margin-top:12px;">See full list →</div>
+          </div>
+
+          <!-- MIDDLE COL: Featured review -->
+          <div style="padding:20px 24px;border-right:1.5px dashed var(--gray);">
+            <div class="section-label">COMMUNITY REVIEW</div>
+            <div style="font-family:'Caveat Brush',cursive;font-size:20px;margin:6px 0 12px;">People Are Talking</div>
+            <div class="sk-card" style="margin-bottom:14px;">
+              <div class="ph-img" style="height:100px;border-radius:0;font-size:13px;">📸 Business photo</div>
+              <div style="padding:12px;">
+                <div style="font-size:15px;font-weight:700;">Riverbend Brewing Co.</div>
+                <div style="font-size:12px;color:var(--gray);">Bar · Craft Beer · $$</div>
+                <div style="font-size:13px;font-style:italic;color:var(--charcoal-light);margin:8px 0;line-height:1.4;">"The taproom has the best atmosphere in town. Always a new rotation of local brews."</div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="ph-img" style="width:28px;height:28px;border-radius:50%;font-size:12px;">👤</div>
+                  <div style="font-size:12px;">Jake R. <span style="color:var(--gray);">· Local Guide</span></div>
+                  <div style="margin-left:auto;font-size:12px;color:var(--orange);">★★★★★</div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:13px;color:var(--orange);">Browse all reviews →</div>
+          </div>
+
+          <!-- RIGHT COL: Events + Blog -->
+          <div style="padding:20px 24px;">
+            <div class="section-label">HAPPENING NOW</div>
+            <div style="font-family:'Caveat Brush',cursive;font-size:20px;margin:6px 0 12px;">This Week in 815</div>
+            ${[
+              {date:'Apr 20', name:'Sunday Farmers Market', type:'Event'},
+              {date:'Apr 22', name:'Live Music at Rosario\'s', type:'Event'},
+              {date:'—', name:'5 New Spring Brunch Spots', type:'Article'},
+            ].map(e=>`
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--gray);">
+                <div style="background:${e.type==='Event'?'var(--orange)':'var(--charcoal)'};color:white;border-radius:4px;padding:3px 7px;font-size:11px;flex-shrink:0;white-space:nowrap;">${e.type==='Event'?e.date:e.type}</div>
+                <div style="font-size:13px;font-weight:700;line-height:1.3;">${e.name}</div>
+              </div>
+            `).join('')}
+            <div style="font-size:13px;color:var(--orange);margin-top:10px;">Full calendar + blog →</div>
+          </div>
+
+        </div>
+
+        <!-- INSTAGRAM-STYLE COMMUNITY PHOTOS ROW -->
+        <div style="padding:20px 32px 24px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;">
+            <div style="font-family:'Caveat Brush',cursive;font-size:22px;">📸 From the Community</div>
+            <div style="font-size:13px;color:var(--orange);">Share your 815 →</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">
+            
+    <div class="ph-img" style="aspect-ratio:1;border-radius:8px;font-size:11px;color:var(--gray);">📸 User 1</div>
+    <div class="ph-img" style="aspect-ratio:1;border-radius:8px;font-size:11px;color:var(--gray);">📸 User 2</div>
+    <div class="ph-img" style="aspect-ratio:1;border-radius:8px;font-size:11px;color:var(--gray);">📸 User 3</div>
+    <div class="ph-img" style="aspect-ratio:1;border-radius:8px;font-size:11px;color:var(--gray);">📸 User 4</div>
+    <div class="ph-img" style="aspect-ratio:1;border-radius:8px;font-size:11px;color:var(--gray);">📸 User 5</div>
+    <div class="ph-img" style="aspect-ratio:1;border-radius:8px;font-size:11px;color:var(--gray);">📸 User 6</div>
+          </div>
+        </div>
+
+        <!-- DEALS BANNER -->
+        <div style="margin:0 32px 24px;background:var(--charcoal);border-radius:8px;border:2px solid var(--charcoal);overflow:hidden;display:flex;align-items:stretch;">
+          <div style="background:var(--orange);padding:20px 24px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="font-family:'Caveat Brush',cursive;font-size:24px;color:white;">🏷️ Local Deals</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:4px;">Exclusive offers from 815 businesses</div>
+          </div>
+          <div style="flex:1;display:flex;gap:16px;padding:16px 24px;align-items:center;">
+            
+    <div style="flex:1;background:rgba(255,255,255,0.07);border:1.5px dashed rgba(255,255,255,0.2);border-radius:6px;padding:10px;font-size:13px;color:var(--cream);">20% off at Oak Street Coffee</div>
+    <div style="flex:1;background:rgba(255,255,255,0.07);border:1.5px dashed rgba(255,255,255,0.2);border-radius:6px;padding:10px;font-size:13px;color:var(--cream);">Free class at Harmony Yoga</div>
+    <div style="flex:1;background:rgba(255,255,255,0.07);border:1.5px dashed rgba(255,255,255,0.2);border-radius:6px;padding:10px;font-size:13px;color:var(--cream);">$5 off first order — Riverbend</div>
+          </div>
+        </div>
+
+        <!-- NEWSLETTER + FOOTER -->
+        <div style="background:var(--cream-dark);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-top:1.5px dashed var(--gray);">
+          <div>
+            <div style="font-family:'Caveat Brush',cursive;font-size:22px;">Stay 815 local 📬</div>
+            <div style="font-size:14px;color:var(--charcoal-light);">Events, deals & new spots — weekly digest</div>
+          </div>
+          <div style="display:flex;gap:0;border:2px solid var(--charcoal);border-radius:6px;overflow:hidden;background:white;">
+            <div style="padding:8px 14px;font-size:13px;color:var(--gray);">📧 email address</div>
+            <div class="sk-btn" style="border-radius:0;padding:8px 16px;">Join</div>
+          </div>
+        </div>
+        <div style="background:var(--charcoal);padding:12px 32px;display:flex;justify-content:space-between;align-items:center;">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo-sm" alt="815 Local">
+          <div style="display:flex;gap:16px;"><div style="font-size:12px;color:var(--gray);">About</div><div style="font-size:12px;color:var(--gray);">Advertise</div><div style="font-size:12px;color:var(--gray);">Blog</div><div style="font-size:12px;color:var(--gray);">Contact</div></div>
+          <div style="font-size:12px;color:var(--gray);">© 2026 815local.com</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MOBILE V3 -->
+    <div class="frame-wrap" style="flex:0 0 auto;">
+      <div class="frame-title">Mobile</div>
+      <div class="mobile-frame">
+        <div class="mobile-bar"><div class="mobile-notch"></div></div>
+
+        <!-- nav -->
+        <div style="background:var(--charcoal);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;">
+          <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" class="site-logo-sm" alt="815 Local">
+          <div style="background:rgba(255,255,255,0.08);border:1px dashed var(--gray);border-radius:4px;padding:4px 10px;font-size:12px;color:var(--gray);flex:1;margin:0 10px;">🔍 Search...</div>
+          <div style="font-size:16px;color:var(--gray);">☰</div>
+        </div>
+
+        <!-- mosaic 2x2 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;height:160px;position:relative;">
+          <div class="ph-img" style="border-radius:0;grid-row:span 2;font-size:12px;">📸 hero</div>
+          <div class="ph-img" style="border-radius:0;font-size:11px;">📸</div>
+          <div class="ph-img" style="border-radius:0;font-size:11px;">📸</div>
+          <div style="position:absolute;bottom:10px;left:10px;background:rgba(45,40,38,0.85);border-radius:6px;padding:8px 12px;z-index:2;">
+            <div style="font-family:'Caveat Brush',cursive;font-size:18px;color:var(--cream);">Your <span style="color:var(--orange);">neighborhood.</span></div>
+            <div class="sk-btn" style="margin-top:6px;font-size:11px;padding:4px 10px;">Explore →</div>
+          </div>
+        </div>
+
+        <!-- section tabs mobile -->
+        <div style="display:flex;overflow-x:auto;background:var(--cream-dark);border-bottom:1.5px solid var(--charcoal);">
+          
+    <div style="padding:8px 14px;font-size:13px;white-space:nowrap;background:var(--charcoal);color:var(--orange);">🍽️ Eat</div>
+    <div style="padding:8px 14px;font-size:13px;white-space:nowrap;color:var(--charcoal-light);">🏪 Shop</div>
+    <div style="padding:8px 14px;font-size:13px;white-space:nowrap;color:var(--charcoal-light);">💆 Feel</div>
+    <div style="padding:8px 14px;font-size:13px;white-space:nowrap;color:var(--charcoal-light);">🎭 Go</div>
+    <div style="padding:8px 14px;font-size:13px;white-space:nowrap;color:var(--charcoal-light);">🔧 Fix</div>
+        </div>
+
+        <!-- top picks -->
+        <div style="padding:12px 14px;">
+          <div style="font-family:'Caveat Brush',cursive;font-size:18px;margin-bottom:8px;">⭐ Best in the 815</div>
+          ${[
+            {name:"Rosario's Tavern",cat:"Italian · $$",r:"4.9"},
+            {name:"Oak Street Coffee",cat:"Café · $",r:"4.8"}
+          ].map((b,i)=>`
+            <div style="display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--gray);">
+              <div style="font-family:'Caveat Brush',cursive;font-size:22px;color:var(--cream-dark);width:20px;">${i+1}</div>
+              <div class="ph-img" style="width:38px;height:38px;border-radius:6px;font-size:14px;flex-shrink:0;">📸</div>
+              <div style="flex:1;"><div style="font-size:13px;font-weight:700;">${b.name}</div><div style="font-size:11px;color:var(--gray);">${b.cat}</div></div>
+              <div style="font-size:13px;color:var(--orange);">${b.r}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- community photos -->
+        <div style="padding:12px 14px;background:var(--cream-dark);border-top:1.5px dashed var(--gray);">
+          <div style="font-family:'Caveat Brush',cursive;font-size:16px;margin-bottom:8px;">📸 Community</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
+            <div class="ph-img" style="aspect-ratio:1;border-radius:4px;font-size:11px;">📸</div><div class="ph-img" style="aspect-ratio:1;border-radius:4px;font-size:11px;">📸</div><div class="ph-img" style="aspect-ratio:1;border-radius:4px;font-size:11px;">📸</div>
+          </div>
+        </div>
+
+        <!-- events -->
+        <div style="padding:12px 14px;">
+          <div style="font-family:'Caveat Brush',cursive;font-size:18px;margin-bottom:8px;">📅 This Week</div>
+          <div style="background:white;border:1.5px solid var(--charcoal);border-radius:6px;padding:8px 10px;display:flex;gap:8px;align-items:center;">
+            <div style="background:var(--orange);color:white;border-radius:4px;padding:3px 6px;font-size:11px;flex-shrink:0;">Apr 20</div>
+            <div style="font-size:13px;font-weight:700;">Farmers Market</div>
+          </div>
+        </div>
+
+        <!-- bottom nav -->
+        <div style="background:var(--charcoal);padding:10px 14px;display:flex;justify-content:space-around;border-top:2px solid var(--charcoal-light);">
+          
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Home</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Explore</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Photos</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--gray);">
+      <div style="font-size:18px;">�</div>
+      <div>Events</div>
+    </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ann-list">
+    <div class="ann-item"><span class="ann">1</span> <strong>Photo Mosaic Hero:</strong> 5 community photos in an asymmetric grid — immediately feels authentic and place-based, not generic.</div>
+    <div class="ann-item"><span class="ann">2</span> <strong>Section Tabs:</strong> "Eat & Drink / Shop Local / Feel Good…" reframes categories as lifestyle, building an emotional connection.</div>
+    <div class="ann-item"><span class="ann">3</span> <strong>3-Col Editorial:</strong> Ranked list + featured review + events/blog — mimics a local magazine. Content is king here.</div>
+    <div class="ann-item"><span class="ann">4</span> <strong>Community Photo Row:</strong> User-submitted photos (IG-style) build trust and keep content fresh organically.</div>
+    <div class="ann-item"><span class="ann">5</span> <strong>Deals Banner:</strong> A dedicated deals section creates a reason for businesses to list and users to return regularly.</div>
+  </div>
+
+</div><!-- /tab-2 -->
+
+<!-- TWEAKS PANEL -->
+<div id="tweaks-panel">
+  <h3>⚙️ Tweaks</h3>
+  <div class="tweak-row">
+    <label>Active Tab</label>
+    <select onchange="showTab(this.value)">
+      <option value="0">V1 — The Hub</option>
+      <option value="1">V2 — The Spotlight</option>
+      <option value="2">V3 — The Neighborhood</option>
+    </select>
+  </div>
+  <div class="tweak-row">
+    <label>Accent Color</label>
+    <input type="color" value="#C4622D" oninput="document.documentElement.style.setProperty('--orange',this.value)">
+  </div>
+  <div class="tweak-row">
+    <label>Background</label>
+    <input type="color" value="#F5EFE0" oninput="document.documentElement.style.setProperty('--cream',this.value)">
+  </div>
+</div>
+
+<script>
+  function showTab(idx) {
+    idx = parseInt(idx);
+    document.querySelectorAll('.canvas-wrap').forEach((el,i) => {
+      el.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.tab').forEach((el,i) => {
+      el.classList.toggle('active', i === idx);
+    });
+    const sel = document.querySelector('#tweaks-panel select');
+    if (sel) sel.value = idx;
+    localStorage.setItem('815local_tab', idx);
+  }
+
+  // Restore tab
+  const saved = localStorage.getItem('815local_tab');
+  if (saved !== null) showTab(parseInt(saved));
+
+  // Tweaks toggle
+  window.addEventListener('message', e => {
+    if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').style.display = 'block';
+    if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+</script>
+</body>
+</html>
