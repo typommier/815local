@@ -284,35 +284,6 @@ img { display: block; max-width: 100%; }
 }
 .photo-placeholder svg { opacity: 0.3; }
 
-/* Floating review card */
-.hero-review-float {
-  position: absolute;
-  bottom: 80px; left: 20px;
-  background: white;
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  box-shadow: var(--shadow-lg);
-  display: flex; align-items: center; gap: 12px;
-  z-index: 2;
-  border: 1px solid var(--gray-light);
-  min-width: 220px;
-  animation: floatUp 0.6s ease 0.4s both;
-}
-@keyframes floatUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.float-avatar {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: var(--orange-pale);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.float-name { font-size: 13px; font-weight: 700; }
-.float-sub { font-size: 11px; color: var(--gray); }
-.float-stars { font-size: 12px; color: var(--orange); }
 
 .hero-stat-float {
   position: absolute;
@@ -982,15 +953,7 @@ footer {
           </div>
         </div>
 
-        <!-- Floating review -->
-        <div class="hero-review-float" id="hero-review-float">
-          <div class="float-avatar">😊</div>
-          <div>
-            <div class="float-name" id="hero-reviewer-name">—</div>
-            <div class="float-stars" id="hero-reviewer-stars">★★★★★</div>
-            <div class="float-sub" id="hero-reviewer-biz">Loading...</div>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -1392,6 +1355,29 @@ function setCardStyle(val, el) {
   el.classList.add('active');
   window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { cardStyle: val } }, '*');
 }
+
+
+function doHeroSearch() {
+  const query = document.getElementById('search-query').value.trim();
+  const category = document.getElementById('search-category').value;
+  const city = document.getElementById('search-city').value;
+  const params = new URLSearchParams();
+  if (query) params.set('q', query);
+  if (category) params.set('category', category);
+  if (city) params.set('city', city);
+  window.location.href = '815local-directory.html' + (params.toString() ? '?' + params.toString() : '');
+}
+
+function quickSearch(term) {
+  window.location.href = '815local-directory.html?q=' + encodeURIComponent(term);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('search-query');
+  if (input) input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doHeroSearch();
+  });
+});
 
 function filterCat(el) {
   document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
