@@ -371,16 +371,14 @@ function renderCard(b) {
   const rating = parseFloat(b.avg_rating) || 0;
   const count = b.review_count || 0;
   const features = (b.features || []).slice(0, 3);
-  const firstPhoto = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
-  const photoHtml = firstPhoto
-    ? `<div style="width:100%;height:100%;background:url('${firstPhoto}') center/cover no-repeat;"></div>`
-    : `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>`;
+  const photoHtml = b.image_url
+    ? `<div style="width:100%;height:100%;background:url('${b.image_url}') center/cover no-repeat;"></div>`
+    : `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>${b.name}`;
   return `
     <a href="815local-business.html?id=${b.id}" class="biz-list-card ${b.is_featured ? 'featured' : ''}">
-      <div class="blc-photo" style="width:${b.is_featured?'260':'220'}px;${firstPhoto ? 'padding:0;' : ''}">
+      <div class="blc-photo" style="width:${b.is_featured?'260':'220'}px;${b.image_url ? 'padding:0;' : ''}">
         ${photoHtml}
         ${b.is_featured ? '<div class="blc-badge">⭐ Featured</div>' : ''}
-        ${b.is_locally_owned ? '<div style="position:absolute;bottom:10px;left:10px;background:rgba(30,27,24,0.75);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;letter-spacing:0.5px;">🏠 LOCALLY OWNED</div>' : ''}
       </div>
       <div class="blc-body">
         <div class="blc-main">
@@ -507,6 +505,26 @@ document.getElementById('search-input').addEventListener('keydown', e => { if (e
 window.addEventListener('scroll', () => {
   document.getElementById('main-nav').style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none';
 });
+
+// Read URL params and pre-apply filters
+(function applyUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('category');
+  const search = params.get('search');
+
+  if (cat) {
+    const pill = [...document.querySelectorAll('.cat-pill')].find(p => p.dataset.cat === cat);
+    if (pill) {
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activeCategory = cat;
+      document.getElementById('cat-display').textContent = cat;
+    }
+  }
+  if (search) {
+    document.getElementById('search-input').value = search;
+  }
+})();
 
 loadBusinesses();
 </script>

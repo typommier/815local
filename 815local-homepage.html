@@ -944,11 +944,11 @@ footer {
 
         <div class="hero-tags">
           <span class="hero-tags-label">Popular</span>
-          <span class="hero-tag">🍕 Pizza</span>
-          <span class="hero-tag">☕ Coffee</span>
-          <span class="hero-tag">💇 Salons</span>
-          <span class="hero-tag">🏠 Plumbers</span>
-          <span class="hero-tag">🍺 Bars</span>
+          <span class="hero-tag" onclick="heroTagSearch('pizza')">🍕 Pizza</span>
+          <span class="hero-tag" onclick="heroTagSearch('coffee')">☕ Coffee</span>
+          <span class="hero-tag" onclick="heroTagSearch('salon')">💇 Salons</span>
+          <span class="hero-tag" onclick="heroTagSearch('plumber')">🏠 Plumbers</span>
+          <span class="hero-tag" onclick="heroTagSearch('bar')">🍺 Bars</span>
         </div>
       </div>
 
@@ -1007,7 +1007,7 @@ footer {
       <div class="trust-item">
         <div class="trust-icon">⭐</div>
         <div>
-          <div class="trust-num" id="stat-reviews">—</div>
+          <div class="trust-num">2,400+</div>
           <div class="trust-lbl">Community Reviews</div>
         </div>
       </div>
@@ -1015,7 +1015,7 @@ footer {
       <div class="trust-item">
         <div class="trust-icon">🏪</div>
         <div>
-          <div class="trust-num" id="stat-businesses">—</div>
+          <div class="trust-num">680+</div>
           <div class="trust-lbl">Local Businesses</div>
         </div>
       </div>
@@ -1031,7 +1031,7 @@ footer {
       <div class="trust-item">
         <div class="trust-icon">📅</div>
         <div>
-          <div class="trust-num" id="stat-events">—</div>
+          <div class="trust-num">120+</div>
           <div class="trust-lbl">Events This Month</div>
         </div>
       </div>
@@ -1051,45 +1051,45 @@ footer {
     </div>
 
     <div class="cat-grid">
-      <div class="cat-item active" onclick="filterCat(this)">
+      <div class="cat-item active" data-cat="Food & Drink" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#FEF3EC;">🍔</div>
         <div class="cat-name">Food & Drink</div>
-        <div class="cat-count">142 places</div>
+        <div class="cat-count" data-category="Food & Drink">— places</div>
       </div>
-      <div class="cat-item" onclick="filterCat(this)">
+      <div class="cat-item" data-cat="Coffee" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#F0F9FF;">☕</div>
         <div class="cat-name">Coffee</div>
-        <div class="cat-count">48 places</div>
+        <div class="cat-count" data-category="Coffee">— places</div>
       </div>
-      <div class="cat-item" onclick="filterCat(this)">
+      <div class="cat-item" data-cat="Bars & Nightlife" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#FFF8EC;">🍺</div>
         <div class="cat-name">Bars & Nightlife</div>
-        <div class="cat-count">61 places</div>
+        <div class="cat-count" data-category="Bars & Nightlife">— places</div>
       </div>
-      <div class="cat-item" onclick="filterCat(this)">
+      <div class="cat-item" data-cat="Health & Wellness" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#F0FFF4;">💆</div>
         <div class="cat-name">Health & Wellness</div>
-        <div class="cat-count">93 places</div>
+        <div class="cat-count" data-category="Health & Wellness">— places</div>
       </div>
-      <div class="cat-item" onclick="filterCat(this)">
+      <div class="cat-item" data-cat="Beauty & Salons" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#FFF0F6;">💇</div>
         <div class="cat-name">Beauty & Salons</div>
-        <div class="cat-count">77 places</div>
+        <div class="cat-count" data-category="Beauty & Salons">— places</div>
       </div>
-      <div class="cat-item" onclick="filterCat(this)">
+      <div class="cat-item" data-cat="Retail & Shops" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#F5F0FF;">🛍️</div>
         <div class="cat-name">Retail & Shops</div>
-        <div class="cat-count">104 places</div>
+        <div class="cat-count" data-category="Retail & Shops">— places</div>
       </div>
-      <div class="cat-item" onclick="filterCat(this)">
+      <div class="cat-item" data-cat="Home Services" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#EFF8FF;">🔧</div>
         <div class="cat-name">Home Services</div>
-        <div class="cat-count">89 places</div>
+        <div class="cat-count" data-category="Home Services">— places</div>
       </div>
-      <div class="cat-item" onclick="filterCat(this)">
+      <div class="cat-item" data-cat="Arts & Events" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#FFFBEC;">🎭</div>
         <div class="cat-name">Arts & Events</div>
-        <div class="cat-count">56 places</div>
+        <div class="cat-count" data-category="Arts & Events">— places</div>
       </div>
     </div>
   </div>
@@ -1721,6 +1721,16 @@ function setCardStyle(val, el) {
 function filterCat(el) {
   document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
+  const cat = el.dataset.cat;
+  if (cat) {
+    window.location.href = '815local-directory.html?category=' + encodeURIComponent(cat);
+  } else {
+    window.location.href = '815local-directory.html';
+  }
+}
+
+function heroTagSearch(term) {
+  window.location.href = '815local-directory.html?search=' + encodeURIComponent(term);
 }
 
 // Tweaks toggle
@@ -1784,35 +1794,44 @@ window.addEventListener('scroll', () => {
 })();
 </script>
 
-<script src="815local-analytics-tracker.js"></script>
-
-<!-- ── LIVE TRUST BAR STATS ── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(async function loadTrustStats() {
-  const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+(async function loadCategoryCounts() {
   try {
-    const { data, error } = await db.rpc('get_homepage_stats');
-    if (error || !data) throw error;
+    const { createClient } = supabase;
+    const db = createClient(
+      'https://kyneaettrynagavewefi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
+    );
+    const { data, error } = await db
+      .from('businesses')
+      .select('category')
+      .eq('is_active', true);
+    if (error || !data) return;
 
-    const fmt = n => n > 0 ? n.toLocaleString() : '0';
+    // Tally counts per category
+    const counts = {};
+    data.forEach(b => { counts[b.category] = (counts[b.category] || 0) + 1; });
 
-    const reviewEl    = document.getElementById('stat-reviews');
-    const bizEl       = document.getElementById('stat-businesses');
-    const eventEl     = document.getElementById('stat-events');
-
-    if (reviewEl)  reviewEl.textContent  = fmt(data.review_count);
-    if (bizEl)     bizEl.textContent     = fmt(data.business_count);
-    if (eventEl)   eventEl.textContent   = fmt(data.event_count);
-
-  } catch (err) {
-    // Fail silently — dashes already show as fallback in HTML
-    console.warn('Trust bar stats unavailable:', err);
-  }
+    // Update each cat-count element
+    document.querySelectorAll('.cat-count[data-category]').forEach(el => {
+      const cat = el.dataset.category;
+      const n = counts[cat] || 0;
+      el.textContent = n + (n === 1 ? ' place' : ' places');
+    });
+  } catch(e) { /* silently ignore — counts will just show nothing */ }
 })();
+
+// Wire the hero search bar to the directory
+document.querySelector('.search-btn').addEventListener('click', function() {
+  const val = document.querySelector('.search-seg-main .search-seg-value').textContent;
+  if (val && val !== 'Restaurants, salons, plumbers...') {
+    window.location.href = '815local-directory.html?search=' + encodeURIComponent(val);
+  } else {
+    window.location.href = '815local-directory.html';
+  }
+});
 </script>
+<script src="815local-analytics-tracker.js"></script>
 </body>
 </html>
