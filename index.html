@@ -891,26 +891,41 @@ footer {
         <div class="search-bar">
           <div class="search-seg" style="flex:0 0 auto; min-width:140px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h8M4 18h16"/></svg>
-            <div>
+            <div style="flex:1;">
               <span class="search-seg-label">Category</span>
-              <span class="search-seg-value">All Types</span>
+              <select id="search-category" style="border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--charcoal-light);cursor:pointer;outline:none;width:100%;padding:0;appearance:none;-webkit-appearance:none;">
+                <option value="">All Types</option>
+                <option value="Food & Drink">🍔 Food & Drink</option>
+                <option value="Coffee">☕ Coffee</option>
+                <option value="Bars & Nightlife">🍺 Bars & Nightlife</option>
+                <option value="Health & Wellness">💆 Health & Wellness</option>
+                <option value="Beauty & Salons">💇 Beauty & Salons</option>
+                <option value="Retail & Shops">🛍️ Retail & Shops</option>
+                <option value="Home Services">🔧 Home Services</option>
+                <option value="Arts & Events">🎭 Arts & Events</option>
+              </select>
             </div>
           </div>
           <div class="search-seg search-seg-main">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <div>
+            <div style="flex:1;">
               <span class="search-seg-label">Find</span>
-              <span class="search-seg-value">Restaurants, salons, plumbers...</span>
+              <input id="search-query" type="text" placeholder="Restaurants, salons, plumbers..." style="border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--charcoal);outline:none;width:100%;padding:0;" />
             </div>
           </div>
           <div class="search-seg" style="flex:0 0 auto; min-width:120px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-            <div>
+            <div style="flex:1;">
               <span class="search-seg-label">Near</span>
-              <span class="search-seg-value">My Location</span>
+              <select id="search-city" style="border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--charcoal-light);cursor:pointer;outline:none;width:100%;padding:0;appearance:none;-webkit-appearance:none;">
+                <option value="">Any Town</option>
+                <option value="Minooka">Minooka</option>
+                <option value="Channahon">Channahon</option>
+                <option value="Shorewood">Shorewood</option>
+              </select>
             </div>
           </div>
-          <button class="search-btn">Search</button>
+          <button class="search-btn" onclick="doHeroSearch()">Search</button>
         </div>
 
         <div class="hero-tags">
