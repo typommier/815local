@@ -944,11 +944,11 @@ footer {
 
         <div class="hero-tags">
           <span class="hero-tags-label">Popular</span>
-          <span class="hero-tag">🍕 Pizza</span>
-          <span class="hero-tag">☕ Coffee</span>
-          <span class="hero-tag">💇 Salons</span>
-          <span class="hero-tag">🏠 Plumbers</span>
-          <span class="hero-tag">🍺 Bars</span>
+          <span class="hero-tag" onclick="heroTagSearch('pizza')">🍕 Pizza</span>
+          <span class="hero-tag" onclick="heroTagSearch('coffee')">☕ Coffee</span>
+          <span class="hero-tag" onclick="heroTagSearch('salon')">💇 Salons</span>
+          <span class="hero-tag" onclick="heroTagSearch('plumber')">🏠 Plumbers</span>
+          <span class="hero-tag" onclick="heroTagSearch('bar')">🍺 Bars</span>
         </div>
       </div>
 
@@ -1050,8 +1050,49 @@ footer {
       <a class="section-link" href="#">View all categories <span>→</span></a>
     </div>
 
-    <div class="cat-grid" id="cat-grid">
-      <!-- Populated dynamically from database -->
+    <div class="cat-grid">
+    <div class="cat-grid">
+      <div class="cat-item active" data-cat="Food & Drink" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#FEF3EC;">🍔</div>
+        <div class="cat-name">Food & Drink</div>
+        <div class="cat-count" data-category="Food & Drink">— places</div>
+      </div>
+      <div class="cat-item" data-cat="Coffee" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#F0F9FF;">☕</div>
+        <div class="cat-name">Coffee</div>
+        <div class="cat-count" data-category="Coffee">— places</div>
+      </div>
+      <div class="cat-item" data-cat="Bars & Nightlife" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#FFF8EC;">🍺</div>
+        <div class="cat-name">Bars & Nightlife</div>
+        <div class="cat-count" data-category="Bars & Nightlife">— places</div>
+      </div>
+      <div class="cat-item" data-cat="Health & Wellness" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#F0FFF4;">💆</div>
+        <div class="cat-name">Health & Wellness</div>
+        <div class="cat-count" data-category="Health & Wellness">— places</div>
+      </div>
+      <div class="cat-item" data-cat="Beauty & Salons" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#FFF0F6;">💇</div>
+        <div class="cat-name">Beauty & Salons</div>
+        <div class="cat-count" data-category="Beauty & Salons">— places</div>
+      </div>
+      <div class="cat-item" data-cat="Retail & Shops" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#F5F0FF;">🛍️</div>
+        <div class="cat-name">Retail & Shops</div>
+        <div class="cat-count" data-category="Retail & Shops">— places</div>
+      </div>
+      <div class="cat-item" data-cat="Home Services" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#EFF8FF;">🔧</div>
+        <div class="cat-name">Home Services</div>
+        <div class="cat-count" data-category="Home Services">— places</div>
+      </div>
+      <div class="cat-item" data-cat="Arts & Events" onclick="filterCat(this)">
+        <div class="cat-icon" style="background:#FFFBEC;">🎭</div>
+        <div class="cat-name">Arts & Events</div>
+        <div class="cat-count" data-category="Arts & Events">— places</div>
+      </div>
+    </div>
     </div>
   </div>
 </section>
@@ -1064,10 +1105,232 @@ footer {
         <span class="section-tag">Community Picks</span>
         <h2 class="section-title">Loved by your neighbors</h2>
       </div>
-      <a class="section-link" href="815local-directory.html">See all businesses <span>→</span></a>
+      <a class="section-link" href="#">See all businesses <span>→</span></a>
     </div>
-    <div class="biz-grid" id="featured-biz-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-      <!-- Loaded from Supabase -->
+
+    <div class="biz-grid">
+      <!-- Card 1 -->
+      <div class="biz-card">
+        <div class="biz-photo">
+          <div class="biz-photo-inner">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            Rosario's Tavern
+          </div>
+          <div class="biz-badge">⭐ Top Rated</div>
+          <div class="biz-save">♡</div>
+        </div>
+        <div class="biz-body">
+          <div class="biz-cats">Italian · Bar</div>
+          <div class="biz-name">Rosario's Tavern</div>
+          <div class="biz-rating-row">
+            <span class="stars">★★★★★</span>
+            <span class="biz-rating">4.9</span>
+            <span class="biz-review-count">(312 reviews)</span>
+          </div>
+          <div class="biz-tags">
+            <span class="tag tag-open">Open Now</span>
+            <span class="tag">$$ Moderate</span>
+            <span class="tag">Dine-in</span>
+          </div>
+          <div class="biz-footer">
+            <span class="biz-info">📍 0.4 mi · Lincoln Ave</span>
+            <span class="biz-cta">View <span>→</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="biz-card">
+        <div class="biz-photo">
+          <div class="biz-photo-inner">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            Oak Street Coffee
+          </div>
+          <div class="biz-badge" style="background:var(--charcoal);">🔥 Trending</div>
+          <div class="biz-save">♡</div>
+        </div>
+        <div class="biz-body">
+          <div class="biz-cats">Café · Breakfast</div>
+          <div class="biz-name">Oak Street Coffee Co.</div>
+          <div class="biz-rating-row">
+            <span class="stars">★★★★★</span>
+            <span class="biz-rating">4.8</span>
+            <span class="biz-review-count">(204 reviews)</span>
+          </div>
+          <div class="biz-tags">
+            <span class="tag tag-open">Open Now</span>
+            <span class="tag">$ Budget-friendly</span>
+            <span class="tag">Workspace</span>
+          </div>
+          <div class="biz-footer">
+            <span class="biz-info">📍 0.7 mi · Oak St.</span>
+            <span class="biz-cta">View <span>→</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="biz-card">
+        <div class="biz-photo">
+          <div class="biz-photo-inner">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            Elm City Barbershop
+          </div>
+          <div class="biz-save">♡</div>
+        </div>
+        <div class="biz-body">
+          <div class="biz-cats">Grooming · Salon</div>
+          <div class="biz-name">Elm City Barbershop</div>
+          <div class="biz-rating-row">
+            <span class="stars">★★★★★</span>
+            <span class="biz-rating">4.7</span>
+            <span class="biz-review-count">(178 reviews)</span>
+          </div>
+          <div class="biz-tags">
+            <span class="tag tag-open">Open Now</span>
+            <span class="tag">$$ Moderate</span>
+            <span class="tag">Walk-ins</span>
+          </div>
+          <div class="biz-footer">
+            <span class="biz-info">📍 1.2 mi · Elm St.</span>
+            <span class="biz-cta">View <span>→</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="biz-card">
+        <div class="biz-photo">
+          <div class="biz-photo-inner">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            Harmony Yoga Studio
+          </div>
+          <div class="biz-save">♡</div>
+        </div>
+        <div class="biz-body">
+          <div class="biz-cats">Wellness · Classes</div>
+          <div class="biz-name">Harmony Yoga Studio</div>
+          <div class="biz-rating-row">
+            <span class="stars">★★★★★</span>
+            <span class="biz-rating">4.7</span>
+            <span class="biz-review-count">(134 reviews)</span>
+          </div>
+          <div class="biz-tags">
+            <span class="tag" style="background:rgba(196,98,45,0.12);color:var(--orange);">Closes 8pm</span>
+            <span class="tag">$$ Moderate</span>
+          </div>
+          <div class="biz-footer">
+            <span class="biz-info">📍 2.1 mi · Main Blvd.</span>
+            <span class="biz-cta">View <span>→</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="biz-card">
+        <div class="biz-photo">
+          <div class="biz-photo-inner">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            Riverbend Brewing Co.
+          </div>
+          <div class="biz-badge" style="background:var(--charcoal);">New Spot</div>
+          <div class="biz-save">♡</div>
+        </div>
+        <div class="biz-body">
+          <div class="biz-cats">Brewery · Bar</div>
+          <div class="biz-name">Riverbend Brewing Co.</div>
+          <div class="biz-rating-row">
+            <span class="stars">★★★★☆</span>
+            <span class="biz-rating">4.6</span>
+            <span class="biz-review-count">(89 reviews)</span>
+          </div>
+          <div class="biz-tags">
+            <span class="tag tag-open">Open Now</span>
+            <span class="tag">$$ Moderate</span>
+            <span class="tag">Patio</span>
+          </div>
+          <div class="biz-footer">
+            <span class="biz-info">📍 0.9 mi · River Rd.</span>
+            <span class="biz-cta">View <span>→</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="biz-card">
+        <div class="biz-photo">
+          <div class="biz-photo-inner">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            Bianca's Bakehouse
+          </div>
+          <div class="biz-save">♡</div>
+        </div>
+        <div class="biz-body">
+          <div class="biz-cats">Bakery · Café</div>
+          <div class="biz-name">Bianca's Bakehouse</div>
+          <div class="biz-rating-row">
+            <span class="stars">★★★★★</span>
+            <span class="biz-rating">4.8</span>
+            <span class="biz-review-count">(256 reviews)</span>
+          </div>
+          <div class="biz-tags">
+            <span class="tag tag-open">Open Now</span>
+            <span class="tag">$ Budget-friendly</span>
+          </div>
+          <div class="biz-footer">
+            <span class="biz-info">📍 1.5 mi · State St.</span>
+            <span class="biz-cta">View <span>→</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SPOTLIGHT ══════════ -->
+<section class="spotlight fade-in">
+  <div class="container">
+    <div class="spotlight-inner">
+      <div>
+        <span class="section-tag spotlight-tag">Editor's Pick</span>
+        <h2 class="spotlight-title">Meet <em>Rosario's Tavern</em></h2>
+        <p class="spotlight-desc">
+          A Lincoln Avenue institution since 1987. From handmade pasta to late-night cocktails, Rosario's is the kind of place that feels like home — because it is, for thousands of 815 locals.
+        </p>
+        <div class="spotlight-meta">
+          <span class="spotlight-rating">4.9</span>
+          <span class="spotlight-stars">★★★★★</span>
+          <span class="spotlight-reviews">312 reviews</span>
+        </div>
+        <div class="spotlight-attrs">
+          <span class="spotlight-attr">🍝 Italian</span>
+          <span class="spotlight-attr">🍷 Full Bar</span>
+          <span class="spotlight-attr">📍 Lincoln Ave</span>
+          <span class="spotlight-attr">$$ Moderate</span>
+          <span class="spotlight-attr">Reservations</span>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <a class="btn btn-primary" href="#">Read Full Review</a>
+          <a class="btn" href="#" style="color:rgba(255,255,255,0.6); border:2px solid rgba(255,255,255,0.15);">Get Directions</a>
+        </div>
+      </div>
+
+      <div class="spotlight-photo">
+        <div class="spotlight-photo-inner">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          Restaurant photo
+        </div>
+        <div class="spotlight-float">
+          <p class="spotlight-quote">"The tiramisu alone is worth the trip. Been coming here every anniversary for 12 years and it never disappoints."</p>
+          <div class="spotlight-reviewer">
+            <div class="spotlight-avatar">👩</div>
+            <div>
+              <div class="spotlight-rev-name">Sandra K. <span style="color:var(--orange);">★★★★★</span></div>
+              <div class="spotlight-rev-sub">Local Guide · 48 reviews</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1106,7 +1369,27 @@ footer {
         </div>
       </div>
 
-
+      <div class="event-card">
+        <div class="event-date-bar">
+          <div>
+            <div class="event-month">April</div>
+            <div class="event-day">22</div>
+            <div class="event-dow">Tuesday</div>
+          </div>
+        </div>
+        <div class="event-body">
+          <div class="event-type">Live Music</div>
+          <div class="event-name">Live Music Night at Rosario's</div>
+          <div class="event-loc">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+            Rosario's Tavern, Lincoln Ave
+          </div>
+          <div class="event-footer">
+            <span class="event-price">$10 Cover</span>
+            <span class="event-link">Details →</span>
+          </div>
+        </div>
+      </div>
 
       <div class="event-card">
         <div class="event-date-bar">
@@ -1164,10 +1447,112 @@ footer {
         <span class="section-tag">Community Voice</span>
         <h2 class="section-title">What locals are saying</h2>
       </div>
-      <a class="section-link" href="815local-directory.html">All reviews <span>→</span></a>
+      <a class="section-link" href="#">All reviews <span>→</span></a>
     </div>
-    <div class="reviews-grid" id="reviews-grid">
-      <!-- Loaded from Supabase -->
+    <div class="reviews-grid">
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">M</div>
+          <div>
+            <div class="review-name">Maria T.</div>
+            <div class="review-handle">Local Guide · 24 reviews</div>
+          </div>
+          <div class="review-stars stars">★★★★★</div>
+        </div>
+        <div class="review-biz">☕ Oak Street Coffee Co.</div>
+        <p class="review-text">"Best latte in the 815, hands down. The atmosphere is cozy, staff actually knows your order by week two. My unofficial office."</p>
+        <div class="review-date">April 14, 2026</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">J</div>
+          <div>
+            <div class="review-name">Jake R.</div>
+            <div class="review-handle">Member since 2024 · 11 reviews</div>
+          </div>
+          <div class="review-stars stars">★★★★★</div>
+        </div>
+        <div class="review-biz">✂️ Elm City Barbershop</div>
+        <p class="review-text">"Clean cuts, great vibes, and they actually listen. No more driving 30 minutes downtown — this is my go-to spot in the 815."</p>
+        <div class="review-date">April 10, 2026</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">S</div>
+          <div>
+            <div class="review-name">Sarah M.</div>
+            <div class="review-handle">Local Guide · 37 reviews</div>
+          </div>
+          <div class="review-stars stars">★★★★☆</div>
+        </div>
+        <div class="review-biz">🍝 Rosario's Tavern</div>
+        <p class="review-text">"The pasta is incredible — always packed on weekends for good reason. A little loud but the food more than makes up for it. Classic 815 institution."</p>
+        <div class="review-date">April 8, 2026</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ BLOG ══════════ -->
+<section class="blog fade-in" id="blog">
+  <div class="container">
+    <div class="section-header" style="margin-bottom:32px;">
+      <div>
+        <span class="section-tag" style="color:rgba(196,98,45,0.8);">From the Community</span>
+        <h2 class="section-title" style="color:white;">Stories from the 815</h2>
+      </div>
+      <a class="section-link" href="#" style="color:var(--orange);">All stories <span>→</span></a>
+    </div>
+    <div class="blog-grid">
+
+      <div class="blog-card blog-card-main">
+        <div class="blog-photo" style="height:220px;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          Article photo
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat">Food & Drink</div>
+          <h3 class="blog-title">5 New Restaurants Opening in the 815 This Spring</h3>
+          <p class="blog-excerpt">From a new ramen spot on State Street to a farm-to-table newcomer downtown, here's what's coming to your neighborhood this season.</p>
+          <div class="blog-footer">
+            <span class="blog-author">By 815local Editorial · Apr 15</span>
+            <a class="blog-link" href="#">Read More →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card blog-card-sm">
+        <div class="blog-photo" style="height:140px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat">Lifestyle</div>
+          <h3 class="blog-title">Best Patios for Outdoor Dining in the 815</h3>
+          <div class="blog-footer">
+            <span class="blog-author">Apr 12</span>
+            <a class="blog-link" href="#">Read →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card blog-card-sm">
+        <div class="blog-photo" style="height:140px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <div class="blog-body">
+          <div class="blog-cat">Hidden Gems</div>
+          <h3 class="blog-title">Underrated Local Shops Worth Your Saturday</h3>
+          <div class="blog-footer">
+            <span class="blog-author">Apr 9</span>
+            <a class="blog-link" href="#">Read →</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1338,6 +1723,16 @@ function setCardStyle(val, el) {
 function filterCat(el) {
   document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
   el.classList.add('active');
+  const cat = el.dataset.cat;
+  if (cat) {
+    window.location.href = '815local-directory.html?category=' + encodeURIComponent(cat);
+  } else {
+    window.location.href = '815local-directory.html';
+  }
+}
+
+function heroTagSearch(term) {
+  window.location.href = '815local-directory.html?search=' + encodeURIComponent(term);
 }
 
 // Tweaks toggle
@@ -1401,141 +1796,30 @@ window.addEventListener('scroll', () => {
 })();
 </script>
 
-<script src="815local-analytics-tracker.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(function() {
-  const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  function starsHtml(r) {
-    const full = Math.round(r);
-    return '★'.repeat(full) + '☆'.repeat(5 - full);
-  }
-
-  // Load featured businesses
-  async function loadFeatured() {
-    const grid = document.getElementById('featured-biz-grid');
-    if (!grid) return;
-    const { data } = await db
-      .from('businesses_with_ratings')
-      .select('*')
-      .eq('is_active', true)
-      .order('is_featured', { ascending: false })
-      .order('avg_rating', { ascending: false })
-      .limit(6);
-
-    if (!data || !data.length) return;
-    grid.innerHTML = data.map(b => {
-      const photo = (b.photos && b.photos.length) ? b.photos[0] : null;
-      const rating = parseFloat(b.avg_rating) || 0;
-      return `<a href="815local-business.html?id=${b.id}" style="text-decoration:none;color:inherit;">
-        <div class="biz-card" style="border-radius:12px;overflow:hidden;border:1.5px solid var(--gray-light);background:white;transition:all 0.2s;cursor:pointer;">
-          <div style="height:180px;background:${photo ? `url('${photo}') center/cover no-repeat` : 'var(--cream-dark)'};display:flex;align-items:center;justify-content:center;position:relative;">
-            ${!photo ? '<span style="font-size:32px;">🏪</span>' : ''}
-            ${b.is_locally_owned ? '<div style="position:absolute;bottom:8px;left:8px;background:rgba(30,27,24,0.75);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;">🏠 LOCALLY OWNED</div>' : ''}
-          </div>
-          <div style="padding:16px;">
-            <div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">${b.category}</div>
-            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:6px;">${b.name}</div>
-            <div style="font-size:13px;color:var(--charcoal-light);margin-bottom:8px;">${b.address || ''}</div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span style="color:var(--orange);font-size:13px;">${starsHtml(rating)}</span>
-              <span style="font-size:13px;font-weight:700;">${rating > 0 ? rating.toFixed(1) : 'New'}</span>
-              <span style="font-size:12px;color:var(--gray);">(${b.review_count || 0})</span>
-            </div>
-          </div>
-        </div>
-      </a>`;
-    }).join('');
-  }
-
-  // Load recent reviews
-  async function loadReviews() {
-    const grid = document.getElementById('reviews-grid');
-    if (!grid) return;
-    const { data: reviews } = await db
-      .from('reviews')
-      .select('*, businesses(name, category)')
-      .order('created_at', { ascending: false })
-      .limit(3);
-
-    if (!reviews || !reviews.length) {
-      grid.innerHTML = '<p style="color:var(--gray);">No reviews yet — be the first!</p>';
-      return;
-    }
-    grid.innerHTML = reviews.map(r => {
-      const initial = r.reviewer_name?.charAt(0).toUpperCase() || '?';
-      const bizName = r.businesses?.name || '';
-      const cat = r.businesses?.category || '';
-      const date = new Date(r.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      return `<div class="review-card">
-        <div class="review-header">
-          <div class="review-avatar">${initial}</div>
-          <div>
-            <div class="review-name">${r.reviewer_name}</div>
-            <div class="review-handle">815local Community Member</div>
-          </div>
-          <div class="review-stars stars">${starsHtml(r.rating)}</div>
-        </div>
-        <div class="review-biz">${bizName}</div>
-        <p class="review-text">"${(r.review_text||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}"</p>
-        <div class="review-date">${date}</div>
-      </div>`;
-    }).join('');
-  }
-
-  loadFeatured();
-  loadReviews();
-})();
-</script>
-<script>
-(async function loadCategories() {
-  const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  const CATS = [
-    { name: 'Food & Drink',     icon: '🍔', bg: '#FEF3EC' },
-    { name: 'Bars & Nightlife', icon: '🍺', bg: '#FFF8EC' },
-    { name: 'Home Services',    icon: '🔧', bg: '#EFF8FF' },
-    { name: 'Beauty & Salons',  icon: '💇', bg: '#FFF0F6' },
-    { name: 'Coffee',           icon: '☕', bg: '#F0F9FF' },
-    { name: 'Health & Wellness',icon: '💆', bg: '#F0FFF4' },
-    { name: 'Retail & Shops',   icon: '🛍️', bg: '#F5F0FF' },
-    { name: 'Arts & Events',    icon: '🎭', bg: '#FFFBEC' },
-  ];
-
+(async function loadCategoryCounts() {
   try {
-    const { data } = await db
+    const { createClient } = supabase;
+    const db = createClient(
+      'https://kyneaettrynagavewefi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
+    );
+    const { data, error } = await db
       .from('businesses')
       .select('category')
       .eq('is_active', true);
-
+    if (error || !data) return;
     const counts = {};
-    (data || []).forEach(b => { counts[b.category] = (counts[b.category] || 0) + 1; });
-
-    const grid = document.getElementById('cat-grid');
-    if (!grid) return;
-
-    let first = true;
-    grid.innerHTML = CATS
-      .filter(c => (counts[c.name] || 0) > 0)
-      .map(c => {
-        const n = counts[c.name] || 0;
-        const cls = first ? 'cat-item active' : 'cat-item';
-        first = false;
-        return `<div class="${cls}" onclick="filterCat(this)" data-cat="${c.name}">
-          <div class="cat-icon" style="background:${c.bg};">${c.icon}</div>
-          <div class="cat-name">${c.name}</div>
-          <div class="cat-count">${n} place${n !== 1 ? 's' : ''}</div>
-        </div>`;
-      }).join('');
-  } catch(e) {
-    console.error('Category load error:', e);
-  }
+    data.forEach(b => { counts[b.category] = (counts[b.category] || 0) + 1; });
+    document.querySelectorAll('.cat-count[data-category]').forEach(el => {
+      const cat = el.dataset.category;
+      const n = counts[cat] || 0;
+      el.textContent = n + (n === 1 ? ' place' : ' places');
+    });
+  } catch(e) {}
 })();
 </script>
+<script src="815local-analytics-tracker.js"></script>
 </body>
 </html>
