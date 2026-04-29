@@ -841,6 +841,199 @@ footer {
   .section-header { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
 }
 
+
+/* ── AUTH MODAL ── */
+.auth-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 9000;
+  align-items: center;
+  justify-content: center;
+}
+.auth-overlay.open { display: flex; }
+.auth-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.auth-close {
+  position: absolute;
+  top: 16px; right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--gray);
+  line-height: 1;
+}
+.auth-close:hover { color: var(--charcoal); }
+.auth-logo {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.auth-logo img { height: 36px; }
+.auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+  text-align: center;
+}
+.auth-sub {
+  font-size: 14px;
+  color: var(--gray);
+  text-align: center;
+  margin-bottom: 28px;
+}
+.auth-field {
+  margin-bottom: 16px;
+}
+.auth-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+}
+.auth-field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--charcoal);
+  outline: none;
+  transition: border 0.2s;
+}
+.auth-field input:focus { border-color: var(--orange); }
+.auth-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+.auth-checkbox input[type="checkbox"] {
+  width: 16px; height: 16px;
+  margin-top: 2px;
+  accent-color: var(--orange);
+  flex-shrink: 0;
+}
+.auth-checkbox span {
+  font-size: 13px;
+  color: var(--charcoal-mid);
+  line-height: 1.4;
+}
+.auth-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+.auth-btn:hover { background: var(--orange-light); }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--gray);
+}
+.auth-switch a {
+  color: var(--orange);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+.auth-switch a:hover { text-decoration: underline; }
+.auth-error {
+  background: #fdecea;
+  color: #c0392b;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  display: none;
+}
+.auth-success {
+  background: #e8f5e9;
+  color: #2D6A4F;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  display: none;
+}
+.avatar-upload-area {
+  border: 2px dashed var(--gray-light);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  margin-bottom: 16px;
+  position: relative;
+}
+.avatar-upload-area:hover { border-color: var(--orange); }
+.avatar-upload-area input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.avatar-preview {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 8px;
+  display: none;
+  border: 3px solid var(--orange);
+}
+.avatar-upload-icon {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+.avatar-upload-label {
+  font-size: 13px;
+  color: var(--gray);
+}
+.avatar-upload-label strong {
+  color: var(--orange);
+}
+.avatar-terms {
+  font-size: 11px;
+  color: var(--gray);
+  text-align: center;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.forgot-link {
+  font-size: 12px;
+  color: var(--orange);
+  cursor: pointer;
+  float: right;
+  margin-top: -12px;
+  margin-bottom: 16px;
+}
+.forgot-link:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -859,13 +1052,25 @@ footer {
         <a class="nav-link" href="#blog">Blog</a>
         <a class="nav-link" href="#">About</a>
       </div>
-      <div class="nav-search">
+      <div class="nav-search" onclick="document.getElementById('nav-search-input').focus()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <span>Search 815local...</span>
+        <input id="nav-search-input" type="text" placeholder="Search 815local..." style="background:transparent;border:none;outline:none;color:white;font-family:inherit;font-size:14px;width:100%;" onkeydown="if(event.key==='Enter')navSearch(this.value)" />
       </div>
       <div class="nav-actions">
-        <span class="nav-signin">Sign In</span>
-        <a class="btn btn-primary" href="#" style="font-size:13px; padding:9px 18px;">+ List Business</a>
+        <span class="nav-signin" id="nav-signin-btn" onclick="openAuthModal('signin')">Sign In</span>
+        <div id="nav-user-menu" style="display:none;position:relative;">
+          <div onclick="toggleUserDropdown()" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <img id="nav-avatar" src="" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);display:none;" />
+            <div id="nav-avatar-initial" style="width:32px;height:32px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;"></div>
+            <span id="nav-user-name" style="font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);"></span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div id="user-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 8px);background:white;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15);min-width:160px;overflow:hidden;z-index:1000;">
+            <a href="815local-profile.html" style="display:block;padding:12px 16px;font-size:13px;color:var(--charcoal);text-decoration:none;border-bottom:1px solid var(--gray-light);">My Profile</a>
+            <div onclick="signOut()" style="padding:12px 16px;font-size:13px;color:#c0392b;cursor:pointer;">Sign Out</div>
+          </div>
+        </div>
+        <a class="btn btn-primary" href="815local-submit-business.html" style="font-size:13px; padding:9px 18px;">+ List Business</a>
       </div>
     </div>
   </div>
@@ -1620,6 +1825,316 @@ window.addEventListener('scroll', () => {
   }
 })();
 </script>
+
+<script>
+// ── AUTH: Supabase client (reuse if already initialized) ──
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const _authDb = (typeof db !== 'undefined') ? db : supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── NAV SEARCH ──
+function navSearch(val) {
+  if (!val.trim()) return;
+  window.location.href = '815local-directory.html?q=' + encodeURIComponent(val.trim());
+}
+
+// ── MODAL CONTROLS ──
+function openAuthModal(view) {
+  switchAuthView(view || 'signin');
+  document.getElementById('auth-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  clearAuthMessages();
+}
+
+function switchAuthView(view) {
+  ['signin','signup','forgot'].forEach(v => {
+    document.getElementById('auth-view-' + v).style.display = v === view ? '' : 'none';
+  });
+  clearAuthMessages();
+}
+
+function clearAuthMessages() {
+  document.querySelectorAll('.auth-error, .auth-success').forEach(el => {
+    el.style.display = 'none';
+    el.textContent = '';
+  });
+}
+
+function showMsg(id, msg, isError) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.className = isError ? 'auth-error' : 'auth-success';
+}
+
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Please wait...' : btn.dataset.label || btn.textContent;
+}
+
+// ── AVATAR SELECTION ──
+let selectedAvatarFile = null;
+
+function handleAvatarSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  // Validate type
+  if (!['image/jpeg','image/png','image/webp'].includes(file.type)) {
+    alert('Please upload a JPG, PNG, or WebP image.');
+    input.value = '';
+    return;
+  }
+  // Validate size (2MB)
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Image must be under 2MB. Please choose a smaller file.');
+    input.value = '';
+    return;
+  }
+
+  selectedAvatarFile = file;
+  const preview = document.getElementById('avatar-preview');
+  const icon = document.getElementById('avatar-upload-icon');
+  const reader = new FileReader();
+  reader.onload = e => {
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    icon.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── SIGN IN ──
+async function doSignIn() {
+  const email = document.getElementById('signin-email').value.trim();
+  const password = document.getElementById('signin-password').value;
+  if (!email || !password) { showMsg('signin-error', 'Please enter your email and password.', true); return; }
+
+  const btn = document.getElementById('signin-btn');
+  btn.disabled = true; btn.textContent = 'Signing in...';
+
+  const { data, error } = await _authDb.auth.signInWithPassword({ email, password });
+  btn.disabled = false; btn.textContent = 'Sign In';
+
+  if (error) { showMsg('signin-error', error.message, true); return; }
+
+  closeAuthModal();
+  await updateNavForUser(data.user);
+}
+
+// ── SIGN UP ──
+async function doSignUp() {
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const newsletter = document.getElementById('signup-newsletter').checked;
+
+  if (!name) { showMsg('signup-error', 'Please enter your name.', true); return; }
+  if (!email) { showMsg('signup-error', 'Please enter your email.', true); return; }
+  if (!password || password.length < 6) { showMsg('signup-error', 'Password must be at least 6 characters.', true); return; }
+
+  const btn = document.getElementById('signup-btn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+
+  const { data, error } = await _authDb.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { display_name: name, newsletter_opt_in: newsletter }
+    }
+  });
+
+  if (error) {
+    btn.disabled = false; btn.textContent = 'Create Account';
+    showMsg('signup-error', error.message, true);
+    return;
+  }
+
+  // Upload avatar if one was selected
+  if (selectedAvatarFile && data.user) {
+    try {
+      const ext = selectedAvatarFile.name.split('.').pop();
+      const path = data.user.id + '/avatar.' + ext;
+      const { error: uploadError } = await _authDb.storage
+        .from('avatars')
+        .upload(path, selectedAvatarFile, { upsert: true });
+
+      if (!uploadError) {
+        const { data: urlData } = _authDb.storage.from('avatars').getPublicUrl(path);
+        await _authDb.from('profiles').update({ avatar_url: urlData.publicUrl }).eq('id', data.user.id);
+      }
+    } catch(e) { console.warn('Avatar upload failed:', e); }
+  }
+
+  btn.disabled = false; btn.textContent = 'Create Account';
+
+  // Supabase sends confirmation email — tell the user
+  showMsg('signup-success', 'Account created! Check your email to confirm your address, then sign in.', false);
+  setTimeout(() => switchAuthView('signin'), 4000);
+}
+
+// ── FORGOT PASSWORD ──
+async function doForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) { showMsg('forgot-error', 'Please enter your email address.', true); return; }
+
+  const btn = document.getElementById('forgot-btn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+
+  const { error } = await _authDb.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://815local.com/815local-profile.html'
+  });
+
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+
+  if (error) { showMsg('forgot-error', error.message, true); return; }
+  showMsg('forgot-success', 'Reset link sent! Check your email.', false);
+}
+
+// ── NAV USER STATE ──
+async function updateNavForUser(user) {
+  if (!user) return;
+
+  const signinBtn = document.getElementById('nav-signin-btn');
+  const userMenu = document.getElementById('nav-user-menu');
+  const userName = document.getElementById('nav-user-name');
+  const avatar = document.getElementById('nav-avatar');
+  const initial = document.getElementById('nav-avatar-initial');
+
+  signinBtn.style.display = 'none';
+  userMenu.style.display = '';
+
+  // Get profile for display name + avatar
+  const { data: profile } = await _authDb.from('profiles').select('display_name, avatar_url').eq('id', user.id).single();
+  const name = (profile && profile.display_name) || user.email.split('@')[0];
+  userName.textContent = name;
+  initial.textContent = name.charAt(0).toUpperCase();
+
+  if (profile && profile.avatar_url) {
+    avatar.src = profile.avatar_url;
+    avatar.style.display = 'block';
+    initial.style.display = 'none';
+  }
+}
+
+function toggleUserDropdown() {
+  const dd = document.getElementById('user-dropdown');
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('nav-user-menu');
+  if (menu && !menu.contains(e.target)) {
+    const dd = document.getElementById('user-dropdown');
+    if (dd) dd.style.display = 'none';
+  }
+});
+
+async function signOut() {
+  await _authDb.auth.signOut();
+  document.getElementById('nav-signin-btn').style.display = '';
+  document.getElementById('nav-user-menu').style.display = 'none';
+}
+
+// ── CHECK SESSION ON LOAD ──
+(async function() {
+  const { data: { session } } = await _authDb.auth.getSession();
+  if (session && session.user) {
+    await updateNavForUser(session.user);
+  }
+})();
+</script>
+
 <script src="815local-analytics-tracker.js"></script>
+
+<!-- ══════════ AUTH MODAL ══════════ -->
+<div class="auth-overlay" id="auth-overlay" onclick="if(event.target===this)closeAuthModal()">
+  <div class="auth-modal">
+    <span class="auth-close" onclick="closeAuthModal()">×</span>
+
+    <!-- SIGN IN VIEW -->
+    <div id="auth-view-signin">
+      <div class="auth-logo"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></div>
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Sign in to your 815local account</div>
+      <div class="auth-error" id="signin-error"></div>
+      <div class="auth-success" id="signin-success"></div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="signin-email" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="signin-password" placeholder="••••••••" />
+      </div>
+      <div style="text-align:right;margin-top:-8px;margin-bottom:16px;">
+        <a class="forgot-link" onclick="switchAuthView('forgot')" style="float:none;">Forgot password?</a>
+      </div>
+      <button class="auth-btn" id="signin-btn" onclick="doSignIn()">Sign In</button>
+      <div class="auth-switch">Don't have an account? <a onclick="switchAuthView('signup')">Create one</a></div>
+    </div>
+
+    <!-- SIGN UP VIEW -->
+    <div id="auth-view-signup" style="display:none;">
+      <div class="auth-logo"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></div>
+      <div class="auth-title">Join 815local</div>
+      <div class="auth-sub">Create your free account</div>
+      <div class="auth-error" id="signup-error"></div>
+      <div class="auth-success" id="signup-success"></div>
+      <div class="auth-field">
+        <label>Your Name</label>
+        <input type="text" id="signup-name" placeholder="Jane Smith" />
+      </div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Min. 6 characters" />
+      </div>
+      <div class="auth-field">
+        <label>Profile Photo <span style="font-weight:400;text-transform:none;color:var(--gray);">(optional)</span></label>
+        <div class="avatar-upload-area" id="avatar-upload-area">
+          <input type="file" id="avatar-file-input" accept="image/jpeg,image/png,image/webp" onchange="handleAvatarSelect(this)" />
+          <img id="avatar-preview" class="avatar-preview" src="" alt="Preview" />
+          <div class="avatar-upload-icon" id="avatar-upload-icon">📷</div>
+          <div class="avatar-upload-label"><strong>Click to upload</strong> or drag & drop</div>
+          <div class="avatar-upload-label">JPG, PNG or WebP · Max 2MB</div>
+        </div>
+        <div class="avatar-terms">By uploading a photo you confirm it is appropriate. Violations result in account termination.</div>
+      </div>
+      <label class="auth-checkbox">
+        <input type="checkbox" id="signup-newsletter" />
+        <span>Send me the 815local newsletter — local news, events, and new businesses in Minooka, Channahon & Shorewood.</span>
+      </label>
+      <button class="auth-btn" id="signup-btn" onclick="doSignUp()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="switchAuthView('signin')">Sign in</a></div>
+    </div>
+
+    <!-- FORGOT PASSWORD VIEW -->
+    <div id="auth-view-forgot" style="display:none;">
+      <div class="auth-logo"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></div>
+      <div class="auth-title">Reset your password</div>
+      <div class="auth-sub">Enter your email and we'll send you a reset link</div>
+      <div class="auth-error" id="forgot-error"></div>
+      <div class="auth-success" id="forgot-success"></div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="forgot-email" placeholder="you@example.com" />
+      </div>
+      <button class="auth-btn" id="forgot-btn" onclick="doForgotPassword()">Send Reset Link</button>
+      <div class="auth-switch"><a onclick="switchAuthView('signin')">← Back to Sign In</a></div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
