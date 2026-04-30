@@ -1711,8 +1711,8 @@ window.addEventListener('scroll', () => {
       el.textContent = n + (n === 1 ? ' place' : ' places');
     });
 
-    // ── HERO PHOTOS ──
-    const withPhotos = businesses.filter(b => b.image_url);
+    // ── HERO PHOTOS (local businesses only — no chains) ──
+    const withPhotos = businesses.filter(b => b.image_url && !(b.features || []).includes('Chain'));
     for (let i = withPhotos.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
