@@ -248,6 +248,11 @@ a { color:inherit; text-decoration:none; }
               <input class="form-input" id="biz-website" type="text" placeholder="yourbusiness.com">
             </div>
           </div>
+          <div class="form-group" style="margin-top:16px;">
+            <label class="form-label">Online Ordering Link</label>
+            <input class="form-input" id="biz-order-url" type="url" placeholder="e.g. https://order.toasttab.com/yourbusiness or your DoorDash/Uber Eats page">
+            <div class="form-hint">If customers can order from you online, paste the link here. This adds an "Order Online" button to your listing.</div>
+          </div>
         </div>
       </div>
 
@@ -382,6 +387,7 @@ async function handleSubmit(e) {
     address:     document.getElementById('biz-address').value.trim(),
     phone:       document.getElementById('biz-phone').value.trim() || null,
     website:     document.getElementById('biz-website').value.trim().replace(/^https?:\/\//,'') || null,
+    order_url:   document.getElementById('biz-order-url').value.trim() || null,
     image_url:   document.getElementById('biz-image-url').value.trim() || null,
     hours,
     features,
