@@ -510,7 +510,7 @@ window.addEventListener('scroll', () => {
 (function applyUrlParams() {
   const params = new URLSearchParams(window.location.search);
   const cat = params.get('category');
-  const search = params.get('search');
+  const search = params.get('search') || params.get('q');
 
   if (cat) {
     const pill = [...document.querySelectorAll('.cat-pill')].find(p => p.dataset.cat === cat);
