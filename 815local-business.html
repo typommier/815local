@@ -674,23 +674,24 @@ function renderBusiness(b) {
   document.getElementById('sb-phone-btn').href = b.phone ? 'tel:' + b.phone.replace(/\D/g,'') : '#';
   document.getElementById('sb-dir-btn').href = b.address ? 'https://maps.google.com/?q=' + encodeURIComponent(b.address) : '#';
 
-  // Static map image (OpenStreetMap, no API key needed)
+  // OpenStreetMap iframe — free, no API key needed
   const mapContainer = document.getElementById('map-container');
   if (b.address) {
     const fullAddress = `${b.address}, ${b.city || ''}, ${b.state || 'IL'} ${b.zip || ''}`.trim();
-    const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${encodeURIComponent(fullAddress)}&zoom=15&size=600x180&maptype=mapnik&markers=${encodeURIComponent(fullAddress)},red-pushpin`;
-    const img = document.createElement('img');
-    img.src = mapUrl;
-    img.alt = 'Map of ' + b.name;
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;';
-    img.onclick = () => window.open('https://maps.google.com/?q=' + encodeURIComponent(fullAddress), '_blank');
-    img.onerror = () => {
-      // Fallback: revert to clickable placeholder if map fails to load
-      mapContainer.innerHTML = `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg><span>View on Google Maps</span>`;
-      mapContainer.onclick = () => window.open('https://maps.google.com/?q=' + encodeURIComponent(fullAddress), '_blank');
-    };
-    mapContainer.innerHTML = '';
-    mapContainer.appendChild(img);
+    const googleMapsUrl = 'https://maps.google.com/?q=' + encodeURIComponent(fullAddress);
+    const osmQuery = encodeURIComponent(fullAddress);
+    mapContainer.style.cssText = 'height:180px;padding:0;overflow:hidden;position:relative;border-bottom:1px solid var(--gray-light);display:block;';
+    mapContainer.innerHTML = `
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?query=${osmQuery}&zoom=15&layers=M"
+        style="width:100%;height:100%;border:none;display:block;"
+        loading="lazy"
+        title="Map of ${b.name}">
+      </iframe>
+      <a href="${googleMapsUrl}" target="_blank"
+         style="position:absolute;bottom:8px;right:8px;background:white;border-radius:4px;padding:4px 8px;font-size:11px;font-weight:600;color:var(--orange);text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,0.2);">
+        Open in Google Maps ↗
+      </a>`;
   }
 
   // Google Reviews badge
