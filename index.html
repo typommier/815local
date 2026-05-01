@@ -98,10 +98,10 @@ img { display: block; max-width: 100%; }
 }
 .nav-inner {
   display: flex; align-items: center; gap: 0;
-  height: 110px;
+  height: 220px;
 }
 .nav-logo { flex-shrink: 0; margin-right: 36px; }
-.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); transition: filter 0.2s; }
+.nav-logo img { height: 208px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); transition: filter 0.2s; }
 .nav-logo img:hover { filter: drop-shadow(0 4px 16px rgba(196,98,45,0.55)); }
 .nav-links {
   display: flex; align-items: center; gap: 4px;
@@ -162,27 +162,6 @@ img { display: block; max-width: 100%; }
   align-items: center;
   padding-bottom: 64px;
 }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--orange-pale);
-  border: 1px solid rgba(196,98,45,0.2);
-  border-radius: 100px;
-  padding: 6px 16px 6px 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--orange);
-  margin-bottom: 24px;
-}
-.hero-eyebrow-dot {
-  width: 8px; height: 8px;
-  background: var(--orange);
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.8); }
-}
 .hero-title {
   font-size: 64px;
   font-weight: 900;
@@ -194,70 +173,14 @@ img { display: block; max-width: 100%; }
 .hero-subtitle {
   font-size: 17px;
   color: var(--charcoal-light);
-  margin-bottom: 36px;
+  margin-bottom: 0;
   max-width: 440px;
   line-height: 1.7;
 }
 
-/* Search bar */
-.search-bar {
-  background: white;
-  border-radius: 100px;
-  border: 2px solid var(--charcoal);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  margin-bottom: 20px;
-}
-.search-seg {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 20px;
-  cursor: pointer;
-}
-.search-seg:not(:last-child) { border-right: 1.5px solid var(--gray-light); }
-.search-seg svg { color: var(--gray); flex-shrink: 0; }
-.search-seg-label { font-size: 11px; font-weight: 700; color: var(--charcoal); text-transform: uppercase; letter-spacing: 0.5px; display: block; }
-.search-seg-value { font-size: 14px; color: var(--charcoal-light); }
-.search-seg-main { flex: 1; }
-.search-btn {
-  margin: 6px;
-  padding: 12px 28px;
-  background: var(--orange);
-  color: white;
-  border: none;
-  border-radius: 100px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-.search-btn:hover { background: var(--orange-light); }
-
-.hero-tags {
-  display: flex; align-items: center; gap: 8px;
-  flex-wrap: wrap;
-}
-.hero-tags-label { font-size: 12px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
-.hero-tag {
-  padding: 6px 14px;
-  border-radius: 100px;
-  border: 1.5px solid var(--gray-light);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--charcoal-mid);
-  cursor: pointer;
-  transition: all 0.15s;
-  background: white;
-}
-.hero-tag:hover { border-color: var(--orange); color: var(--orange); }
-
-/* Hero photo mosaic */
 .hero-media {
   position: relative;
-  height: 480px;
+  height: 560px;
 }
 .hero-photo {
   position: absolute;
@@ -268,10 +191,11 @@ img { display: block; max-width: 100%; }
   box-shadow: var(--shadow-lg);
 }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
-.photo-a { width: 260px; height: 300px; top: 0; left: 40px; }
-.photo-b { width: 200px; height: 220px; top: 60px; right: 0; }
-.photo-c { width: 180px; height: 200px; bottom: 0; left: 0; }
-.photo-d { width: 200px; height: 160px; bottom: 20px; right: 20px; }
+.photo-a { width: 290px; height: 340px; top: 0; left: 20px; }
+.photo-b { width: 230px; height: 255px; top: 20px; right: 0; }
+.photo-c { width: 205px; height: 225px; bottom: 0; left: 0; }
+.photo-d { width: 225px; height: 190px; bottom: 20px; right: 10px; }
+.photo-e { width: 185px; height: 200px; top: 190px; left: 250px; }
 .photo-placeholder {
   width: 100%; height: 100%;
   background: var(--cream-dark);
@@ -284,20 +208,6 @@ img { display: block; max-width: 100%; }
 }
 .photo-placeholder svg { opacity: 0.3; }
 
-
-.hero-stat-float {
-  position: absolute;
-  top: 40px; right: -10px;
-  background: var(--orange);
-  color: white;
-  border-radius: var(--radius);
-  padding: 14px 18px;
-  box-shadow: var(--shadow-lg);
-  z-index: 2;
-  animation: floatUp 0.6s ease 0.2s both;
-}
-.float-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; line-height: 1; }
-.float-label { font-size: 11px; font-weight: 500; opacity: 0.85; margin-top: 2px; }
 
 /* ── TRUST BAR ── */
 .trust-bar {
@@ -1082,10 +992,6 @@ footer {
     <div class="hero-inner">
       <!-- LEFT -->
       <div class="hero-left">
-        <div class="hero-eyebrow">
-          <div class="hero-eyebrow-dot"></div>
-          Serving the 815 Community
-        </div>
         <h1 class="hero-title">
           Your Local<br><em>Everything.</em>
         </h1>
@@ -1093,64 +999,11 @@ footer {
           Reviews, restaurants, services & events — all in one place. Discover the best of the 815, recommended by your neighbors.
         </p>
 
-        <div class="search-bar">
-          <div class="search-seg" style="flex:0 0 auto; min-width:140px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h8M4 18h16"/></svg>
-            <div style="flex:1;">
-              <span class="search-seg-label">Category</span>
-              <select id="search-category" style="border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--charcoal-light);cursor:pointer;outline:none;width:100%;padding:0;appearance:none;-webkit-appearance:none;">
-                <option value="">All Types</option>
-                <option value="Food & Drink">🍔 Food & Drink</option>
-                <option value="Coffee">☕ Coffee</option>
-                <option value="Bars & Nightlife">🍺 Bars & Nightlife</option>
-                <option value="Health & Wellness">💆 Health & Wellness</option>
-                <option value="Beauty & Salons">💇 Beauty & Salons</option>
-                <option value="Retail & Shops">🛍️ Retail & Shops</option>
-                <option value="Home Services">🔧 Home Services</option>
-                <option value="Arts & Events">🎭 Arts & Events</option>
-              </select>
-            </div>
-          </div>
-          <div class="search-seg search-seg-main">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <div style="flex:1;">
-              <span class="search-seg-label">Find</span>
-              <input id="search-query" type="text" placeholder="Restaurants, salons, plumbers..." style="border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--charcoal);outline:none;width:100%;padding:0;" />
-            </div>
-          </div>
-          <div class="search-seg" style="flex:0 0 auto; min-width:120px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
-            <div style="flex:1;">
-              <span class="search-seg-label">Near</span>
-              <select id="search-city" style="border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--charcoal-light);cursor:pointer;outline:none;width:100%;padding:0;appearance:none;-webkit-appearance:none;">
-                <option value="">Any Town</option>
-                <option value="Minooka">Minooka</option>
-                <option value="Channahon">Channahon</option>
-                <option value="Shorewood">Shorewood</option>
-              </select>
-            </div>
-          </div>
-          <button class="search-btn" onclick="doHeroSearch()">Search</button>
-        </div>
 
-        <div class="hero-tags">
-          <span class="hero-tags-label">Popular</span>
-          <span class="hero-tag" onclick="heroTagSearch('pizza')">🍕 Pizza</span>
-          <span class="hero-tag" onclick="heroTagSearch('coffee')">☕ Coffee</span>
-          <span class="hero-tag" onclick="heroTagSearch('salon')">💇 Salons</span>
-          <span class="hero-tag" onclick="heroTagSearch('plumber')">🏠 Plumbers</span>
-          <span class="hero-tag" onclick="heroTagSearch('bar')">🍺 Bars</span>
-        </div>
       </div>
 
       <!-- RIGHT: Photo mosaic -->
       <div class="hero-media">
-        <!-- Floating stat -->
-        <div class="hero-stat-float">
-          <div class="float-num" id="hero-biz-count">—</div>
-          <div class="float-label">Local Businesses</div>
-        </div>
-
         <!-- Photos (populated dynamically) -->
         <div class="hero-photo photo-a" id="hero-photo-a">
           <div class="photo-placeholder">
@@ -1172,8 +1025,11 @@ footer {
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
           </div>
         </div>
-
-        
+        <div class="hero-photo photo-e" id="hero-photo-e">
+          <div class="photo-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1698,7 +1554,6 @@ window.addEventListener('scroll', () => {
 
     // ── STATS ──
     const totalBiz = businesses.length;
-    document.getElementById('hero-biz-count').textContent = totalBiz;
     document.getElementById('stat-businesses').textContent = totalBiz;
     const totalReviews = reviews.length;
     document.getElementById('stat-reviews').textContent = totalReviews > 0 ? totalReviews : '0';
@@ -1717,7 +1572,7 @@ window.addEventListener('scroll', () => {
       const j = Math.floor(Math.random() * (i + 1));
       [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
     }
-    ['hero-photo-a','hero-photo-b','hero-photo-c','hero-photo-d'].forEach((id, i) => {
+    ['hero-photo-a','hero-photo-b','hero-photo-c','hero-photo-d','hero-photo-e'].forEach((id, i) => {
       const el = document.getElementById(id);
       if (el && withPhotos[i]) {
         el.innerHTML = `<a href="815local-business.html?id=${withPhotos[i].id}" style="display:block;width:100%;height:100%;background:url('${withPhotos[i].image_url}') center/cover no-repeat;" title="${withPhotos[i].name}"></a>`;
