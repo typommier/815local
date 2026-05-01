@@ -159,7 +159,7 @@ a { color:inherit; text-decoration:none; }
 .contact-value { color:var(--charcoal); font-weight:500; }
 .contact-value a { color:var(--orange); }
 .cta-stack { display:flex; flex-direction:column; gap:10px; padding:20px; }
-.map-placeholder { height:180px; background:var(--cream-dark); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:var(--charcoal-light); font-size:13px; border-bottom:1px solid var(--gray-light); cursor:pointer; }
+.map-placeholder { height:180px; background:var(--cream-dark); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:var(--charcoal-light); font-size:13px; border-bottom:1px solid var(--gray-light); cursor:pointer; overflow:hidden; }
 .map-placeholder svg { opacity:0.3; }
 .claim-card { background:var(--charcoal); border-radius:var(--radius); padding:20px; }
 .claim-title { font-size:15px; font-weight:700; color:white; margin-bottom:6px; }
@@ -437,7 +437,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
       <!-- SIDEBAR -->
       <div class="sidebar">
         <div class="sidebar-card">
-          <div class="map-placeholder" onclick="openMap()">
+          <div id="map-container" class="map-placeholder" onclick="openMap()" style="padding:0;overflow:hidden;">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
             Interactive Map
           </div>
@@ -673,6 +673,25 @@ function renderBusiness(b) {
   // Sidebar
   document.getElementById('sb-phone-btn').href = b.phone ? 'tel:' + b.phone.replace(/\D/g,'') : '#';
   document.getElementById('sb-dir-btn').href = b.address ? 'https://maps.google.com/?q=' + encodeURIComponent(b.address) : '#';
+
+  // Static map image (OpenStreetMap, no API key needed)
+  const mapContainer = document.getElementById('map-container');
+  if (b.address) {
+    const fullAddress = `${b.address}, ${b.city || ''}, ${b.state || 'IL'} ${b.zip || ''}`.trim();
+    const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${encodeURIComponent(fullAddress)}&zoom=15&size=600x180&maptype=mapnik&markers=${encodeURIComponent(fullAddress)},red-pushpin`;
+    const img = document.createElement('img');
+    img.src = mapUrl;
+    img.alt = 'Map of ' + b.name;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;';
+    img.onclick = () => window.open('https://maps.google.com/?q=' + encodeURIComponent(fullAddress), '_blank');
+    img.onerror = () => {
+      // Fallback: revert to clickable placeholder if map fails to load
+      mapContainer.innerHTML = `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg><span>View on Google Maps</span>`;
+      mapContainer.onclick = () => window.open('https://maps.google.com/?q=' + encodeURIComponent(fullAddress), '_blank');
+    };
+    mapContainer.innerHTML = '';
+    mapContainer.appendChild(img);
+  }
 
   // Google Reviews badge
   const googleBadge = document.getElementById('google-badge');
