@@ -104,6 +104,7 @@ a { color: inherit; text-decoration: none; }
 .type-pill.active[data-type="arts"] { background: var(--ev-arts); }
 .type-pill.active[data-type="market"] { background: var(--ev-market); }
 .type-pill.active[data-type="community"] { background: var(--ev-community); }
+.type-pill.active[data-type="festival"] { background: var(--ev-music); }
 .type-pill.active[data-type="all"] { background: var(--charcoal); }
 
 /* ── MAIN LAYOUT ── */
@@ -381,15 +382,15 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
         <p class="hero-sub">From farmers markets to live music, art walks to community cookouts — find every local event worth your weekend.</p>
         <div class="hero-stats">
           <div class="hero-stat">
-            <div class="hero-stat-num">124</div>
+            <div class="hero-stat-num" id="stat-month">—</div>
             <div class="hero-stat-lbl">Events this month</div>
           </div>
           <div class="hero-stat">
-            <div class="hero-stat-num">38</div>
-            <div class="hero-stat-lbl">This week</div>
+            <div class="hero-stat-num" id="stat-upcoming">—</div>
+            <div class="hero-stat-lbl">Coming up</div>
           </div>
           <div class="hero-stat">
-            <div class="hero-stat-num">12</div>
+            <div class="hero-stat-num" id="stat-free">—</div>
             <div class="hero-stat-lbl">Free events</div>
           </div>
         </div>
@@ -445,6 +446,9 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
         </div>
         <div class="type-pill" data-type="community" onclick="toggleType(this)">
           <span class="dot" style="background:var(--ev-community)"></span> 🤝 Community
+        </div>
+        <div class="type-pill" data-type="festival" onclick="toggleType(this)">
+          <span class="dot" style="background:var(--ev-music)"></span> 🎉 Festival
         </div>
       </div>
     </div>
@@ -509,183 +513,8 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 
       <!-- List view -->
       <div id="list-view" style="display:none;">
-        <!-- Day 1 -->
-        <div class="list-day-group">
-          <div class="list-day-header">
-            <div class="list-day-num">20</div>
-            <div class="list-day-info">
-              <div class="list-day-name">Sunday</div>
-              <div class="list-day-month">April 2026</div>
-            </div>
-          </div>
-          <div class="list-event-card">
-            <div class="lec-color" style="background:var(--ev-market);"></div>
-            <div class="lec-photo">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-              Market photo
-            </div>
-            <div class="lec-body">
-              <div class="lec-type" style="color:var(--ev-market);">🌿 Farmers Market</div>
-              <div class="lec-title">Sunday Farmers Market</div>
-              <div class="lec-desc">Fresh local produce, artisan goods, baked treats, and live acoustic music every Sunday morning through October.</div>
-              <div class="lec-meta">
-                <span class="lec-meta-item">🕗 8:00 AM – 1:00 PM</span>
-                <span class="lec-meta-item">📍 Downtown Plaza, Rockford</span>
-                <span class="lec-meta-item">👤 All Ages Welcome</span>
-              </div>
-            </div>
-            <div class="lec-side">
-              <div>
-                <div class="lec-price" style="color:var(--ev-market);">Free</div>
-                <div class="lec-price-sub">No ticket needed</div>
-              </div>
-              <div class="lec-actions">
-                <button class="lec-rsvp">I'm Going →</button>
-                <button class="lec-save" onclick="this.textContent='❤️ Saved'">♡ Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 2 -->
-        <div class="list-day-group">
-          <div class="list-day-header">
-            <div class="list-day-num">22</div>
-            <div class="list-day-info">
-              <div class="list-day-name">Tuesday</div>
-              <div class="list-day-month">April 2026</div>
-            </div>
-          </div>
-          <div class="list-event-card">
-            <div class="lec-color" style="background:var(--ev-music);"></div>
-            <div class="lec-photo">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-              Music venue
-            </div>
-            <div class="lec-body">
-              <div class="lec-type" style="color:var(--ev-music);">🎵 Live Music</div>
-              <div class="lec-title">Live Music Night at Rosario's</div>
-              <div class="lec-desc">Tuesday live music series featuring local bands and solo artists. Full dinner and cocktail menu available all night.</div>
-              <div class="lec-meta">
-                <span class="lec-meta-item">🕗 7:00 PM – 11:00 PM</span>
-                <span class="lec-meta-item">📍 Rosario's Tavern, Lincoln Ave</span>
-                <span class="lec-meta-item">🔞 21+ After 9pm</span>
-              </div>
-            </div>
-            <div class="lec-side">
-              <div>
-                <div class="lec-price">$10</div>
-                <div class="lec-price-sub">Cover charge</div>
-              </div>
-              <div class="lec-actions">
-                <button class="lec-rsvp">I'm Going →</button>
-                <button class="lec-save" onclick="this.textContent='❤️ Saved'">♡ Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 3 -->
-        <div class="list-day-group">
-          <div class="list-day-header">
-            <div class="list-day-num">26</div>
-            <div class="list-day-info">
-              <div class="list-day-name">Saturday</div>
-              <div class="list-day-month">April 2026</div>
-            </div>
-          </div>
-          <div class="list-event-card">
-            <div class="lec-color" style="background:var(--ev-arts);"></div>
-            <div class="lec-photo">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-              Art walk
-            </div>
-            <div class="lec-body">
-              <div class="lec-type" style="color:var(--ev-arts);">🎨 Arts</div>
-              <div class="lec-title">Spring Gallery Night Art Walk</div>
-              <div class="lec-desc">Self-guided walk through 14 galleries and studios on Main Street. Meet local artists, see new work, and enjoy light refreshments.</div>
-              <div class="lec-meta">
-                <span class="lec-meta-item">🕗 5:00 PM – 9:00 PM</span>
-                <span class="lec-meta-item">📍 Main Street District</span>
-                <span class="lec-meta-item">👤 All Ages</span>
-              </div>
-            </div>
-            <div class="lec-side">
-              <div>
-                <div class="lec-price" style="color:var(--ev-market);">Free</div>
-                <div class="lec-price-sub">No ticket needed</div>
-              </div>
-              <div class="lec-actions">
-                <button class="lec-rsvp">I'm Going →</button>
-                <button class="lec-save" onclick="this.textContent='❤️ Saved'">♡ Save</button>
-              </div>
-            </div>
-          </div>
-          <div class="list-event-card">
-            <div class="lec-color" style="background:var(--ev-food);"></div>
-            <div class="lec-photo">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-              Food festival
-            </div>
-            <div class="lec-body">
-              <div class="lec-type" style="color:var(--ev-food);">🍽️ Food</div>
-              <div class="lec-title">815 Taco Fest</div>
-              <div class="lec-desc">10 local restaurants compete for the People's Choice taco award. Voting is open to all — bring your appetite and your opinion.</div>
-              <div class="lec-meta">
-                <span class="lec-meta-item">🕗 12:00 PM – 6:00 PM</span>
-                <span class="lec-meta-item">📍 Riverfront Park</span>
-                <span class="lec-meta-item">👤 All Ages</span>
-              </div>
-            </div>
-            <div class="lec-side">
-              <div>
-                <div class="lec-price">$5</div>
-                <div class="lec-price-sub">Entry + 3 tokens</div>
-              </div>
-              <div class="lec-actions">
-                <button class="lec-rsvp">I'm Going →</button>
-                <button class="lec-save" onclick="this.textContent='❤️ Saved'">♡ Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 4 -->
-        <div class="list-day-group">
-          <div class="list-day-header">
-            <div class="list-day-num">1</div>
-            <div class="list-day-info">
-              <div class="list-day-name">Thursday</div>
-              <div class="list-day-month">May 2026</div>
-            </div>
-          </div>
-          <div class="list-event-card">
-            <div class="lec-color" style="background:var(--ev-community);"></div>
-            <div class="lec-photo">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-              Community
-            </div>
-            <div class="lec-body">
-              <div class="lec-type" style="color:var(--ev-community);">🤝 Community</div>
-              <div class="lec-title">Community Cleanup & Cookout</div>
-              <div class="lec-desc">Join neighbors to clean up Riverfront Park, then celebrate with a community cookout. Tools, bags, and burgers provided.</div>
-              <div class="lec-meta">
-                <span class="lec-meta-item">🕗 9:00 AM – 2:00 PM</span>
-                <span class="lec-meta-item">📍 Riverfront Park</span>
-                <span class="lec-meta-item">👤 All Ages</span>
-              </div>
-            </div>
-            <div class="lec-side">
-              <div>
-                <div class="lec-price" style="color:var(--ev-market);">Free</div>
-                <div class="lec-price-sub">Food included</div>
-              </div>
-              <div class="lec-actions">
-                <button class="lec-rsvp">I'm Going →</button>
-                <button class="lec-save" onclick="this.textContent='❤️ Saved'">♡ Save</button>
-              </div>
-            </div>
-          </div>
+        <div id="list-view-inner">
+          <div style="padding:48px;text-align:center;color:var(--gray);">Loading events…</div>
         </div>
       </div><!-- /list-view -->
     </div>
@@ -697,52 +526,36 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       <div class="sidebar-card">
         <div class="mini-cal">
           <div class="mini-cal-header">
-            <span class="mini-cal-month">April 2026</span>
+            <span class="mini-cal-month" id="mini-cal-month">—</span>
             <div class="mini-cal-arrows">
-              <div class="mini-arrow">‹</div>
-              <div class="mini-arrow">›</div>
+              <div class="mini-arrow" onclick="changeMonth(-1)">‹</div>
+              <div class="mini-arrow" onclick="changeMonth(1)">›</div>
             </div>
           </div>
           <div class="mini-day-headers">
             <div class="mini-dh">S</div><div class="mini-dh">M</div><div class="mini-dh">T</div>
             <div class="mini-dh">W</div><div class="mini-dh">T</div><div class="mini-dh">F</div><div class="mini-dh">S</div>
           </div>
-          <div class="mini-grid">
-            <!-- Week 1 (prev month) -->
-            <div class="mini-day other">29</div><div class="mini-day other">30</div><div class="mini-day other">31</div>
-            <div class="mini-day">1</div><div class="mini-day">2</div><div class="mini-day">3</div><div class="mini-day">4</div>
-            <!-- Week 2 -->
-            <div class="mini-day">5</div><div class="mini-day">6</div><div class="mini-day has-event">7</div>
-            <div class="mini-day">8</div><div class="mini-day">9</div><div class="mini-day has-event">10</div><div class="mini-day">11</div>
-            <!-- Week 3 -->
-            <div class="mini-day has-event">12</div><div class="mini-day">13</div><div class="mini-day has-event">14</div>
-            <div class="mini-day">15</div><div class="mini-day">16</div><div class="mini-day">17</div><div class="mini-day has-event">18</div>
-            <!-- Week 4 -->
-            <div class="mini-day has-event">19</div><div class="mini-day selected has-event">20</div><div class="mini-day">21</div>
-            <div class="mini-day has-event">22</div><div class="mini-day">23</div><div class="mini-day">24</div><div class="mini-day has-event">25</div>
-            <!-- Week 5 -->
-            <div class="mini-day has-event">26</div><div class="mini-day">27</div><div class="mini-day">28</div>
-            <div class="mini-day">29</div><div class="mini-day today">30</div><div class="mini-day other">1</div><div class="mini-day other">2</div>
+          <div class="mini-grid" id="mini-grid">
+            <!-- Rendered by JS -->
           </div>
         </div>
       </div>
 
       <!-- Featured event -->
-      <div class="sidebar-card">
+      <div class="sidebar-card" id="featured-card" style="display:none;">
         <div class="featured-event">
-          <div class="fe-photo">
+          <div class="fe-photo" id="fe-photo">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-            Event photo
+            <span id="fe-photo-label">Event photo</span>
           </div>
           <div class="fe-body">
-            <div class="fe-type">🎵 Featured Event</div>
-            <div class="fe-title">815 Music Festival</div>
-            <div class="fe-meta">
-              <span>📅 May 10–11, 2026</span>
-              <span>📍 Coronado Performing Arts Center</span>
-              <span>🎫 From $25 · Limited tickets</span>
-            </div>
-            <button class="fe-rsvp">Get Tickets →</button>
+            <div class="fe-type" id="fe-type">⭐ Featured Event</div>
+            <div class="fe-title" id="fe-title">—</div>
+            <div class="fe-meta" id="fe-meta"></div>
+            <a id="fe-rsvp-link" href="#" target="_blank" rel="noopener">
+              <button class="fe-rsvp">More Info →</button>
+            </a>
           </div>
         </div>
       </div>
@@ -757,6 +570,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
             <div class="legend-item"><div class="legend-dot" style="background:var(--ev-arts)"></div>Arts & Culture</div>
             <div class="legend-item"><div class="legend-dot" style="background:var(--ev-market)"></div>Markets</div>
             <div class="legend-item"><div class="legend-dot" style="background:var(--ev-community)"></div>Community</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--ev-music)"></div>Festivals</div>
           </div>
         </div>
       </div>
@@ -848,40 +662,124 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"accentColor":"#C4622D","defaultView":"month"}/*EDITMODE-END*/;
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ── Calendar data
-const events = [
-  { day: 7, type: 'music', label: '🎵 Open Mic' },
-  { day: 10, type: 'food', label: '🍽️ Food Tour' },
-  { day: 12, type: 'arts', label: '🎨 Gallery' },
-  { day: 14, type: 'market', label: '🌿 Pop-up Market' },
-  { day: 18, type: 'community', label: '🤝 Town Hall' },
-  { day: 19, type: 'arts', label: '🎭 Theater Night' },
-  { day: 20, type: 'market', label: '🌿 Farmers Mkt' },
-  { day: 20, type: 'arts', label: '🎨 Art Class' },
-  { day: 22, type: 'music', label: '🎵 Live Music' },
-  { day: 25, type: 'food', label: '🍽️ Wine Tasting' },
-  { day: 26, type: 'arts', label: '🎨 Art Walk' },
-  { day: 26, type: 'food', label: '🌮 Taco Fest' },
-  { day: 28, type: 'community', label: '🤝 Neighborhood' },
-];
-
-let currentYear = 2026, currentMonth = 3; // April = 3 (0-indexed)
+// ── Constants
 const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const dayNames   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
+const TYPE_META = {
+  music:     { emoji: '🎵', label: 'Music',     color: 'var(--ev-music)'     },
+  food:      { emoji: '🍽️', label: 'Food',      color: 'var(--ev-food)'      },
+  arts:      { emoji: '🎨', label: 'Arts',       color: 'var(--ev-arts)'      },
+  market:    { emoji: '🌿', label: 'Market',    color: 'var(--ev-market)'    },
+  community: { emoji: '🤝', label: 'Community', color: 'var(--ev-community)' },
+  sports:    { emoji: '🏅', label: 'Sports',    color: 'var(--ev-sport)'     },
+  festival:  { emoji: '🎉', label: 'Festival',  color: 'var(--ev-music)'     },
+  other:     { emoji: '📌', label: 'Event',     color: 'var(--gray)'         },
+};
+
+// ── State
+let allEvents    = [];   // all loaded from Supabase
+let activeFilter = 'all';
+let currentYear  = new Date().getFullYear();
+let currentMonth = new Date().getMonth();
+
+// ── Utility helpers
+function parseLocalDate(str) {
+  // "2026-06-12" → local Date (avoids UTC midnight shifting to wrong day)
+  const [y, m, d] = str.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function fmt12(timeStr) {
+  if (!timeStr) return null;
+  const [h, m] = timeStr.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const hour  = h % 12 || 12;
+  return `${hour}:${String(m).padStart(2,'0')} ${ampm}`;
+}
+
+function typeColor(type) {
+  return (TYPE_META[type] || TYPE_META.other).color;
+}
+function typeEmoji(type) {
+  return (TYPE_META[type] || TYPE_META.other).emoji;
+}
+function typeLabel(type) {
+  return (TYPE_META[type] || TYPE_META.other).label;
+}
+
+// ── Multi-day group detection
+// Returns Set of dates (YYYY-MM-DD) that belong to a multi-day group
+function buildMultiDayMap(events) {
+  const groups = {}; // group_id → [events sorted by date]
+  events.forEach(ev => {
+    if (ev.group_id) {
+      if (!groups[ev.group_id]) groups[ev.group_id] = [];
+      groups[ev.group_id].push(ev);
+    }
+  });
+  const map = {}; // event.id → { dayNum, totalDays }
+  Object.values(groups).forEach(grp => {
+    grp.sort((a, b) => a.event_date.localeCompare(b.event_date));
+    grp.forEach((ev, i) => {
+      map[ev.id] = { dayNum: i + 1, totalDays: grp.length };
+    });
+  });
+  return map;
+}
+
+// ── Filter helper
+function filteredForMonth(year, month) {
+  return allEvents.filter(ev => {
+    const d = parseLocalDate(ev.event_date);
+    const typeMatch = activeFilter === 'all' || ev.event_type === activeFilter;
+    return d.getFullYear() === year && d.getMonth() === month && typeMatch && ev.is_active;
+  });
+}
+
+// ── Hero stats
+function updateStats() {
+  const now = new Date();
+  const upcoming = allEvents.filter(ev => parseLocalDate(ev.event_date) >= now && ev.is_active);
+  const thisMonth = upcoming.filter(ev => {
+    const d = parseLocalDate(ev.event_date);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  });
+  const freeCount = upcoming.filter(ev => (ev.price || '').toLowerCase().startsWith('free'));
+  document.getElementById('stat-month').textContent    = thisMonth.length;
+  document.getElementById('stat-upcoming').textContent = upcoming.length;
+  document.getElementById('stat-free').textContent     = freeCount.length;
+}
+
+// ── Main calendar (month view)
 function renderCalendar() {
   const grid = document.getElementById('cal-grid');
   if (!grid) return;
   grid.innerHTML = '';
 
-  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const multiDayMap = buildMultiDayMap(allEvents);
+  const firstDay    = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-  const daysInPrev = new Date(currentYear, currentMonth, 0).getDate();
-  const today = new Date();
+  const daysInPrev  = new Date(currentYear, currentMonth, 0).getDate();
+  const today       = new Date();
+  const monthEvs    = filteredForMonth(currentYear, currentMonth);
 
-  // Prev month days
+  // Build day → events lookup
+  const byDay = {};
+  monthEvs.forEach(ev => {
+    const d = parseLocalDate(ev.event_date).getDate();
+    if (!byDay[d]) byDay[d] = [];
+    byDay[d].push(ev);
+  });
+
+  // Prev month filler
   for (let i = firstDay - 1; i >= 0; i--) {
     const cell = document.createElement('div');
     cell.className = 'cal-cell other-month';
@@ -889,28 +787,31 @@ function renderCalendar() {
     grid.appendChild(cell);
   }
 
-  // Current month
+  // Current month days
   for (let d = 1; d <= daysInMonth; d++) {
     const cell = document.createElement('div');
-    const isToday = (d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear());
+    const isToday = d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
     cell.className = 'cal-cell' + (isToday ? ' today' : '');
     cell.onclick = () => selectDay(cell, d);
 
     let html = `<div class="cal-date">${d}</div>`;
-    const dayEvents = events.filter(e => e.day === d);
-    const show = dayEvents.slice(0, 2);
+    const dayEvs = byDay[d] || [];
+    const show   = dayEvs.slice(0, 2);
+
     show.forEach(ev => {
-      html += `<div class="cal-event ${ev.type}">${ev.label}</div>`;
+      const md = multiDayMap[ev.id];
+      const dayBadge = md ? ` <span style="opacity:0.7;font-size:9px;">Day ${md.dayNum}/${md.totalDays}</span>` : '';
+      html += `<div class="cal-event ${ev.event_type}" title="${ev.title}">${typeEmoji(ev.event_type)} ${ev.title}${dayBadge}</div>`;
     });
-    if (dayEvents.length > 2) {
-      html += `<div class="cal-more">+${dayEvents.length - 2} more</div>`;
+    if (dayEvs.length > 2) {
+      html += `<div class="cal-more">+${dayEvs.length - 2} more</div>`;
     }
     cell.innerHTML = html;
     grid.appendChild(cell);
   }
 
-  // Next month fill
-  const total = firstDay + daysInMonth;
+  // Next month filler
+  const total     = firstDay + daysInMonth;
   const remaining = total % 7 === 0 ? 0 : 7 - (total % 7);
   for (let d = 1; d <= remaining; d++) {
     const cell = document.createElement('div');
@@ -919,9 +820,199 @@ function renderCalendar() {
     grid.appendChild(cell);
   }
 
-  document.getElementById('month-display').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+  document.getElementById('month-display').textContent  = `${monthNames[currentMonth]} ${currentYear}`;
+  renderMiniCal();
 }
 
+// ── Mini calendar (sidebar)
+function renderMiniCal() {
+  const grid = document.getElementById('mini-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  document.getElementById('mini-cal-month').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+  const monthEvs   = filteredForMonth(currentYear, currentMonth);
+  const eventDays  = new Set(monthEvs.map(ev => parseLocalDate(ev.event_date).getDate()));
+  const firstDay   = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth= new Date(currentYear, currentMonth + 1, 0).getDate();
+  const daysInPrev = new Date(currentYear, currentMonth, 0).getDate();
+  const today      = new Date();
+
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const el = document.createElement('div');
+    el.className = 'mini-day other';
+    el.textContent = daysInPrev - i;
+    grid.appendChild(el);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    const isToday = d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+    el.className = 'mini-day' + (isToday ? ' today' : '') + (eventDays.has(d) ? ' has-event' : '');
+    el.textContent = d;
+    el.onclick = () => {
+      grid.querySelectorAll('.mini-day').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+    };
+    grid.appendChild(el);
+  }
+  const total     = firstDay + daysInMonth;
+  const remaining = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let d = 1; d <= remaining; d++) {
+    const el = document.createElement('div');
+    el.className = 'mini-day other';
+    el.textContent = d;
+    grid.appendChild(el);
+  }
+}
+
+// ── List view
+function renderList() {
+  const container = document.getElementById('list-view-inner');
+  if (!container) return;
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const multiDayMap = buildMultiDayMap(allEvents);
+
+  // Filter to upcoming events in current view month (or future if no filter month events)
+  let evs = allEvents.filter(ev => {
+    const typeMatch = activeFilter === 'all' || ev.event_type === activeFilter;
+    const d = parseLocalDate(ev.event_date);
+    return typeMatch && ev.is_active && d >= today;
+  });
+
+  // Sort ascending
+  evs.sort((a, b) => a.event_date.localeCompare(b.event_date));
+
+  if (evs.length === 0) {
+    container.innerHTML = `
+      <div style="padding:60px 32px;text-align:center;color:var(--gray);">
+        <div style="font-size:40px;margin-bottom:12px;">📅</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:8px;color:var(--charcoal);">No events found</div>
+        <div style="font-size:14px;">Try a different filter or check back soon — more events are added regularly.</div>
+      </div>`;
+    return;
+  }
+
+  // Group by date
+  const byDate = {};
+  evs.forEach(ev => {
+    if (!byDate[ev.event_date]) byDate[ev.event_date] = [];
+    byDate[ev.event_date].push(ev);
+  });
+
+  let html = '';
+  Object.keys(byDate).sort().forEach(dateStr => {
+    const dt      = parseLocalDate(dateStr);
+    const dayNum  = dt.getDate();
+    const dayName = dayNames[dt.getDay()];
+    const monName = monthNames[dt.getMonth()];
+    const yr      = dt.getFullYear();
+
+    html += `
+      <div class="list-day-group">
+        <div class="list-day-header">
+          <div class="list-day-num">${dayNum}</div>
+          <div class="list-day-info">
+            <div class="list-day-name">${dayName}</div>
+            <div class="list-day-month">${monName} ${yr}</div>
+          </div>
+        </div>`;
+
+    byDate[dateStr].forEach(ev => {
+      const tc     = typeColor(ev.event_type);
+      const te     = typeEmoji(ev.event_type);
+      const tl     = typeLabel(ev.event_type);
+      const t1     = fmt12(ev.start_time);
+      const t2     = fmt12(ev.end_time);
+      const timeStr= t1 ? (t2 ? `${t1} – ${t2}` : `Starts ${t1}`) : 'All day';
+      const priceColor = (ev.price || '').toLowerCase().startsWith('free') ? 'color:var(--ev-market)' : '';
+      const moreLink   = ev.url ? `<a href="${ev.url}" target="_blank" rel="noopener" class="lec-rsvp" style="text-decoration:none;display:block;text-align:center;">More Info →</a>` : `<button class="lec-rsvp">I'm Going →</button>`;
+
+      // Multi-day badge
+      const md = multiDayMap[ev.id];
+      const mdBadge = md ? `<span style="display:inline-block;margin-left:8px;padding:2px 8px;border-radius:100px;background:rgba(196,98,45,0.12);color:var(--orange);font-size:11px;font-weight:700;">Day ${md.dayNum} of ${md.totalDays}</span>` : '';
+
+      html += `
+        <div class="list-event-card">
+          <div class="lec-color" style="background:${tc};"></div>
+          <div class="lec-photo">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            ${ev.city}
+          </div>
+          <div class="lec-body">
+            <div class="lec-type" style="color:${tc};">${te} ${tl}${mdBadge}</div>
+            <div class="lec-title">${ev.title}</div>
+            <div class="lec-desc">${ev.description || ''}</div>
+            <div class="lec-meta">
+              <span class="lec-meta-item">🕗 ${timeStr}</span>
+              <span class="lec-meta-item">📍 ${ev.location_name || ev.city}</span>
+              ${ev.organizer ? `<span class="lec-meta-item">👤 ${ev.organizer}</span>` : ''}
+            </div>
+          </div>
+          <div class="lec-side">
+            <div>
+              <div class="lec-price" style="${priceColor}">${ev.price || 'Free'}</div>
+              ${ev.price_detail ? `<div class="lec-price-sub">${ev.price_detail}</div>` : ''}
+            </div>
+            <div class="lec-actions">
+              ${moreLink}
+              <button class="lec-save" onclick="this.textContent='❤️ Saved'">♡ Save</button>
+            </div>
+          </div>
+        </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// ── Sidebar featured event
+function renderFeatured() {
+  const card = document.getElementById('featured-card');
+  if (!card) return;
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const featured = allEvents.find(ev =>
+    ev.is_featured && ev.is_active && parseLocalDate(ev.event_date) >= today
+  );
+  if (!featured) { card.style.display = 'none'; return; }
+
+  card.style.display = 'block';
+  const tc = typeColor(featured.event_type);
+  const te = typeEmoji(featured.event_type);
+  const tl = typeLabel(featured.event_type);
+  const t1 = fmt12(featured.start_time);
+  const dt = parseLocalDate(featured.event_date);
+  const dateStr = `${monthNames[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`;
+
+  document.getElementById('fe-type').innerHTML  = `${te} ${tl}`;
+  document.getElementById('fe-type').style.color = tc;
+  document.getElementById('fe-title').textContent = featured.title;
+  document.getElementById('fe-photo-label').textContent = featured.city;
+
+  const meta = document.getElementById('fe-meta');
+  meta.innerHTML = `
+    <span>📅 ${dateStr}${t1 ? ' · ' + t1 : ''}</span>
+    <span>📍 ${featured.location_name || featured.city}</span>
+    <span>🎫 ${featured.price || 'Free'}${featured.price_detail ? ' · ' + featured.price_detail : ''}</span>`;
+
+  const link = document.getElementById('fe-rsvp-link');
+  if (featured.url) { link.href = featured.url; link.style.display = 'block'; }
+  else link.style.display = 'none';
+}
+
+// ── All renders
+function renderAll() {
+  renderCalendar();
+  renderList();
+  renderFeatured();
+  updateStats();
+}
+
+// ── Navigation
 function selectDay(cell, d) {
   document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('selected'));
   cell.classList.add('selected');
@@ -930,21 +1021,21 @@ function selectDay(cell, d) {
 function changeMonth(dir) {
   currentMonth += dir;
   if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-  renderCalendar();
+  if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+  renderAll();
 }
 
 function goToday() {
   const now = new Date();
   currentMonth = now.getMonth();
-  currentYear = now.getFullYear();
-  renderCalendar();
+  currentYear  = now.getFullYear();
+  renderAll();
 }
 
 function setView(view, btn) {
-  document.getElementById('month-view').style.display = view === 'month' ? 'block' : 'none';
-  document.getElementById('week-view').style.display = view === 'week' ? 'block' : 'none';
-  document.getElementById('list-view').style.display = view === 'list' ? 'flex' : 'none';
+  document.getElementById('month-view').style.display = view === 'month' ? 'block'  : 'none';
+  document.getElementById('week-view').style.display  = view === 'week'  ? 'block'  : 'none';
+  document.getElementById('list-view').style.display  = view === 'list'  ? 'flex'   : 'none';
   document.querySelectorAll('.vt-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   localStorage.setItem('815local_cal_view', view);
@@ -954,13 +1045,18 @@ function toggleType(el) {
   if (el.dataset.type === 'all') {
     document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
+    activeFilter = 'all';
   } else {
     document.querySelector('[data-type="all"]').classList.remove('active');
     el.classList.toggle('active');
     if (!document.querySelector('.type-pill.active')) {
       document.querySelector('[data-type="all"]').classList.add('active');
+      activeFilter = 'all';
+    } else {
+      activeFilter = el.dataset.type;
     }
   }
+  renderAll();
 }
 
 function activateTweak(el) {
@@ -977,7 +1073,7 @@ function setAccent(color, el) {
 
 // Tweaks toggle
 window.addEventListener('message', e => {
-  if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').style.display = 'block';
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').style.display = 'block';
   if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').style.display = 'none';
 });
 window.parent.postMessage({ type: '__edit_mode_available' }, '*');
@@ -989,17 +1085,40 @@ window.addEventListener('scroll', () => {
 
 // Restore view + scroll
 const savedView = localStorage.getItem('815local_cal_view') || 'month';
-const btns = document.querySelectorAll('.vt-btn');
-if (savedView === 'month') setView('month', btns[0]);
-else if (savedView === 'week') setView('week', btns[1]);
-else setView('list', btns[2]);
+const vtBtns    = document.querySelectorAll('.vt-btn');
+if      (savedView === 'month') setView('month', vtBtns[0]);
+else if (savedView === 'week')  setView('week',  vtBtns[1]);
+else                            setView('list',  vtBtns[2]);
 
 const savedScroll = localStorage.getItem('815local_cal_scroll');
 if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
 window.addEventListener('scroll', () => localStorage.setItem('815local_cal_scroll', window.scrollY), { passive: true });
 
-// Init
-renderCalendar();
+// ── Bootstrap: load from Supabase then render
+async function loadEvents() {
+  const { data, error } = await db
+    .from('events')
+    .select('*')
+    .eq('is_active', true)
+    .order('event_date', { ascending: true });
+
+  if (error) {
+    console.error('Failed to load events:', error);
+    document.getElementById('list-view-inner').innerHTML = `
+      <div style="padding:48px;text-align:center;color:var(--gray);">
+        <div style="font-size:14px;">Could not load events. Please try again later.</div>
+      </div>`;
+    return;
+  }
+
+  allEvents = data || [];
+  renderAll();
+}
+
+// Initialise to current month and kick off fetch
+currentYear  = new Date().getFullYear();
+currentMonth = new Date().getMonth();
+loadEvents();
 </script>
 
 <!-- ══ MOBILE BOTTOM NAV ══ -->
