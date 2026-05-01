@@ -617,9 +617,10 @@ function renderBusiness(b) {
 
   // Gallery — use photos[] array first (from Google Places scraper), fall back to image_url
   const photos = (b.photos && b.photos.length) ? b.photos : (b.image_url ? [b.image_url] : []);
-  const mainCell = document.getElementById('gallery-main');
+  const gallerySection = document.querySelector('.gallery');
 
   if (photos.length > 0) {
+    const mainCell = document.getElementById('gallery-main');
     mainCell.style.backgroundImage = `url('${photos[0]}')`;
     mainCell.style.backgroundSize = 'cover';
     mainCell.style.backgroundPosition = 'center';
@@ -641,11 +642,8 @@ function renderBusiness(b) {
       }
     });
   } else {
-    document.getElementById('gallery-biz-name').textContent = b.name;
-    document.getElementById('gallery-all-btn').onclick = () => {
-      const url = prompt('Paste a photo URL for this business (e.g. from Google Maps, Yelp, or the business website):');
-      if (url) savePhotoUrl(url);
-    };
+    // No photos — hide the gallery section entirely
+    if (gallerySection) gallerySection.style.display = 'none';
   }
 
   // Header

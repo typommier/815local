@@ -371,14 +371,16 @@ function renderCard(b) {
   const rating = parseFloat(b.avg_rating) || 0;
   const count = b.review_count || 0;
   const features = (b.features || []).slice(0, 3);
-  const photoHtml = b.image_url
-    ? `<div style="width:100%;height:100%;background:url('${b.image_url}') center/cover no-repeat;"></div>`
-    : `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>${b.name}`;
+  const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+  const photoHtml = photoSrc
+    ? `<div style="width:100%;height:100%;background:url('${photoSrc}') center/cover no-repeat;"></div>`
+    : '';
   return `
     <a href="815local-business.html?id=${b.id}" class="biz-list-card ${b.is_featured ? 'featured' : ''}">
-      <div class="blc-photo" style="width:${b.is_featured?'260':'220'}px;${b.image_url ? 'padding:0;' : ''}">
+      ${photoSrc ? `<div class="blc-photo" style="width:${b.is_featured?'260':'220'}px;padding:0;">
         ${photoHtml}
         ${b.is_featured ? '<div class="blc-badge">⭐ Featured</div>' : ''}
+      </div>` : (b.is_featured ? '<div class="blc-photo" style="width:260px;"><div class="blc-badge">⭐ Featured</div></div>' : '')}
       </div>
       <div class="blc-body">
         <div class="blc-main">
@@ -510,7 +512,7 @@ window.addEventListener('scroll', () => {
 (function applyUrlParams() {
   const params = new URLSearchParams(window.location.search);
   const cat = params.get('category');
-  const search = params.get('search') || params.get('q');
+  const search = params.get('search');
 
   if (cat) {
     const pill = [...document.querySelectorAll('.cat-pill')].find(p => p.dataset.cat === cat);
