@@ -117,21 +117,6 @@ img { display: block; max-width: 100%; }
   cursor: pointer;
 }
 .nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.08); }
-.nav-search {
-  display: flex; align-items: center;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 100px;
-  padding: 8px 16px;
-  gap: 10px;
-  cursor: text;
-  transition: all 0.2s;
-  margin-right: 16px;
-  min-width: 220px;
-}
-.nav-search:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
-.nav-search svg { opacity: 0.5; flex-shrink: 0; }
-.nav-search span { font-size: 13px; color: rgba(255,255,255,0.45); }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
 .nav-signin {
   font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.65);
@@ -633,7 +618,6 @@ footer {
 }
 @media (max-width: 680px) {
   .nav-links { display: none; }
-  .nav-search { display: none; }
   .hero-title { font-size: 36px; }
   .search-bar { flex-direction: column; border-radius: var(--radius); }
   .search-seg:not(:last-child) { border-right: none; border-bottom: 1px solid var(--gray-light); }
@@ -689,7 +673,7 @@ footer {
   /* Tighter hero text */
   .hero-title { font-size: 36px !important; }
   /* Hide desktop-only elements */
-  .nav-links, .nav-search-bar, .nav-search { display: none !important; }
+  .nav-links { display: none !important; }
 }
 
 
@@ -923,10 +907,6 @@ footer {
         <a class="nav-link active" href="index.html">Home</a>
         <a class="nav-link" href="815local-directory.html">Directory</a>
         <a class="nav-link" href="815local-events.html">Events</a>
-      </div>
-      <div class="nav-search" onclick="document.getElementById('nav-search-input').focus()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input id="nav-search-input" type="text" placeholder="Search 815local..." style="background:transparent;border:none;outline:none;color:white;font-family:inherit;font-size:14px;width:100%;" onkeydown="if(event.key==='Enter')navSearch(this.value)" />
       </div>
       <div class="nav-actions">
         <span class="nav-signin" id="nav-signin-btn" onclick="openAuthModal('signin')">Sign In</span>
@@ -1481,12 +1461,6 @@ window.addEventListener('scroll', () => {
 const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
 const _authDb = (typeof db !== 'undefined') ? db : supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// ── NAV SEARCH ──
-function navSearch(val) {
-  if (!val.trim()) return;
-  window.location.href = '815local-directory.html?q=' + encodeURIComponent(val.trim());
-}
 
 // ── MODAL CONTROLS ──
 function openAuthModal(view) {
