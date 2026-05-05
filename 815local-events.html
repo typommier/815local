@@ -172,8 +172,7 @@ a { color: inherit; text-decoration: none; }
 }
 .list-event-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: transparent; }
 .lec-color { width: 6px; flex-shrink: 0; }
-.lec-photo { width: 160px; flex-shrink: 0; background: var(--cream-dark); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; color: var(--charcoal-light); font-size: 12px; }
-.lec-photo svg { opacity: 0.2; }
+.lec-photo { width: 160px; flex-shrink: 0; overflow: hidden; }
 .lec-body { flex: 1; padding: 18px 20px; }
 .lec-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
 .lec-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 6px; }
@@ -936,10 +935,7 @@ function renderList() {
       html += `
         <div class="list-event-card">
           <div class="lec-color" style="background:${tc};"></div>
-          <div class="lec-photo">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-            ${ev.city}
-          </div>
+${ev.image_url ? `<div class="lec-photo" style="padding:0;overflow:hidden;"><div style="width:100%;height:100%;background:url('${ev.image_url}') center/cover no-repeat;"></div></div>` : ''}
           <div class="lec-body">
             <div class="lec-type" style="color:${tc};">${te} ${tl}${mdBadge}</div>
             <div class="lec-title">${ev.title}</div>
