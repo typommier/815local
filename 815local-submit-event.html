@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit an Event — 815local</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-light:  #E07A48;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --shadow-sm:     0 2px 8px rgba(30,27,24,0.08);
+  --shadow-md:     0 6px 24px rgba(30,27,24,0.12);
+  --shadow-lg:     0 16px 48px rgba(30,27,24,0.18);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--white); color: var(--charcoal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; border: none; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover { background: var(--orange-light); }
+.btn-outline { background: transparent; color: var(--charcoal); border: 2px solid var(--gray-light); }
+.btn-outline:hover { border-color: var(--charcoal); }
+
+/* ── NAV ── */
+#main-nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.nav-inner { display: flex; align-items: center; height: 110px; }
+.nav-logo { flex-shrink: 0; margin-right: 36px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); transition: filter 0.2s; }
+.nav-logo img:hover { filter: drop-shadow(0 4px 16px rgba(196,98,45,0.55)); }
+.nav-links { display: flex; align-items: center; gap: 4px; margin-right: auto; }
+.nav-link { padding: 8px 16px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); border-radius: 100px; transition: all 0.15s; cursor: pointer; }
+.nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.08); }
+.nav-signin { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.65); padding: 8px 16px; cursor: pointer; }
+.nav-signin:hover { color: white; }
+
+/* ── HERO ── */
+.page-hero { background: var(--charcoal); padding: 48px 0 44px; position: relative; overflow: hidden; }
+.page-hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(196,98,45,0.14) 0%, transparent 70%); pointer-events: none; }
+.hero-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 900; color: white; margin-bottom: 12px; line-height: 1.1; }
+.hero-title em { color: var(--orange); font-style: italic; }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.5); max-width: 520px; line-height: 1.7; }
+
+/* ── FORM LAYOUT ── */
+.form-section { padding: 56px 0 80px; }
+.form-grid { display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: start; }
+
+/* ── FORM CARD ── */
+.form-card { background: white; border-radius: 16px; box-shadow: var(--shadow-md); overflow: hidden; }
+.form-card-header { padding: 28px 32px 24px; border-bottom: 1px solid var(--cream-dark); }
+.form-card-header h2 { font-size: 22px; font-weight: 700; color: var(--charcoal); }
+.form-card-header p { font-size: 13px; color: var(--gray); margin-top: 4px; }
+.form-body { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+label { font-size: 13px; font-weight: 600; color: var(--charcoal-mid); }
+label .req { color: var(--orange); margin-left: 2px; }
+label .opt { font-weight: 400; color: var(--gray); font-size: 12px; margin-left: 4px; }
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="url"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: var(--radius-sm);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  color: var(--charcoal);
+  background: var(--white);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(196,98,45,0.1);
+}
+input::placeholder, textarea::placeholder { color: var(--gray); }
+textarea { resize: vertical; min-height: 100px; }
+select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239B8C82' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+.field-hint { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+.section-divider { border: none; border-top: 1px solid var(--cream-dark); margin: 4px 0; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: -8px; }
+
+/* Multi-day toggle */
+.toggle-row { display: flex; align-items: center; gap: 12px; }
+.toggle-switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-track { position: absolute; inset: 0; background: var(--gray-light); border-radius: 100px; cursor: pointer; transition: background 0.2s; }
+.toggle-track::after { content: ''; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: white; transition: transform 0.2s; }
+.toggle-switch input:checked + .toggle-track { background: var(--orange); }
+.toggle-switch input:checked + .toggle-track::after { transform: translateX(18px); }
+.toggle-label { font-size: 13px; font-weight: 500; color: var(--charcoal-mid); cursor: pointer; }
+
+#end-date-row { display: none; }
+
+/* Submit button */
+.submit-row { display: flex; align-items: center; gap: 16px; padding-top: 8px; }
+.submit-btn { flex: 1; padding: 14px; font-size: 15px; font-weight: 700; background: var(--orange); color: white; border: none; border-radius: 100px; cursor: pointer; transition: background 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
+.submit-btn:hover { background: var(--orange-light); }
+.submit-btn:disabled { background: var(--gray-light); cursor: not-allowed; }
+
+/* ── SUCCESS STATE ── */
+#success-state { display: none; flex-direction: column; align-items: center; text-align: center; padding: 64px 32px; gap: 16px; }
+#success-state .success-icon { font-size: 56px; }
+#success-state h3 { font-size: 26px; color: var(--charcoal); }
+#success-state p { font-size: 14px; color: var(--gray); max-width: 340px; line-height: 1.6; }
+
+/* ── ERROR BANNER ── */
+.error-banner { background: #FEE2E2; border: 1px solid #FECACA; color: #991B1B; border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; display: none; }
+
+/* ── SIDEBAR ── */
+.sidebar { display: flex; flex-direction: column; gap: 20px; }
+.sidebar-card { background: white; border-radius: 16px; box-shadow: var(--shadow-sm); padding: 24px; }
+.sidebar-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--charcoal); }
+.sidebar-card p, .sidebar-card li { font-size: 13px; color: var(--charcoal-light); line-height: 1.6; }
+.sidebar-card ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.tip-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+.tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.type-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.type-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--charcoal-mid); }
+.type-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── FOOTER ── */
+footer { background: var(--charcoal); color: rgba(255,255,255,0.5); padding: 40px 0; margin-top: 0; }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: white; }
+.footer-links { display: flex; gap: 24px; font-size: 13px; }
+.footer-links a:hover { color: white; }
+.footer-copy { font-size: 12px; }
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .sidebar { order: -1; }
+  .sidebar-card:not(:first-child) { display: none; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 16px; }
+  .nav-links { display: none; }
+  .hero-title { font-size: 30px; }
+  .form-body { padding: 20px; }
+  .field-row, .field-row-3 { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local">
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Explore</a>
+        <a class="nav-link" href="815local-directory.html">Browse</a>
+        <a class="nav-link active" href="815local-events.html">Events</a>
+        <a class="nav-link" href="#">Blog</a>
+        <a class="nav-link" href="#">About</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="nav-signin">Sign In</span>
+        <a class="btn btn-primary" href="#" style="font-size:13px;padding:9px 18px;">+ List Business</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="page-hero">
+  <div class="container">
+    <div class="hero-eyebrow">Community Events</div>
+    <h1 class="hero-title">Submit your <em>event.</em></h1>
+    <p class="hero-sub">List it for free and reach thousands of neighbors across Minooka, Channahon, and Shorewood.</p>
+  </div>
+</div>
+
+<!-- ══ FORM SECTION ══ -->
+<div class="form-section">
+  <div class="container">
+    <div class="form-grid">
+
+      <!-- MAIN FORM -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <h2>Event Details</h2>
+          <p>All submissions are reviewed before going live. Fields marked <span style="color:var(--orange);">*</span> are required.</p>
+        </div>
+        <div class="form-body" id="form-body">
+
+          <div class="error-banner" id="error-banner"></div>
+
+          <!-- Event name -->
+          <div class="field-group">
+            <label for="title">Event Name <span class="req">*</span></label>
+            <input type="text" id="title" placeholder="e.g. Minooka Farmers Market" maxlength="120">
+          </div>
+
+          <!-- Type -->
+          <div class="field-group">
+            <label for="event_type">Event Type <span class="req">*</span></label>
+            <select id="event_type">
+              <option value="" disabled selected>Select a type…</option>
+              <option value="Music">🎵 Music</option>
+              <option value="Food">🍽️ Food & Drink</option>
+              <option value="Arts">🎨 Arts & Culture</option>
+              <option value="Market">🌿 Market</option>
+              <option value="Community">🤝 Community</option>
+              <option value="Festival">🎉 Festival</option>
+              <option value="Sport">🏆 Sport</option>
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="field-group">
+            <label for="description">Description <span class="opt">(optional)</span></label>
+            <textarea id="description" placeholder="Tell people what to expect — highlights, activities, who it's for…" rows="4"></textarea>
+          </div>
+
+          <hr class="section-divider">
+          <div class="section-label">Date &amp; Time</div>
+
+          <!-- Date -->
+          <div class="field-row">
+            <div class="field-group">
+              <label for="event_date">Date <span class="req">*</span></label>
+              <input type="date" id="event_date">
+            </div>
+            <div class="field-group" id="end-date-row">
+              <label for="end_date">End Date</label>
+              <input type="date" id="end_date">
+            </div>
+          </div>
+
+          <!-- Multi-day toggle -->
+          <div class="field-group">
+            <div class="toggle-row">
+              <label class="toggle-switch">
+                <input type="checkbox" id="multiday-toggle">
+                <span class="toggle-track"></span>
+              </label>
+              <span class="toggle-label" onclick="document.getElementById('multiday-toggle').click()">This is a multi-day event</span>
+            </div>
+          </div>
+
+          <!-- Times -->
+          <div class="field-row">
+            <div class="field-group">
+              <label for="start_time">Start Time <span class="opt">(optional)</span></label>
+              <input type="time" id="start_time">
+            </div>
+            <div class="field-group">
+              <label for="end_time">End Time <span class="opt">(optional)</span></label>
+              <input type="time" id="end_time">
+            </div>
+          </div>
+
+          <hr class="section-divider">
+          <div class="section-label">Location</div>
+
+          <!-- Location name -->
+          <div class="field-group">
+            <label for="location_name">Venue / Location Name <span class="opt">(optional)</span></label>
+            <input type="text" id="location_name" placeholder="e.g. Channahon Community Center">
+          </div>
+
+          <!-- Address + City -->
+          <div class="field-row">
+            <div class="field-group">
+              <label for="address">Street Address <span class="opt">(optional)</span></label>
+              <input type="text" id="address" placeholder="123 Main St">
+            </div>
+            <div class="field-group">
+              <label for="city">City <span class="req">*</span></label>
+              <select id="city">
+                <option value="Minooka">Minooka</option>
+                <option value="Channahon">Channahon</option>
+                <option value="Shorewood">Shorewood</option>
+              </select>
+            </div>
+          </div>
+
+          <hr class="section-divider">
+          <div class="section-label">More Info</div>
+
+          <!-- Price + Organizer -->
+          <div class="field-row">
+            <div class="field-group">
+              <label for="price">Admission / Price <span class="opt">(optional)</span></label>
+              <input type="text" id="price" placeholder="Free, $5, $10–$20…">
+              <span class="field-hint">Leave blank to show "Free"</span>
+            </div>
+            <div class="field-group">
+              <label for="organizer">Organizer <span class="opt">(optional)</span></label>
+              <input type="text" id="organizer" placeholder="Your name or org">
+            </div>
+          </div>
+
+          <!-- URL -->
+          <div class="field-group">
+            <label for="url">Event Website or Ticket Link <span class="opt">(optional)</span></label>
+            <input type="url" id="url" placeholder="https://…">
+          </div>
+
+          <!-- Submit -->
+          <div class="submit-row">
+            <button class="submit-btn" id="submit-btn" onclick="submitEvent()">Submit Event →</button>
+          </div>
+
+        </div><!-- /form-body -->
+
+        <!-- SUCCESS STATE -->
+        <div id="success-state">
+          <div class="success-icon">🎉</div>
+          <h3>Event submitted!</h3>
+          <p>Thanks for contributing to the community calendar. We'll review it and get it listed shortly.</p>
+          <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;justify-content:center;">
+            <a href="815local-events.html" class="btn btn-primary">View Events Calendar</a>
+            <button class="btn btn-outline" onclick="resetForm()">Submit Another</button>
+          </div>
+        </div>
+
+      </div><!-- /form-card -->
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <div class="sidebar-card">
+          <h3>📋 What happens next?</h3>
+          <div class="tip-row">
+            <span class="tip-icon">✅</span>
+            <p>Your event is submitted and held for review — usually within 24 hours.</p>
+          </div>
+          <div class="tip-row">
+            <span class="tip-icon">📅</span>
+            <p>Once approved, it appears on the public events calendar for all three towns.</p>
+          </div>
+          <div class="tip-row">
+            <span class="tip-icon">🆓</span>
+            <p>Listing is always free. No account needed.</p>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>🎨 Event types</h3>
+          <div class="type-grid">
+            <div class="type-item"><div class="type-dot" style="background:#7B3FA0;"></div> Music</div>
+            <div class="type-item"><div class="type-dot" style="background:#C4622D;"></div> Food &amp; Drink</div>
+            <div class="type-item"><div class="type-dot" style="background:#1A6B9A;"></div> Arts &amp; Culture</div>
+            <div class="type-item"><div class="type-dot" style="background:#2D6A4F;"></div> Market</div>
+            <div class="type-item"><div class="type-dot" style="background:#8B6914;"></div> Community</div>
+            <div class="type-item"><div class="type-dot" style="background:#C4622D;"></div> Festival</div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>💡 Tips for a great listing</h3>
+          <ul>
+            <li>Use the event's official name</li>
+            <li>Include start <em>and</em> end times when you know them</li>
+            <li>Add a venue name so locals recognize the spot</li>
+            <li>Link to a ticket page or Facebook event for more details</li>
+          </ul>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">815local</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="815local-directory.html">Directory</a>
+        <a href="815local-events.html">Events</a>
+        <a href="815local-submit-business.html">List a Business</a>
+      </div>
+      <div class="footer-copy">© 2026 815local.com · Minooka, Channahon & Shorewood</div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="815local-analytics-tracker.js"></script>
+<script>
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Multi-day toggle
+document.getElementById('multiday-toggle').addEventListener('change', function() {
+  document.getElementById('end-date-row').style.display = this.checked ? 'flex' : 'none';
+});
+
+async function submitEvent() {
+  const btn = document.getElementById('submit-btn');
+  const errorBanner = document.getElementById('error-banner');
+  errorBanner.style.display = 'none';
+
+  // Gather values
+  const title      = document.getElementById('title').value.trim();
+  const event_type = document.getElementById('event_type').value;
+  const event_date = document.getElementById('event_date').value;
+  const city       = document.getElementById('city').value;
+
+  // Validate required fields
+  if (!title) { showError('Please enter an event name.'); return; }
+  if (!event_type) { showError('Please select an event type.'); return; }
+  if (!event_date) { showError('Please select a date.'); return; }
+
+  const isMultiDay = document.getElementById('multiday-toggle').checked;
+  const end_date   = isMultiDay ? document.getElementById('end_date').value : null;
+  if (isMultiDay && end_date && end_date < event_date) {
+    showError('End date must be on or after the start date.'); return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const payload = {
+    title,
+    event_type,
+    event_date,
+    city,
+    is_active: false, // held for review
+    description:   document.getElementById('description').value.trim() || null,
+    start_time:    document.getElementById('start_time').value || null,
+    end_time:      document.getElementById('end_time').value   || null,
+    location_name: document.getElementById('location_name').value.trim() || null,
+    address:       document.getElementById('address').value.trim()       || null,
+    price:         document.getElementById('price').value.trim()         || 'Free',
+    organizer:     document.getElementById('organizer').value.trim()     || null,
+    url:           document.getElementById('url').value.trim()           || null,
+  };
+
+  // If multi-day, generate a shared group_id and insert one row per date
+  if (isMultiDay && end_date && end_date > event_date) {
+    const dates = getDatesInRange(event_date, end_date);
+    const group_id = crypto.randomUUID();
+    const rows = dates.map(d => ({ ...payload, event_date: d, group_id }));
+    const { error } = await db.from('events').insert(rows);
+    if (error) { showError('Something went wrong. Please try again.'); btn.disabled = false; btn.textContent = 'Submit Event →'; return; }
+  } else {
+    const { error } = await db.from('events').insert([payload]);
+    if (error) { showError('Something went wrong. Please try again.'); btn.disabled = false; btn.textContent = 'Submit Event →'; return; }
+  }
+
+  // Show success
+  document.getElementById('form-body').style.display = 'none';
+  document.getElementById('success-state').style.display = 'flex';
+  document.querySelector('.form-card-header').style.display = 'none';
+}
+
+function showError(msg) {
+  const banner = document.getElementById('error-banner');
+  banner.textContent = msg;
+  banner.style.display = 'block';
+  banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function getDatesInRange(start, end) {
+  const dates = [];
+  let cur = new Date(start + 'T00:00:00');
+  const last = new Date(end + 'T00:00:00');
+  while (cur <= last) {
+    dates.push(cur.toISOString().split('T')[0]);
+    cur.setDate(cur.getDate() + 1);
+  }
+  return dates;
+}
+
+function resetForm() {
+  document.getElementById('form-body').style.display = 'flex';
+  document.getElementById('success-state').style.display = 'none';
+  document.querySelector('.form-card-header').style.display = 'block';
+  document.getElementById('title').value = '';
+  document.getElementById('event_type').value = '';
+  document.getElementById('event_date').value = '';
+  document.getElementById('description').value = '';
+  document.getElementById('start_time').value = '';
+  document.getElementById('end_time').value = '';
+  document.getElementById('location_name').value = '';
+  document.getElementById('address').value = '';
+  document.getElementById('price').value = '';
+  document.getElementById('organizer').value = '';
+  document.getElementById('url').value = '';
+  document.getElementById('multiday-toggle').checked = false;
+  document.getElementById('end-date-row').style.display = 'none';
+  document.getElementById('error-banner').style.display = 'none';
+  document.querySelector('.form-card-header').removeAttribute('style');
+}
+</script>
+</body>
+</html>
