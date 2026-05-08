@@ -416,13 +416,6 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
         <button class="month-arrow" onclick="changeMonth(1)">›</button>
       </div>
 
-      <!-- View toggle -->
-      <div class="view-toggle">
-        <button class="vt-btn active" onclick="setView('month',this)">Month</button>
-        <button class="vt-btn" onclick="setView('week',this)">Week</button>
-        <button class="vt-btn" onclick="setView('list',this)">List</button>
-      </div>
-
       <!-- Today button -->
       <button class="btn btn-outline" style="padding:8px 18px;font-size:13px;" onclick="goToday()">Today</button>
 
@@ -1080,7 +1073,7 @@ window.addEventListener('scroll', () => {
 });
 
 // Restore view + scroll
-const savedView = localStorage.getItem('815local_cal_view') || 'month';
+const savedView = localStorage.getItem('815local_cal_view') || 'list';
 const vtBtns    = document.querySelectorAll('.vt-btn');
 if      (savedView === 'month') setView('month', vtBtns[0]);
 else if (savedView === 'week')  setView('week',  vtBtns[1]);
