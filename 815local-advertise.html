@@ -324,22 +324,46 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="815local-analytics-tracker.js"></script>
 <script>
-function submitContact() {
-  const name     = document.getElementById('c-name').value.trim();
-  const biz      = document.getElementById('c-biz').value.trim();
-  const email    = document.getElementById('c-email').value.trim();
-  const interest = document.getElementById('c-interest').value;
-  const err      = document.getElementById('contact-error');
+const { createClient } = supabase;
+const db = createClient(
+  'https://kyneaettrynagavewefi.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
+);
+
+async function submitContact() {
+  const name    = document.getElementById('c-name').value.trim();
+  const biz     = document.getElementById('c-biz').value.trim();
+  const email   = document.getElementById('c-email').value.trim();
+  const phone   = document.getElementById('c-phone').value.trim();
+  const message = document.getElementById('c-message').value.trim();
+  const err     = document.getElementById('contact-error');
+  const btn     = document.querySelector('.submit-btn');
 
   err.style.display = 'none';
-  if (!name)     { err.textContent = 'Please enter your name.'; err.style.display = 'block'; return; }
-  if (!biz)      { err.textContent = 'Please enter your business name.'; err.style.display = 'block'; return; }
+  if (!name)                          { err.textContent = 'Please enter your name.'; err.style.display = 'block'; return; }
+  if (!biz)                           { err.textContent = 'Please enter your business name.'; err.style.display = 'block'; return; }
   if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; err.style.display = 'block'; return; }
-  if (!interest) { err.textContent = 'Please select what you\'re interested in.'; err.style.display = 'block'; return; }
 
-  // Show success — in production, wire this to an email service or Supabase table
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const { error } = await db.from('advertise_waitlist').insert([{
+    name, business: biz, email,
+    phone:   phone   || null,
+    message: message || null
+  }]);
+
+  if (error) {
+    err.textContent = 'Something went wrong. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Join the Waitlist →';
+    return;
+  }
+
   document.getElementById('form-inner').style.display = 'none';
   document.getElementById('form-success').style.display = 'flex';
 }
