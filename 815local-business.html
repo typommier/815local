@@ -565,8 +565,8 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
 <script>
 const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
-let db = null;
-try { const { createClient } = supabase; db = createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const params = new URLSearchParams(window.location.search);
 const bizId = params.get('id');
@@ -891,7 +891,7 @@ async function submitReview() {
     if (error) {
       // Rate limit errors come back from the RLS policy check
       if (error.message && error.message.includes('rate')) {
-        alert('You've submitted several reviews recently. Please wait a bit before submitting another.');
+        alert('You have submitted several reviews recently. Please wait a bit before submitting another.');
       } else {
         throw error;
       }
