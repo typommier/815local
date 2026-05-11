@@ -11,9 +11,11 @@
 <meta property="og:url" content="https://815local.com/815local-directory.html">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta property="og:site_name" content="815local">
+<link rel="canonical" href="https://815local.com/815local-directory.html">
+<link rel="icon" type="image/png" href="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -197,12 +199,13 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   <div class="container">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">
-        <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local">
+        <picture><source srcset="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
       </a>
       <div class="nav-links">
         <a class="nav-link" href="index.html">Home</a>
         <a class="nav-link active" href="815local-directory.html">Directory</a>
         <a class="nav-link" href="815local-events.html">Events</a>
+        <a class="nav-link" href="815local-profile.html">Profile</a>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
         <a href="815local-submit-business.html" class="btn btn-primary" style="font-size:13px;padding:9px 18px;">+ List Business</a>
@@ -309,7 +312,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   <div class="container">
     <div class="footer-grid">
       <div>
-        <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" class="footer-logo">
+        <picture><source srcset="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" class="footer-logo"></picture>
         <p class="footer-tagline">Your one-stop community hub for local business reviews, services, restaurants, and events in the 815 area.</p>
         <div class="footer-social">
           <div class="footer-social-btn">𝕏</div>
@@ -489,6 +492,15 @@ function applyFilters() {
   renderList(results);
 }
 
+function syncUrl() {
+  const params = new URLSearchParams();
+  if (activeCategory) params.set('category', activeCategory);
+  const q = document.getElementById('search-input').value.trim();
+  if (q) params.set('search', q);
+  const qs = params.toString();
+  history.replaceState(null, '', qs ? ('?' + qs) : location.pathname);
+}
+
 function setTab(el) {
   document.querySelectorAll('.dir-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -496,6 +508,7 @@ function setTab(el) {
   activeCategory = '';
   document.querySelectorAll('.cat-pill').forEach((p,i) => p.classList.toggle('active', i===0));
   applyFilters();
+  syncUrl();
 }
 
 function setCat(el) {
@@ -504,6 +517,7 @@ function setCat(el) {
   activeCategory = el.dataset.cat;
   document.getElementById('cat-display').textContent = el.dataset.cat || 'All Types';
   applyFilters();
+  syncUrl();
 }
 
 function setRating(el, val) {
@@ -529,9 +543,11 @@ function clearFilters() {
   document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('cat-display').textContent = 'All Types';
   applyFilters();
+  syncUrl();
 }
 
-document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Enter') applyFilters(); });
+document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Enter') { applyFilters(); syncUrl(); } });
+document.getElementById('search-input').addEventListener('input', () => syncUrl());
 window.addEventListener('scroll', () => {
   document.getElementById('main-nav').style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none';
 });
