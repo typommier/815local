@@ -73,6 +73,34 @@
     }
     #auth-gate h2 { font-size: 1.5rem; }
     #auth-gate p { color: var(--muted); }
+    .auth-form {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 380px;
+      text-align: left;
+    }
+    .auth-form label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.35rem; color: var(--charcoal); }
+    .auth-form input[type="email"],
+    .auth-form input[type="password"] {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9375rem;
+      font-family: inherit;
+      margin-bottom: 1rem;
+      background: var(--cream);
+      color: var(--charcoal);
+    }
+    .auth-form input:focus { outline: 2px solid var(--orange); border-color: transparent; }
+    .auth-form .auth-toggle { font-size: 0.85rem; color: var(--muted); margin-top: 1rem; text-align: center; }
+    .auth-form .auth-toggle span { color: var(--orange); cursor: pointer; font-weight: 600; }
+    .auth-form .auth-toggle span:hover { text-decoration: underline; }
+    .auth-error { color: var(--red); font-size: 0.85rem; margin-bottom: 0.75rem; display: none; }
+    .auth-success { color: var(--green); font-size: 0.85rem; margin-bottom: 0.75rem; display: none; }
     .btn-primary {
       background: var(--orange);
       color: #fff;
@@ -562,12 +590,24 @@
 
 <!-- AUTH GATE (shown when logged out) -->
 <div id="auth-gate" style="display:flex">
-  <div>
+  <div style="text-align:center;width:100%;max-width:380px;">
     <div style="font-size:3rem;margin-bottom:1rem">👤</div>
-    <h2>Sign in to view your profile</h2>
-    <p>Track your reviews, saved places, and community activity.</p>
-    <br>
-    <a href="815local-homepage.html#login" class="btn-primary">Sign In / Create Account</a>
+    <h2 id="auth-gate-title">Sign in to your account</h2>
+    <p style="margin-bottom:1.5rem">Track your reviews, saved places, and community activity.</p>
+    <div class="auth-form">
+      <div class="auth-error" id="auth-error"></div>
+      <div class="auth-success" id="auth-success"></div>
+      <label for="auth-email">Email</label>
+      <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" />
+      <div id="auth-password-wrap">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" placeholder="Password" autocomplete="current-password" />
+      </div>
+      <button class="btn-primary" id="auth-submit-btn" style="width:100%" onclick="handleAuthSubmit()">Sign In</button>
+      <div class="auth-toggle" id="auth-toggle">
+        Don't have an account? <span onclick="toggleAuthMode()">Create one</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -825,6 +865,77 @@
   let profileData = null;
   let reviewsData = [];
   let savedData = [];
+  let authMode = 'signin'; // 'signin' | 'signup'
+
+  // ─── AUTH FORM ───────────────────────────────────────────────────
+  function toggleAuthMode() {
+    authMode = authMode === 'signin' ? 'signup' : 'signin';
+    const isSignup = authMode === 'signup';
+    document.getElementById('auth-gate-title').textContent = isSignup ? 'Create your account' : 'Sign in to your account';
+    document.getElementById('auth-submit-btn').textContent = isSignup ? 'Create Account' : 'Sign In';
+    document.getElementById('auth-toggle').innerHTML = isSignup
+      ? 'Already have an account? <span onclick="toggleAuthMode()">Sign in</span>'
+      : 'Don\'t have an account? <span onclick="toggleAuthMode()">Create one</span>';
+    document.getElementById('auth-password-wrap').querySelector('input').autocomplete = isSignup ? 'new-password' : 'current-password';
+    clearAuthMessages();
+  }
+
+  function setAuthError(msg) {
+    const el = document.getElementById('auth-error');
+    el.textContent = msg;
+    el.style.display = msg ? 'block' : 'none';
+    document.getElementById('auth-success').style.display = 'none';
+  }
+
+  function setAuthSuccess(msg) {
+    const el = document.getElementById('auth-success');
+    el.textContent = msg;
+    el.style.display = msg ? 'block' : 'none';
+    document.getElementById('auth-error').style.display = 'none';
+  }
+
+  function clearAuthMessages() {
+    setAuthError('');
+    setAuthSuccess('');
+  }
+
+  async function handleAuthSubmit() {
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const btn = document.getElementById('auth-submit-btn');
+
+    if (!email || !password) { setAuthError('Please enter your email and password.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = authMode === 'signup' ? 'Creating account…' : 'Signing in…';
+    clearAuthMessages();
+
+    let result;
+    if (authMode === 'signup') {
+      result = await db.auth.signUp({ email, password });
+    } else {
+      result = await db.auth.signInWithPassword({ email, password });
+    }
+
+    btn.disabled = false;
+    btn.textContent = authMode === 'signup' ? 'Create Account' : 'Sign In';
+
+    if (result.error) {
+      setAuthError(result.error.message);
+      return;
+    }
+
+    if (authMode === 'signup' && !result.data.session) {
+      setAuthSuccess('Account created! Check your email to confirm your address, then sign in.');
+      return;
+    }
+
+    currentUser = result.data.session.user;
+    document.getElementById('signout-btn').style.display = 'inline';
+    await loadProfile();
+    await Promise.all([loadReviews(), loadSaved()]);
+    showProfilePage();
+  }
 
   // ─── INIT ────────────────────────────────────────────────────────
   async function init() {
