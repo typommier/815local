@@ -11,9 +11,11 @@
 <meta property="og:url" content="https://815local.com/815local-submit-business.html">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta property="og:site_name" content="815local">
+<link rel="canonical" href="https://815local.com/815local-submit-business.html">
+<link rel="icon" type="image/png" href="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
 :root {
@@ -126,12 +128,13 @@ a { color:inherit; text-decoration:none; }
 <nav id="main-nav">
   <div style="display:flex;align-items:center;height:110px;padding:0 32px;">
     <a href="index.html">
-      <img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" style="height:104px;width:auto;filter:drop-shadow(0 2px 8px rgba(196,98,45,0.35));">
+      <picture><source srcset="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" style="height:104px;width:auto;filter:drop-shadow(0 2px 8px rgba(196,98,45,0.35));"></picture>
     </a>
     <div class="nav-links">
       <a class="nav-link" href="index.html">Explore</a>
       <a class="nav-link" href="815local-directory.html">Browse</a>
       <a class="nav-link" href="815local-events.html">Events</a>
+      <a class="nav-link" href="815local-profile.html">Profile</a>
     </div>
   </div>
 </nav>
@@ -405,6 +408,13 @@ async function handleSubmit(e) {
   try {
     const { error } = await db.from('businesses').insert(payload);
     if (error) throw error;
+
+    // Fire-and-forget email confirmation (requires RESEND_API_KEY secret in Supabase)
+    fetch('https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-business-submission', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY },
+      body: JSON.stringify({ name: payload.name, owner_email: document.getElementById('owner-email').value.trim(), category: payload.category }),
+    }).catch(() => {});
 
     document.getElementById('progress-bar').style.width = '100%';
     document.getElementById('submit-form').style.display = 'none';
