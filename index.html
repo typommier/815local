@@ -1149,9 +1149,10 @@ footer {
         <h2 class="newsletter-title">Stay 815 local. 📬</h2>
         <p class="newsletter-sub">New spots, local deals, upcoming events — delivered to your inbox every week. No spam, just your neighborhood.</p>
       </div>
-      <form class="newsletter-form" onsubmit="return false;">
-        <input class="newsletter-input" type="email" placeholder="your@email.com">
-        <button class="newsletter-submit">Subscribe →</button>
+      <form class="newsletter-form" onsubmit="doNewsletterSubscribe(event)">
+        <input class="newsletter-input" id="newsletter-email" type="email" placeholder="your@email.com">
+        <button class="newsletter-submit" id="newsletter-btn">Subscribe →</button>
+        <div id="newsletter-msg" style="font-size:13px;margin-top:6px;min-height:18px;"></div>
       </form>
     </div>
   </div>
@@ -1675,6 +1676,39 @@ async function signOut() {
   await _authDb.auth.signOut();
   document.getElementById('nav-signin-btn').style.display = '';
   document.getElementById('nav-user-menu').style.display = 'none';
+}
+
+// ── NEWSLETTER SUBSCRIBE ──
+async function doNewsletterSubscribe(e) {
+  e.preventDefault();
+  const input = document.getElementById('newsletter-email');
+  const btn   = document.getElementById('newsletter-btn');
+  const msg   = document.getElementById('newsletter-msg');
+  const email = input.value.trim();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.style.color = '#e05a3a';
+    msg.textContent = 'Please enter a valid email address.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  msg.textContent = '';
+
+  const { error } = await _authDb.from('newsletter_subscribers').upsert({ email }, { onConflict: 'email' });
+
+  btn.disabled = false;
+  btn.textContent = 'Subscribe →';
+
+  if (error) {
+    msg.style.color = '#e05a3a';
+    msg.textContent = 'Something went wrong. Try again shortly.';
+  } else {
+    input.value = '';
+    msg.style.color = '#2e7d32';
+    msg.textContent = "You're in! We'll keep you posted.";
+  }
 }
 
 // ── CHECK SESSION ON LOAD ──

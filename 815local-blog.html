@@ -210,8 +210,9 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
           <h3>📬 Get notified</h3>
           <p>Be the first to know when new stories are published.</p>
           <div class="notify-form">
-            <input type="email" placeholder="Your email address">
-            <button>Notify Me</button>
+            <input type="email" id="notify-email" placeholder="Your email address">
+            <button id="notify-btn" onclick="doNotifySubscribe()">Notify Me</button>
+            <div id="notify-msg" style="font-size:12px;min-height:16px;"></div>
           </div>
         </div>
 
@@ -286,5 +287,46 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 </footer>
 
 <script src="815local-analytics-tracker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+  const { createClient } = supabase;
+  const _db = createClient(
+    'https://kyneaettrynagavewefi.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
+  );
+
+  window.doNotifySubscribe = async function() {
+    const input = document.getElementById('notify-email');
+    const btn   = document.getElementById('notify-btn');
+    const msg   = document.getElementById('notify-msg');
+    const email = input.value.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.style.color = '#e05a3a';
+      msg.textContent = 'Please enter a valid email.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    msg.textContent = '';
+
+    const { error } = await _db.from('newsletter_subscribers').upsert({ email }, { onConflict: 'email' });
+
+    btn.disabled = false;
+    btn.textContent = 'Notify Me';
+
+    if (error) {
+      msg.style.color = '#e05a3a';
+      msg.textContent = 'Something went wrong. Try again shortly.';
+    } else {
+      input.value = '';
+      msg.style.color = '#2e7d32';
+      msg.textContent = "Got it! We'll let you know.";
+    }
+  };
+})();
+</script>
 </body>
 </html>
