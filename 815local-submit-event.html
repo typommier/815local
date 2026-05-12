@@ -487,6 +487,12 @@ async function submitEvent() {
     if (error) { showError('Something went wrong. Please try again.'); btn.disabled = false; btn.textContent = 'Submit Event →'; return; }
   }
 
+  fetch('https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-submission', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'event', title: payload.title, event_type: payload.event_type, event_date: payload.event_date, city: payload.city, organizer: payload.organizer }),
+  }).catch(() => {});
+
   // Show success
   document.getElementById('form-body').style.display = 'none';
   document.getElementById('success-state').style.display = 'flex';

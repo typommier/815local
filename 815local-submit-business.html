@@ -409,11 +409,10 @@ async function handleSubmit(e) {
     const { error } = await db.from('businesses').insert(payload);
     if (error) throw error;
 
-    // Fire-and-forget email confirmation (requires RESEND_API_KEY secret in Supabase)
-    fetch('https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-business-submission', {
+    fetch('https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-submission', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY },
-      body: JSON.stringify({ name: payload.name, owner_email: document.getElementById('owner-email').value.trim(), category: payload.category }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'business', name: payload.name, owner_email: document.getElementById('owner-email').value.trim(), category: payload.category }),
     }).catch(() => {});
 
     document.getElementById('progress-bar').style.width = '100%';
