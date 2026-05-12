@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claim Your Business Listing — 815local</title>
+<meta name="description" content="Claim your 815local business listing. Respond to reviews, update your info, and connect with local customers in Minooka, Channahon, and Shorewood.">
+<meta property="og:title" content="Claim Your Business Listing — 815local">
+<meta property="og:description" content="Take control of your 815local listing. Respond to reviews, update your info, and connect with local customers.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://815local.com/815local-claim-business.html">
+<meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta property="og:site_name" content="815local">
+<link rel="canonical" href="https://815local.com/815local-claim-business.html">
+<link rel="icon" type="image/png" href="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-light:  #E07A48;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --shadow-sm:     0 2px 8px rgba(30,27,24,0.08);
+  --shadow-md:     0 6px 24px rgba(30,27,24,0.12);
+  --shadow-lg:     0 16px 48px rgba(30,27,24,0.18);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--white); color: var(--charcoal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; border: none; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover { background: var(--orange-light); }
+.btn-outline { background: transparent; color: var(--charcoal); border: 2px solid var(--gray-light); }
+.btn-outline:hover { border-color: var(--charcoal); }
+
+/* NAV */
+#main-nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.nav-inner { display: flex; align-items: center; height: 110px; }
+.nav-logo { flex-shrink: 0; margin-right: 36px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); transition: filter 0.2s; }
+.nav-logo img:hover { filter: drop-shadow(0 4px 16px rgba(196,98,45,0.55)); }
+.nav-links { display: flex; align-items: center; gap: 4px; margin-right: auto; }
+.nav-link { padding: 8px 16px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); border-radius: 100px; transition: all 0.15s; }
+.nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.08); }
+.nav-signin { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.65); padding: 8px 16px; cursor: pointer; }
+.nav-signin:hover { color: white; }
+
+/* HERO */
+.page-hero { background: var(--charcoal); padding: 64px 0 56px; position: relative; overflow: hidden; }
+.page-hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(196,98,45,0.16) 0%, transparent 70%); pointer-events: none; }
+.page-hero::after { content: ''; position: absolute; bottom: -60px; left: 80px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(196,98,45,0.07) 0%, transparent 70%); pointer-events: none; }
+.hero-inner { position: relative; z-index: 1; }
+.hero-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; color: white; margin-bottom: 18px; line-height: 1.05; max-width: 680px; }
+.hero-title em { color: var(--orange); font-style: italic; }
+.hero-sub { font-size: 17px; color: rgba(255,255,255,0.5); max-width: 560px; line-height: 1.7; }
+
+/* MAIN CONTENT */
+.claim-section { padding: 72px 0 80px; }
+.claim-layout { display: grid; grid-template-columns: 1fr 1.55fr; gap: 48px; align-items: start; max-width: 960px; margin: 0 auto; }
+
+/* INFO PANEL */
+.info-panel { position: sticky; top: 130px; }
+.info-panel-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
+.info-panel h2 { font-size: 28px; font-weight: 700; color: var(--charcoal); margin-bottom: 12px; line-height: 1.25; }
+.info-panel p { font-size: 14px; color: var(--charcoal-light); line-height: 1.7; margin-bottom: 28px; }
+.benefit-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.benefit-item { display: flex; align-items: flex-start; gap: 12px; }
+.benefit-check { width: 28px; height: 28px; background: var(--orange-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+.benefit-text { font-size: 14px; color: var(--charcoal-mid); line-height: 1.5; }
+.benefit-text strong { display: block; font-weight: 600; color: var(--charcoal); margin-bottom: 2px; }
+.info-note { background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: var(--radius); padding: 16px 18px; font-size: 13px; color: var(--charcoal-light); line-height: 1.6; }
+.info-note strong { color: var(--charcoal-mid); }
+
+/* FORM CARD */
+.claim-form-card { background: white; border-radius: 16px; box-shadow: var(--shadow-md); padding: 36px; }
+.claim-form-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: var(--charcoal); }
+.claim-form-card .form-subtitle { font-size: 13px; color: var(--gray); margin-bottom: 28px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+label { font-size: 13px; font-weight: 600; color: var(--charcoal-mid); }
+label .opt { font-weight: 400; color: var(--gray); font-size: 12px; }
+input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+  width: 100%; padding: 11px 14px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; color: var(--charcoal);
+  background: var(--white); outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(196,98,45,0.1); }
+input::placeholder, textarea::placeholder { color: var(--gray); }
+textarea { resize: vertical; min-height: 90px; }
+select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239B8C82' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+input.readonly-field { background: var(--cream); color: var(--charcoal-mid); cursor: default; }
+input.readonly-field:focus { border-color: var(--gray-light); box-shadow: none; }
+.form-divider { height: 1px; background: var(--cream-dark); margin: 8px 0 20px; }
+.form-section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); margin-bottom: 16px; }
+.submit-btn { width: 100%; padding: 14px; background: var(--orange); color: white; border: none; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
+.submit-btn:hover { background: var(--orange-light); }
+.submit-btn:disabled { background: var(--gray-light); cursor: not-allowed; }
+#claim-error { display: none; color: #991B1B; background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; margin-bottom: 16px; }
+.back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray); margin-bottom: 20px; transition: color 0.15s; }
+.back-link:hover { color: var(--charcoal); }
+
+/* SUCCESS STATE */
+#form-success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 32px 16px; gap: 12px; }
+#form-success .success-icon { font-size: 52px; }
+#form-success h3 { font-size: 22px; color: var(--charcoal); }
+#form-success p { font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 320px; }
+#form-success .success-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 8px; width: 100%; }
+
+/* TRUST BAR */
+.trust-bar { background: var(--cream); border-top: 1px solid var(--cream-dark); border-bottom: 1px solid var(--cream-dark); padding: 20px 0; }
+.trust-bar-inner { display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--charcoal-light); font-weight: 500; }
+.trust-item-icon { font-size: 15px; }
+
+/* FOOTER */
+footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.06); padding: 60px 0 32px; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-logo { height: 104px; width: auto; margin-bottom: 16px; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.3)); }
+.footer-tagline { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.7; max-width: 240px; margin-bottom: 24px; }
+.footer-social { display: flex; gap: 10px; }
+.footer-social-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; transition: background 0.15s; }
+.footer-social-btn:hover { background: rgba(255,255,255,0.14); }
+.footer-heading { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 14px; color: rgba(255,255,255,0.55); transition: color 0.15s; }
+.footer-links a:hover { color: white; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06); }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,0.3); }
+.footer-legal a:hover { color: white; }
+
+@media (max-width: 860px) {
+  .claim-layout { grid-template-columns: 1fr; gap: 32px; }
+  .info-panel { position: static; }
+}
+@media (max-width: 700px) {
+  .container { padding: 0 16px; }
+  .nav-links { display: none; }
+  .hero-title { font-size: 34px; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .trust-bar-inner { gap: 20px; }
+}
+@media (max-width: 480px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .claim-form-card { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <picture><source srcset="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Explore</a>
+        <a class="nav-link" href="815local-directory.html">Browse</a>
+        <a class="nav-link" href="815local-events.html">Events</a>
+        <a class="nav-link" href="815local-blog.html">Blog</a>
+        <a class="nav-link" href="815local-about.html">About</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="nav-signin">Sign In</span>
+        <a class="btn btn-primary" href="815local-submit-business.html" style="font-size:13px;padding:9px 18px;">+ List Business</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Claim Your Listing</div>
+      <h1 class="hero-title">Is this <em>your</em> business?</h1>
+      <p class="hero-sub">Take control of your 815local listing. Respond to reviews, update your info, and connect with local customers.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-bar-inner">
+      <div class="trust-item"><span class="trust-item-icon">🔒</span> Secure &amp; Confidential</div>
+      <div class="trust-item"><span class="trust-item-icon">⚡</span> Reviewed within 2–3 Business Days</div>
+      <div class="trust-item"><span class="trust-item-icon">🆓</span> Always Free to Claim</div>
+      <div class="trust-item"><span class="trust-item-icon">📍</span> Serving Minooka, Channahon &amp; Shorewood</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="claim-section">
+  <div class="container">
+    <div class="claim-layout">
+
+      <!-- INFO PANEL -->
+      <div class="info-panel">
+        <div class="info-panel-eyebrow">What You Get</div>
+        <h2>Everything you need to manage your reputation locally.</h2>
+        <p>Claiming your listing is free and takes just a minute. Once verified, you'll have full access to your business dashboard.</p>
+
+        <div class="benefit-list">
+          <div class="benefit-item">
+            <div class="benefit-check">✅</div>
+            <div class="benefit-text">
+              <strong>Respond to customer reviews</strong>
+              Thank happy customers and address concerns professionally — right from your dashboard.
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check">✅</div>
+            <div class="benefit-text">
+              <strong>Update your business info, hours &amp; photos</strong>
+              Keep your listing accurate with current hours, contact details, and fresh photos.
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check">✅</div>
+            <div class="benefit-text">
+              <strong>Access your business analytics</strong>
+              See how many locals are viewing your listing, where they come from, and what they're clicking.
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-check">✅</div>
+            <div class="benefit-text">
+              <strong>Get notified of new reviews</strong>
+              Never miss a new review. We'll send you an email the moment a customer leaves feedback.
+            </div>
+          </div>
+        </div>
+
+        <div class="info-note">
+          <strong>Verification process:</strong> We manually review every claim request to protect business owners. We may follow up with a quick phone call or ask for a document to confirm ownership. Your information is never shared publicly.
+        </div>
+      </div>
+
+      <!-- FORM CARD -->
+      <div class="claim-form-card">
+        <div id="form-inner">
+          <a class="back-link" id="back-link" href="815local-directory.html">← Back to business listing</a>
+          <h3>Submit a Claim Request</h3>
+          <p class="form-subtitle">Fill out the form below and we'll verify your ownership and grant you access.</p>
+
+          <div class="form-section-label">Business</div>
+          <div class="form-group">
+            <label for="c-biz">Business Name</label>
+            <input type="text" id="c-biz" class="readonly-field" placeholder="Business name" readonly>
+          </div>
+
+          <div class="form-divider"></div>
+          <div class="form-section-label">Your Information</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="c-name">Your Full Name</label>
+              <input type="text" id="c-name" placeholder="Jane Smith" required>
+            </div>
+            <div class="form-group">
+              <label for="c-role">Your Role</label>
+              <select id="c-role" required>
+                <option value="" disabled selected>Select role…</option>
+                <option value="Owner">Owner</option>
+                <option value="Manager">Manager</option>
+                <option value="Authorized Representative">Authorized Representative</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="c-email">Email Address</label>
+            <input type="email" id="c-email" placeholder="jane@yourbusiness.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="c-phone">Phone Number</label>
+            <input type="tel" id="c-phone" placeholder="(815) 555-0100" required>
+          </div>
+
+          <div class="form-divider"></div>
+          <div class="form-section-label">Verification</div>
+
+          <div class="form-group">
+            <label for="c-verify">How can you verify ownership?</label>
+            <select id="c-verify" required>
+              <option value="" disabled selected>Select a method…</option>
+              <option value="Listed on business registration">I'm listed on the business registration</option>
+              <option value="Can provide utility bill">I can provide a utility bill for the business address</option>
+              <option value="Business phone on file">I have the business phone number on file</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="c-notes">Additional Notes <span class="opt">(optional)</span></label>
+            <textarea id="c-notes" placeholder="Any additional context that may help us verify your ownership faster…" rows="3"></textarea>
+          </div>
+
+          <div id="claim-error"></div>
+          <button class="submit-btn" onclick="submitClaim()">Submit Claim Request →</button>
+        </div>
+
+        <div id="form-success">
+          <div class="success-icon">🎉</div>
+          <h3>Claim Request Submitted!</h3>
+          <p>We'll review your request and reach out to the email you provided within 2–3 business days.</p>
+          <div class="success-actions">
+            <a id="success-back-link" href="815local-directory.html" class="btn btn-primary" style="width:100%;justify-content:center;">← Back to business listing</a>
+            <a href="815local-directory.html" class="btn btn-outline" style="width:100%;justify-content:center;">Browse All Businesses</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <picture><source srcset="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" class="footer-logo"></picture>
+        <p class="footer-tagline">Your one-stop community hub for local business reviews, services, restaurants, and events in the 815 area.</p>
+        <div class="footer-social">
+          <div class="footer-social-btn">𝕏</div>
+          <div class="footer-social-btn">📘</div>
+          <div class="footer-social-btn">📸</div>
+          <div class="footer-social-btn">📌</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Explore</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Homepage</a></li>
+          <li><a href="815local-directory.html">Browse Businesses</a></li>
+          <li><a href="815local-blog.html">Community Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Community</div>
+        <ul class="footer-links">
+          <li><a href="815local-events.html">Events Calendar</a></li>
+          <li><a href="815local-submit-event.html">Submit an Event</a></li>
+          <li><a href="815local-deals.html">Local Deals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Business</div>
+        <ul class="footer-links">
+          <li><a href="815local-submit-business.html">List Your Business</a></li>
+          <li><a href="815local-advertise.html">Advertise</a></li>
+          <li><a href="mailto:815local@gmail.com">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 815local.com — Proudly serving the 815</span>
+      <div class="footer-legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="815local-analytics-tracker.js"></script>
+<script>
+let db = null;
+try { const { createClient } = supabase; db = createClient('https://kyneaettrynagavewefi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'); } catch(e) {}
+
+// Read URL params and pre-fill
+const params = new URLSearchParams(window.location.search);
+const businessId   = params.get('id')   || null;
+const businessName = params.get('name') || '';
+
+if (businessName) {
+  document.getElementById('c-biz').value = decodeURIComponent(businessName);
+}
+
+// Set back link: goes to the specific listing if id is present, otherwise directory
+const backLinkHref = businessId
+  ? '815local-business.html?id=' + encodeURIComponent(businessId)
+  : '815local-directory.html';
+document.getElementById('back-link').href = backLinkHref;
+document.getElementById('success-back-link').href = backLinkHref;
+
+async function submitClaim() {
+  const biz    = document.getElementById('c-biz').value.trim();
+  const name   = document.getElementById('c-name').value.trim();
+  const role   = document.getElementById('c-role').value;
+  const email  = document.getElementById('c-email').value.trim();
+  const phone  = document.getElementById('c-phone').value.trim();
+  const verify = document.getElementById('c-verify').value;
+  const notes  = document.getElementById('c-notes').value.trim();
+  const err    = document.getElementById('claim-error');
+  const btn    = document.querySelector('.submit-btn');
+
+  err.style.display = 'none';
+  err.textContent = '';
+
+  if (!name)                           { err.textContent = 'Please enter your full name.'; err.style.display = 'block'; return; }
+  if (!role)                           { err.textContent = 'Please select your role at this business.'; err.style.display = 'block'; return; }
+  if (!email || !email.includes('@'))  { err.textContent = 'Please enter a valid email address.'; err.style.display = 'block'; return; }
+  if (!phone)                          { err.textContent = 'Please enter a phone number where we can reach you.'; err.style.display = 'block'; return; }
+  if (!verify)                         { err.textContent = 'Please select a verification method.'; err.style.display = 'block'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const { error } = await db.from('claim_requests').insert([{
+      business_id:         businessId || null,
+      business_name:       biz        || null,
+      claimant_name:       name,
+      role:                role,
+      email:               email,
+      phone:               phone,
+      verification_method: verify,
+      notes:               notes || null
+    }]);
+
+    if (error) throw error;
+
+    document.getElementById('form-inner').style.display = 'none';
+    document.getElementById('form-success').style.display = 'flex';
+
+  } catch (e) {
+    err.textContent = 'Something went wrong. Please try again or email us at 815local@gmail.com.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Submit Claim Request →';
+  }
+}
+</script>
+</body>
+</html>

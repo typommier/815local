@@ -791,6 +791,11 @@ function renderBusiness(b) {
     googleBadge.style.display = 'inline-flex';
   }
 
+  const claimBtn = document.querySelector('.claim-btn');
+  if (claimBtn) {
+    claimBtn.href = '815local-claim-business.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
+  }
+
   const sc = document.getElementById('sidebar-contact');
   sc.innerHTML = [
     b.address ? `<div class="contact-item"><span class="contact-icon">📍</span><div><span class="contact-label">Address</span><span class="contact-value">${b.address}</span></div></div>` : '',
