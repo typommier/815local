@@ -189,11 +189,12 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
           <div class="error-banner" id="error-banner"></div>
 
           <div class="section-label">Your Business</div>
+          <input type="hidden" id="business_id">
 
           <div class="field-row">
             <div class="field-group">
-              <label for="business_name">Business Name <span class="req">*</span></label>
-              <input type="text" id="business_name" placeholder="Smith's Hardware">
+              <label for="business_name">Business Name</label>
+              <input type="text" id="business_name" readonly style="background:var(--cream);color:var(--charcoal-mid);cursor:default;">
             </div>
             <div class="field-group">
               <label for="category">Category <span class="req">*</span></label>
@@ -363,23 +364,45 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 let db = null;
 try { const { createClient } = supabase; db = createClient('https://kyneaettrynagavewefi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'); } catch(e) {}
 
+// Must arrive from a business listing — redirect if accessed directly
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const id   = params.get('id');
+  const name = params.get('name');
+  if (!id || !name) {
+    document.querySelector('.form-grid').innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:80px 20px;">
+        <div style="font-size:48px;margin-bottom:20px;">🏪</div>
+        <h2 style="font-size:26px;margin-bottom:12px;">Find your business listing first</h2>
+        <p style="font-size:15px;color:var(--gray);max-width:420px;margin:0 auto 28px;line-height:1.7;">
+          Deals can only be posted from a business listing page. Search for your business in the directory, then click <strong>Post a Deal</strong> on your listing.
+        </p>
+        <a href="815local-directory.html" class="btn btn-primary">Find My Business →</a>
+      </div>`;
+    return;
+  }
+  document.getElementById('business_id').value   = id;
+  document.getElementById('business_name').value = name;
+})();
+
 async function submitDeal() {
   const btn         = document.getElementById('submit-btn');
   const errorBanner = document.getElementById('error-banner');
   errorBanner.style.display = 'none';
 
+  const business_id    = document.getElementById('business_id').value;
   const business_name  = document.getElementById('business_name').value.trim();
   const category       = document.getElementById('category').value;
   const title          = document.getElementById('title').value.trim();
 
-  if (!business_name) { showError('Please enter your business name.'); return; }
-  if (!category)      { showError('Please select a category.'); return; }
-  if (!title)         { showError('Please enter a deal title.'); return; }
+  if (!category) { showError('Please select a category.'); return; }
+  if (!title)    { showError('Please enter a deal title.'); return; }
 
   btn.disabled = true;
   btn.textContent = 'Submitting\u2026';
 
   const { error } = await db.from('deals').insert([{
+    business_id: business_id || null,
     business_name,
     category,
     title,

@@ -311,10 +311,11 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
         <picture><source srcset="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
       </a>
       <div class="nav-links">
-        <a class="nav-link" href="index.html">Home</a>
-        <a class="nav-link" href="815local-directory.html">Directory</a>
+        <a class="nav-link" href="index.html">Explore</a>
+        <a class="nav-link" href="815local-directory.html">Browse</a>
         <a class="nav-link" href="815local-events.html">Events</a>
-        <a class="nav-link" href="815local-profile.html">Profile</a>
+        <a class="nav-link" href="815local-blog.html">Blog</a>
+        <a class="nav-link" href="815local-about.html">About</a>
       </div>
       <div style="display:flex;align-items:center;gap:10px;margin-left:auto;">
         <a href="815local-submit-business.html" class="btn btn-primary" style="font-size:13px;padding:9px 18px;">+ List Business</a>
@@ -499,6 +500,11 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <div class="claim-title">Is this your business?</div>
           <p class="claim-sub">Claim your listing to respond to reviews and update your info.</p>
           <a class="claim-btn" href="815local-submit-business.html">Claim this Business →</a>
+        </div>
+        <div class="claim-card" style="margin-top:12px;background:var(--orange);">
+          <div class="claim-title">Post a Deal</div>
+          <p class="claim-sub">Promote a special offer to thousands of locals in the 815.</p>
+          <a class="claim-btn deal-btn" id="deal-btn" href="815local-submit-deal.html" style="border-color:rgba(255,255,255,0.4);">Post a Deal for this Business →</a>
         </div>
       </div>
     </div>
@@ -794,6 +800,10 @@ function renderBusiness(b) {
   const claimBtn = document.querySelector('.claim-btn');
   if (claimBtn) {
     claimBtn.href = '815local-claim-business.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
+  }
+  const dealBtn = document.getElementById('deal-btn');
+  if (dealBtn) {
+    dealBtn.href = '815local-submit-deal.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
   }
 
   const sc = document.getElementById('sidebar-contact');
