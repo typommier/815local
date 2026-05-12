@@ -501,6 +501,11 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <p class="claim-sub">Claim your listing to respond to reviews and update your info.</p>
           <a class="claim-btn" href="815local-submit-business.html">Claim this Business →</a>
         </div>
+        <div class="claim-card" style="margin-top:12px;background:var(--orange);">
+          <div class="claim-title">Post a Deal</div>
+          <p class="claim-sub">Promote a special offer to thousands of locals in the 815.</p>
+          <a class="claim-btn deal-btn" id="deal-btn" href="815local-submit-deal.html" style="border-color:rgba(255,255,255,0.4);">Post a Deal for this Business →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -795,6 +800,10 @@ function renderBusiness(b) {
   const claimBtn = document.querySelector('.claim-btn');
   if (claimBtn) {
     claimBtn.href = '815local-claim-business.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
+  }
+  const dealBtn = document.getElementById('deal-btn');
+  if (dealBtn) {
+    dealBtn.href = '815local-submit-deal.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
   }
 
   const sc = document.getElementById('sidebar-contact');
