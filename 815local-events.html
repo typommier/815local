@@ -349,7 +349,24 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   .lec-photo { width: 100% !important; height: 120px !important; }
   .lec-side { flex-direction: row !important; padding-left: 0 !important; border-top: 1px solid var(--cream-dark) !important; }
 }
-
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .hero-title { font-size: 24px !important; }
+  .hero-sub { font-size: 13px !important; }
+  .nav-inner { height: 72px !important; padding: 0 16px !important; }
+  /* Make calendar scrollable rather than broken */
+  .calendar-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cal-header, .cal-grid { min-width: 420px; }
+  .cal-cell { min-height: 48px !important; padding: 2px 1px !important; }
+  .cal-date { font-size: 10px !important; width: 18px !important; height: 18px !important; }
+  .cal-event { display: none !important; }
+  .controls-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .type-filters { width: 100% !important; }
+  .view-toggle { align-self: flex-start; }
+  .hero-stats { flex-wrap: wrap; gap: 12px !important; }
+  .footer-grid { grid-template-columns: 1fr !important; }
+  .lec-side { flex-direction: column !important; }
+}
 </style>
 </head>
 <body>
