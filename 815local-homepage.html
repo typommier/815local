@@ -1567,9 +1567,9 @@ footer {
         <h2 class="newsletter-title">Stay 815 local. 📬</h2>
         <p class="newsletter-sub">New spots, local deals, upcoming events — delivered to your inbox every week. No spam, just your neighborhood.</p>
       </div>
-      <form class="newsletter-form" onsubmit="return false;">
-        <input class="newsletter-input" type="email" placeholder="your@email.com">
-        <button class="newsletter-submit">Subscribe →</button>
+      <form class="newsletter-form" id="newsletter-form" onsubmit="handleNewsletterSubmit(event);">
+        <input class="newsletter-input" id="newsletter-email" type="email" placeholder="your@email.com" required>
+        <button class="newsletter-submit" id="newsletter-btn">Subscribe →</button>
       </form>
     </div>
   </div>
@@ -1825,6 +1825,56 @@ window.addEventListener('scroll', () => {
     });
   } catch(e) { /* silently ignore — counts will just show nothing */ }
 })();
+
+// Newsletter subscription handler
+async function handleNewsletterSubmit(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('newsletter-email');
+  const btn = document.getElementById('newsletter-btn');
+  const email = emailInput.value.trim();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showNewsletterToast('Please enter a valid email address.', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Subscribing…';
+
+  try {
+    const { createClient } = supabase;
+    const db = createClient(
+      'https://kyneaettrynagavewefi.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
+    );
+    const { error } = await db.from('newsletter_subscribers').insert([{ email }]);
+    if (error && error.code !== '23505') throw error; // 23505 = unique violation (already subscribed)
+    emailInput.value = '';
+    showNewsletterToast(error && error.code === '23505' ? 'You\'re already subscribed!' : 'You\'re in! Welcome to the 815 community.', 'success');
+  } catch (err) {
+    showNewsletterToast('Something went wrong. Please try again.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Subscribe →';
+  }
+}
+
+function showNewsletterToast(message, type) {
+  const existing = document.getElementById('newsletter-toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.id = 'newsletter-toast';
+  toast.textContent = message;
+  Object.assign(toast.style, {
+    position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
+    background: type === 'success' ? '#2d6a4f' : '#c0392b',
+    color: '#fff', padding: '12px 24px', borderRadius: '8px',
+    fontSize: '15px', fontWeight: '600', zIndex: '9999',
+    boxShadow: '0 4px 16px rgba(0,0,0,0.2)', transition: 'opacity 0.4s',
+  });
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3500);
+}
 
 // Wire the hero search bar to the directory
 document.querySelector('.search-btn').addEventListener('click', function() {
