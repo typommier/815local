@@ -312,12 +312,15 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
     btn.textContent = 'Saving...';
     msg.textContent = '';
 
-    const { error } = await _db.from('newsletter_subscribers').upsert({ email }, { onConflict: 'email' });
+    const { error } = await _db.from('newsletter_subscribers').insert({ email });
 
     btn.disabled = false;
     btn.textContent = 'Notify Me';
 
-    if (error) {
+    if (error && error.code === '23505') {
+      msg.style.color = '#b45309';
+      msg.textContent = "You're already subscribed!";
+    } else if (error) {
       msg.style.color = '#e05a3a';
       msg.textContent = 'Something went wrong. Try again shortly.';
     } else {
