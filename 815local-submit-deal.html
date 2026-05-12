@@ -423,6 +423,12 @@ async function submitDeal() {
     return;
   }
 
+  fetch('https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-submission', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'deal', business_name, title, category, contact_name: document.getElementById('contact_name').value.trim(), contact_email: document.getElementById('contact_email').value.trim() }),
+  }).catch(() => {});
+
   document.getElementById('form-body').style.display = 'none';
   document.getElementById('form-header').style.display = 'none';
   document.getElementById('success-state').style.display = 'flex';
