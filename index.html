@@ -1696,12 +1696,15 @@ async function doNewsletterSubscribe(e) {
   btn.textContent = 'Subscribing...';
   msg.textContent = '';
 
-  const { error } = await _authDb.from('newsletter_subscribers').upsert({ email }, { onConflict: 'email' });
+  const { error } = await _authDb.from('newsletter_subscribers').insert({ email });
 
   btn.disabled = false;
   btn.textContent = 'Subscribe →';
 
-  if (error) {
+  if (error && error.code === '23505') {
+    msg.style.color = '#b45309';
+    msg.textContent = "You're already subscribed!";
+  } else if (error) {
     msg.style.color = '#e05a3a';
     msg.textContent = 'Something went wrong. Try again shortly.';
   } else {
