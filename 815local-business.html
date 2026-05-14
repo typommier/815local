@@ -882,7 +882,7 @@ async function loadReviews(id) {
       </div>
       <p class="review-text-full">"${r.review_text}"</p>
       <div class="review-actions">
-        <span class="review-action" onclick="markHelpful(this, '${r.id}')">👍 Helpful (${r.helpful_count || 0})</span>
+        <span class="review-action" onclick="markHelpful(this, '${r.id}')" ${sessionStorage.getItem('815_helpful_' + r.id) ? 'style="opacity:0.5;pointer-events:none;"' : ''}>👍 Helpful (${r.helpful_count || 0})</span>
         <span class="review-action" onclick="openFlagModal('${r.id}')" style="margin-left:auto;">🚩 Report</span>
       </div>
     </div>`;
@@ -965,6 +965,9 @@ async function submitReview() {
 }
 
 async function markHelpful(el, reviewId) {
+  const storageKey = '815_helpful_' + reviewId;
+  if (sessionStorage.getItem(storageKey)) return;
+  sessionStorage.setItem(storageKey, '1');
   el.style.opacity = '0.5';
   el.style.pointerEvents = 'none';
   const current = parseInt(el.textContent.match(/\d+/)?.[0] || 0);
