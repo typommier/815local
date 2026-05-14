@@ -431,12 +431,6 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 <div class="controls-bar">
   <div class="container">
     <div class="controls-inner">
-      <!-- Month nav -->
-      <div class="month-nav">
-        <span class="month-name" id="month-display">April 2026</span>
-        <button class="month-arrow" onclick="changeMonth(-1)">‹</button>
-        <button class="month-arrow" onclick="changeMonth(1)">›</button>
-      </div>
 
       <!-- Today button -->
       <button class="btn btn-outline" style="padding:8px 18px;font-size:13px;" onclick="goToday()">Today</button>
@@ -611,7 +605,6 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
         <p class="footer-tagline">Your one-stop community hub for local business reviews, services, restaurants, and events in the 815 area.</p>
         <div class="footer-social">
           <a href="https://www.facebook.com/profile.php?id=61589234260823" target="_blank" rel="noopener" class="footer-social-btn" title="Facebook">📘</a>
-          <div class="footer-social-btn">📌</div>
         </div>
       </div>
       <div>
@@ -1092,12 +1085,10 @@ window.addEventListener('scroll', () => {
   document.getElementById('main-nav').style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none';
 });
 
-// Restore view + scroll
-const savedView = localStorage.getItem('815local_cal_view') || 'list';
-const vtBtns    = document.querySelectorAll('.vt-btn');
-if      (savedView === 'month') setView('month', vtBtns[0]);
-else if (savedView === 'week')  setView('week',  vtBtns[1]);
-else                            setView('list',  vtBtns[2]);
+// List-only view
+document.getElementById('month-view').style.display = 'none';
+document.getElementById('week-view').style.display  = 'none';
+document.getElementById('list-view').style.display  = 'flex';
 
 const savedScroll = localStorage.getItem('815local_cal_scroll');
 if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
