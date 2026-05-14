@@ -431,6 +431,13 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 <div class="controls-bar">
   <div class="container">
     <div class="controls-inner">
+      <!-- View toggle -->
+      <div class="view-toggle">
+        <button class="vt-btn" onclick="setView('month', this)">Month</button>
+        <button class="vt-btn" onclick="setView('week', this)">Week</button>
+        <button class="vt-btn" onclick="setView('list', this)">List</button>
+      </div>
+
       <!-- Month nav -->
       <div class="month-nav">
         <span class="month-name" id="month-display">April 2026</span>
@@ -611,7 +618,6 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
         <p class="footer-tagline">Your one-stop community hub for local business reviews, services, restaurants, and events in the 815 area.</p>
         <div class="footer-social">
           <a href="https://www.facebook.com/profile.php?id=61589234260823" target="_blank" rel="noopener" class="footer-social-btn" title="Facebook">📘</a>
-          <div class="footer-social-btn">📌</div>
         </div>
       </div>
       <div>
