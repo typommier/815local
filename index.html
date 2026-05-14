@@ -1327,7 +1327,7 @@ window.addEventListener('scroll', () => {
 
   try {
     const [bizRes, reviewRes] = await Promise.all([
-      db.from('businesses_with_ratings').select('*').eq('is_active', true).order('is_featured', { ascending: false }),
+      db.from('businesses_with_ratings').select('*').eq('is_active', true).order('created_at', { ascending: false }),
       db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6)
     ]);
 
@@ -1386,7 +1386,7 @@ window.addEventListener('scroll', () => {
         const photo = b.image_url
           ? `<div style="width:100%;height:100%;background:url('${b.image_url}') center/cover no-repeat;"></div>`
           : `<div class="biz-photo-inner"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>`;
-        const badge = b.is_featured ? `<div class="biz-badge">⭐ Featured</div>` : '';
+        const badge = '';
         const features = (b.features || []).slice(0,2).map(f => `<span class="tag">${f}</span>`).join('');
         return `
           <a href="815local-business.html?id=${b.id}" class="biz-card" style="text-decoration:none;color:inherit;">
@@ -1410,7 +1410,7 @@ window.addEventListener('scroll', () => {
     }
 
     // ── SPOTLIGHT (top rated featured business) ──
-    const spotlight = businesses.find(b => b.is_featured && b.avg_rating > 0) || businesses.find(b => b.avg_rating > 0);
+    const spotlight = businesses.find(b => b.avg_rating > 0);
     if (spotlight) {
       const rating = parseFloat(spotlight.avg_rating) || 0;
       const count = spotlight.review_count || 0;
