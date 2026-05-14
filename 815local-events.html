@@ -825,7 +825,8 @@ function renderCalendar() {
     grid.appendChild(cell);
   }
 
-  document.getElementById('month-display').textContent  = `${monthNames[currentMonth]} ${currentYear}`;
+  const monthDisplayEl = document.getElementById('month-display');
+  if (monthDisplayEl) monthDisplayEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
   renderMiniCal();
 }
 
@@ -1008,6 +1009,7 @@ function renderFeatured() {
 
 // ── All renders
 function renderAll() {
+  renderCalendar();
   renderList();
   renderFeatured();
   updateStats();
