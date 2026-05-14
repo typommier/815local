@@ -1623,7 +1623,7 @@ async function doForgotPassword() {
   btn.disabled = true; btn.textContent = 'Sending...';
 
   const { error } = await _authDb.auth.resetPasswordForEmail(email, {
-    redirectTo: 'https://815local.com/815local-profile.html'
+    redirectTo: window.location.origin + '/815local-profile.html'
   });
 
   btn.disabled = false; btn.textContent = 'Send Reset Link';
