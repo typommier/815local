@@ -531,7 +531,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
             </a>
           </div>
         </div>
-        <div class="claim-card">
+        <div class="claim-card" id="claim-card">
           <div class="claim-title">Is this your business?</div>
           <p class="claim-sub">Claim your listing to respond to reviews and update your info.</p>
           <a class="claim-btn" href="815local-submit-business.html">Claim this Business →</a>
@@ -771,7 +771,10 @@ function renderBusiness(b) {
   if (b.subcategory) subcat.textContent = b.subcategory;
   else subcat.style.display = 'none';
   document.getElementById('h-name').textContent = b.name;
-  if (b.is_claimed) document.getElementById('h-claimed').style.display = 'block';
+  if (b.is_claimed) {
+    document.getElementById('h-claimed').style.display = 'block';
+    document.getElementById('claim-card').style.display = 'none';
+  }
   document.getElementById('h-desc').textContent = b.description || '';
   const rating = parseFloat(b.avg_rating) || 0;
   const count = b.review_count || 0;
