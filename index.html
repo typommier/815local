@@ -1363,9 +1363,12 @@ window.addEventListener('scroll', () => {
     if (reviews.length > 0) {
       const r = reviews[0];
       const bizName = r.businesses?.name || '';
-      document.getElementById('hero-reviewer-name').textContent = r.reviewer_name || 'Local Resident';
-      document.getElementById('hero-reviewer-stars').textContent = stars(r.rating);
-      document.getElementById('hero-reviewer-biz').textContent = bizName ? `Just reviewed ${bizName}` : 'Just left a review';
+      const heroName = document.getElementById('hero-reviewer-name');
+      const heroStars = document.getElementById('hero-reviewer-stars');
+      const heroBiz = document.getElementById('hero-reviewer-biz');
+      if (heroName) heroName.textContent = r.reviewer_name || 'Local Resident';
+      if (heroStars) heroStars.textContent = stars(r.rating);
+      if (heroBiz) heroBiz.textContent = bizName ? `Just reviewed ${bizName}` : 'Just left a review';
     }
 
     // ── COMMUNITY PICKS (up to 6 featured/top businesses) ──
