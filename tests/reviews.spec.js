@@ -1,5 +1,5 @@
 // @ts-check
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./base');
 
 const AMFM_PLUMBING_URL = '/815local-business.html?id=31969cba-d40f-4cdc-b8f7-240128639af9';
 

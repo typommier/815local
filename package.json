@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "815local static site E2E tests",
   "scripts": {
-    "test": "playwright test",
-    "serve": "npx serve . -p 3000 -s"
+    "test": "npx playwright test",
+    "serve": "npx serve . -p 3000"
   },
   "devDependencies": {
-    "@playwright/test": "^1.41.0"
+    "@playwright/test": "^1.56.0",
+    "@supabase/supabase-js": "^2.49.4"
   }
 }
