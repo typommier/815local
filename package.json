@@ -1,0 +1,12 @@
+{
+  "name": "815local",
+  "version": "1.0.0",
+  "description": "815local static site E2E tests",
+  "scripts": {
+    "test": "playwright test",
+    "serve": "npx serve . -p 3000 -s"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.0"
+  }
+}
