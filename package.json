@@ -1,0 +1,21 @@
+{
+  "name": "815local",
+  "version": "1.0.0",
+  "description": "",
+  "main": "815local-analytics-tracker.js",
+  "scripts": {
+    "test": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test",
+    "test:report": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test --reporter=html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:39125/git/typommier/815local"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "serve": "^14.2.6"
+  }
+}
