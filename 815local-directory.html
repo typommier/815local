@@ -260,6 +260,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       <div class="cat-pill" data-cat="Health & Wellness" onclick="setCat(this)">💆 Wellness</div>
       <div class="cat-pill" data-cat="Retail & Shops" onclick="setCat(this)">🛍️ Retail</div>
       <div class="cat-pill" data-cat="Home Services" onclick="setCat(this)">🔧 Services</div>
+      <div class="cat-pill" data-cat="Professional Services" onclick="setCat(this)">💼 Professional</div>
       <div class="cat-pill" data-cat="Arts & Events" onclick="setCat(this)">🎭 Arts</div>
     </div>
   </div>
@@ -394,7 +395,7 @@ function starsHtml(rating) {
 }
 
 function catEmoji(cat) {
-  const map = { 'Food & Drink':'🍔', 'Coffee':'☕', 'Bars & Nightlife':'🍺', 'Health & Wellness':'💆', 'Beauty & Salons':'💇', 'Retail & Shops':'🛍️', 'Home Services':'🔧', 'Arts & Events':'🎭' };
+  const map = { 'Food & Drink':'🍔', 'Coffee':'☕', 'Bars & Nightlife':'🍺', 'Health & Wellness':'💆', 'Beauty & Salons':'💇', 'Retail & Shops':'🛍️', 'Home Services':'🔧', 'Professional Services':'💼', 'Arts & Events':'🎭' };
   return map[cat] || '🏪';
 }
 
