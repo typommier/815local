@@ -911,6 +911,17 @@
 
     let result;
     if (authMode === 'signup') {
+      const { data: blockedEmail } = await db
+        .from('blocked_emails')
+        .select('email')
+        .eq('email', email.toLowerCase())
+        .maybeSingle();
+      if (blockedEmail) {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+        setAuthError('This email address is not permitted to register.');
+        return;
+      }
       result = await db.auth.signUp({ email, password });
     } else {
       result = await db.auth.signInWithPassword({ email, password });
@@ -1246,5 +1257,6 @@
   document.getElementById('auth-gate').style.display = 'none';
   init();
 </script>
+<script src="815local-blocklist.js"></script>
 </body>
 </html>
