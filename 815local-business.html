@@ -882,14 +882,26 @@ function renderBusiness(b) {
   const hours = b.hours || {};
   const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
   const hoursEl = document.getElementById('hours-grid');
-  hoursEl.innerHTML = days.map(d => {
-    const isToday = d === today;
-    const val = hours[d];
-    return `<div class="hours-row ${isToday ? 'today' : ''}">
-      <span class="hours-day">${d.charAt(0).toUpperCase()+d.slice(1)} ${isToday ? '<span class="hours-open-badge">Today</span>' : ''}</span>
-      ${val && val.toLowerCase() !== 'closed' ? `<span class="hours-time">${val}</span>` : '<span class="hours-closed">Closed</span>'}
-    </div>`;
-  }).join('');
+
+  const dayVals = days.map(d => (hours[d] || '').trim());
+  const openVals = dayVals.filter(v => v && v.toLowerCase() !== 'closed');
+  const allEmpty = openVals.length === 0;
+  const allSame = openVals.length === 7 && openVals.every(v => v.toLowerCase() === openVals[0].toLowerCase());
+
+  if (allEmpty) {
+    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">📅 By appointment — contact directly for hours</span></div>`;
+  } else if (allSame) {
+    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">${openVals[0]}</span></div>`;
+  } else {
+    hoursEl.innerHTML = days.map(d => {
+      const isToday = d === today;
+      const val = hours[d];
+      return `<div class="hours-row ${isToday ? 'today' : ''}">
+        <span class="hours-day">${d.charAt(0).toUpperCase()+d.slice(1)} ${isToday ? '<span class="hours-open-badge">Today</span>' : ''}</span>
+        ${val && val.toLowerCase() !== 'closed' ? `<span class="hours-time">${val}</span>` : '<span class="hours-closed">Closed</span>'}
+      </div>`;
+    }).join('');
+  }
 
   // Review form biz name
   document.querySelector('.review-form-title').textContent = '✏️ Review ' + b.name;
