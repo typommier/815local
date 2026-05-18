@@ -1372,7 +1372,12 @@ window.addEventListener('scroll', () => {
     }
 
     // ── COMMUNITY PICKS (up to 6 featured/top businesses) ──
-    const picks = businesses.slice(0, 6);
+    const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
+    const homeTownPicks = businesses.filter(b => {
+      const c = (b.city || '').trim().toLowerCase();
+      return c.length === 0 || HOME_TOWNS.has(c);
+    });
+    const picks = homeTownPicks.slice(0, 6);
     const grid = document.getElementById('community-picks-grid');
     if (picks.length === 0) {
       grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray);">No businesses yet — <a href="815local-submit-business.html" style="color:var(--orange);">add the first one!</a></div>`;
