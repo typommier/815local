@@ -1090,12 +1090,9 @@ async function loadNearby(category, excludeId) {
 
   grid.innerHTML = data.map(b => {
     const imgSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
-    const photoHtml = imgSrc
-      ? `<img src="${imgSrc}" alt="${b.name}" style="width:100%;height:100%;object-fit:cover;display:block;">`
-      : `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>`;
     return `
     <a href="815local-business.html?id=${b.id}" class="nearby-card">
-      <div class="nearby-photo">${photoHtml}</div>
+      ${imgSrc ? `<div class="nearby-photo"><img src="${imgSrc}" alt="${b.name}" style="width:100%;height:100%;object-fit:cover;display:block;"></div>` : ''}
       <div class="nearby-info">
         <div class="nearby-cat">${b.category}</div>
         <div class="nearby-name">${b.name}</div>
