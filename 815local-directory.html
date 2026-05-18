@@ -130,6 +130,10 @@ a { color: inherit; text-decoration: none; }
 .blc-photo svg { opacity: 0.2; }
 .blc-badge { position: absolute; top: 12px; left: 12px; background: var(--orange); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; }
 .owner-verified-badge { display:inline-flex; align-items:center; gap:5px; background:#2D6A4F; color:white; font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; vertical-align:middle; margin-left:8px; white-space:nowrap; }
+.area-served-badge { display:inline-flex; align-items:center; gap:5px; background:#0E7490; color:white; font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; vertical-align:middle; margin-left:8px; white-space:nowrap; }
+.cat-pill-area { border-color:#0E7490; color:#0E7490; }
+.cat-pill-area:hover { background:#0E7490; color:white; }
+.cat-pill-area.active { background:#0E7490; color:white; border-color:#0E7490; }
 .blc-body { flex: 1; padding: 20px 24px; display: flex; gap: 0; }
 .blc-main { flex: 1; }
 .blc-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--orange); margin-bottom: 4px; }
@@ -266,6 +270,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       <div class="cat-pill" data-cat="Real Estate" onclick="setCat(this)">🏡 Real Estate</div>
       <div class="cat-pill" data-cat="Kids & Family" onclick="setCat(this)">🧸 Kids & Family</div>
       <div class="cat-pill" data-cat="Arts & Events" onclick="setCat(this)">🎭 Arts</div>
+      <div class="cat-pill cat-pill-area" data-cat="__area__" onclick="setCat(this)">📍 Around the 815</div>
     </div>
   </div>
 </div>
@@ -403,6 +408,12 @@ function catEmoji(cat) {
   return map[cat] || '🏪';
 }
 
+const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
+function isAroundThe815(b) {
+  const c = (b.city || '').trim().toLowerCase();
+  return c.length > 0 && !HOME_TOWNS.has(c);
+}
+
 function renderCard(b) {
   const rating = parseFloat(b.avg_rating) || 0;
   const count = b.review_count || 0;
@@ -419,7 +430,7 @@ function renderCard(b) {
       <div class="blc-body">
         <div class="blc-main">
           <div class="blc-cat">${catEmoji(b.category)} ${b.category}${b.subcategory ? ' · ' + b.subcategory : ''} · ${b.price_range || '$$'}</div>
-          <div class="blc-name">${b.name}${(b.features||[]).includes('Chain') ? '<span class="blc-chain-label">Chain</span>' : ''}${b.is_claimed ? '<span class="owner-verified-badge">✓ Owner Verified</span>' : ''}</div>
+          <div class="blc-name">${b.name}${(b.features||[]).includes('Chain') ? '<span class="blc-chain-label">Chain</span>' : ''}${b.is_claimed ? '<span class="owner-verified-badge">✓ Owner Verified</span>' : ''}${isAroundThe815(b) ? '<span class="area-served-badge">📍 Serves the 815</span>' : ''}</div>
           <div class="blc-desc">${b.description || ''}</div>
           <div class="blc-rating-row">
             <span class="blc-stars">${starsHtml(rating)}</span>
@@ -491,7 +502,12 @@ function applyFilters() {
     const isChain = (b.features || []).includes('Chain');
     if (activeTab === 'local' && isChain) return false;
     if (activeTab === 'chains' && !isChain) return false;
-    if (activeCategory && b.category !== activeCategory) return false;
+    if (activeCategory === '__area__') {
+      if (!isAroundThe815(b)) return false;
+    } else {
+      if (isAroundThe815(b)) return false;
+      if (activeCategory && b.category !== activeCategory) return false;
+    }
     if (minRating > 0 && (parseFloat(b.avg_rating) || 0) < minRating) return false;
     if (activePrices.length && !activePrices.includes(b.price_range)) return false;
     if (search) {

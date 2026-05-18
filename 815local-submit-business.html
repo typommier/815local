@@ -257,9 +257,21 @@ a { color:inherit; text-decoration:none; }
           <div class="form-section-title">📍 Location & Contact</div>
           <div class="form-section-sub">How can customers find and reach you?</div>
 
-          <div class="form-group">
-            <label class="form-label">Street Address <span>*</span></label>
-            <input class="form-input" id="biz-address" type="text" placeholder="e.g. 412 Lincoln Ave, Rockford, IL 61101" required oninput="updateProgress()">
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0;flex:2;">
+              <label class="form-label">Street Address <span>*</span></label>
+              <input class="form-input" id="biz-address" type="text" placeholder="e.g. 412 Lincoln Ave" required oninput="updateProgress()">
+            </div>
+            <div class="form-group" style="margin-bottom:0;flex:1;">
+              <label class="form-label">City <span>*</span></label>
+              <input class="form-input" id="biz-city" type="text" list="city-suggestions" placeholder="Minooka" required oninput="updateProgress()">
+              <datalist id="city-suggestions">
+                <option value="Minooka">
+                <option value="Channahon">
+                <option value="Shorewood">
+              </datalist>
+              <div class="form-hint">Outside Minooka, Channahon, or Shorewood? Type your city — you'll appear under "Around the 815".</div>
+            </div>
           </div>
 
           <div class="form-row">
@@ -379,7 +391,7 @@ function toggleClosed(day) {
 }
 
 function updateProgress() {
-  const fields = ['biz-name','biz-category','biz-description','biz-address','owner-name','owner-email'];
+  const fields = ['biz-name','biz-category','biz-description','biz-address','biz-city','owner-name','owner-email'];
   const filled = fields.filter(id => document.getElementById(id)?.value?.trim()).length;
   document.getElementById('progress-bar').style.width = Math.round((filled / fields.length) * 100) + '%';
 }
@@ -409,6 +421,8 @@ async function handleSubmit(e) {
     description: document.getElementById('biz-description').value.trim(),
     price_range: document.getElementById('biz-price').value,
     address:     document.getElementById('biz-address').value.trim(),
+    city:        document.getElementById('biz-city').value.trim(),
+    state:       'IL',
     phone:       document.getElementById('biz-phone').value.trim() || null,
     website:     document.getElementById('biz-website').value.trim().replace(/^https?:\/\//,'') || null,
     order_url:   document.getElementById('biz-order-url').value.trim() || null,
