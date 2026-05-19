@@ -448,6 +448,22 @@ async function submitClaim() {
 
     if (error) throw error;
 
+    fetch('https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-submission', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'claim',
+        business_id:         businessId,
+        business_name:       biz,
+        claimant_name:       name,
+        role:                role,
+        email:               email,
+        phone:               phone,
+        verification_method: verify,
+        notes:               notes
+      }),
+    }).catch(() => {});
+
     document.getElementById('form-inner').style.display = 'none';
     document.getElementById('form-success').style.display = 'flex';
 
