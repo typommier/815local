@@ -1,7 +1,7 @@
 /**
  * 815local Analytics Tracker
  * Lightweight client-side tracker using localStorage + BroadcastChannel
- * Drop-in script — add <script src="815local-analytics-tracker.js"></script>
+ * Drop-in script — add <script src="/assets/js/analytics-tracker.js"></script>
  * before </body> on every page.
  */
 (function() {
@@ -11,13 +11,12 @@
   const SESSION_KEY = '815local_session';
   const ACTIVE_KEY  = '815local_active';
   const PAGE_LABELS = {
-    'index.html':              'Homepage',
-    '':                        'Homepage',
-    '815local-business.html':  'Business Listing',
-    '815local-directory.html': 'Directory',
-    '815local-events.html':    'Events Calendar',
-    '815local-profile.html':   'User Profile',
-    '815local-analytics.html': 'Analytics Dashboard'
+    'index.html':     'Homepage',
+    'business.html':  'Business Listing',
+    'directory.html': 'Directory',
+    'events.html':    'Events Calendar',
+    'profile.html':   'User Profile',
+    'analytics.html': 'Analytics Dashboard'
   };
 
   /* ── helpers ── */
@@ -40,7 +39,7 @@
   }
   function today() { return new Date().toISOString().slice(0,10); }
   function pageName() {
-    const f = location.pathname.split('/').pop() || 'index.html';
+    const f = location.pathname.split('/').pop() || '/';
     return PAGE_LABELS[f] || f;
   }
   function sessionId() {

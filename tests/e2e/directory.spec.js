@@ -7,7 +7,7 @@ test.describe('Directory page', () => {
   test.beforeEach(async ({ page }) => {
     await page.route('**/supabase-js**', route => route.fulfill({ status: 200, contentType: 'text/javascript', body: '/* supabase cdn stub */' }));
     await page.addInitScript({ path: SUPABASE_MOCK });
-    await page.goto('/815local-directory.html');
+    await page.goto('/pages/directory.html');
   });
 
   test('nav and page structure render', async ({ page }) => {
@@ -43,6 +43,6 @@ test.describe('Directory page', () => {
     const firstCard = page.locator('#biz-list .biz-list-card').first();
     await expect(firstCard).toBeVisible({ timeout: 8000 });
     const href = await firstCard.getAttribute('href');
-    expect(href).toMatch(/815local-business\.html\?id=.+/);
+    expect(href).toMatch(/\/pages\/business\.html\?id=.+/);
   });
 });

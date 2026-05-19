@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Settings — 815local</title>
+<meta name="description" content="Manage your cookie preferences for 815local. Control which cookies are used on your device.">
+<meta property="og:title" content="Cookie Settings — 815local">
+<meta property="og:description" content="Manage your cookie preferences for 815local. Control which cookies are used on your device.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://815local.com/legal/cookie-settings.html">
+<meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta property="og:site_name" content="815local">
+<link rel="canonical" href="https://815local.com/legal/cookie-settings.html">
+<link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-light:  #E07A48;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --shadow-sm:     0 2px 8px rgba(30,27,24,0.08);
+  --shadow-md:     0 6px 24px rgba(30,27,24,0.12);
+  --shadow-lg:     0 16px 48px rgba(30,27,24,0.18);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--white); color: var(--charcoal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 100px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; border: none; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover { background: var(--orange-light); }
+.btn-outline { background: transparent; color: var(--charcoal); border: 2px solid var(--gray-light); }
+.btn-outline:hover { border-color: var(--charcoal); }
+
+/* NAV */
+#main-nav { position: sticky; top: 0; z-index: 100; background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.nav-inner { display: flex; align-items: center; height: 110px; }
+.nav-logo { flex-shrink: 0; margin-right: 36px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); transition: filter 0.2s; }
+.nav-logo img:hover { filter: drop-shadow(0 4px 16px rgba(196,98,45,0.55)); }
+.nav-links { display: flex; align-items: center; gap: 4px; margin-right: auto; }
+.nav-link { padding: 8px 16px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); border-radius: 100px; transition: all 0.15s; }
+.nav-link:hover, .nav-link.active { color: white; background: rgba(255,255,255,0.08); }
+.nav-signin { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.65); padding: 8px 16px; cursor: pointer; }
+.nav-signin:hover { color: white; }
+
+/* PAGE HEADER */
+.page-header { background: var(--white); padding: 48px 0 0; border-bottom: 1px solid var(--cream-dark); }
+.breadcrumb { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--gray); margin-bottom: 20px; cursor: pointer; transition: color 0.15s; background: none; border: none; font-family: 'Plus Jakarta Sans', sans-serif; padding: 0; }
+.breadcrumb:hover { color: var(--orange); }
+.breadcrumb-arrow { font-size: 15px; line-height: 1; }
+.page-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: var(--charcoal); margin-bottom: 10px; }
+.page-subtitle { font-size: 15px; color: var(--charcoal-light); margin-bottom: 32px; }
+
+/* MAIN CONTENT */
+.cookie-main { background: var(--cream); min-height: calc(100vh - 110px); padding: 48px 0 80px; }
+.cookie-wrap { max-width: 720px; margin: 0 auto; }
+
+/* COOKIE CARDS */
+.cookie-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--cream-dark); padding: 28px 28px 24px; margin-bottom: 16px; transition: box-shadow 0.2s; }
+.cookie-card:hover { box-shadow: var(--shadow-md); }
+.cookie-card-top { display: flex; align-items: flex-start; gap: 16px; }
+.cookie-icon { font-size: 26px; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+.cookie-info { flex: 1; min-width: 0; }
+.cookie-name { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--charcoal); margin-bottom: 8px; line-height: 1.3; }
+.cookie-desc { font-size: 14px; color: var(--charcoal-light); line-height: 1.65; margin-bottom: 0; }
+.cookie-examples { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.cookie-example-pill { font-size: 12px; font-weight: 500; color: var(--gray); background: var(--cream); border: 1px solid var(--cream-dark); border-radius: 100px; padding: 3px 10px; }
+.cookie-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; margin-left: 16px; }
+
+/* BADGE */
+.badge-active { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--orange); background: var(--orange-pale); border-radius: 100px; padding: 4px 10px; white-space: nowrap; }
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+
+/* TOGGLE SWITCH */
+.toggle-wrap { display: flex; align-items: center; }
+.toggle-wrap input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+.toggle-label { position: relative; display: inline-block; width: 48px; height: 27px; cursor: pointer; flex-shrink: 0; }
+.toggle-label .track {
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  background: var(--gray-light);
+  transition: background 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.toggle-label .thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 4px rgba(30,27,24,0.22);
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s;
+}
+input[type="checkbox"]:checked + .toggle-label .track { background: var(--orange); }
+input[type="checkbox"]:checked + .toggle-label .thumb { transform: translateX(21px); box-shadow: 0 2px 8px rgba(196,98,45,0.35); }
+input[type="checkbox"]:focus-visible + .toggle-label .track { outline: 2px solid var(--orange); outline-offset: 2px; }
+.toggle-wrap.disabled .toggle-label { cursor: not-allowed; opacity: 0.6; }
+
+/* ACTIONS */
+.cookie-actions { margin-top: 32px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.btn-reject-all { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--gray); background: none; border: none; cursor: pointer; padding: 8px 4px; transition: color 0.15s; text-decoration: underline; text-decoration-color: transparent; transition: color 0.15s, text-decoration-color 0.15s; }
+.btn-reject-all:hover { color: var(--charcoal); text-decoration-color: currentColor; }
+
+/* CONFIRMATION */
+.save-confirm { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #2d8a4e; background: #eaf7ef; border-radius: 100px; padding: 6px 14px; opacity: 0; transform: translateY(4px); transition: opacity 0.3s, transform 0.3s; pointer-events: none; }
+.save-confirm.visible { opacity: 1; transform: translateY(0); }
+.save-confirm-icon { font-size: 14px; }
+
+/* INFO NOTE */
+.cookie-note { background: var(--orange-pale); border: 1px solid rgba(196,98,45,0.18); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 28px; display: flex; gap: 12px; align-items: flex-start; }
+.cookie-note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.cookie-note-text { font-size: 13px; color: var(--charcoal-mid); line-height: 1.6; }
+.cookie-note-text a { color: var(--orange); font-weight: 600; }
+.cookie-note-text a:hover { text-decoration: underline; }
+
+/* FOOTER */
+footer { background: var(--charcoal); color: rgba(255,255,255,0.5); padding: 56px 0 0; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.footer-logo { height: 80px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); margin-bottom: 16px; }
+.footer-tagline { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.4); max-width: 260px; margin-bottom: 20px; }
+.footer-social { display: flex; gap: 8px; }
+.footer-social-btn { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: background 0.15s; }
+.footer-social-btn:hover { background: rgba(255,255,255,0.14); }
+.footer-heading { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 14px; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a { font-size: 14px; color: rgba(255,255,255,0.55); transition: color 0.15s; }
+.footer-links a:hover { color: white; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,0.4); transition: color 0.15s; }
+.footer-legal a:hover { color: rgba(255,255,255,0.8); }
+.footer-legal a[href="/legal/cookie-settings.html"] { color: var(--orange); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .page-title { font-size: 30px; }
+  .cookie-card { padding: 20px; }
+  .cookie-card-right { margin-left: 0; flex-direction: row; align-items: center; }
+  .cookie-card-top { flex-wrap: wrap; }
+  .cookie-actions { flex-direction: column; align-items: flex-start; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .footer-legal { flex-wrap: wrap; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 20px; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Explore</a>
+        <a class="nav-link" href="/pages/directory.html">Browse</a>
+        <a class="nav-link" href="/pages/events.html">Events</a>
+        <a class="nav-link" href="/pages/blog.html">Blog</a>
+        <a class="nav-link" href="/pages/about.html">About</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="nav-signin">Sign In</span>
+        <a class="btn btn-primary" href="/pages/submit/business.html" style="font-size:13px;padding:9px 18px;">+ List Business</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <button class="breadcrumb" onclick="window.history.length > 1 ? history.back() : window.location='/'" aria-label="Go back">
+      <span class="breadcrumb-arrow">←</span>
+      <span>Back</span>
+    </button>
+    <h1 class="page-title">Cookie Settings</h1>
+    <p class="page-subtitle">Control how 815local uses cookies on your device.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="cookie-main">
+  <div class="container">
+    <div class="cookie-wrap">
+
+      <div class="cookie-note">
+        <span class="cookie-note-icon">ℹ️</span>
+        <p class="cookie-note-text">Your preferences are saved locally on your device and respected on every visit. For more details on how we handle data, see our <a href="/legal/privacy.html">Privacy Policy</a>.</p>
+      </div>
+
+      <!-- ESSENTIAL COOKIES -->
+      <div class="cookie-card">
+        <div class="cookie-card-top">
+          <div class="cookie-icon">🔒</div>
+          <div class="cookie-info">
+            <div class="cookie-name">Essential Cookies</div>
+            <p class="cookie-desc">Required for the site to work. These enable core functionality like navigation, search, and security. They cannot be disabled.</p>
+          </div>
+          <div class="cookie-card-right">
+            <span class="badge-active"><span class="badge-dot"></span>Always Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS COOKIES -->
+      <div class="cookie-card">
+        <div class="cookie-card-top">
+          <div class="cookie-icon">📊</div>
+          <div class="cookie-info">
+            <div class="cookie-name">Analytics Cookies</div>
+            <p class="cookie-desc">Help us understand how visitors use 815local so we can improve the experience. Data is aggregated and anonymous.</p>
+            <div class="cookie-examples">
+              <span class="cookie-example-pill">Page views</span>
+              <span class="cookie-example-pill">Session duration</span>
+              <span class="cookie-example-pill">Popular pages</span>
+            </div>
+          </div>
+          <div class="cookie-card-right">
+            <div class="toggle-wrap" id="analytics-wrap">
+              <input type="checkbox" id="analytics-toggle" checked>
+              <label class="toggle-label" for="analytics-toggle" aria-label="Toggle analytics cookies">
+                <span class="track"></span>
+                <span class="thumb"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MARKETING COOKIES -->
+      <div class="cookie-card">
+        <div class="cookie-card-top">
+          <div class="cookie-icon">📣</div>
+          <div class="cookie-info">
+            <div class="cookie-name">Marketing Cookies</div>
+            <p class="cookie-desc">Allow us to show relevant local business promotions and deals. We never sell your data to third parties.</p>
+          </div>
+          <div class="cookie-card-right">
+            <div class="toggle-wrap" id="marketing-wrap">
+              <input type="checkbox" id="marketing-toggle">
+              <label class="toggle-label" for="marketing-toggle" aria-label="Toggle marketing cookies">
+                <span class="track"></span>
+                <span class="thumb"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-save" onclick="savePreferences()">Save Preferences</button>
+        <button class="btn btn-outline" id="btn-accept-all" onclick="acceptAll()">Accept All</button>
+        <button class="btn-reject-all" id="btn-reject-all" onclick="rejectAll()">Reject All Optional</button>
+        <span class="save-confirm" id="save-confirm" role="status" aria-live="polite">
+          <span class="save-confirm-icon">✓</span>
+          <span id="save-confirm-msg">Saved!</span>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" class="footer-logo"></picture>
+        <p class="footer-tagline">Your one-stop community hub for local business reviews, services, restaurants, and events in the 815 area.</p>
+        <div class="footer-social">
+          <div class="footer-social-btn">𝕏</div>
+          <div class="footer-social-btn">📘</div>
+          <div class="footer-social-btn">📸</div>
+          <div class="footer-social-btn">📌</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Explore</div>
+        <ul class="footer-links">
+          <li><a href="/">Homepage</a></li>
+          <li><a href="/pages/directory.html">Browse Businesses</a></li>
+          <li><a href="/pages/blog.html">Community Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Community</div>
+        <ul class="footer-links">
+          <li><a href="/pages/events.html">Events Calendar</a></li>
+          <li><a href="/pages/submit/event.html">Submit an Event</a></li>
+          <li><a href="/pages/deals.html">Local Deals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Business</div>
+        <ul class="footer-links">
+          <li><a href="/pages/submit/business.html">List Your Business</a></li>
+          <li><a href="/pages/advertise.html">Advertise</a></li>
+          <li><a href="mailto:815local@gmail.com">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 815local.com — Proudly serving the 815</span>
+      <div class="footer-legal">
+        <a href="/legal/privacy.html">Privacy Policy</a>
+        <a href="/legal/terms.html">Terms of Use</a>
+        <a href="/legal/cookie-settings.html">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var analyticsToggle = document.getElementById('analytics-toggle');
+  var marketingToggle = document.getElementById('marketing-toggle');
+  var confirmEl = document.getElementById('save-confirm');
+  var confirmMsg = document.getElementById('save-confirm-msg');
+  var confirmTimer = null;
+
+  function loadPrefs() {
+    try {
+      var raw = localStorage.getItem('cookiePrefs');
+      if (!raw) return;
+      var prefs = JSON.parse(raw);
+      if (typeof prefs.analytics === 'boolean') {
+        analyticsToggle.checked = prefs.analytics;
+      }
+      if (typeof prefs.marketing === 'boolean') {
+        marketingToggle.checked = prefs.marketing;
+      }
+    } catch (e) {}
+  }
+
+  function persistPrefs(analytics, marketing) {
+    var prefs = {
+      essential: true,
+      analytics: analytics,
+      marketing: marketing,
+      savedAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem('cookiePrefs', JSON.stringify(prefs));
+    } catch (e) {}
+  }
+
+  function showConfirm(msg) {
+    confirmMsg.textContent = msg || 'Saved!';
+    confirmEl.classList.add('visible');
+    if (confirmTimer) clearTimeout(confirmTimer);
+    confirmTimer = setTimeout(function () {
+      confirmEl.classList.remove('visible');
+    }, 2800);
+  }
+
+  window.savePreferences = function () {
+    persistPrefs(analyticsToggle.checked, marketingToggle.checked);
+    showConfirm('Saved! ✓');
+  };
+
+  window.acceptAll = function () {
+    analyticsToggle.checked = true;
+    marketingToggle.checked = true;
+    persistPrefs(true, true);
+    showConfirm('All cookies accepted ✓');
+  };
+
+  window.rejectAll = function () {
+    analyticsToggle.checked = false;
+    marketingToggle.checked = false;
+    persistPrefs(false, false);
+    showConfirm('Optional cookies rejected ✓');
+  };
+
+  loadPrefs();
+})();
+</script>
+
+</body>
+</html>
