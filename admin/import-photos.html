@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Importer — 815local Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --green:         #2D6A4F;
+  --green-pale:    rgba(45,106,79,0.1);
+  --red:           #c53030;
+  --red-pale:      rgba(197,48,48,0.08);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--charcoal); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
+a { color: inherit; text-decoration: none; }
+
+#main-nav { background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; align-items: center; height: 110px; padding: 0 32px; gap: 24px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); }
+.nav-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: white; }
+.nav-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.nav-back { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.15s; }
+.nav-back:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+.dashboard { padding: 32px; max-width: 1100px; margin: 0 auto; }
+.page-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.page-sub { font-size: 14px; color: var(--gray); margin-bottom: 24px; }
+
+.card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+.card-header { padding: 18px 24px; border-bottom: 1px solid var(--cream-dark); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 16px; font-weight: 700; }
+.card-subtitle { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.card-body { padding: 24px; }
+
+.form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-row label { font-size: 13px; font-weight: 600; color: var(--charcoal-mid); }
+.form-row input, .form-row select { font: inherit; padding: 10px 12px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: white; color: var(--charcoal); }
+.form-row input:focus, .form-row select:focus { outline: none; border-color: var(--orange); }
+.form-row .hint { font-size: 12px; color: var(--gray); }
+.form-row.inline { flex-direction: row; align-items: center; gap: 12px; }
+.form-row.inline label { width: 130px; flex-shrink: 0; margin-bottom: 0; }
+.form-row.inline input, .form-row.inline select { flex: 1; }
+
+.btn { font: inherit; font-weight: 700; padding: 12px 24px; border-radius: 100px; border: none; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--charcoal); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-row { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+
+.result-summary { padding: 14px 16px; background: var(--cream); border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 14px; }
+.result-summary.success { background: var(--green-pale); color: var(--green); }
+.result-summary.error { background: var(--red-pale); color: var(--red); }
+
+.thumb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+.thumb { border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); overflow: hidden; background: #f5f5f5; display: flex; flex-direction: column; }
+.thumb img { width: 100%; height: 150px; object-fit: cover; display: block; background: white; }
+.thumb-foot { padding: 8px 10px; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+.thumb-hero { font-weight: 800; color: var(--orange); font-size: 11px; letter-spacing: 0.04em; }
+.thumb-link { margin-left: auto; color: var(--gray); font-weight: 600; font-size: 11px; text-decoration: underline; }
+
+.empty { color: var(--gray); font-size: 14px; text-align: center; padding: 32px; }
+
+@media (max-width: 680px) {
+  .dashboard { padding: 16px; }
+  .nav-inner { height: 80px; }
+  .nav-logo img { height: 60px; }
+  .form-row.inline { flex-direction: column; align-items: stretch; }
+  .form-row.inline label { width: auto; }
+}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+    </a>
+    <div>
+      <div class="nav-title">Photo Importer</div>
+      <div class="nav-subtitle">Pull images from a business website into the listing</div>
+    </div>
+    <div class="nav-right">
+      <a href="/admin/analytics.html" class="nav-back">← Analytics</a>
+      <a href="/" class="nav-back">Back to Site</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard">
+  <h1 class="page-title">Import Photos from a Website</h1>
+  <div class="page-sub">Scrapes the homepage for <code>&lt;img&gt;</code>, <code>og:image</code>, and <code>twitter:image</code> URLs, filters out icons / theme assets / testimonial avatars, then mirrors the survivors into Supabase storage so the listing renders fast.</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Run Importer</div>
+        <div class="card-subtitle">Pick a business, confirm the URL, click Import. Takes 20-40 seconds.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form id="import-form">
+        <div class="form-row inline">
+          <label for="biz-select">Business</label>
+          <select id="biz-select" required>
+            <option value="">Loading businesses…</option>
+          </select>
+        </div>
+        <div class="form-row inline">
+          <label for="biz-id">Business ID</label>
+          <input id="biz-id" type="text" placeholder="auto-filled from selection" required>
+        </div>
+        <div class="form-row inline">
+          <label for="src-url">Source URL</label>
+          <input id="src-url" type="url" placeholder="https://example.com/" required>
+        </div>
+        <div class="form-row inline">
+          <label for="max-photos">Max photos</label>
+          <input id="max-photos" type="number" min="1" max="20" value="10" style="max-width:120px;">
+        </div>
+        <div class="btn-row">
+          <button id="submit-btn" type="submit" class="btn btn-primary">Import &amp; Mirror →</button>
+          <span id="status-text" style="font-size:13px;color:var(--gray);"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card" id="result-card" style="display:none;">
+    <div class="card-header">
+      <div>
+        <div class="card-title" id="result-title">Result</div>
+        <div class="card-subtitle" id="result-sub"></div>
+      </div>
+      <a id="result-listing-link" href="#" target="_blank" class="nav-back" style="color:var(--orange);border-color:var(--orange-pale);background:var(--orange-pale);">View listing →</a>
+    </div>
+    <div class="card-body">
+      <div id="result-summary" class="result-summary"></div>
+      <div id="result-thumbs" class="thumb-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+
+let db = null;
+try { const { createClient } = supabase; db = createClient(SUPABASE_URL, ANON_KEY); } catch(e) {}
+
+const $select   = document.getElementById('biz-select');
+const $bizId    = document.getElementById('biz-id');
+const $url      = document.getElementById('src-url');
+const $form     = document.getElementById('import-form');
+const $btn      = document.getElementById('submit-btn');
+const $status   = document.getElementById('status-text');
+const $card     = document.getElementById('result-card');
+const $title    = document.getElementById('result-title');
+const $sub      = document.getElementById('result-sub');
+const $summary  = document.getElementById('result-summary');
+const $thumbs   = document.getElementById('result-thumbs');
+const $listing  = document.getElementById('result-listing-link');
+
+function normalizeUrl(raw) {
+  if (!raw) return '';
+  const v = String(raw).trim();
+  if (!v) return '';
+  return /^https?:\/\//i.test(v) ? v : 'https://' + v;
+}
+
+async function loadBusinesses() {
+  if (!db) { $select.innerHTML = '<option>Supabase not loaded</option>'; return; }
+  const { data, error } = await db
+    .from('businesses')
+    .select('id, name, website, is_claimed, photos, image_url, city')
+    .order('name');
+  if (error) { $select.innerHTML = '<option>Error: ' + error.message + '</option>'; return; }
+
+  const sorted = (data || []).slice().sort((a, b) => {
+    const aHas = (a.photos && a.photos.length) || a.image_url ? 1 : 0;
+    const bHas = (b.photos && b.photos.length) || b.image_url ? 1 : 0;
+    if (aHas !== bHas) return aHas - bHas;
+    return a.name.localeCompare(b.name);
+  });
+
+  const opts = ['<option value="">— Select a business —</option>'];
+  for (const b of sorted) {
+    const hasPhoto = (b.photos && b.photos.length) || b.image_url;
+    const tags = [b.is_claimed ? '✓' : '', hasPhoto ? '📷' : '∅', b.website ? '' : '(no website)'].filter(Boolean).join(' ');
+    const label = `${b.name} ${b.city ? '— ' + b.city : ''}  ${tags}`.trim();
+    opts.push(`<option value="${b.id}" data-website="${(b.website||'').replace(/"/g,'&quot;')}">${label}</option>`);
+  }
+  $select.innerHTML = opts.join('');
+}
+
+$select.addEventListener('change', () => {
+  const opt = $select.selectedOptions[0];
+  if (!opt || !opt.value) {
+    $bizId.value = '';
+    $url.value = '';
+    return;
+  }
+  $bizId.value = opt.value;
+  $url.value = normalizeUrl(opt.dataset.website || '');
+});
+
+$form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const businessId = $bizId.value.trim();
+  const url        = normalizeUrl($url.value);
+  const maxPhotos  = Math.min(20, Math.max(1, parseInt(document.getElementById('max-photos').value, 10) || 10));
+
+  if (!businessId || !url) {
+    setStatus('Both Business ID and Source URL are required.', 'error');
+    return;
+  }
+
+  $btn.disabled = true;
+  $btn.textContent = 'Importing…';
+  setStatus('Fetching, parsing, and mirroring. This usually takes 20-40 seconds.', '');
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/import-from-website`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ business_id: businessId, url, max_photos: maxPhotos })
+    });
+    const data = await res.json();
+    await renderResult(businessId, data, res.ok);
+  } catch(err) {
+    showError(businessId, 'Network error: ' + (err && err.message ? err.message : String(err)));
+  } finally {
+    $btn.disabled = false;
+    $btn.textContent = 'Import & Mirror →';
+    setStatus('', '');
+  }
+});
+
+function setStatus(text, kind) {
+  $status.textContent = text || '';
+  $status.style.color = kind === 'error' ? 'var(--red)' : 'var(--gray)';
+}
+
+function showError(businessId, msg) {
+  $card.style.display = 'block';
+  $title.textContent = 'Import failed';
+  $sub.textContent = businessId;
+  $summary.className = 'result-summary error';
+  $summary.textContent = msg;
+  $thumbs.innerHTML = '';
+  $listing.href = '/pages/business.html?id=' + encodeURIComponent(businessId);
+}
+
+async function renderResult(businessId, data, httpOk) {
+  $card.style.display = 'block';
+  $listing.href = '/pages/business.html?id=' + encodeURIComponent(businessId);
+
+  if (!httpOk || !data || data.ok === false) {
+    $title.textContent = 'Import failed';
+    $sub.textContent = businessId;
+    $summary.className = 'result-summary error';
+    $summary.textContent = (data && data.error) ? data.error : 'Unknown error';
+    $thumbs.innerHTML = '';
+    return;
+  }
+
+  const found    = data.found ?? 0;
+  const staged   = data.staged ?? 0;
+  const mirrored = data.mirror_result?.total_mirrored ?? 0;
+  const failed   = data.mirror_result?.total_failed ?? 0;
+
+  $title.textContent = 'Imported ' + staged + ' photo' + (staged === 1 ? '' : 's');
+  $sub.textContent = businessId;
+  $summary.className = 'result-summary success';
+  $summary.textContent = `Found ${found} candidate images on the page, staged ${staged}, mirrored ${mirrored} into Supabase storage` + (failed ? `, ${failed} failed` : '') + '.';
+
+  // Re-read the row so we display the final mirrored URLs (Supabase storage), not the originals.
+  const { data: biz } = await db
+    .from('businesses')
+    .select('image_url, photos')
+    .eq('id', businessId)
+    .single();
+
+  const hero = biz?.image_url || null;
+  const photos = biz?.photos || [];
+  if (!photos.length) {
+    $thumbs.innerHTML = '<div class="empty">No photos staged. The site may have blocked the fetch or had no usable images.</div>';
+    return;
+  }
+
+  $thumbs.innerHTML = photos.map((u) => `
+    <div class="thumb">
+      <img src="${u}" alt="" loading="lazy" referrerpolicy="no-referrer">
+      <div class="thumb-foot">
+        ${u === hero ? '<span class="thumb-hero">★ HERO</span>' : '<span style="color:var(--gray);font-size:11px;">photo</span>'}
+        <a class="thumb-link" href="${u}" target="_blank" rel="noopener">open</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+loadBusinesses();
+</script>
+</body>
+</html>
