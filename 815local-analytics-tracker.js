@@ -11,7 +11,8 @@
   const SESSION_KEY = '815local_session';
   const ACTIVE_KEY  = '815local_active';
   const PAGE_LABELS = {
-    '815local-homepage.html':  'Homepage',
+    'index.html':              'Homepage',
+    '':                        'Homepage',
     '815local-business.html':  'Business Listing',
     '815local-directory.html': 'Directory',
     '815local-events.html':    'Events Calendar',
