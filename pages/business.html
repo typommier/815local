@@ -758,10 +758,13 @@ function renderBusiness(b) {
     mainCell.innerHTML = `<div class="gallery-all-btn" id="gallery-all-btn" onclick="window.open('${photos[0]}','_blank')">📷 View Photo</div>`;
 
     if (photos.length === 1) {
-      // Single photo — expand hero to full width, drop the thumbnail strip
+      // Single photo — expand hero to full width, drop the thumbnail strip.
+      // Use 'contain' so wide banners (e.g. Facebook OG images) aren't cropped to fit the 2.5:1 cell.
       galleryGrid.style.gridTemplateColumns = '1fr';
       galleryGrid.style.gridTemplateRows = '443px';
       mainCell.style.gridRow = 'auto';
+      mainCell.style.backgroundSize = 'contain';
+      mainCell.style.backgroundRepeat = 'no-repeat';
       [2,3,4,5].forEach(n => document.getElementById('gallery-' + n)?.remove());
     } else {
       // Multiple photos — fill thumbnails, remove any unused cells (no static placeholders)
