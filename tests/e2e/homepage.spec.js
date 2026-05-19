@@ -59,7 +59,7 @@ test.describe('Homepage', () => {
     const grid = page.locator('#community-picks-grid');
     await expect(grid.locator('a.biz-card').first()).toBeVisible({ timeout: 8000 });
     const href = await grid.locator('a.biz-card').first().getAttribute('href');
-    expect(href).toMatch(/815local-business\.html\?id=.+/);
+    expect(href).toMatch(/\/pages\/business\.html\?id=.+/);
   });
 
   test('newsletter form is present', async ({ page }) => {
