@@ -64,6 +64,15 @@ a { color:inherit; text-decoration:none; }
 .gallery-cell svg { opacity:0.15; }
 .gallery-main { grid-row:span 2; }
 .gallery-all-btn { position:absolute; bottom:16px; right:16px; background:white; color:var(--charcoal); padding:8px 18px; border-radius:100px; font-size:13px; font-weight:600; cursor:pointer; box-shadow:var(--shadow-md); }
+/* Mobile swiper — hidden on desktop, shown below 480px via media query */
+.gallery-swiper { display:none; position:relative; background:var(--charcoal); }
+.swipe-track { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.swipe-track::-webkit-scrollbar { display:none; }
+.swipe-slide { flex:0 0 100%; height:260px; scroll-snap-align:center; background-size:cover; background-position:center; background-color:var(--charcoal-mid); cursor:pointer; }
+.swipe-counter { position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.55); color:#fff; font-size:12px; font-weight:600; padding:4px 10px; border-radius:100px; pointer-events:none; }
+.swipe-dots { display:flex; justify-content:center; gap:6px; padding:8px 0 10px; background:var(--charcoal); }
+.swipe-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.3); transition:background 0.15s, width 0.15s; }
+.swipe-dot.active { background:#fff; width:18px; border-radius:3px; }
 
 /* BIZ HEADER */
 .biz-header { background:var(--white); padding:32px 0 0; border-bottom:1px solid var(--cream-dark); }
@@ -307,9 +316,8 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
   .container { padding:0 16px; }
   .biz-title { font-size:22px !important; }
   .biz-header-inner { gap:12px; }
-  .gallery-grid { grid-template-columns:1fr; grid-template-rows:200px; }
-  .gallery-main { grid-column:span 1; }
-  .gallery-cell:not(.gallery-main) { display:none; }
+  .gallery-grid { display:none; }
+  .gallery-swiper { display:block; }
   .amenities-grid { grid-template-columns:1fr; }
   .biz-tab { padding:10px 12px; font-size:12px; }
   .nav-inner { height:72px; padding:0 16px; }
@@ -367,6 +375,11 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
     <div class="gallery-cell" id="gallery-3"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Details</div>
     <div class="gallery-cell" id="gallery-4"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Ambiance</div>
     <div class="gallery-cell" id="gallery-5"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>More photos</div>
+  </div>
+  <div class="gallery-swiper" id="gallery-swiper" style="display:none;">
+    <div class="swipe-track" id="swipe-track"></div>
+    <div class="swipe-counter" id="swipe-counter" style="display:none;"></div>
+    <div class="swipe-dots" id="swipe-dots"></div>
   </div>
 </div>
 
@@ -785,6 +798,29 @@ function renderBusiness(b) {
         }
       });
     }
+
+    // Mobile swiper — same photos[] array, swapped in via media query below 480px
+    const swiper = document.getElementById('gallery-swiper');
+    const track = document.getElementById('swipe-track');
+    const dots = document.getElementById('swipe-dots');
+    const counter = document.getElementById('swipe-counter');
+    track.innerHTML = photos.map((url, i) =>
+      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}" style="background-image:url('${url.replace(/'/g, "\\'")}')"></div>`
+    ).join('');
+    track.querySelectorAll('.swipe-slide').forEach((slide, i) => {
+      slide.addEventListener('click', () => window.open(photos[i], '_blank'));
+    });
+    if (photos.length > 1) {
+      counter.style.display = 'block';
+      counter.textContent = `1 / ${photos.length}`;
+      dots.innerHTML = photos.map((_, i) => `<span class="swipe-dot${i===0?' active':''}"></span>`).join('');
+      track.addEventListener('scroll', () => {
+        const idx = Math.round(track.scrollLeft / track.clientWidth);
+        counter.textContent = `${idx+1} / ${photos.length}`;
+        dots.querySelectorAll('.swipe-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      }, { passive: true });
+    }
+    swiper.style.display = '';
   }
 
   // Header
