@@ -94,7 +94,7 @@ a { color:inherit; text-decoration:none; }
 
 /* About */
 .about-title { font-size:24px; font-weight:700; margin-bottom:16px; }
-.about-text { font-size:15px; color:var(--charcoal-light); line-height:1.8; margin-bottom:20px; }
+.about-text { font-size:15px; color:var(--charcoal-light); line-height:1.8; margin-bottom:20px; white-space:pre-line; }
 .about-attrs { display:flex; flex-wrap:wrap; gap:10px; }
 .about-attr { display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:100px; border:1.5px solid var(--cream-dark); font-size:13px; font-weight:500; color:var(--charcoal-mid); background:white; }
 
@@ -883,7 +883,7 @@ function renderBusiness(b) {
 
   // About
   document.getElementById('about-title').textContent = 'About ' + b.name;
-  document.getElementById('about-text').textContent = b.description || '';
+  document.getElementById('about-text').textContent = b.story || b.description || '';
   const attrs = document.getElementById('about-attrs');
   attrs.innerHTML = (b.features || []).map(f => `<span class="about-attr">${f}</span>`).join('');
 
