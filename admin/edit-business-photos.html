@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Business Photos — 815local Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --green:         #2D6A4F;
+  --green-pale:    rgba(45,106,79,0.1);
+  --red:           #c53030;
+  --red-pale:      rgba(197,48,48,0.08);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--charcoal); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
+a { color: inherit; text-decoration: none; }
+
+#main-nav { background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; align-items: center; height: 110px; padding: 0 32px; gap: 24px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); }
+.nav-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: white; }
+.nav-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.nav-back { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.15s; }
+.nav-back:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+.dashboard { padding: 32px; max-width: 1100px; margin: 0 auto; }
+.page-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.page-sub { font-size: 14px; color: var(--gray); margin-bottom: 24px; }
+
+.card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+.card-header { padding: 18px 24px; border-bottom: 1px solid var(--cream-dark); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 16px; font-weight: 700; }
+.card-subtitle { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.card-body { padding: 24px; }
+
+.form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-row label { font-size: 13px; font-weight: 600; color: var(--charcoal-mid); }
+.form-row input { font: inherit; padding: 10px 12px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: white; color: var(--charcoal); }
+.form-row input:focus { outline: none; border-color: var(--orange); }
+.form-row .hint { font-size: 12px; color: var(--gray); }
+
+.btn { font: inherit; font-weight: 700; padding: 12px 24px; border-radius: 100px; border: none; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--charcoal); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-row { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+
+.result-summary { padding: 14px 16px; background: var(--cream); border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 14px; }
+.result-summary.success { background: var(--green-pale); color: var(--green); }
+.result-summary.error { background: var(--red-pale); color: var(--red); }
+
+/* Business search */
+#biz-results { margin-top: 8px; max-height: 320px; overflow-y: auto; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); display: none; background: white; }
+#biz-results.open { display: block; }
+.biz-result { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--cream-dark); display: flex; gap: 10px; align-items: center; }
+.biz-result:last-child { border-bottom: none; }
+.biz-result:hover { background: var(--cream); }
+.biz-result-name { font-weight: 600; font-size: 14px; }
+.biz-result-meta { font-size: 12px; color: var(--gray); margin-left: auto; }
+
+/* Editor */
+.editor-biz-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.editor-biz-name { font-size: 22px; font-weight: 700; font-family: 'Playfair Display', serif; }
+.editor-biz-meta { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+.drop-zone { border: 2px dashed var(--gray-light); border-radius: var(--radius-sm); padding: 28px; text-align: center; color: var(--gray); font-size: 14px; cursor: pointer; transition: all 0.15s; background: var(--cream); margin-bottom: 20px; }
+.drop-zone:hover, .drop-zone.dragover { border-color: var(--orange); color: var(--orange); background: var(--orange-pale); }
+.drop-zone input { display: none; }
+
+.photo-list { display: flex; flex-direction: column; gap: 16px; }
+.photo-row { display: grid; grid-template-columns: 260px 1fr; gap: 20px; padding: 16px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: white; align-items: start; }
+.photo-row.is-hero { border-color: var(--orange); background: linear-gradient(0deg, var(--orange-pale), white); }
+.photo-row.is-new { border-color: var(--green); }
+.photo-preview { width: 260px; height: 195px; background: var(--charcoal-mid); border-radius: var(--radius-sm); background-size: cover; background-repeat: no-repeat; position: relative; overflow: hidden; }
+.photo-preview-label { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.7); color: white; font-size: 10px; padding: 3px 8px; border-radius: 100px; letter-spacing: 0.04em; font-weight: 600; }
+.photo-controls { display: flex; flex-direction: column; gap: 12px; }
+.photo-controls-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.photo-controls-label { font-size: 11px; font-weight: 700; color: var(--charcoal-light); letter-spacing: 0.06em; text-transform: uppercase; }
+
+.position-grid { display: grid; grid-template-columns: repeat(3, 32px); grid-template-rows: repeat(3, 32px); gap: 3px; background: var(--gray-light); padding: 3px; border-radius: 6px; }
+.position-cell { background: white; border: none; padding: 0; cursor: pointer; border-radius: 3px; transition: background 0.1s; }
+.position-cell:hover { background: var(--orange-pale); }
+.position-cell.active { background: var(--orange); }
+
+.icon-btn { background: white; border: 1.5px solid var(--gray-light); color: var(--charcoal-mid); padding: 6px 10px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; transition: all 0.1s; }
+.icon-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+.icon-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.icon-btn.danger:hover { border-color: var(--red); color: var(--red); }
+.icon-btn.hero-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+
+.empty { color: var(--gray); font-size: 14px; text-align: center; padding: 32px; }
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--gray-light); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 680px) {
+  .dashboard { padding: 16px; }
+  .nav-inner { height: 80px; }
+  .nav-logo img { height: 60px; }
+  .photo-row { grid-template-columns: 1fr; }
+  .photo-preview { width: 100%; height: 200px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+    </a>
+    <div>
+      <div class="nav-title">Edit Business Photos</div>
+      <div class="nav-subtitle">Upload, reorder, and reposition the photos on a listing</div>
+    </div>
+    <div class="nav-right">
+      <a href="/admin/analytics.html" class="nav-back">← Analytics</a>
+      <a href="/admin/import-photos.html" class="nav-back">📷 Photo Importer</a>
+      <a href="/" class="nav-back">Back to Site</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard">
+  <h1 class="page-title">Edit Business Photos</h1>
+  <div class="page-sub">Pick a business, then drag photos to upload, click a position cell to control the crop focal point, and mark one as the hero. Previews match the size of the actual gallery thumbnails so you can see the crop before you save.</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Pick a business</div>
+        <div class="card-subtitle">Search by name. Only active listings appear.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row">
+        <input id="biz-search" type="text" placeholder="Start typing a business name…" autocomplete="off">
+        <div id="biz-results"></div>
+        <div class="hint" id="biz-search-hint">Loading businesses…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="editor-card" style="display:none;">
+    <div class="card-header">
+      <div class="editor-biz-header" style="flex:1;">
+        <div>
+          <div class="editor-biz-name" id="editor-biz-name"></div>
+          <div class="editor-biz-meta" id="editor-biz-meta"></div>
+        </div>
+        <a id="editor-listing-link" href="#" target="_blank" class="nav-back" style="color:var(--orange);border-color:var(--orange-pale);background:var(--orange-pale);">View listing →</a>
+      </div>
+    </div>
+    <div class="card-body">
+      <label class="drop-zone" id="drop-zone" for="file-input">
+        <div style="font-size:32px; margin-bottom:4px;">📸</div>
+        <div><strong>Drop photos here</strong> or click to choose files</div>
+        <div style="font-size:12px; margin-top:4px;">JPG / PNG / WebP / GIF · up to 5 MB each</div>
+        <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+      </label>
+
+      <div id="photo-list" class="photo-list"></div>
+      <div id="photo-list-empty" class="empty" style="display:none;">No photos yet. Drop some above.</div>
+
+      <div class="btn-row" style="margin-top:24px; border-top:1px solid var(--cream-dark); padding-top:20px;">
+        <button id="save-btn" type="button" class="btn btn-primary">Save changes</button>
+        <span id="save-status" style="font-size:13px;color:var(--gray);"></span>
+      </div>
+      <div id="save-summary" class="result-summary" style="display:none; margin-top:16px;"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const db = supabase.createClient(SUPABASE_URL, ANON_KEY);
+
+const POSITION_GRID = [
+  ['left top',    'top',    'right top'],
+  ['left',        'center', 'right'],
+  ['left bottom', 'bottom', 'right bottom'],
+];
+const POSITION_LABELS = {
+  'left top': '↖', 'top': '↑', 'right top': '↗',
+  'left': '←',     'center': '·', 'right': '→',
+  'left bottom': '↙', 'bottom': '↓', 'right bottom': '↘',
+};
+
+let allBusinesses = [];
+let business = null;
+let items = [];
+let nextKey = 1;
+
+const $search   = document.getElementById('biz-search');
+const $results  = document.getElementById('biz-results');
+const $searchHint = document.getElementById('biz-search-hint');
+const $editor   = document.getElementById('editor-card');
+const $bizName  = document.getElementById('editor-biz-name');
+const $bizMeta  = document.getElementById('editor-biz-meta');
+const $link     = document.getElementById('editor-listing-link');
+const $dropZone = document.getElementById('drop-zone');
+const $fileInput = document.getElementById('file-input');
+const $list     = document.getElementById('photo-list');
+const $listEmpty = document.getElementById('photo-list-empty');
+const $saveBtn  = document.getElementById('save-btn');
+const $saveStatus = document.getElementById('save-status');
+const $saveSummary = document.getElementById('save-summary');
+
+async function loadBusinesses() {
+  const { data, error } = await db.from('businesses').select('id, name, city, category, image_url, photos, photo_positions').eq('is_active', true).order('name');
+  if (error) { $searchHint.textContent = 'Failed to load: ' + error.message; return; }
+  allBusinesses = data || [];
+  $searchHint.textContent = allBusinesses.length + ' active businesses loaded.';
+}
+
+function renderSearchResults() {
+  const q = $search.value.trim().toLowerCase();
+  if (!q) { $results.classList.remove('open'); return; }
+  const matches = allBusinesses.filter(b => b.name.toLowerCase().includes(q)).slice(0, 20);
+  if (matches.length === 0) { $results.innerHTML = '<div class="biz-result"><span style="color:var(--gray);">No matches.</span></div>'; $results.classList.add('open'); return; }
+  $results.innerHTML = matches.map(b => `
+    <div class="biz-result" data-id="${b.id}">
+      <div>
+        <div class="biz-result-name">${escapeHtml(b.name)}</div>
+        <div class="biz-result-meta" style="margin-left:0;">${escapeHtml(b.category || '')} · ${escapeHtml(b.city || '')}</div>
+      </div>
+      <div class="biz-result-meta">${(b.photos || []).length} photo${(b.photos || []).length === 1 ? '' : 's'}</div>
+    </div>
+  `).join('');
+  $results.classList.add('open');
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function selectBusiness(b) {
+  business = b;
+  items = (b.photos || []).map((url, i) => ({
+    key: nextKey++,
+    url,
+    position: (b.photo_positions || [])[i] || 'center',
+    isHero: url === b.image_url,
+    isNew: false,
+  }));
+  if (items.length > 0 && !items.some(i => i.isHero)) items[0].isHero = true;
+  $bizName.textContent = b.name;
+  $bizMeta.textContent = (b.category || '') + (b.city ? ' · ' + b.city : '') + ' · ID: ' + b.id;
+  $link.href = '/pages/business.html?id=' + encodeURIComponent(b.id);
+  $editor.style.display = '';
+  $saveSummary.style.display = 'none';
+  $search.value = b.name;
+  $results.classList.remove('open');
+  renderPhotos();
+  $editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderPhotos() {
+  if (items.length === 0) { $list.innerHTML = ''; $listEmpty.style.display = ''; return; }
+  $listEmpty.style.display = 'none';
+  $list.innerHTML = items.map((item, idx) => {
+    const previewUrl = item.dataUrl || item.url;
+    const grid = POSITION_GRID.map(row => row.map(pos =>
+      `<button type="button" class="position-cell${pos === item.position ? ' active' : ''}" data-action="position" data-idx="${idx}" data-pos="${pos}" title="${pos}">${POSITION_LABELS[pos]}</button>`
+    ).join('')).join('');
+    return `
+      <div class="photo-row${item.isHero ? ' is-hero' : ''}${item.isNew ? ' is-new' : ''}">
+        <div class="photo-preview" style="background-image:url('${escapeHtml(previewUrl)}'); background-position:${item.position};">
+          ${item.isHero ? '<div class="photo-preview-label">★ HERO</div>' : ''}
+          ${item.isNew ? '<div class="photo-preview-label" style="background:var(--green); right:6px; left:auto;">NEW</div>' : ''}
+        </div>
+        <div class="photo-controls">
+          <div class="photo-controls-row">
+            <span class="photo-controls-label">Focal point</span>
+            <div class="position-grid">${grid}</div>
+            <span style="font-size:12px;color:var(--gray);">${item.position}</span>
+          </div>
+          <div class="photo-controls-row">
+            <button type="button" class="icon-btn hero-btn${item.isHero ? ' active' : ''}" data-action="hero" data-idx="${idx}" title="Set as hero">★ Hero</button>
+            <button type="button" class="icon-btn" data-action="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''} title="Move up">↑</button>
+            <button type="button" class="icon-btn" data-action="down" data-idx="${idx}" ${idx === items.length - 1 ? 'disabled' : ''} title="Move down">↓</button>
+            <button type="button" class="icon-btn danger" data-action="remove" data-idx="${idx}" title="Remove from listing">Remove</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+$list.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  const idx = parseInt(btn.dataset.idx, 10);
+  if (Number.isNaN(idx) || !items[idx]) return;
+  if (action === 'position') items[idx].position = btn.dataset.pos;
+  else if (action === 'hero') { items.forEach(it => it.isHero = false); items[idx].isHero = true; }
+  else if (action === 'up' && idx > 0) [items[idx - 1], items[idx]] = [items[idx], items[idx - 1]];
+  else if (action === 'down' && idx < items.length - 1) [items[idx + 1], items[idx]] = [items[idx], items[idx + 1]];
+  else if (action === 'remove') items.splice(idx, 1);
+  if (action === 'remove' && items.length > 0 && !items.some(i => i.isHero)) items[0].isHero = true;
+  renderPhotos();
+});
+
+$search.addEventListener('input', renderSearchResults);
+$search.addEventListener('focus', renderSearchResults);
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#biz-search') && !e.target.closest('#biz-results')) $results.classList.remove('open');
+});
+$results.addEventListener('click', (e) => {
+  const row = e.target.closest('.biz-result[data-id]');
+  if (!row) return;
+  const b = allBusinesses.find(x => x.id === row.dataset.id);
+  if (b) selectBusiness(b);
+});
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+async function addFiles(fileList) {
+  const files = Array.from(fileList || []);
+  for (const file of files) {
+    if (!/^image\/(jpe?g|png|webp|gif)$/i.test(file.type)) continue;
+    if (file.size > 5 * 1024 * 1024) { alert(`${file.name}: too large (${(file.size/1024/1024).toFixed(1)} MB). Max 5 MB.`); continue; }
+    const dataUrl = await fileToDataUrl(file);
+    items.push({
+      key: nextKey++,
+      file,
+      dataUrl,
+      position: 'center',
+      isHero: items.length === 0,
+      isNew: true,
+    });
+  }
+  renderPhotos();
+}
+
+$fileInput.addEventListener('change', (e) => { addFiles(e.target.files); e.target.value = ''; });
+['dragenter', 'dragover'].forEach(ev => $dropZone.addEventListener(ev, (e) => { e.preventDefault(); $dropZone.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(ev => $dropZone.addEventListener(ev, (e) => { e.preventDefault(); $dropZone.classList.remove('dragover'); }));
+$dropZone.addEventListener('drop', (e) => { addFiles(e.dataTransfer.files); });
+
+async function saveChanges() {
+  if (!business) return;
+  $saveBtn.disabled = true;
+  $saveStatus.innerHTML = '<span class="spinner"></span>Saving…';
+  $saveSummary.style.display = 'none';
+
+  const uploadItems = items.filter(it => it.file);
+  const filesPayload = await Promise.all(uploadItems.map(async (it) => ({
+    content_type: it.file.type,
+    base64: (it.dataUrl || '').split(',')[1] || '',
+  })));
+  let uploadIdx = 0;
+  const setPhotos = items.map(it => it.file ? `__upload_${uploadIdx++}__` : it.url);
+  const setPhotoPositions = items.map(it => it.position);
+  const heroItem = items.find(it => it.isHero) || items[0] || null;
+  let setImageUrl = null;
+  if (heroItem) {
+    if (heroItem.file) setImageUrl = `__upload_${uploadItems.indexOf(heroItem)}__`;
+    else setImageUrl = heroItem.url;
+  }
+
+  const body = {
+    business_id: business.id,
+    files: filesPayload,
+    set_image_url: setImageUrl,
+    set_photos: setPhotos,
+    set_photo_positions: setPhotoPositions,
+  };
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/manage-business-photos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) {
+      const msg = (data.errors && data.errors.join('; ')) || data.error || ('HTTP ' + res.status);
+      $saveSummary.className = 'result-summary error';
+      $saveSummary.textContent = 'Save failed: ' + msg;
+      $saveSummary.style.display = '';
+      return;
+    }
+    if (data.updated) {
+      business.image_url = data.updated.image_url;
+      business.photos = data.updated.photos || [];
+      business.photo_positions = data.updated.photo_positions || [];
+      const localCopy = allBusinesses.find(x => x.id === business.id);
+      if (localCopy) Object.assign(localCopy, { image_url: business.image_url, photos: business.photos, photo_positions: business.photo_positions });
+      items = business.photos.map((url, i) => ({
+        key: nextKey++,
+        url,
+        position: business.photo_positions[i] || 'center',
+        isHero: url === business.image_url,
+        isNew: false,
+      }));
+      renderPhotos();
+    }
+    $saveSummary.className = 'result-summary success';
+    $saveSummary.textContent = `Saved. ${data.uploaded.length} new photo${data.uploaded.length === 1 ? '' : 's'} uploaded, ${business.photos.length} total on listing.`;
+    $saveSummary.style.display = '';
+  } catch (err) {
+    $saveSummary.className = 'result-summary error';
+    $saveSummary.textContent = 'Network error: ' + (err && err.message ? err.message : String(err));
+    $saveSummary.style.display = '';
+  } finally {
+    $saveBtn.disabled = false;
+    $saveStatus.textContent = '';
+  }
+}
+
+$saveBtn.addEventListener('click', saveChanges);
+
+loadBusinesses();
+</script>
+</body>
+</html>
