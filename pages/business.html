@@ -423,7 +423,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
         </div>
         <div class="biz-header-actions">
           <a class="btn btn-primary" id="h-reserve-btn" href="#reviews" style="justify-content:center;">📞 Contact Business</a>
-          <a class="btn btn-primary" id="h-order-btn" href="#" target="_blank" rel="noopener" style="justify-content:center;display:none;background:#2D6A4F;">🛒 Order Online</a>
+          <a class="btn btn-primary" id="h-order-btn" href="#" target="_blank" rel="noopener" style="justify-content:center;display:none;background:#2D6A4F;"><span class="order-btn-icon">🛒</span> <span class="order-btn-label">Order Online</span></a>
           <div style="display:flex;gap:8px;">
             <button class="action-btn" onclick="this.innerHTML='❤️ Saved'">♡ Save</button>
             <button class="action-btn" id="h-share-btn">↗ Share</button>
@@ -546,7 +546,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <div class="cta-stack">
             <a class="btn btn-primary" id="sb-phone-btn" href="#" style="justify-content:center;">📞 Call Now</a>
             <a class="btn btn-outline" id="sb-dir-btn" href="#" style="justify-content:center;">📍 Get Directions</a>
-            <a class="btn btn-primary" id="sb-order-btn" href="#" target="_blank" rel="noopener" style="justify-content:center;display:none;background:#2D6A4F;">🛒 Order Online</a>
+            <a class="btn btn-primary" id="sb-order-btn" href="#" target="_blank" rel="noopener" style="justify-content:center;display:none;background:#2D6A4F;"><span class="order-btn-icon">🛒</span> <span class="order-btn-label">Order Online</span></a>
             <a class="google-badge" id="google-badge" href="#" target="_blank" rel="noopener" style="display:none;">
               <svg class="google-badge-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -886,14 +886,19 @@ function renderBusiness(b) {
       </a>`;
   }
 
-  // Order Online button
+  // Order / Book Online button — wording follows category (food places "Order", others "Book")
   const orderBtn = document.getElementById('sb-order-btn');
   const headerOrderBtn = document.getElementById('h-order-btn');
   if (b.order_url) {
-    orderBtn.href = b.order_url;
-    orderBtn.style.display = 'flex';
-    headerOrderBtn.href = b.order_url;
-    headerOrderBtn.style.display = 'flex';
+    const isFood = b.category === 'Food & Drink';
+    const label = isFood ? 'Order Online' : 'Book Online';
+    const icon  = isFood ? '🛒' : '📅';
+    [orderBtn, headerOrderBtn].forEach(btn => {
+      btn.href = b.order_url;
+      btn.querySelector('.order-btn-label').textContent = label;
+      btn.querySelector('.order-btn-icon').textContent  = icon;
+      btn.style.display = 'flex';
+    });
   }
 
   // Google Reviews badge
