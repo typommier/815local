@@ -762,6 +762,11 @@ function renderBusiness(b) {
 
   // Gallery — use photos[] array first (from Google Places scraper), fall back to image_url
   const photos = (b.photos && b.photos.length) ? b.photos : (b.image_url ? [b.image_url] : []);
+  const photoPos = (i) => {
+    const safe = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
+    const v = b.photo_positions && b.photo_positions[i];
+    return safe.has(v) ? v : 'center';
+  };
   const gallerySection = document.querySelector('.gallery');
   const galleryGrid = document.getElementById('gallery-grid');
   const mainCell = document.getElementById('gallery-main');
@@ -779,7 +784,7 @@ function renderBusiness(b) {
   } else {
     mainCell.style.backgroundImage = `url('${photos[0]}')`;
     mainCell.style.backgroundSize = 'cover';
-    mainCell.style.backgroundPosition = 'center';
+    mainCell.style.backgroundPosition = photoPos(0);
     mainCell.innerHTML = `<div class="gallery-all-btn" id="gallery-all-btn" onclick="window.open('${photos[0]}','_blank')">📷 View Photo</div>`;
 
     // Apply a count-aware class so empty cells don't leave black gaps.
@@ -793,7 +798,7 @@ function renderBusiness(b) {
       if (photoUrl) {
         cell.style.backgroundImage = `url('${photoUrl}')`;
         cell.style.backgroundSize = 'cover';
-        cell.style.backgroundPosition = 'center';
+        cell.style.backgroundPosition = photoPos(idx + 1);
         cell.style.filter = 'brightness(0.7)';
         cell.innerHTML = '';
         cell.onclick = () => window.open(photoUrl, '_blank');
@@ -809,7 +814,7 @@ function renderBusiness(b) {
     const dots = document.getElementById('swipe-dots');
     const counter = document.getElementById('swipe-counter');
     track.innerHTML = photos.map((url, i) =>
-      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}" style="background-image:url('${url.replace(/'/g, "\\'")}')"></div>`
+      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}" style="background-image:url('${url.replace(/'/g, "\\'")}');background-position:${photoPos(i)}"></div>`
     ).join('');
     track.querySelectorAll('.swipe-slide').forEach((slide, i) => {
       slide.addEventListener('click', () => window.open(photos[i], '_blank'));

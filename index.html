@@ -1306,6 +1306,11 @@ window.addEventListener('scroll', () => {
 
   const catEmoji = { 'Food & Drink':'🍔','Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️','Home Services':'🔧','Arts & Events':'🎭' };
   function stars(r) { const f=Math.round(r||0); return '★'.repeat(f)+'☆'.repeat(5-f); }
+  const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
+  function photoPos(positions, i) {
+    const v = positions && positions[i];
+    return PHOTO_POS_SAFE.has(v) ? v : 'center';
+  }
 
   try {
     const [bizRes, reviewRes] = await Promise.all([
@@ -1343,7 +1348,7 @@ window.addEventListener('scroll', () => {
     ['hero-photo-a','hero-photo-b','hero-photo-c','hero-photo-d','hero-photo-e'].forEach((id, i) => {
       const el = document.getElementById(id);
       if (el && withPhotos[i]) {
-        el.innerHTML = `<a href="/pages/business.html?id=${withPhotos[i].id}" style="display:block;width:100%;height:100%;background:url('${withPhotos[i].image_url}') center/cover no-repeat;" title="${withPhotos[i].name}"></a>`;
+        el.innerHTML = `<a href="/pages/business.html?id=${withPhotos[i].id}" style="display:block;width:100%;height:100%;background:url('${withPhotos[i].image_url}') ${photoPos(withPhotos[i].photo_positions, 0)}/cover no-repeat;" title="${withPhotos[i].name}"></a>`;
       }
     });
 
@@ -1375,7 +1380,7 @@ window.addEventListener('scroll', () => {
         const count = b.review_count || 0;
         const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
         const photoBlock = photoSrc
-          ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') center/cover no-repeat;"></div><div class="biz-save" onclick="event.preventDefault();this.textContent='❤️'">♡</div></div>`
+          ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div><div class="biz-save" onclick="event.preventDefault();this.textContent='❤️'">♡</div></div>`
           : '';
         const features = (b.features || []).slice(0,2).map(f => `<span class="tag">${f}</span>`).join('');
         return `
@@ -1419,7 +1424,7 @@ window.addEventListener('scroll', () => {
       if (spotlight.image_url) {
         document.getElementById('spotlight-photo').style.backgroundImage = `url('${spotlight.image_url}')`;
         document.getElementById('spotlight-photo').style.backgroundSize = 'cover';
-        document.getElementById('spotlight-photo').style.backgroundPosition = 'center';
+        document.getElementById('spotlight-photo').style.backgroundPosition = photoPos(spotlight.photo_positions, 0);
         document.getElementById('spotlight-photo').innerHTML = '';
       }
       document.getElementById('spotlight-section').style.display = '';
