@@ -510,8 +510,12 @@ function applyFilters() {
     if (minRating > 0 && (parseFloat(b.avg_rating) || 0) < minRating) return false;
     if (activePrices.length && !activePrices.includes(b.price_range)) return false;
     if (search) {
-      const haystack = (b.name + ' ' + b.category + ' ' + b.description + ' ' + b.address).toLowerCase();
-      if (!haystack.includes(search)) return false;
+      const terms = search.split(/\s+/).filter(Boolean);
+      const haystack = [b.name, b.category, b.description, b.address, (b.features || []).join(' ')]
+        .filter(Boolean).join(' ').toLowerCase();
+      const words = haystack.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+      const allMatch = terms.every(t => words.some(w => w.startsWith(t)));
+      if (!allMatch) return false;
     }
     return true;
   });
@@ -590,7 +594,7 @@ window.addEventListener('scroll', () => {
   const params = new URLSearchParams(window.location.search);
   let cat = params.get('category');
   let tab = params.get('tab');
-  const search = params.get('search');
+  const search = params.get('search') || params.get('q');
 
   // Legacy compatibility: old links used ?category=__area__ / Coffee / Bars & Nightlife.
   if (cat === '__area__') { tab = 'area'; cat = null; }
