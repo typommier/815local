@@ -410,13 +410,19 @@ function isAroundThe815(b) {
   return c.length > 0 && !HOME_TOWNS.has(c);
 }
 
+const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
+function photoPos(positions, i) {
+  const v = positions && positions[i];
+  return PHOTO_POS_SAFE.has(v) ? v : 'center';
+}
+
 function renderCard(b) {
   const rating = parseFloat(b.avg_rating) || 0;
   const count = b.review_count || 0;
   const features = (b.features || []).slice(0, 3);
   const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
   const photoHtml = photoSrc
-    ? `<div style="position:absolute;inset:0;background:url('${photoSrc}') center/cover no-repeat;"></div>`
+    ? `<div style="position:absolute;inset:0;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div>`
     : '';
   return `
     <a href="/pages/business.html?id=${b.id}" class="biz-list-card">
