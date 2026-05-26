@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dock Rotz Tavern — Minooka, IL | Burgers, Wings & Cold Beer</title>
+  <meta name="description" content="Dock Rotz Tavern is a laid-back Minooka bar and grill serving high-end bar food. Burgers, wings, loaded fries, cold beer, and an outdoor patio. Family friendly. 859 S Ridge Rd, Minooka, IL.">
+
+  <meta property="og:title" content="Dock Rotz Tavern — Minooka, IL">
+  <meta property="og:description" content="Laid-back Minooka tavern. Burgers, wings, cold beer, and a patio worth pulling over for.">
+  <meta property="og:type" content="restaurant">
+  <meta property="og:locale" content="en_US">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #14110F;
+      --surface: #1E1A16;
+      --surface-2: #261F1A;
+      --line: #3A2F26;
+      --amber: #E8A547;
+      --amber-dark: #C88A2E;
+      --rust: #C8442C;
+      --text: #F2EBDC;
+      --text-muted: #A8A095;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .display {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.02em;
+      line-height: 1.05;
+      font-weight: 400;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAV */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(20, 17, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+    .logo span { color: var(--amber); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-cta {
+      background: var(--amber);
+      color: #1A1410 !important;
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--amber-dark); }
+
+    @media (max-width: 720px) {
+      .nav-links a:not(.nav-cta) { display: none; }
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(180deg, rgba(20,17,15,0.55) 0%, rgba(20,17,15,0.75) 60%, rgba(20,17,15,0.95) 100%),
+                        url('https://places.googleapis.com/v1/places/ChIJZbnSIG-PDogRJ-vqDtCt_dU/photos/Ab43m-sZ6qB_s0yDXyX8ZN1Ck3ogwTZzXffT5-aHPVm2vu69pCaQrQiKMDHKf0EtERMkmc0NsjEYnw_KAN4LwMR846FxzsDC0mzifExEq9R5UlZOdTAIcrjnjpEwCOTF7q7XvBmL_oFlf83xfuHScLnDrnjd_3ItbO94QTuECYIh6H-yPhNumukOE1GXFEIDddJcFpRIx27yXUiXKpwhAaDTCXNDLuyDvCp8XPGBnWhqD5FsfZlM4RPGM2ELbueKuDqXKjMTWIKik6guVRdVVxACi5mjaqeWfuUWxS_3I5lndzc4nu2UNXQAM-EPlNd9s4Cn11j34BPeRPz73-ohVdGhhhlbAYsSKB_9RyCfHsBkER4iWcUj9ru1nwsKLQJDdZ79DmIRcbzHmz6BXMqHU6T8jyD3rm92rI-_4U-f5Z2oh3ymxsc/media?maxWidthPx=1200&key=AIzaSyDF5mzAg6m4IxcnwrhvOl3s-hTRzvs_0sg');
+      background-size: cover;
+      background-position: center;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: 80px 0 100px;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 18px;
+      padding: 6px 14px;
+      border: 1px solid var(--amber);
+      border-radius: 2px;
+    }
+    .hero h1 {
+      font-size: clamp(56px, 11vw, 128px);
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    .hero .tagline {
+      font-size: clamp(18px, 2.2vw, 22px);
+      color: var(--text);
+      max-width: 580px;
+      margin-bottom: 36px;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 28px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: transform 0.1s, background 0.15s, border 0.15s;
+      cursor: pointer;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--amber);
+      color: #1A1410;
+    }
+    .btn-primary:hover { background: var(--amber-dark); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--text);
+    }
+    .btn-outline:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 100px 0;
+    }
+    @media (max-width: 720px) {
+      section { padding: 64px 0; }
+    }
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(40px, 6vw, 64px);
+      margin-bottom: 24px;
+    }
+
+    /* ABOUT */
+    .about {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-copy p {
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .feature-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+    .chip {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .about-image {
+      position: relative;
+      aspect-ratio: 4/5;
+      background-image: url('https://places.googleapis.com/v1/places/ChIJZbnSIG-PDogRJ-vqDtCt_dU/photos/Ab43m-tsBK6RA9nVVgGFNC6s6CSPbH7lqZbkjqiAbzhqzEAPOSLhbVx7iMS7bqWDMNCvmpQbnWwysexABP3LtHiUHTxhuqXYxQMdz-qKfAuEfkwjz4pXLIfPp2_lXXxKKRfkAQNayV6fsGN_S_7TrmIOS963jZXcoFy-c9NjFGz9EIR9v1z6nuhok0D1_InT6SIpR7MQwYRcSeAjn94M8x3wRGZPKzkApPJmV1CP9bphgJdwk0nigu3lOCqDeIZmY1ffipzi618nfNa6vKiBGhY7OaThpZxMOoe_jBvsQtaL4eFj3V4tNT_oR7nOI6-hN2nI0Y7X57I0F2dTewVS0IoKiE-oU17t6D57wWJS5-tKXheVPUa617LLb6XZ47KFWk08HkQ-KkfHRUTCz-_EFL6Rw5ycrK_E_x-4eeEw8S5B3da9olpm/media?maxWidthPx=1200&key=AIzaSyDF5mzAg6m4IxcnwrhvOl3s-hTRzvs_0sg');
+      background-size: cover;
+      background-position: center;
+      border-radius: 6px;
+    }
+    @media (max-width: 880px) {
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-image { aspect-ratio: 3/2; }
+    }
+
+    /* ORDER */
+    .order-card {
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .order-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 60%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(232, 165, 71, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .order-card h2 {
+      font-size: clamp(40px, 6vw, 64px);
+      margin-bottom: 16px;
+    }
+    .order-card p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 36px;
+    }
+    .order-sub {
+      margin-top: 28px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .order-sub a {
+      color: var(--amber);
+      font-weight: 600;
+    }
+    @media (max-width: 720px) {
+      .order-card { padding: 40px 24px; }
+    }
+
+    /* VISIT */
+    .visit {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .visit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+    .visit-block h3 {
+      font-size: 32px;
+      margin-bottom: 24px;
+      color: var(--amber);
+    }
+    .hours-table {
+      list-style: none;
+    }
+    .hours-table li {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 15px;
+    }
+    .hours-table li:last-child { border-bottom: none; }
+    .hours-table .day { color: var(--text-muted); }
+    .hours-table .time { color: var(--text); font-weight: 500; }
+    .hours-table .today {
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    .visit-info p {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .visit-info .label {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 24px;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .visit-info .big {
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .visit-info .big a:hover { color: var(--amber); }
+
+    @media (max-width: 720px) {
+      .visit-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+      height: 540px;
+    }
+    .gallery-grid .g {
+      background-size: cover;
+      background-position: center;
+      border-radius: 4px;
+      transition: transform 0.3s, filter 0.3s;
+      filter: grayscale(0.15) brightness(0.9);
+    }
+    .gallery-grid .g:hover {
+      filter: none;
+      transform: scale(1.02);
+    }
+    .g1 { grid-row: 1 / 3; }
+    @media (max-width: 720px) {
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 200px);
+        height: auto;
+      }
+      .g1 { grid-row: 1; grid-column: 1 / 3; }
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--line);
+    }
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .footer-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+    .footer-credit {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .footer-credit a {
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    /* utility */
+    .center { text-align: center; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">Dock <span>Rotz</span> Tavern</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#visit">Hours & Location</a>
+        <a href="#gallery">Photos</a>
+        <a href="https://order.toasttab.com/online/dock-rotz-tavern" target="_blank" rel="noopener" class="nav-cta">Order Online</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-inner">
+      <span class="eyebrow">Minooka, Illinois</span>
+      <h1>Burgers,<br>Wings & Cold<br>Beer.</h1>
+      <p class="tagline">Laid-back tavern serving high-end bar food in a family-friendly room — with a patio for when the weather plays nice.</p>
+      <div class="hero-ctas">
+        <a href="https://order.toasttab.com/online/dock-rotz-tavern" target="_blank" rel="noopener" class="btn btn-primary">Order Online →</a>
+        <a href="tel:+18154672200" class="btn btn-outline">(815) 467-2200</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about" class="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-copy">
+          <div class="section-eyebrow">The place</div>
+          <h2 class="section-title">A neighborhood tavern that takes its food seriously.</h2>
+          <p>We're a Minooka spot built around the things people actually want from a bar and grill: burgers cooked the way you ordered them, wings with real sauce, loaded fries that earn the name, and a beer list deep enough to wander through.</p>
+          <p>Bring the family at six. Stay for the late shift after. The patio's open when the weather behaves.</p>
+          <div class="feature-chips">
+            <span class="chip">🍺 Full bar</span>
+            <span class="chip">🌿 Outdoor seating</span>
+            <span class="chip">👨‍👩‍👧 Family friendly</span>
+            <span class="chip">🥡 Takeout available</span>
+            <span class="chip">🏡 Locally owned</span>
+          </div>
+        </div>
+        <div class="about-image" role="img" aria-label="Inside Dock Rotz Tavern"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="order">
+    <div class="container">
+      <div class="order-card">
+        <div class="section-eyebrow">Order online</div>
+        <h2>Skip the line.</h2>
+        <p>Burgers, wings, loaded fries, and the rest of the menu, ready when you are. Pickup straight from us — no third-party fees.</p>
+        <a href="https://order.toasttab.com/online/dock-rotz-tavern" target="_blank" rel="noopener" class="btn btn-primary">Start Your Order →</a>
+        <div class="order-sub">Prefer to call it in? <a href="tel:+18154672200">(815) 467-2200</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visit" class="visit">
+    <div class="container">
+      <div class="visit-grid">
+        <div class="visit-block">
+          <div class="section-eyebrow">When we're open</div>
+          <h3>Hours</h3>
+          <ul class="hours-table" id="hoursList">
+            <li data-day="0"><span class="day">Sunday</span><span class="time">11:00 AM – 8:00 PM</span></li>
+            <li data-day="1"><span class="day">Monday</span><span class="time">11:00 AM – 8:00 PM</span></li>
+            <li data-day="2"><span class="day">Tuesday</span><span class="time">11:00 AM – 8:00 PM</span></li>
+            <li data-day="3"><span class="day">Wednesday</span><span class="time">11:00 AM – 9:00 PM</span></li>
+            <li data-day="4"><span class="day">Thursday</span><span class="time">11:00 AM – 9:00 PM</span></li>
+            <li data-day="5"><span class="day">Friday</span><span class="time">11:00 AM – 10:00 PM</span></li>
+            <li data-day="6"><span class="day">Saturday</span><span class="time">11:00 AM – 10:00 PM</span></li>
+          </ul>
+        </div>
+        <div class="visit-block visit-info">
+          <div class="section-eyebrow">Find us</div>
+          <h3>Visit</h3>
+          <span class="label">Address</span>
+          <p class="big"><a href="https://www.google.com/maps/search/?api=1&query=859+S+Ridge+Rd+Minooka+IL+60447" target="_blank" rel="noopener">859 S Ridge Rd<br>Minooka, IL 60447</a></p>
+          <span class="label">Phone</span>
+          <p class="big"><a href="tel:+18154672200">(815) 467-2200</a></p>
+          <span class="label">Reservations</span>
+          <p>Walk-ins welcome. Large parties, give us a call ahead.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="container">
+      <div class="section-eyebrow center">The room</div>
+      <h2 class="section-title center" style="margin-bottom:48px;">Come on in.</h2>
+      <div class="gallery-grid">
+        <div class="g g1" style="background-image:url('https://places.googleapis.com/v1/places/ChIJZbnSIG-PDogRJ-vqDtCt_dU/photos/Ab43m-uHtQSNQ4tdMT31oWuRq8fi1vwIvKC-laaprjx4FBEhlan_R93oHNY63cb7v_y555m9Zi57LYn5xwOUAQnfwqFIe9P4SmZ0dMRtzU2g5wum-0xhZZBZO6Q3qAkI-d6o8cjAePLv8-8M5FvPSRwsIpXJ5DJxw5O3-yT2de7qt5_T3yybdNh7kLMC7H40KIThDOFmVW4abmcSGDJNBm73RJtIePP_SIkUPTyuj7pdXlJibSuHjEu3g1J0g_sNDGvM6r6FHdQuFoQG9rhW3ACgaM3CVxz7un8CGWI9b2mUhmYEI_cg40q8TWuNbfm0Obc6PNcxj_V-7-2yuClyOaI_YBP2DsmsCS5CsfHwAuw7Da_RngdJDRJqfD9oB6UzeSCt1pRtr9giGWq2JVIIefONYDVyrt0ilafdxXqaM5iL_XQMIBKPh21uKDQC_7xBPA/media?maxWidthPx=1200&key=AIzaSyDF5mzAg6m4IxcnwrhvOl3s-hTRzvs_0sg')"></div>
+        <div class="g" style="background-image:url('https://places.googleapis.com/v1/places/ChIJZbnSIG-PDogRJ-vqDtCt_dU/photos/Ab43m-t0-UmZD9tUM78jQeW6ME2ckcLGaaVBJ9Fv4BIKwAuxKk1PIzIhS7UZRa72a4I6rYa-nUO3sELRHIUv-oBsBdEiRbFCgwXzNyhg3Ppv8arITpu18JfdZ-Xs3FuTWwfl_J2eBcszHMZAlBw56YNoO4DXHFwLF6ourYYItSLV13P2ZD97QeDP02zSfUI4g4XgaBS1KRk60s7tyFO7UxfUBFE7MJ6c5le0SNcR5PmJg80zT6vBqDOrjoEkc2g9ctsgl9beUXrKghWWPTRoSRZ7pbGmprMAGXQqb7Fo9hfYHGj9vxhe3ukAlnzEaR_eXIBCo1eCgrd4YFP1u5-cQ19NCtlMIsmpVPL8UfSv8fB8oD27Hz16mvvDktALgg5tZHUOnk5VuSLf-imCap9D1vPrI20cMP6ABj2FXjkJHRsM1hwda70Vr3ITbqMdD9iQjAXh/media?maxWidthPx=1200&key=AIzaSyDF5mzAg6m4IxcnwrhvOl3s-hTRzvs_0sg')"></div>
+        <div class="g" style="background-image:url('https://places.googleapis.com/v1/places/ChIJZbnSIG-PDogRJ-vqDtCt_dU/photos/Ab43m-vligIyBGE1J44rKScg62fQNgeBrDmX56KIgVspKqpDLBq7CxGXm_z1nQWfsl0KCez38grZMaIg1mCjY0V7NJdCrlsc-q286671oAE-VB2QRUs0jf9ZwQWnYDMRzFE6j2XVDSM_lAgELcG_byiYNDf6EG-I80rL7Td_uxssBu21obq4GkQDTjcGM5N47XjjtNeRQ97q3oWk0YHqMfQfaVA5AypbgHN2a0ffqf1zrw3GOLAAbFjR5NT_yHtzTLGrB-3NRXKuPcIrRguu411NRnWpLpYukg2mMX4FpBvFXZH7RXwL0SQCQJ5rJhdt9Zk_bm5DGif9zpoIsWeWSNuc5NcUf5pVBE83fZnr7VpUuIDiDgg3OLWFR5NkKgbeFsg7qfrlLpJulQ9lJVMJvfS9gKAcOXZ8ba_xPboRI-b9miy4r1pt/media?maxWidthPx=1200&key=AIzaSyDF5mzAg6m4IxcnwrhvOl3s-hTRzvs_0sg')"></div>
+        <div class="g" style="background-image:url('https://places.googleapis.com/v1/places/ChIJZbnSIG-PDogRJ-vqDtCt_dU/photos/Ab43m-sZ6qB_s0yDXyX8ZN1Ck3ogwTZzXffT5-aHPVm2vu69pCaQrQiKMDHKf0EtERMkmc0NsjEYnw_KAN4LwMR846FxzsDC0mzifExEq9R5UlZOdTAIcrjnjpEwCOTF7q7XvBmL_oFlf83xfuHScLnDrnjd_3ItbO94QTuECYIh6H-yPhNumukOE1GXFEIDddJcFpRIx27yXUiXKpwhAaDTCXNDLuyDvCp8XPGBnWhqD5FsfZlM4RPGM2ELbueKuDqXKjMTWIKik6guVRdVVxACi5mjaqeWfuUWxS_3I5lndzc4nu2UNXQAM-EPlNd9s4Cn11j34BPeRPz73-ohVdGhhhlbAYsSKB_9RyCfHsBkER4iWcUj9ru1nwsKLQJDdZ79DmIRcbzHmz6BXMqHU6T8jyD3rm92rI-_4U-f5Z2oh3ymxsc/media?maxWidthPx=1200&key=AIzaSyDF5mzAg6m4IxcnwrhvOl3s-hTRzvs_0sg')"></div>
+        <div class="g" style="background-image:url('https://places.googleapis.com/v1/places/ChIJZbnSIG-PDogRJ-vqDtCt_dU/photos/Ab43m-tsBK6RA9nVVgGFNC6s6CSPbH7lqZbkjqiAbzhqzEAPOSLhbVx7iMS7bqWDMNCvmpQbnWwysexABP3LtHiUHTxhuqXYxQMdz-qKfAuEfkwjz4pXLIfPp2_lXXxKKRfkAQNayV6fsGN_S_7TrmIOS963jZXcoFy-c9NjFGz9EIR9v1z6nuhok0D1_InT6SIpR7MQwYRcSeAjn94M8x3wRGZPKzkApPJmV1CP9bphgJdwk0nigu3lOCqDeIZmY1ffipzi618nfNa6vKiBGhY7OaThpZxMOoe_jBvsQtaL4eFj3V4tNT_oR7nOI6-hN2nI0Y7X57I0F2dTewVS0IoKiE-oU17t6D57wWJS5-tKXheVPUa617LLb6XZ47KFWk08HkQ-KkfHRUTCz-_EFL6Rw5ycrK_E_x-4eeEw8S5B3da9olpm/media?maxWidthPx=1200&key=AIzaSyDF5mzAg6m4IxcnwrhvOl3s-hTRzvs_0sg')"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-meta">
+        <strong style="color: var(--text);">Dock Rotz Tavern</strong><br>
+        859 S Ridge Rd, Minooka, IL 60447<br>
+        (815) 467-2200
+      </div>
+      <div class="footer-credit">
+        Mockup concept by <a href="https://815local.com" target="_blank" rel="noopener">815local.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function highlightToday() {
+      var today = new Date().getDay();
+      var items = document.querySelectorAll('#hoursList li');
+      items.forEach(function (li) {
+        if (parseInt(li.getAttribute('data-day'), 10) === today) {
+          li.querySelector('.day').classList.add('today');
+          li.querySelector('.time').classList.add('today');
+          var day = li.querySelector('.day');
+          day.textContent = day.textContent + '  (Today)';
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
