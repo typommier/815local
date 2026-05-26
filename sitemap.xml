@@ -26,11 +26,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://815local.com/pages/new-openings.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://815local.com/pages/blog.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
