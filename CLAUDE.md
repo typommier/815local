@@ -73,7 +73,6 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 │   ├── business.html                   ← business detail (?id=<uuid>)
 │   ├── events.html                     ← events calendar
 │   ├── deals.html                      ← deals listings
-│   ├── new-openings.html               ← recently added businesses
 │   ├── profile.html                    ← logged-in user profile
 │   ├── advertise.html                  ← waitlist-only advertise page
 │   ├── about.html

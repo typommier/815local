@@ -620,6 +620,10 @@ window.addEventListener('scroll', () => {
   if (search) {
     document.getElementById('search-input').value = search;
   }
+  const sortParam = params.get('sort');
+  if (sortParam && ['featured','rating','reviews','newest'].includes(sortParam)) {
+    document.getElementById('sort-select').value = sortParam;
+  }
 })();
 
 loadBusinesses();
