@@ -97,7 +97,7 @@ a { color: inherit; text-decoration: none; }
     </a>
     <div>
       <div class="nav-title">Photo Importer</div>
-      <div class="nav-subtitle">Pull images from a business website into the listing</div>
+      <div class="nav-subtitle">Pull images from a business website or from Google Places into the listing</div>
     </div>
     <div class="nav-right">
       <a href="/admin/analytics.html" class="nav-back">← Analytics</a>
@@ -108,14 +108,14 @@ a { color: inherit; text-decoration: none; }
 </nav>
 
 <div class="dashboard">
-  <h1 class="page-title">Import Photos from a Website</h1>
-  <div class="page-sub">Scrapes the homepage for <code>&lt;img&gt;</code>, <code>og:image</code>, and <code>twitter:image</code> URLs, filters out icons / theme assets / testimonial avatars, then mirrors the survivors into Supabase storage so the listing renders fast.</div>
+  <h1 class="page-title">Import Photos</h1>
+  <div class="page-sub">Two importers, same destination. Both mirror what they find into Supabase storage so the listing renders fast and we are not dependent on the original host.</div>
 
   <div class="card">
     <div class="card-header">
       <div>
-        <div class="card-title">Run Importer</div>
-        <div class="card-subtitle">Pick a business, confirm the URL, click Import. Takes 20-40 seconds.</div>
+        <div class="card-title">From a Website</div>
+        <div class="card-subtitle">Scrapes the homepage for <code>&lt;img&gt;</code>, <code>og:image</code>, and <code>twitter:image</code> URLs, filters out icons and theme assets, then mirrors the survivors. Takes 20-40 seconds.</div>
       </div>
     </div>
     <div class="card-body">
@@ -141,6 +141,42 @@ a { color: inherit; text-decoration: none; }
         <div class="btn-row">
           <button id="submit-btn" type="submit" class="btn btn-primary">Import &amp; Mirror →</button>
           <span id="status-text" style="font-size:13px;color:var(--gray);"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">From Google Places</div>
+        <div class="card-subtitle">Calls the Places API for a known Place ID, pulls up to 5 photos, then mirrors them. Takes 10-20 seconds. Skips businesses that already have photos unless you check Overwrite.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form id="gp-form">
+        <div class="form-row inline">
+          <label for="gp-biz-select">Business</label>
+          <select id="gp-biz-select" required>
+            <option value="">Loading businesses…</option>
+          </select>
+        </div>
+        <div class="form-row inline">
+          <label for="gp-biz-id">Business ID</label>
+          <input id="gp-biz-id" type="text" placeholder="auto-filled from selection" required>
+        </div>
+        <div class="form-row inline">
+          <label for="gp-place-id">Google Place ID</label>
+          <input id="gp-place-id" type="text" placeholder="ChIJ… (auto-filled if already saved on the listing)" required>
+        </div>
+        <div class="form-row inline">
+          <label for="gp-force">Overwrite existing</label>
+          <input id="gp-force" type="checkbox" style="width:18px;height:18px;flex:0;">
+          <span class="hint" style="margin:0;">Replace any photos already on this listing.</span>
+        </div>
+        <div class="btn-row">
+          <button id="gp-submit-btn" type="submit" class="btn btn-primary">Fetch from Google →</button>
+          <span id="gp-status-text" style="font-size:13px;color:var(--gray);"></span>
         </div>
       </form>
     </div>
@@ -182,6 +218,14 @@ const $summary  = document.getElementById('result-summary');
 const $thumbs   = document.getElementById('result-thumbs');
 const $listing  = document.getElementById('result-listing-link');
 
+const $gpSelect  = document.getElementById('gp-biz-select');
+const $gpBizId   = document.getElementById('gp-biz-id');
+const $gpPlaceId = document.getElementById('gp-place-id');
+const $gpForce   = document.getElementById('gp-force');
+const $gpForm    = document.getElementById('gp-form');
+const $gpBtn     = document.getElementById('gp-submit-btn');
+const $gpStatus  = document.getElementById('gp-status-text');
+
 function normalizeUrl(raw) {
   if (!raw) return '';
   const v = String(raw).trim();
@@ -189,13 +233,23 @@ function normalizeUrl(raw) {
   return /^https?:\/\//i.test(v) ? v : 'https://' + v;
 }
 
+function escapeAttr(s) { return String(s || '').replace(/"/g, '&quot;'); }
+
 async function loadBusinesses() {
-  if (!db) { $select.innerHTML = '<option>Supabase not loaded</option>'; return; }
+  if (!db) {
+    $select.innerHTML = '<option>Supabase not loaded</option>';
+    $gpSelect.innerHTML = '<option>Supabase not loaded</option>';
+    return;
+  }
   const { data, error } = await db
     .from('businesses')
-    .select('id, name, website, is_claimed, photos, image_url, city')
+    .select('id, name, website, is_claimed, photos, image_url, city, google_place_id')
     .order('name');
-  if (error) { $select.innerHTML = '<option>Error: ' + error.message + '</option>'; return; }
+  if (error) {
+    $select.innerHTML = '<option>Error: ' + error.message + '</option>';
+    $gpSelect.innerHTML = '<option>Error: ' + error.message + '</option>';
+    return;
+  }
 
   const sorted = (data || []).slice().sort((a, b) => {
     const aHas = (a.photos && a.photos.length) || a.image_url ? 1 : 0;
@@ -204,14 +258,23 @@ async function loadBusinesses() {
     return a.name.localeCompare(b.name);
   });
 
-  const opts = ['<option value="">— Select a business —</option>'];
+  const urlOpts = ['<option value="">— Select a business —</option>'];
+  const gpOpts  = ['<option value="">— Select a business —</option>'];
   for (const b of sorted) {
     const hasPhoto = (b.photos && b.photos.length) || b.image_url;
-    const tags = [b.is_claimed ? '✓' : '', hasPhoto ? '📷' : '∅', b.website ? '' : '(no website)'].filter(Boolean).join(' ');
-    const label = `${b.name} ${b.city ? '— ' + b.city : ''}  ${tags}`.trim();
-    opts.push(`<option value="${b.id}" data-website="${(b.website||'').replace(/"/g,'&quot;')}">${label}</option>`);
+    const photoFlag = hasPhoto ? '📷' : '∅';
+    const claimed = b.is_claimed ? '✓' : '';
+    const placeFlag = b.google_place_id ? '🗺' : '';
+    const cityTxt = b.city ? '— ' + b.city : '';
+
+    const urlTags = [claimed, photoFlag, b.website ? '' : '(no website)'].filter(Boolean).join(' ');
+    urlOpts.push(`<option value="${b.id}" data-website="${escapeAttr(b.website)}">${b.name} ${cityTxt}  ${urlTags}</option>`);
+
+    const gpTags = [claimed, photoFlag, placeFlag || '(no place id)'].filter(Boolean).join(' ');
+    gpOpts.push(`<option value="${b.id}" data-place-id="${escapeAttr(b.google_place_id)}">${b.name} ${cityTxt}  ${gpTags}</option>`);
   }
-  $select.innerHTML = opts.join('');
+  $select.innerHTML = urlOpts.join('');
+  $gpSelect.innerHTML = gpOpts.join('');
 }
 
 $select.addEventListener('change', () => {
@@ -223,6 +286,17 @@ $select.addEventListener('change', () => {
   }
   $bizId.value = opt.value;
   $url.value = normalizeUrl(opt.dataset.website || '');
+});
+
+$gpSelect.addEventListener('change', () => {
+  const opt = $gpSelect.selectedOptions[0];
+  if (!opt || !opt.value) {
+    $gpBizId.value = '';
+    $gpPlaceId.value = '';
+    return;
+  }
+  $gpBizId.value = opt.value;
+  $gpPlaceId.value = opt.dataset.placeId || '';
 });
 
 $form.addEventListener('submit', async (e) => {
@@ -261,6 +335,69 @@ function setStatus(text, kind) {
   $status.textContent = text || '';
   $status.style.color = kind === 'error' ? 'var(--red)' : 'var(--gray)';
 }
+
+function setGpStatus(text, kind) {
+  $gpStatus.textContent = text || '';
+  $gpStatus.style.color = kind === 'error' ? 'var(--red)' : 'var(--gray)';
+}
+
+$gpForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const businessId = $gpBizId.value.trim();
+  const placeId    = $gpPlaceId.value.trim();
+  const force      = $gpForce.checked;
+
+  if (!businessId || !placeId) {
+    setGpStatus('Both Business ID and Place ID are required.', 'error');
+    return;
+  }
+
+  $gpBtn.disabled = true;
+  $gpBtn.textContent = 'Fetching…';
+  setGpStatus('Calling Places API and mirroring photos. Usually 10-20 seconds.', '');
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/fetch-google-photos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ business_id: businessId, place_id: placeId, force })
+    });
+    const data = await res.json();
+    const result = (data && Array.isArray(data.results) && data.results[0]) || null;
+
+    if (!res.ok || !result) {
+      showError(businessId, (data && data.error) || ('HTTP ' + res.status));
+      return;
+    }
+
+    if (result.skipped) {
+      $card.style.display = 'block';
+      $title.textContent = 'Skipped';
+      $sub.textContent = businessId;
+      $summary.className = 'result-summary';
+      $summary.textContent = result.note || 'Business already has photos. Check Overwrite to replace.';
+      $thumbs.innerHTML = '';
+      $listing.href = '/pages/business.html?id=' + encodeURIComponent(businessId);
+      return;
+    }
+
+    // Adapt fetch-google-photos response shape into what renderResult expects.
+    await renderResult(businessId, {
+      ok: result.ok,
+      found:  (result.photos || []).length,
+      staged: result.staged ?? (result.photos || []).length,
+      photos: result.photos,
+      mirror_result: result.mirror_result,
+      error: result.error,
+    }, result.ok);
+  } catch(err) {
+    showError(businessId, 'Network error: ' + (err && err.message ? err.message : String(err)));
+  } finally {
+    $gpBtn.disabled = false;
+    $gpBtn.textContent = 'Fetch from Google →';
+    setGpStatus('', '');
+  }
+});
 
 function showError(businessId, msg) {
   $card.style.display = 'block';
