@@ -854,7 +854,13 @@ function renderBusiness(b) {
   document.getElementById('h-rating').textContent = rating > 0 ? rating.toFixed(1) : 'New';
   document.getElementById('h-stars').textContent = rating > 0 ? starsHtml(rating) : '☆☆☆☆☆';
   document.getElementById('h-review-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
-  document.getElementById('h-price').textContent = b.price_range || '$$';
+  const hPrice = document.getElementById('h-price');
+  if (b.category === 'Parks & Outdoor' || !b.price_range) {
+    hPrice.style.display = 'none';
+    if (hPrice.previousElementSibling) hPrice.previousElementSibling.style.display = 'none';
+  } else {
+    hPrice.textContent = b.price_range;
+  }
 
   // Quick info
   const qi = document.getElementById('h-quick-info');
@@ -928,7 +934,7 @@ function renderBusiness(b) {
     b.address ? `<div class="contact-item"><span class="contact-icon">📍</span><div><span class="contact-label">Address</span><span class="contact-value">${b.address}</span></div></div>` : '',
     b.phone ? `<div class="contact-item"><span class="contact-icon">📞</span><div><span class="contact-label">Phone</span><span class="contact-value"><a href="tel:${b.phone.replace(/\D/g,'')}">${b.phone}</a></span></div></div>` : '',
     b.website ? `<div class="contact-item"><span class="contact-icon">🌐</span><div><span class="contact-label">Website</span><span class="contact-value"><a href="${/^https?:\/\//i.test(b.website) ? b.website : 'https://' + b.website}" target="_blank">${b.website}</a></span></div></div>` : '',
-    `<div class="contact-item"><span class="contact-icon">💵</span><div><span class="contact-label">Price Range</span><span class="contact-value">${b.price_range || '$$'}</span></div></div>`,
+    (b.category !== 'Parks & Outdoor' && b.price_range) ? `<div class="contact-item"><span class="contact-icon">💵</span><div><span class="contact-label">Price Range</span><span class="contact-value">${b.price_range}</span></div></div>` : '',
   ].join('');
 
   // About
@@ -947,8 +953,12 @@ function renderBusiness(b) {
   const openVals = dayVals.filter(v => v && v.toLowerCase() !== 'closed');
   const allEmpty = openVals.length === 0;
   const allSame = openVals.length === 7 && openVals.every(v => v.toLowerCase() === openVals[0].toLowerCase());
+  const isPark = b.category === 'Parks & Outdoor';
+  const parkAllHours = isPark && hours && hours.all ? hours.all : null;
 
-  if (allEmpty) {
+  if (isPark) {
+    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">🌳 ${parkAllHours || 'Open dawn to dusk daily'}</span></div>`;
+  } else if (allEmpty) {
     hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">📅 By appointment — contact directly for hours</span></div>`;
   } else if (allSame) {
     hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">${openVals[0]}</span></div>`;
