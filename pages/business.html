@@ -564,7 +564,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <p class="claim-sub">Claim your listing to respond to reviews and update your info.</p>
           <a class="claim-btn" href="/pages/submit/claim-business.html">Claim this Business →</a>
         </div>
-        <div class="claim-card" style="margin-top:12px;background:var(--orange);">
+        <div class="claim-card" id="deal-card" style="margin-top:12px;background:var(--orange);">
           <div class="claim-title">Post a Deal</div>
           <p class="claim-sub">Promote a special offer to thousands of locals in the 815.</p>
           <a class="claim-btn deal-btn" id="deal-btn" href="/pages/submit/deal.html" style="border-color:rgba(255,255,255,0.4);">Post a Deal for this Business →</a>
@@ -860,6 +860,13 @@ function renderBusiness(b) {
     if (hPrice.previousElementSibling) hPrice.previousElementSibling.style.display = 'none';
   } else {
     hPrice.textContent = b.price_range;
+  }
+
+  if (b.category === 'Parks & Outdoor') {
+    ['h-reserve-btn','sb-phone-btn','claim-card','deal-card'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
   }
 
   // Quick info
