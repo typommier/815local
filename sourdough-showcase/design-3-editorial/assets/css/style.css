@@ -132,7 +132,9 @@ section { padding: 110px 0; }
   display: grid; place-items: center; text-align: center; gap: 8px;
   background: var(--paper-2); color: var(--grey);
   border: 1px solid var(--line);
+  position: relative; overflow: hidden;
 }
+.ph .ph-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ph .ph-emoji { font-size: 2rem; opacity: 0.6; }
 .ph .kicker { color: var(--grey); }
 .ph .kicker::before { background: var(--grey); }

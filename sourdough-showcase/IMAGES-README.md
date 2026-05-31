@@ -1,11 +1,17 @@
 # Where to drop the images
 
-Quick guide for adding the flyers and photos. Everything auto-appears once the
-files are in place, no code editing needed. Until then, tidy placeholders show.
+Right now only the **Modern Editorial** design (`design-3-editorial/`) is wired for
+photos, so dropping files in takes zero code edits. (Designs 1 and 2 still show
+their styled placeholders; say the word and I'll wire them the same way once a
+direction is chosen.)
 
-## The fastest way
+## For the Modern Editorial design
 
-Put this set of files into **each** design's `assets/img/` folder:
+Drop these files into:
+
+```
+sourdough-showcase/design-3-editorial/assets/img/
+```
 
 ```
 hero.jpg            big homepage hero (landscape)   a crust/crumb or cart shot
@@ -16,28 +22,19 @@ flyer-vendors.jpg   the June 7 vendor-lineup flyer
 flyer-schedule.jpg  the season-schedule flyer
 ```
 
-The three folders are:
-
-```
-sourdough-showcase/design-1-rustic/assets/img/
-sourdough-showcase/design-2-market/assets/img/
-sourdough-showcase/design-3-editorial/assets/img/
-```
-
-(Designs 1 and 2 only use `hero`, `story`, and the two flyers; design 3 also uses
-`market` and `cart`. Dropping all six into all three is totally fine, the extras
-are just ignored where unused.)
+Each one auto-appears the moment the file exists; until then a tidy placeholder
+shows and all the text content stays intact.
 
 ## Notes
 
 - **JPG or PNG** both work. Keep names exactly as above, lowercase.
 - **Orientation:** `hero.jpg` looks best landscape/wide; the rest look best
   upright/portrait.
-- Don't worry about exact sizes, they're set to crop-to-fit. Bigger is fine
-  (aim for at least ~1200px on the long edge for crispness).
-- If you'd rather use different names, just change the `src="..."` in the HTML.
+- Don't worry about exact sizes, they crop to fit. Bigger is fine (aim for at
+  least ~1200px on the long edge for crispness).
+- Prefer different names? Just change the `src="..."` in the HTML.
 
-## Once you've added them
+## Handing me the files
 
-Commit and push to the `sourdough-site` branch (or hand the files to me and I'll
-place + push them), and Cloudflare rebuilds in about a minute.
+If it's easier, give me the image files and I'll place them in the right folder,
+verify, and push to `sourdough-site` so Cloudflare rebuilds automatically.
