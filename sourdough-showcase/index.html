@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sourdough You Know &middot; Website Design Options</title>
+  <meta name="description" content="Three website design directions for Sourdough You Know. Same content, three different looks. Pick a favorite." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #211C16; --muted: #6F675C; --paper: #F4EFE6; --card: #FFFDF8; --line: #E4DCCC;
+      --accent: #B9772E;
+    }
+    body {
+      font-family: "Inter", system-ui, sans-serif; color: var(--ink); background: var(--paper);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      background-image: radial-gradient(rgba(185,119,46,0.045) 1.5px, transparent 1.5px);
+      background-size: 26px 26px;
+    }
+    h1, h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; line-height: 1.08; letter-spacing: -0.01em; }
+    .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+    header.top { text-align: center; padding: 76px 0 40px; }
+    .eyebrow { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+    header.top h1 { font-size: clamp(2.3rem, 5vw, 3.6rem); margin: 16px 0 14px; }
+    header.top p { color: var(--muted); max-width: 60ch; margin: 0 auto; font-size: 1.08rem; }
+    .note-bar {
+      max-width: 720px; margin: 28px auto 0; background: var(--card); border: 1px solid var(--line);
+      border-radius: 12px; padding: 14px 20px; font-size: 0.9rem; color: var(--muted);
+    }
+    .note-bar strong { color: var(--ink); }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; padding: 16px 0 40px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+      display: flex; flex-direction: column; transition: transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 4px 16px rgba(33,28,22,0.05);
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(33,28,22,0.14); }
+
+    /* mini visual swatch previews, each themed to its design */
+    .swatch { height: 160px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+    .swatch .tag { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+    .swatch .big { font-size: 1.9rem; line-height: 1.05; }
+    .dots { display: flex; gap: 7px; }
+    .dots span { width: 18px; height: 18px; border-radius: 50%; display: inline-block; }
+
+    /* design 1 - rustic */
+    .s1 { background: #FAF4E8; color: #2A211A; }
+    .s1 .big { font-family: "Fraunces", serif; }
+    .s1 .tag { color: #B9772E; }
+    .s1 .d1 { background: #B9772E; } .s1 .d2 { background: #6E7C4E; } .s1 .d3 { background: #9B3B45; } .s1 .d4 { background: #F0E6D2; }
+    /* design 2 - market */
+    .s2 { background: #FFF7E8; color: #262220; border-bottom: 3px solid #262220; }
+    .s2 .big { font-family: "Fraunces", serif; font-weight: 600; }
+    .s2 .tag { background: #F4A91F; color: #262220; border: 2px solid #262220; padding: 3px 10px; border-radius: 100px; align-self: flex-start; }
+    .s2 .dots span { border: 2px solid #262220; }
+    .s2 .d1 { background: #E4572E; } .s2 .d2 { background: #F4A91F; } .s2 .d3 { background: #1F8A82; } .s2 .d4 { background: #F2728C; }
+    /* design 3 - editorial */
+    .s3 { background: #F6F4EF; color: #16140F; }
+    .s3 .big { font-family: "Fraunces", serif; font-weight: 400; font-style: italic; }
+    .s3 .tag { color: #A36A43; }
+    .s3 .dots span { border-radius: 0; } .s3 .d1 { background: #16140F; } .s3 .d2 { background: #A36A43; } .s3 .d3 { background: #E1DCD2; } .s3 .d4 { background: #6F6A60; }
+
+    .body { padding: 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .body h2 { font-size: 1.35rem; }
+    .body .kind { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .body p { color: var(--muted); font-size: 0.94rem; }
+    .body .cta {
+      margin-top: auto; padding-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 0.9rem; color: var(--ink);
+    }
+    .card a.stretch { position: absolute; inset: 0; z-index: 1; }
+    .card { position: relative; }
+    .card:hover .cta { color: var(--accent); gap: 12px; }
+
+    footer { text-align: center; padding: 30px 0 60px; color: var(--muted); font-size: 0.86rem; }
+
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <span class="eyebrow">Sourdough You Know &middot; Website Concepts</span>
+      <h1>Three directions, one bakery.</h1>
+      <p>A few different looks for a new Sourdough You Know website. Every option has the same pages and the same real content (menu, story, the full farmers market schedule, and the flyers). Only the style changes. Take a look and tell me which one feels like you.</p>
+      <div class="note-bar"><strong>Tip:</strong> open each one, then come back here with your browser's back button to compare. Same content throughout, so you're judging the look and feel.</div>
+    </header>
+
+    <div class="grid">
+      <!-- Design 1 -->
+      <div class="card">
+        <a class="stretch" href="design-1-rustic/index.html" aria-label="Open Design 1"></a>
+        <div class="swatch s1">
+          <span class="tag">Option 1</span>
+          <div class="big">Warm &amp;<br />Rustic</div>
+          <div class="dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></div>
+        </div>
+        <div class="body">
+          <span class="kind">Cozy artisan</span>
+          <h2>Warm Rustic</h2>
+          <p>Golden crust tones, cream, and an elegant serif. Homey, handmade, and inviting. The classic bakery feel.</p>
+          <span class="cta">View this design &rarr;</span>
+        </div>
+      </div>
+
+      <!-- Design 2 -->
+      <div class="card">
+        <a class="stretch" href="design-2-market/index.html" aria-label="Open Design 2"></a>
+        <div class="swatch s2">
+          <span class="tag">Option 2</span>
+          <div class="big">Bold &amp;<br />Playful</div>
+          <div class="dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></div>
+        </div>
+        <div class="body">
+          <span class="kind">Market-day energy</span>
+          <h2>Bold Farmers-Market</h2>
+          <p>Bright tomato, mustard, and teal with chunky type and sticker badges. Fun, friendly, and full of personality.</p>
+          <span class="cta">View this design &rarr;</span>
+        </div>
+      </div>
+
+      <!-- Design 3 -->
+      <div class="card">
+        <a class="stretch" href="design-3-editorial/index.html" aria-label="Open Design 3"></a>
+        <div class="swatch s3">
+          <span class="tag">Option 3</span>
+          <div class="big">Modern &amp;<br />Minimal</div>
+          <div class="dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span></div>
+        </div>
+        <div class="body">
+          <span class="kind">Boutique &amp; premium</span>
+          <h2>Modern Editorial</h2>
+          <p>Lots of white space, oversized serif headlines, and one quiet accent. Clean, upscale, and understated.</p>
+          <span class="cta">View this design &rarr;</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Sourdough You Know, LLC &middot; Minooka, Illinois &nbsp;|&nbsp; Concepts only. Photos, prices, and the exact cart address are placeholders to be filled in.
+    </footer>
+  </div>
+</body>
+</html>
