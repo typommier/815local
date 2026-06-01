@@ -139,6 +139,7 @@ section { padding: 110px 0; }
 .ph .kicker { color: var(--grey); }
 .ph .kicker::before { background: var(--grey); }
 .ph small { font-size: 0.74rem; }
+.ph:has(.ph-img) > :not(.ph-img) { display: none; }
 
 /* ---- Bands ---- */
 .band-ink { background: var(--ink); color: var(--paper); }
