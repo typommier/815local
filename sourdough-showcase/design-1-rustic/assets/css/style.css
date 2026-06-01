@@ -331,3 +331,4 @@ section { padding: 84px 0; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { justify-content: flex-start; }
 }
+@media (max-width: 480px) { .lightbox { padding: 10px; } }

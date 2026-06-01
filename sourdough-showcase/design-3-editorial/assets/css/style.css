@@ -293,3 +293,4 @@ section { padding: 110px 0; }
   .sched-row { flex-wrap: wrap; gap: 6px 20px; }
   .sched-row .s-meta { flex-basis: 100%; order: 3; }
 }
+@media (max-width: 480px) { .lightbox { padding: 10px; } }
