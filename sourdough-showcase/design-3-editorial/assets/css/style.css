@@ -227,7 +227,7 @@ section { padding: 110px 0; }
 .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 .flyer { position: relative; cursor: zoom-in; }
 .flyer-frame { aspect-ratio: 3/4; overflow: hidden; background: var(--paper-2); border: 1px solid var(--line); }
-.flyer img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.flyer img { width: 100%; height: 100%; object-fit: contain; transition: transform .4s ease; }
 .flyer:hover img { transform: scale(1.03); }
 .flyer .flyer-ph { width: 100%; height: 100%; }
 .flyer figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 16px; font-size: 0.86rem; color: var(--grey); }
