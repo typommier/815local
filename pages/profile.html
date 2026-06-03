@@ -6,6 +6,7 @@
   <title>My Profile – 815 Local</title>
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/util.js"></script>
   <style>
     :root {
       --orange: #C4622D;
@@ -991,7 +992,7 @@
     // Avatar
     const avatarEl = document.getElementById('avatar-display');
     if (profileData.avatar_url) {
-      avatarEl.innerHTML = `<img src="${profileData.avatar_url}" alt="avatar" />`;
+      avatarEl.innerHTML = `<img src="${escapeHtml(profileData.avatar_url)}" alt="avatar" />`;
     } else {
       avatarEl.textContent = name.charAt(0).toUpperCase();
     }
@@ -1064,17 +1065,17 @@
     const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(5 - (r.rating || 0));
     const date = new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const thumb = biz?.photos?.[0] || biz?.image_url || '';
-    const bizLink = biz ? `<a href="/pages/business.html?id=${biz.id}" class="biz-name">${biz.name}</a>` : '<span class="biz-name">Unknown Business</span>';
+    const bizLink = biz ? `<a href="/pages/business.html?id=${biz.id}" class="biz-name">${escapeHtml(biz.name)}</a>` : '<span class="biz-name">Unknown Business</span>';
 
     return `
       <div class="review-item">
         <div class="review-icon">⭐</div>
         <div class="review-body">
           <div>${showBiz ? `Reviewed ${bizLink}` : ''} <span class="review-stars">${stars}</span></div>
-          ${r.review_text ? `<div class="review-text">"${r.review_text}"</div>` : ''}
+          ${r.review_text ? `<div class="review-text">"${escapeHtml(r.review_text)}"</div>` : ''}
           <div class="review-meta">${date}${r.helpful_count ? ` · ${r.helpful_count} found helpful` : ''}</div>
         </div>
-        ${thumb ? `<div class="review-thumb"><img src="${thumb}" alt="" /></div>` : '<div class="review-thumb"></div>'}
+        ${thumb ? `<div class="review-thumb"><img src="${escapeHtml(thumb)}" alt="" /></div>` : '<div class="review-thumb"></div>'}
       </div>`;
   }
 
@@ -1130,11 +1131,11 @@
     return `
       <div class="saved-card">
         <div class="saved-card-img">
-          ${thumb ? `<img src="${thumb}" alt="${biz.name}" />` : emoji}
+          ${thumb ? `<img src="${escapeHtml(thumb)}" alt="${escapeHtml(biz.name)}" />` : emoji}
         </div>
         <div class="saved-card-body">
-          <div class="saved-card-name">${biz.name}</div>
-          <div class="saved-card-cat">${biz.category || ''}</div>
+          <div class="saved-card-name">${escapeHtml(biz.name)}</div>
+          <div class="saved-card-cat">${escapeHtml(biz.category || '')}</div>
           <div class="saved-card-actions">
             <a href="/pages/business.html?id=${biz.id}" class="btn-sm btn-sm-outline">View</a>
             <button class="btn-sm btn-sm-danger" onclick="unsaveBusiness('${s.id}')">Remove</button>

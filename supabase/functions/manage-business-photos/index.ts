@@ -27,8 +27,13 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 const BUCKET = "business-photos";
 const MAX_BYTES = 5 * 1024 * 1024;
+
+// Allowlisted admin emails (comma-separated env var). Fail closed if unset.
+const ADMIN_EMAILS = (Deno.env.get("ADMIN_EMAILS") ?? "")
+  .split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
@@ -88,9 +93,32 @@ function resolveTokens(value: unknown, uploaded: Array<{ public_url: string }>):
   return value;
 }
 
+// Reject unless the caller's bearer token belongs to an allowlisted admin.
+// verify_jwt only proves the token is signed by the project (the anon key
+// passes too), so the email allowlist is the real gate.
+async function requireAdmin(req: Request): Promise<Response | null> {
+  const authHeader = req.headers.get("Authorization") ?? "";
+  if (!authHeader || ADMIN_EMAILS.length === 0) {
+    return json({ ok: false, error: "unauthorized" }, { status: 401 });
+  }
+  const userClient = createClient(SUPABASE_URL, ANON_KEY, {
+    global: { headers: { Authorization: authHeader } },
+    auth: { persistSession: false },
+  });
+  const { data, error } = await userClient.auth.getUser();
+  const email = data?.user?.email?.toLowerCase();
+  if (error || !email || !ADMIN_EMAILS.includes(email)) {
+    return json({ ok: false, error: "unauthorized" }, { status: 401 });
+  }
+  return null;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (req.method !== "POST") return json({ ok: false, error: "method not allowed" }, { status: 405 });
+
+  const denied = await requireAdmin(req);
+  if (denied) return denied;
 
   let body: any;
   try { body = await req.json(); } catch { return json({ ok: false, error: "invalid json" }, { status: 400 }); }
