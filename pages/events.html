@@ -667,6 +667,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/util.js"></script>
 <script>
 const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
@@ -805,7 +806,7 @@ function renderCalendar() {
     show.forEach(ev => {
       const md = multiDayMap[ev.id];
       const dayBadge = md ? ` <span style="opacity:0.7;font-size:9px;">Day ${md.dayNum}/${md.totalDays}</span>` : '';
-      html += `<div class="cal-event ${ev.event_type}" title="${ev.title}">${typeEmoji(ev.event_type)} ${ev.title}${dayBadge}</div>`;
+      html += `<div class="cal-event ${escapeHtml(ev.event_type)}" title="${escapeHtml(ev.title)}">${typeEmoji(ev.event_type)} ${escapeHtml(ev.title)}${dayBadge}</div>`;
     });
     if (dayEvs.length > 2) {
       html += `<div class="cal-more">+${dayEvs.length - 2} more</div>`;
@@ -932,7 +933,7 @@ function renderList() {
       const t2     = fmt12(ev.end_time);
       const timeStr= t1 ? (t2 ? `${t1} – ${t2}` : `Starts ${t1}`) : 'All day';
       const priceColor = (ev.price || '').toLowerCase().startsWith('free') ? 'color:var(--ev-market)' : '';
-      const moreLink   = ev.url ? `<a href="${ev.url}" target="_blank" rel="noopener" class="lec-rsvp" style="text-decoration:none;display:block;text-align:center;">More Info →</a>` : `<button class="lec-rsvp">I'm Going →</button>`;
+      const moreLink   = ev.url ? `<a href="${escapeHtml(ev.url)}" target="_blank" rel="noopener" class="lec-rsvp" style="text-decoration:none;display:block;text-align:center;">More Info →</a>` : `<button class="lec-rsvp">I'm Going →</button>`;
 
       // Multi-day badge
       const md = multiDayMap[ev.id];
@@ -941,21 +942,21 @@ function renderList() {
       html += `
         <div class="list-event-card">
           <div class="lec-color" style="background:${tc};"></div>
-${ev.image_url ? `<div class="lec-photo" style="padding:0;overflow:hidden;"><div style="width:100%;height:100%;background:url('${ev.image_url}') center/cover no-repeat;"></div></div>` : ''}
+${ev.image_url ? `<div class="lec-photo" style="padding:0;overflow:hidden;"><div style="width:100%;height:100%;background:url('${escapeHtml(ev.image_url)}') center/cover no-repeat;"></div></div>` : ''}
           <div class="lec-body">
             <div class="lec-type" style="color:${tc};">${te} ${tl}${mdBadge}</div>
-            <div class="lec-title">${ev.title}</div>
-            <div class="lec-desc">${ev.description || ''}</div>
+            <div class="lec-title">${escapeHtml(ev.title)}</div>
+            <div class="lec-desc">${escapeHtml(ev.description || '')}</div>
             <div class="lec-meta">
               <span class="lec-meta-item">🕗 ${timeStr}</span>
-              <span class="lec-meta-item">📍 ${ev.location_name || ev.city}</span>
-              ${ev.organizer ? `<span class="lec-meta-item">👤 ${ev.organizer}</span>` : ''}
+              <span class="lec-meta-item">📍 ${escapeHtml(ev.location_name || ev.city)}</span>
+              ${ev.organizer ? `<span class="lec-meta-item">👤 ${escapeHtml(ev.organizer)}</span>` : ''}
             </div>
           </div>
           <div class="lec-side">
             <div>
-              <div class="lec-price" style="${priceColor}">${ev.price || 'Free'}</div>
-              ${ev.price_detail ? `<div class="lec-price-sub">${ev.price_detail}</div>` : ''}
+              <div class="lec-price" style="${priceColor}">${escapeHtml(ev.price || 'Free')}</div>
+              ${ev.price_detail ? `<div class="lec-price-sub">${escapeHtml(ev.price_detail)}</div>` : ''}
             </div>
             <div class="lec-actions">
               ${moreLink}
@@ -998,8 +999,8 @@ function renderFeatured() {
   const meta = document.getElementById('fe-meta');
   meta.innerHTML = `
     <span>📅 ${dateStr}${t1 ? ' · ' + t1 : ''}</span>
-    <span>📍 ${featured.location_name || featured.city}</span>
-    <span>🎫 ${featured.price || 'Free'}${featured.price_detail ? ' · ' + featured.price_detail : ''}</span>`;
+    <span>📍 ${escapeHtml(featured.location_name || featured.city)}</span>
+    <span>🎫 ${escapeHtml(featured.price || 'Free')}${featured.price_detail ? ' · ' + escapeHtml(featured.price_detail) : ''}</span>`;
 
   const link = document.getElementById('fe-rsvp-link');
   if (featured.url) { link.href = featured.url; link.style.display = 'block'; }

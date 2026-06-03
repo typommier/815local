@@ -194,6 +194,52 @@ const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
 const db = supabase.createClient(SUPABASE_URL, ANON_KEY);
 
+// --- Admin auth gate (Supabase login + server-side email allowlist) ---
+// The edge functions verify the caller's email against ADMIN_EMAILS, so this
+// login is what delivers a usable token. It is not the security boundary.
+function adminAuthHeaders(token) {
+  return { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + token };
+}
+async function getAccessToken() {
+  const { data } = await db.auth.getSession();
+  return data && data.session ? data.session.access_token : null;
+}
+function renderLoginGate(onSuccess) {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:system-ui,sans-serif;';
+  ov.innerHTML = '<form id="admin-login-form" style="background:#fff;padding:28px 26px;border-radius:12px;max-width:340px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3);">'
+    + '<h2 style="margin:0 0 4px;font-size:18px;">Admin sign in</h2>'
+    + '<p style="margin:0 0 16px;font-size:13px;color:#666;">Restricted to 815local admins.</p>'
+    + '<input id="admin-email" type="email" placeholder="Email" autocomplete="username" required style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<input id="admin-pass" type="password" placeholder="Password" autocomplete="current-password" required style="width:100%;padding:10px;margin-bottom:14px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<button type="submit" style="width:100%;padding:10px;border:0;border-radius:8px;background:#C4622D;color:#fff;font-weight:600;cursor:pointer;">Sign in</button>'
+    + '<div id="admin-login-err" style="color:#b00;font-size:13px;margin-top:10px;min-height:16px;"></div>'
+    + '</form>';
+  document.body.appendChild(ov);
+  const form = ov.querySelector('#admin-login-form');
+  const err = ov.querySelector('#admin-login-err');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.textContent = '';
+    const email = ov.querySelector('#admin-email').value.trim();
+    const password = ov.querySelector('#admin-pass').value;
+    const btn = form.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    const { error } = await db.auth.signInWithPassword({ email, password });
+    btn.disabled = false; btn.textContent = 'Sign in';
+    if (error) { err.textContent = error.message; return; }
+    ov.remove();
+    onSuccess();
+  });
+}
+function requireAdminLogin() {
+  return new Promise(async (resolve) => {
+    const token = await getAccessToken();
+    if (token) { resolve(); return; }
+    renderLoginGate(resolve);
+  });
+}
+
 const POSITION_GRID = [
   ['left top',    'top',    'right top'],
   ['left',        'center', 'right'],
@@ -395,9 +441,10 @@ async function saveChanges() {
   };
 
   try {
+    const token = await getAccessToken();
     const res = await fetch(`${SUPABASE_URL}/functions/v1/manage-business-photos`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: adminAuthHeaders(token),
       body: JSON.stringify(body),
     });
     const data = await res.json();
@@ -438,7 +485,7 @@ async function saveChanges() {
 
 $saveBtn.addEventListener('click', saveChanges);
 
-loadBusinesses();
+requireAdminLogin().then(loadBusinesses);
 </script>
 </body>
 </html>

@@ -382,6 +382,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/util.js"></script>
 <script src="/assets/js/analytics-tracker.js"></script>
 <script>
 const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
@@ -432,20 +433,20 @@ function renderCard(b) {
       </div>` : ''}
       <div class="blc-body">
         <div class="blc-main">
-          <div class="blc-cat">${catEmoji(b.category)} ${b.category}${b.subcategory ? ' · ' + b.subcategory : ''}${b.price_range ? ' · ' + b.price_range : ''}</div>
-          <div class="blc-name">${b.name}${(b.features||[]).includes('Chain') ? '<span class="blc-chain-label">Chain</span>' : ''}${b.is_claimed ? '<span class="owner-verified-badge">✓ Owner Verified</span>' : ''}${isAroundThe815(b) ? '<span class="area-served-badge">📍 Serves the 815</span>' : ''}</div>
-          <div class="blc-desc">${b.description || ''}</div>
+          <div class="blc-cat">${catEmoji(b.category)} ${escapeHtml(b.category)}${b.subcategory ? ' · ' + escapeHtml(b.subcategory) : ''}${b.price_range ? ' · ' + escapeHtml(b.price_range) : ''}</div>
+          <div class="blc-name">${escapeHtml(b.name)}${(b.features||[]).includes('Chain') ? '<span class="blc-chain-label">Chain</span>' : ''}${b.is_claimed ? '<span class="owner-verified-badge">✓ Owner Verified</span>' : ''}${isAroundThe815(b) ? '<span class="area-served-badge">📍 Serves the 815</span>' : ''}</div>
+          <div class="blc-desc">${escapeHtml(b.description || '')}</div>
           <div class="blc-rating-row">
             <span class="blc-stars">${starsHtml(rating)}</span>
             <span class="blc-num">${rating > 0 ? rating.toFixed(1) : 'New'}</span>
             <span class="blc-count">${count > 0 ? '(' + count + ' review' + (count !== 1 ? 's' : '') + ')' : 'No reviews yet'}</span>
           </div>
           <div class="blc-tags">
-            ${features.map(f => `<span class="tag">${f}</span>`).join('')}
+            ${features.map(f => `<span class="tag">${escapeHtml(f)}</span>`).join('')}
           </div>
           <div class="blc-meta">
-            ${b.address ? `<span class="blc-meta-item">📍 ${b.address}</span>` : ''}
-            ${b.phone ? `<span class="blc-meta-item">📞 ${b.phone}</span>` : ''}
+            ${b.address ? `<span class="blc-meta-item">📍 ${escapeHtml(b.address)}</span>` : ''}
+            ${b.phone ? `<span class="blc-meta-item">📞 ${escapeHtml(b.phone)}</span>` : ''}
           </div>
         </div>
         <div class="blc-side">
@@ -470,7 +471,7 @@ function renderList(businesses) {
     count.innerHTML = 'No results found';
     return;
   }
-  count.innerHTML = `Showing <strong>${businesses.length} business${businesses.length !== 1 ? 'es' : ''}</strong>${activeCategory ? ' in ' + activeCategory : ''}`;
+  count.innerHTML = `Showing <strong>${businesses.length} business${businesses.length !== 1 ? 'es' : ''}</strong>${activeCategory ? ' in ' + escapeHtml(activeCategory) : ''}`;
   list.innerHTML = businesses.map(renderCard).join('');
 }
 
