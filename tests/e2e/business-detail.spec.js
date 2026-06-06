@@ -40,4 +40,17 @@ test.describe('Business detail page', () => {
     expect(cat.trim()).not.toBe('Category');
     expect(cat.trim().length).toBeGreaterThan(0);
   });
+
+  test('LocalBusiness JSON-LD is injected with real data', async ({ page }) => {
+    await expect(page.locator('#biz-header-content')).toBeVisible({ timeout: 8000 });
+    const raw = await page.locator('script#ld-business').textContent();
+    const data = JSON.parse(raw);
+    expect(data['@type']).toBe('LocalBusiness');
+    expect(data.name).toBe("Rosario's Tavern");
+    expect(data.telephone).toBe('8155551234');
+    // biz-001 has reviews, so aggregateRating must be present and accurate
+    expect(data.aggregateRating).toBeTruthy();
+    expect(data.aggregateRating.reviewCount).toBe(12);
+    expect(data.aggregateRating.ratingValue).toBe('4.9');
+  });
 });
