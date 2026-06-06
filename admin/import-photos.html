@@ -78,6 +78,7 @@ a { color: inherit; text-decoration: none; }
 .thumb-link { margin-left: auto; color: var(--gray); font-weight: 600; font-size: 11px; text-decoration: underline; }
 
 .empty { color: var(--gray); font-size: 14px; text-align: center; padding: 32px; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 680px) {
   .dashboard { padding: 16px; }
@@ -150,7 +151,7 @@ a { color: inherit; text-decoration: none; }
     <div class="card-header">
       <div>
         <div class="card-title">From Google Places</div>
-        <div class="card-subtitle">Calls the Places API for a known Place ID, pulls up to 5 photos, then mirrors them. Takes 10-20 seconds. Skips businesses that already have photos unless you check Overwrite.</div>
+        <div class="card-subtitle">Pulls up to 5 photos for a Place ID, then mirrors them. No Place ID saved? Click Find to auto-resolve it from the business name. Takes 10-20 seconds. Skips businesses that already have photos unless you check Overwrite.</div>
       </div>
     </div>
     <div class="card-body">
@@ -167,7 +168,12 @@ a { color: inherit; text-decoration: none; }
         </div>
         <div class="form-row inline">
           <label for="gp-place-id">Google Place ID</label>
-          <input id="gp-place-id" type="text" placeholder="ChIJ… (auto-filled if already saved on the listing)" required>
+          <input id="gp-place-id" type="text" placeholder="optional — click Find to auto-resolve from the name">
+          <button id="gp-find-btn" type="button" class="btn" style="background:var(--cream-dark);color:var(--charcoal);padding:10px 16px;flex:0;">Find</button>
+        </div>
+        <div class="form-row inline" id="gp-match-row" style="display:none;">
+          <label>Match</label>
+          <span id="gp-match" class="hint" style="margin:0;flex:1;"></span>
         </div>
         <div class="form-row inline">
           <label for="gp-force">Overwrite existing</label>
@@ -179,6 +185,26 @@ a { color: inherit; text-decoration: none; }
           <span id="gp-status-text" style="font-size:13px;color:var(--gray);"></span>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Fill all missing photos</div>
+        <div class="card-subtitle">Resolves a Google match for every active business that has no photos and previews it. You review the matches, then fill the ones that look right. Mismatched or out-of-town matches are left unchecked by default.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="btn-row" style="margin-top:0;">
+        <button id="batch-preview-btn" type="button" class="btn btn-primary">Preview missing →</button>
+        <span id="batch-status" style="font-size:13px;color:var(--gray);"></span>
+      </div>
+      <div id="batch-results" style="margin-top:18px;"></div>
+      <div class="btn-row" id="batch-fill-row" style="display:none;">
+        <button id="batch-fill-btn" type="button" class="btn btn-primary">Fill selected →</button>
+        <span id="batch-fill-status" style="font-size:13px;color:var(--gray);"></span>
+      </div>
     </div>
   </div>
 
@@ -504,6 +530,161 @@ async function renderResult(businessId, data, httpOk) {
     </div>
   `).join('');
 }
+
+// --- Find Place ID (resolve-only, no photo write) ---
+const $gpFindBtn  = document.getElementById('gp-find-btn');
+const $gpMatchRow = document.getElementById('gp-match-row');
+const $gpMatch    = document.getElementById('gp-match');
+
+function escTxt(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+
+$gpFindBtn.addEventListener('click', async () => {
+  const businessId = $gpBizId.value.trim();
+  if (!businessId) { setGpStatus('Pick a business first.', 'error'); return; }
+  $gpFindBtn.disabled = true;
+  const prev = $gpFindBtn.textContent;
+  $gpFindBtn.textContent = 'Finding…';
+  $gpMatchRow.style.display = 'none';
+  try {
+    const token = await getAccessToken();
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/fetch-google-photos`, {
+      method: 'POST',
+      headers: adminAuthHeaders(token),
+      body: JSON.stringify({ resolve_only: true, business_id: businessId })
+    });
+    const data = await res.json();
+    const r = data && data.result;
+    if (!res.ok || !r || !r.place_id) {
+      setGpStatus(r && r.error ? r.error : 'No Google match found for this name and city.', 'error');
+      return;
+    }
+    $gpPlaceId.value = r.place_id;
+    const matchName = r.resolved_name || (r.had_place_id ? 'Saved Place ID' : r.place_id);
+    $gpMatch.innerHTML = '<strong>' + escTxt(matchName) + '</strong>'
+      + (r.resolved_address ? ' — ' + escTxt(r.resolved_address) : '')
+      + ' · ' + (r.photo_count || 0) + ' photo' + ((r.photo_count === 1) ? '' : 's')
+      + '. Confirm this is the business, then Fetch.';
+    $gpMatchRow.style.display = '';
+    setGpStatus('', '');
+  } catch (err) {
+    setGpStatus('Network error: ' + (err && err.message ? err.message : String(err)), 'error');
+  } finally {
+    $gpFindBtn.disabled = false;
+    $gpFindBtn.textContent = prev;
+  }
+});
+
+// --- Fill all missing photos (batch preview + approve) ---
+const $batchPreviewBtn = document.getElementById('batch-preview-btn');
+const $batchStatus     = document.getElementById('batch-status');
+const $batchResults    = document.getElementById('batch-results');
+const $batchFillRow    = document.getElementById('batch-fill-row');
+const $batchFillBtn    = document.getElementById('batch-fill-btn');
+const $batchFillStatus = document.getElementById('batch-fill-status');
+
+// A match looks trustworthy if Google returned photos and the resolved address
+// is in the same town as the listing (or the Place ID was already saved).
+function looksGood(r) {
+  if (!r.place_id || !r.photo_count) return false;
+  if (r.had_place_id) return true;
+  const city = (r.city || '').trim().toLowerCase();
+  const addr = (r.resolved_address || '').toLowerCase();
+  return city.length > 0 && addr.includes(city);
+}
+
+$batchPreviewBtn.addEventListener('click', async () => {
+  $batchPreviewBtn.disabled = true;
+  $batchStatus.innerHTML = '<span class="spinner" style="display:inline-block;width:13px;height:13px;border:2px solid var(--gray-light);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:6px;"></span>Resolving every business with no photos. This can take a minute.';
+  $batchResults.innerHTML = '';
+  $batchFillRow.style.display = 'none';
+  try {
+    const token = await getAccessToken();
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/fetch-google-photos`, {
+      method: 'POST',
+      headers: adminAuthHeaders(token),
+      body: JSON.stringify({ fill_missing: true, dry_run: true })
+    });
+    const data = await res.json();
+    if (!res.ok || !Array.isArray(data.results)) {
+      $batchStatus.textContent = (data && data.error) || ('HTTP ' + res.status);
+      return;
+    }
+    renderBatch(data.results);
+    $batchStatus.textContent = data.results.length + ' businesses with no photos.';
+  } catch (err) {
+    $batchStatus.textContent = 'Network error: ' + (err && err.message ? err.message : String(err));
+  } finally {
+    $batchPreviewBtn.disabled = false;
+  }
+});
+
+function renderBatch(results) {
+  if (results.length === 0) { $batchResults.innerHTML = '<div class="empty">Every active business already has photos. 🎉</div>'; return; }
+  const rows = results.map((r) => {
+    const good = looksGood(r);
+    const hasMatch = !!r.place_id;
+    const matchCell = hasMatch
+      ? '<strong>' + escTxt(r.resolved_name || (r.had_place_id ? 'Saved Place ID' : '')) + '</strong>'
+        + (r.resolved_address ? '<div style="color:var(--gray);font-size:12px;">' + escTxt(r.resolved_address) + '</div>' : '')
+      : '<span style="color:var(--gray);">no Google match</span>';
+    const countBadge = hasMatch
+      ? (r.photo_count || 0) + ' photo' + (r.photo_count === 1 ? '' : 's')
+      : '—';
+    return `<tr data-id="${escTxt(r.business_id)}">
+      <td style="padding:8px 10px;vertical-align:top;"><input type="checkbox" class="batch-cb" data-id="${escTxt(r.business_id)}" ${good ? 'checked' : ''} ${hasMatch && r.photo_count ? '' : 'disabled'} style="width:18px;height:18px;"></td>
+      <td style="padding:8px 10px;vertical-align:top;"><strong>${escTxt(r.name)}</strong><div style="color:var(--gray);font-size:12px;">${escTxt(r.city || '')}</div></td>
+      <td style="padding:8px 10px;vertical-align:top;">${matchCell}</td>
+      <td style="padding:8px 10px;vertical-align:top;white-space:nowrap;">${countBadge}</td>
+      <td style="padding:8px 10px;vertical-align:top;" class="batch-row-result"></td>
+    </tr>`;
+  }).join('');
+  $batchResults.innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <thead><tr style="text-align:left;border-bottom:1.5px solid var(--gray-light);">
+        <th style="padding:8px 10px;">Fill</th><th style="padding:8px 10px;">Business</th>
+        <th style="padding:8px 10px;">Google match</th><th style="padding:8px 10px;">Photos</th><th style="padding:8px 10px;">Result</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="font-size:12px;color:var(--gray);margin-top:8px;">Checked rows are same-town matches with photos. Review the rest before checking them.</div>`;
+  $batchFillRow.style.display = '';
+}
+
+$batchFillBtn.addEventListener('click', async () => {
+  const ids = Array.from(document.querySelectorAll('.batch-cb:checked')).map((c) => c.dataset.id);
+  if (ids.length === 0) { $batchFillStatus.textContent = 'Nothing checked.'; return; }
+  $batchFillBtn.disabled = true;
+  $batchFillStatus.textContent = 'Filling ' + ids.length + '… mirroring photos, please wait.';
+  try {
+    const token = await getAccessToken();
+    // Chunk so each request stays well under the edge function time limit.
+    const chunkSize = 4;
+    const byId = {};
+    for (let i = 0; i < ids.length; i += chunkSize) {
+      const chunk = ids.slice(i, i + chunkSize);
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/fetch-google-photos`, {
+        method: 'POST',
+        headers: adminAuthHeaders(token),
+        body: JSON.stringify({ fill_missing: true, business_ids: chunk })
+      });
+      const data = await res.json();
+      for (const r of (data.results || [])) byId[r.business_id] = r;
+      for (const r of (data.results || [])) {
+        const cell = document.querySelector('tr[data-id="' + r.business_id + '"] .batch-row-result');
+        if (!cell) continue;
+        if (r.ok && r.staged) { cell.innerHTML = '<span style="color:var(--green);font-weight:600;">✓ ' + r.staged + ' added</span>'; }
+        else if (r.ok) { cell.innerHTML = '<span style="color:var(--gray);">' + escTxt(r.note || 'no photos') + '</span>'; }
+        else { cell.innerHTML = '<span style="color:var(--red);">' + escTxt(r.error || 'failed') + '</span>'; }
+      }
+      $batchFillStatus.textContent = 'Filled ' + Math.min(i + chunkSize, ids.length) + ' of ' + ids.length + '…';
+    }
+    $batchFillStatus.textContent = 'Done. Reload the preview to see what is left.';
+  } catch (err) {
+    $batchFillStatus.textContent = 'Network error: ' + (err && err.message ? err.message : String(err));
+  } finally {
+    $batchFillBtn.disabled = false;
+  }
+});
 
 requireAdminLogin().then(loadBusinesses);
 </script>
