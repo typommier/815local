@@ -372,15 +372,19 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 .ev-modal-backdrop {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(30,27,24,0.55); backdrop-filter: blur(2px);
-  display: none; align-items: flex-start; justify-content: center;
-  padding: 48px 20px; overflow-y: auto;
+  display: none; align-items: center; justify-content: center;
+  padding: 48px 20px;
 }
 .ev-modal-backdrop.open { display: flex; }
 .ev-modal {
   background: var(--cream); border-radius: var(--radius);
   width: 100%; max-width: 640px; box-shadow: var(--shadow-lg);
   position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 96px);
+  max-height: calc(100dvh - 96px);
 }
+.ev-modal-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .ev-modal-close {
   position: absolute; top: 14px; right: 14px; z-index: 2;
   width: 34px; height: 34px; border-radius: 50%; border: none;
@@ -389,7 +393,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   transition: background 0.15s;
 }
 .ev-modal-close:hover { background: white; color: var(--orange); }
-.ev-modal-hero { width: 100%; height: 200px; background-size: cover; background-position: center; background-repeat: no-repeat; }
+.ev-modal-hero { display: block; width: 100%; max-height: 46vh; object-fit: contain; background: var(--cream-dark); }
 .ev-modal-body { padding: 24px 28px 28px; }
 .ev-modal-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
 .ev-modal-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; line-height: 1.15; margin-bottom: 4px; }
@@ -410,9 +414,10 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 .ev-modal-cta:hover { background: var(--orange-light); }
 @media (max-width: 600px) {
   .ev-modal-backdrop { padding: 0; align-items: stretch; }
-  .ev-modal { max-width: none; min-height: 100%; border-radius: 0; }
+  .ev-modal { max-width: none; border-radius: 0; height: 100vh; height: 100dvh; max-height: none; }
   .ev-modal-title { font-size: 22px; }
   .ev-sched-time { width: 78px; }
+  .ev-modal-hero { max-height: 38vh; }
 }
 </style>
 </head>
@@ -1078,13 +1083,15 @@ function openEventModal(id) {
   const mdBadge = md ? `<span class="ev-day-badge">Day ${md.dayNum} of ${md.totalDays}</span>` : '';
   document.getElementById('ev-modal-title').innerHTML = escapeHtml(ev.title) + mdBadge;
 
-  // Hero image (hidden when absent)
+  // Hero image (shown in full; hidden when absent or if it fails to load)
   const hero = document.getElementById('ev-modal-hero');
   if (ev.image_url) {
-    hero.style.backgroundImage = `url('${encodeURI(ev.image_url)}')`;
+    hero.onerror = () => { hero.style.display = 'none'; };
+    hero.onload = () => { hero.style.display = 'block'; };
     hero.style.display = 'block';
+    hero.src = ev.image_url;
   } else {
-    hero.style.backgroundImage = '';
+    hero.removeAttribute('src');
     hero.style.display = 'none';
   }
 
@@ -1143,7 +1150,9 @@ function openEventModal(id) {
   if (ev.url) { cta.href = ev.url; cta.style.display = 'inline-block'; }
   else cta.style.display = 'none';
 
-  // Show
+  // Show (reset scroll to top so each event opens at the header)
+  const scroller = document.querySelector('#ev-modal-backdrop .ev-modal-scroll');
+  if (scroller) scroller.scrollTop = 0;
   document.getElementById('ev-modal-backdrop').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1315,15 +1324,17 @@ loadEvents();
 <div class="ev-modal-backdrop" id="ev-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="ev-modal-title">
   <div class="ev-modal">
     <button class="ev-modal-close" id="ev-modal-close" aria-label="Close">&times;</button>
-    <div class="ev-modal-hero" id="ev-modal-hero" style="display:none;"></div>
-    <div class="ev-modal-body">
-      <div class="ev-modal-type" id="ev-modal-type"></div>
-      <div class="ev-modal-title" id="ev-modal-title"></div>
-      <div class="ev-modal-meta" id="ev-modal-meta"></div>
-      <div class="ev-modal-desc" id="ev-modal-desc"></div>
-      <div id="ev-modal-schedule"></div>
-      <div id="ev-modal-sections"></div>
-      <a class="ev-modal-cta" id="ev-modal-cta" href="#" target="_blank" rel="noopener" style="display:none;">Official event site →</a>
+    <div class="ev-modal-scroll">
+      <img class="ev-modal-hero" id="ev-modal-hero" alt="" style="display:none;">
+      <div class="ev-modal-body">
+        <div class="ev-modal-type" id="ev-modal-type"></div>
+        <div class="ev-modal-title" id="ev-modal-title"></div>
+        <div class="ev-modal-meta" id="ev-modal-meta"></div>
+        <div class="ev-modal-desc" id="ev-modal-desc"></div>
+        <div id="ev-modal-schedule"></div>
+        <div id="ev-modal-sections"></div>
+        <a class="ev-modal-cta" id="ev-modal-cta" href="#" target="_blank" rel="noopener" style="display:none;">Official event site →</a>
+      </div>
     </div>
   </div>
 </div>

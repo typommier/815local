@@ -69,6 +69,38 @@ test.describe('Events page', () => {
     await expect(page.locator('#ev-modal-cta')).toBeHidden();
   });
 
+  test('modal scrolls to reach all content on a small screen', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 700 });
+    await expect(page.locator('.list-event-card[data-event-id="evt-fri"]')).toBeVisible({ timeout: 8000 });
+    // Inflate Friday with a long schedule so the modal overflows the viewport
+    await page.evaluate(() => {
+      const e = allEvents.find(x => x.id === 'evt-fri');
+      e.details = {
+        schedule: Array.from({ length: 8 }, (_, i) => ({ time: `${i + 1}:00 PM`, label: `Activity ${i + 1}` })),
+        sections: [{ heading: 'Food Vendors', items: Array.from({ length: 10 }, (_, i) => `Vendor ${i + 1}`) }],
+      };
+      renderAll();
+    });
+    await page.locator('.list-event-card[data-event-id="evt-fri"]').click();
+
+    const scroller = page.locator('#ev-modal-backdrop .ev-modal-scroll');
+    await expect(scroller).toBeVisible();
+    const canScroll = await scroller.evaluate(el => el.scrollHeight > el.clientHeight + 2);
+    expect(canScroll).toBe(true);
+    // The CTA at the bottom is reachable once scrolled
+    await scroller.evaluate(el => { el.scrollTop = el.scrollHeight; });
+    await expect(page.locator('#ev-modal-cta')).toBeInViewport();
+  });
+
+  test('modal hero is an img that stays hidden when the event has no image', async ({ page }) => {
+    const card = page.locator('.list-event-card[data-event-id="evt-simple"]');
+    await expect(card).toBeVisible({ timeout: 8000 });
+    await card.click();
+    const hero = page.locator('#ev-modal-hero');
+    await expect(hero).toHaveJSProperty('tagName', 'IMG');
+    await expect(hero).toBeHidden();
+  });
+
   test('action buttons do not trigger the modal', async ({ page }) => {
     const card = page.locator('.list-event-card[data-event-id="evt-simple"]');
     await expect(card).toBeVisible({ timeout: 8000 });
