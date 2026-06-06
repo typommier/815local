@@ -6,3 +6,8 @@ test-results/
 fetch_photos.py
 fetch_photos_local.py
 fetch_missing_photos.py
+
+# Local-only contact-info backfill (Places lookups run on Ty's machine)
+fetch_contact_info.py
+contact_targets.json
+contact_results.json
