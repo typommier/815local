@@ -74,7 +74,92 @@ const REVIEWS = [
 ];
 
 const NEWSLETTER = [];
-const EVENTS = [];
+
+// Build future-dated events so the events page (which hides past events) always shows them.
+function isoDay(offsetDays) {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return d.toISOString().slice(0, 10);
+}
+const SUMMERFEST_GROUP = 'grp-summerfest-test';
+const EVENTS = [
+  {
+    id: 'evt-fri',
+    title: 'Test Summerfest: Friday Night',
+    event_type: 'festival',
+    event_date: isoDay(20),
+    start_time: '16:30:00',
+    end_time: '23:59:00',
+    description: 'Country night kicks off the weekend.',
+    location_name: 'Summerfest Grounds',
+    address: 'Mondamin St. & Wabena Ave., Minooka, IL',
+    city: 'Minooka',
+    state: 'IL',
+    price: 'Free entry',
+    price_detail: 'Some activities priced separately',
+    organizer: 'Minooka Lions Club',
+    url: 'https://example.com/summerfest',
+    image_url: null,
+    is_active: true,
+    is_featured: true,
+    group_id: SUMMERFEST_GROUP,
+    details: {
+      schedule: [
+        { time: '4:30 PM', label: 'Pork Chop Dinner', note: 'until 6:30 PM' },
+        { time: '7:00 PM', label: 'Hoosier Ditty', note: 'live music' },
+      ],
+      sections: [
+        { heading: 'Food Vendors', items: ["Mel's Tacos", 'Kona Ice'] },
+      ],
+    },
+  },
+  {
+    id: 'evt-sat',
+    title: 'Test Summerfest: Saturday',
+    event_type: 'festival',
+    event_date: isoDay(21),
+    start_time: '06:45:00',
+    end_time: '23:59:00',
+    description: 'Race day and family fun.',
+    location_name: 'Summerfest Grounds',
+    address: 'Mondamin St. & Wabena Ave., Minooka, IL',
+    city: 'Minooka',
+    state: 'IL',
+    price: 'Free entry',
+    organizer: 'Minooka Lions Club',
+    url: 'https://example.com/summerfest',
+    image_url: null,
+    is_active: true,
+    is_featured: false,
+    group_id: SUMMERFEST_GROUP,
+    details: {
+      schedule: [{ time: '8:00 AM', label: 'Summerfest 5K Run' }],
+      sections: [{ heading: 'Live Music', items: ['Semple Band'] }],
+    },
+  },
+  {
+    id: 'evt-simple',
+    title: 'Simple Concert Night',
+    event_type: 'music',
+    event_date: isoDay(25),
+    start_time: '20:00:00',
+    end_time: null,
+    description: 'Just a regular show, no schedule details.',
+    location_name: 'Corner Pub',
+    address: null,
+    city: 'Shorewood',
+    state: 'IL',
+    price: 'Free',
+    price_detail: null,
+    organizer: 'Corner Pub',
+    url: null,
+    image_url: null,
+    is_active: true,
+    is_featured: false,
+    group_id: null,
+    details: null,
+  },
+];
 
 /**
  * Returns a chainable mock query object.

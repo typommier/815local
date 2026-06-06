@@ -367,6 +367,53 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   .footer-grid { grid-template-columns: 1fr !important; }
   .lec-side { flex-direction: column !important; }
 }
+
+/* ── EVENT DETAILS MODAL ── */
+.ev-modal-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(30,27,24,0.55); backdrop-filter: blur(2px);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 48px 20px; overflow-y: auto;
+}
+.ev-modal-backdrop.open { display: flex; }
+.ev-modal {
+  background: var(--cream); border-radius: var(--radius);
+  width: 100%; max-width: 640px; box-shadow: var(--shadow-lg);
+  position: relative; overflow: hidden;
+}
+.ev-modal-close {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  width: 34px; height: 34px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.9); color: var(--charcoal);
+  font-size: 20px; line-height: 1; cursor: pointer; box-shadow: var(--shadow-sm);
+  transition: background 0.15s;
+}
+.ev-modal-close:hover { background: white; color: var(--orange); }
+.ev-modal-hero { width: 100%; height: 200px; background-size: cover; background-position: center; background-repeat: no-repeat; }
+.ev-modal-body { padding: 24px 28px 28px; }
+.ev-modal-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.ev-modal-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; line-height: 1.15; margin-bottom: 4px; }
+.ev-day-badge { display: inline-block; margin-left: 10px; padding: 3px 10px; border-radius: 100px; background: rgba(196,98,45,0.12); color: var(--orange); font-size: 12px; font-weight: 700; vertical-align: middle; }
+.ev-modal-meta { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--charcoal-mid); margin: 14px 0 16px; }
+.ev-modal-meta a { color: var(--orange); font-weight: 600; }
+.ev-modal-desc { font-size: 15px; color: var(--charcoal-mid); line-height: 1.65; margin-bottom: 20px; }
+.ev-modal-section { margin-bottom: 20px; }
+.ev-modal-section h4 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); margin-bottom: 10px; }
+.ev-sched-row { display: flex; gap: 14px; padding: 8px 0; border-bottom: 1px solid var(--cream-dark); }
+.ev-sched-row:last-child { border-bottom: none; }
+.ev-sched-time { flex-shrink: 0; width: 92px; font-weight: 700; font-size: 14px; color: var(--charcoal); }
+.ev-sched-label { font-size: 14px; color: var(--charcoal-mid); }
+.ev-sched-note { color: var(--gray); font-size: 13px; }
+.ev-chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.ev-chip { background: white; border: 1.5px solid var(--gray-light); border-radius: 100px; padding: 5px 12px; font-size: 13px; color: var(--charcoal-mid); }
+.ev-modal-cta { display: inline-block; margin-top: 4px; padding: 11px 22px; border-radius: 100px; background: var(--orange); color: white; font-weight: 600; font-size: 14px; transition: background 0.15s; }
+.ev-modal-cta:hover { background: var(--orange-light); }
+@media (max-width: 600px) {
+  .ev-modal-backdrop { padding: 0; align-items: stretch; }
+  .ev-modal { max-width: none; min-height: 100%; border-radius: 0; }
+  .ev-modal-title { font-size: 22px; }
+  .ev-sched-time { width: 78px; }
+}
 </style>
 </head>
 <body>
@@ -940,7 +987,7 @@ function renderList() {
       const mdBadge = md ? `<span style="display:inline-block;margin-left:8px;padding:2px 8px;border-radius:100px;background:rgba(196,98,45,0.12);color:var(--orange);font-size:11px;font-weight:700;">Day ${md.dayNum} of ${md.totalDays}</span>` : '';
 
       html += `
-        <div class="list-event-card">
+        <div class="list-event-card" data-event-id="${ev.id}" onclick="openEventModal('${ev.id}')">
           <div class="lec-color" style="background:${tc};"></div>
 ${ev.image_url ? `<div class="lec-photo" style="padding:0;overflow:hidden;"><div style="width:100%;height:100%;background:url('${escapeHtml(ev.image_url)}') center/cover no-repeat;"></div></div>` : ''}
           <div class="lec-body">
@@ -958,7 +1005,7 @@ ${ev.image_url ? `<div class="lec-photo" style="padding:0;overflow:hidden;"><div
               <div class="lec-price" style="${priceColor}">${escapeHtml(ev.price || 'Free')}</div>
               ${ev.price_detail ? `<div class="lec-price-sub">${escapeHtml(ev.price_detail)}</div>` : ''}
             </div>
-            <div class="lec-actions">
+            <div class="lec-actions" onclick="event.stopPropagation()">
               ${moreLink}
               <button class="lec-save" onclick="this.textContent='❤️ Saved'">♡ Save</button>
             </div>
@@ -1003,9 +1050,122 @@ function renderFeatured() {
     <span>🎫 ${escapeHtml(featured.price || 'Free')}${featured.price_detail ? ' · ' + escapeHtml(featured.price_detail) : ''}</span>`;
 
   const link = document.getElementById('fe-rsvp-link');
-  if (featured.url) { link.href = featured.url; link.style.display = 'block'; }
-  else link.style.display = 'none';
+  link.removeAttribute('href');
+  link.removeAttribute('target');
+  link.style.display = 'block';
+  link.style.cursor = 'pointer';
+  const fBtn = link.querySelector('.fe-rsvp');
+  if (fBtn) fBtn.textContent = 'View details →';
+  link.onclick = (e) => { e.preventDefault(); openEventModal(featured.id); };
 }
+
+// ── Event details modal
+function openEventModal(id) {
+  const ev = allEvents.find(e => e.id === id);
+  if (!ev) return;
+
+  const tc = typeColor(ev.event_type);
+  const te = typeEmoji(ev.event_type);
+  const tl = typeLabel(ev.event_type);
+
+  // Type badge
+  const typeEl = document.getElementById('ev-modal-type');
+  typeEl.textContent = `${te} ${tl}`;
+  typeEl.style.color = tc;
+
+  // Title + multi-day badge
+  const md = buildMultiDayMap(allEvents)[ev.id];
+  const mdBadge = md ? `<span class="ev-day-badge">Day ${md.dayNum} of ${md.totalDays}</span>` : '';
+  document.getElementById('ev-modal-title').innerHTML = escapeHtml(ev.title) + mdBadge;
+
+  // Hero image (hidden when absent)
+  const hero = document.getElementById('ev-modal-hero');
+  if (ev.image_url) {
+    hero.style.backgroundImage = `url('${encodeURI(ev.image_url)}')`;
+    hero.style.display = 'block';
+  } else {
+    hero.style.backgroundImage = '';
+    hero.style.display = 'none';
+  }
+
+  // Meta rows
+  const dt = parseLocalDate(ev.event_date);
+  const dateStr = `${dayNames[dt.getDay()]}, ${monthNames[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`;
+  const t1 = fmt12(ev.start_time);
+  const t2 = fmt12(ev.end_time);
+  const timeStr = t1 ? (t2 ? `${t1} to ${t2}` : `Starts ${t1}`) : 'All day';
+  const mapsQ = encodeURIComponent([ev.location_name, ev.address, ev.city].filter(Boolean).join(', '));
+  const locText = escapeHtml(ev.location_name || ev.city || '');
+  const addrLine = ev.address ? `<br><span style="color:var(--gray);font-size:13px;">${escapeHtml(ev.address)}</span>` : '';
+  const priceStr = `${escapeHtml(ev.price || 'Free')}${ev.price_detail ? ` · ${escapeHtml(ev.price_detail)}` : ''}`;
+  const meta = document.getElementById('ev-modal-meta');
+  meta.innerHTML = `
+    <div>📅 ${dateStr}</div>
+    <div>🕗 ${timeStr}</div>
+    <div>📍 ${locText}${mapsQ ? ` · <a href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener">Map</a>` : ''}${addrLine}</div>
+    <div>🎫 ${priceStr}</div>
+    ${ev.organizer ? `<div>👤 ${escapeHtml(ev.organizer)}</div>` : ''}`;
+
+  // Description
+  const descEl = document.getElementById('ev-modal-desc');
+  if (ev.description) { descEl.textContent = ev.description; descEl.style.display = 'block'; }
+  else { descEl.textContent = ''; descEl.style.display = 'none'; }
+
+  // Schedule (from details.schedule)
+  const schedEl = document.getElementById('ev-modal-schedule');
+  const sched = (ev.details && Array.isArray(ev.details.schedule)) ? ev.details.schedule : [];
+  if (sched.length) {
+    let rows = sched.map(s => `
+      <div class="ev-sched-row">
+        <div class="ev-sched-time">${escapeHtml(s.time || '')}</div>
+        <div class="ev-sched-label">${escapeHtml(s.label || '')}${s.note ? ` <span class="ev-sched-note">(${escapeHtml(s.note)})</span>` : ''}</div>
+      </div>`).join('');
+    schedEl.innerHTML = `<div class="ev-modal-section"><h4>Schedule</h4>${rows}</div>`;
+  } else {
+    schedEl.innerHTML = '';
+  }
+
+  // Sections (lineups, vendors, etc.)
+  const sectionsEl = document.getElementById('ev-modal-sections');
+  const sections = (ev.details && Array.isArray(ev.details.sections)) ? ev.details.sections : [];
+  if (sections.length) {
+    sectionsEl.innerHTML = sections.map(sec => {
+      const items = Array.isArray(sec.items) ? sec.items : [];
+      const chips = items.map(it => `<span class="ev-chip">${escapeHtml(it)}</span>`).join('');
+      return `<div class="ev-modal-section"><h4>${escapeHtml(sec.heading || '')}</h4><div class="ev-chip-list">${chips}</div></div>`;
+    }).join('');
+  } else {
+    sectionsEl.innerHTML = '';
+  }
+
+  // External link
+  const cta = document.getElementById('ev-modal-cta');
+  if (ev.url) { cta.href = ev.url; cta.style.display = 'inline-block'; }
+  else cta.style.display = 'none';
+
+  // Show
+  document.getElementById('ev-modal-backdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEventModal() {
+  document.getElementById('ev-modal-backdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function wireEventModal() {
+  const backdrop = document.getElementById('ev-modal-backdrop');
+  const closeBtn = document.getElementById('ev-modal-close');
+  if (!backdrop) return; // modal markup parsed later in the body
+  if (closeBtn) closeBtn.addEventListener('click', closeEventModal);
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) closeEventModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && backdrop.classList.contains('open')) closeEventModal();
+  });
+}
+// The modal markup appears after this script in the body, so wire once the DOM is ready.
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireEventModal);
+else wireEventModal();
 
 // ── All renders
 function renderAll() {
@@ -1150,6 +1310,23 @@ loadEvents();
   });
 })();
 </script>
+
+<!-- Event details modal -->
+<div class="ev-modal-backdrop" id="ev-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="ev-modal-title">
+  <div class="ev-modal">
+    <button class="ev-modal-close" id="ev-modal-close" aria-label="Close">&times;</button>
+    <div class="ev-modal-hero" id="ev-modal-hero" style="display:none;"></div>
+    <div class="ev-modal-body">
+      <div class="ev-modal-type" id="ev-modal-type"></div>
+      <div class="ev-modal-title" id="ev-modal-title"></div>
+      <div class="ev-modal-meta" id="ev-modal-meta"></div>
+      <div class="ev-modal-desc" id="ev-modal-desc"></div>
+      <div id="ev-modal-schedule"></div>
+      <div id="ev-modal-sections"></div>
+      <a class="ev-modal-cta" id="ev-modal-cta" href="#" target="_blank" rel="noopener" style="display:none;">Official event site →</a>
+    </div>
+  </div>
+</div>
 
 <script src="/assets/js/analytics-tracker.js"></script>
 </body>
