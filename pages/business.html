@@ -740,6 +740,90 @@ async function loadBusiness() {
   }
 }
 
+// Convert a stored 12-hour time ("9:00 AM") into 24-hour "HH:MM", or null if unparseable.
+function to24h(s) {
+  const m = (s || '').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return null;
+  let h = parseInt(m[1], 10);
+  const ap = m[3].toUpperCase();
+  if (ap === 'PM' && h !== 12) h += 12;
+  if (ap === 'AM' && h === 12) h = 0;
+  return String(h).padStart(2, '0') + ':' + m[2];
+}
+
+// Parse a stored hours string ("9:00 AM - 5:00 PM") into {opens,closes}, or null
+// when closed / by appointment / unparseable.
+function parseHoursRange(val) {
+  const v = (val || '').trim();
+  const low = v.toLowerCase();
+  if (!v || low === 'closed' || low.includes('appointment')) return null;
+  const parts = v.split(/\s+-\s+/);
+  if (parts.length !== 2) return null;
+  const opens = to24h(parts[0]);
+  const closes = to24h(parts[1]);
+  return (opens && closes) ? { opens, closes } : null;
+}
+
+// Build schema.org openingHoursSpecification[] from the stored hours JSONB, or null.
+function hoursToSpec(hours) {
+  if (!hours || typeof hours !== 'object') return null;
+  const dayMap = {
+    monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday',
+    thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday'
+  };
+  const spec = [];
+  Object.keys(dayMap).forEach(d => {
+    const r = parseHoursRange(hours[d]);
+    if (r) spec.push({ '@type': 'OpeningHoursSpecification', dayOfWeek: dayMap[d], opens: r.opens, closes: r.closes });
+  });
+  return spec.length ? spec : null;
+}
+
+// Inject (or refresh) the LocalBusiness JSON-LD block built from the loaded record.
+// Only real data: every field is omitted when missing, and aggregateRating appears
+// only when the business actually has reviews.
+function renderJsonLd(b) {
+  const canonicalUrl = 'https://815local.com/pages/business.html?id=' + (b.id || '');
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': canonicalUrl,
+    name: b.name,
+    url: canonicalUrl
+  };
+  if (b.description) data.description = b.description.slice(0, 300);
+  if (b.address || b.city || b.zip) {
+    const addr = { '@type': 'PostalAddress', addressCountry: 'US' };
+    if (b.address) addr.streetAddress = b.address;
+    if (b.city) addr.addressLocality = b.city;
+    if (b.state) addr.addressRegion = b.state;
+    if (b.zip) addr.postalCode = b.zip;
+    data.address = addr;
+  }
+  if (b.phone) data.telephone = b.phone;
+  if (b.price_range) data.priceRange = b.price_range;
+  const img = b.image_url || (b.photos && b.photos[0]);
+  if (img) data.image = img;
+  if (b.website) data.sameAs = [b.website];
+  const spec = hoursToSpec(b.hours);
+  if (spec) data.openingHoursSpecification = spec;
+  if ((b.review_count || 0) > 0 && parseFloat(b.avg_rating) > 0) {
+    data.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: parseFloat(b.avg_rating).toFixed(1),
+      reviewCount: b.review_count
+    };
+  }
+  let el = document.getElementById('ld-business');
+  if (!el) {
+    el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.id = 'ld-business';
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(data);
+}
+
 function renderBusiness(b) {
   // Page title + OG tags
   document.title = b.name + ' — 815local';
@@ -756,6 +840,9 @@ function renderBusiness(b) {
   if (b.image_url || (b.photos && b.photos[0])) {
     document.querySelector('meta[property="og:image"]')?.setAttribute('content', b.image_url || b.photos[0]);
   }
+
+  // LocalBusiness structured data (JSON-LD) for rich results
+  renderJsonLd(b);
 
   // Breadcrumb
   document.getElementById('breadcrumb-cat').textContent = b.category;

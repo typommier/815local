@@ -67,6 +67,15 @@ test.describe('Homepage', () => {
     await expect(page.locator('#newsletter-btn, button[type="submit"]')).toBeVisible();
   });
 
+  test('Organization/WebSite JSON-LD is present in the head', async ({ page }) => {
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    expect(blocks.length).toBeGreaterThan(0);
+    const graph = blocks.map(b => JSON.parse(b)).flatMap(d => d['@graph'] || [d]);
+    const types = graph.map(n => n['@type']);
+    expect(types).toContain('Organization');
+    expect(types).toContain('WebSite');
+  });
+
   test('no fatal JS errors crash the page', async ({ page }) => {
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
