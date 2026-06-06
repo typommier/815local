@@ -1,6 +1,6 @@
 # 815local.com: Project Instructions for Claude
 
-Last updated: May 25, 2026
+Last updated: June 6, 2026
 
 ---
 
@@ -48,7 +48,7 @@ When working on Supabase via MCP tools, always use `project_id: kyneaettrynagave
 
 ---
 
-## File structure (live, as of May 25, 2026)
+## File structure (live, as of June 6, 2026)
 
 The structure has been refactored since earlier sessions. Root-level `815local-*.html` files at the repo root are **redirect stubs** that send visitors to the real files under `/pages/`. Do not edit the stubs except to update the redirect target.
 
@@ -67,6 +67,19 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 │       └── analytics-tracker.js        ← client-side localStorage analytics
 │
 ├── uploads/                            ← logo + brand assets
+│
+├── admin/                              ← admin-only tools (not in nav/sitemap, direct URL only)
+│   ├── import-photos.html              ← photo importer (website scrape + Google Places + batch fill)
+│   ├── edit-business-photos.html       ← reorder/replace photos on a listing
+│   └── analytics.html                  ← admin analytics view
+│
+├── supabase/
+│   └── functions/                      ← Edge Functions (deploy to Supabase, NOT via Cloudflare)
+│       ├── fetch-google-photos/        ← Places photos + Place ID auto-resolve + batch fill
+│       ├── mirror-photos/              ← mirror remote photo URLs into Supabase Storage
+│       ├── import-from-website/        ← scrape a homepage for images, then mirror
+│       ├── manage-business-photos/     ← admin photo CRUD
+│       └── cleanup-orphan-photos/      ← remove unreferenced storage objects
 │
 ├── pages/
 │   ├── directory.html                  ← browse all businesses
@@ -94,6 +107,8 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
         ├── homepage.spec.js
         ├── directory.spec.js
         ├── business-detail.spec.js
+        ├── business-swiper.spec.js
+        ├── events.spec.js
         └── fixtures/
             └── supabase-mock.js
 ```
@@ -109,10 +124,13 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 - `/815local-wireframes.html` → (still exists at root, not in nav)
 
 ### Removed/deprecated
-- `815local-analytics.html`. The dashboard is gone. The tracker script `assets/js/analytics-tracker.js` still records page views to localStorage, but no UI surfaces it.
+- `815local-analytics.html` (the old public dashboard) is gone. The tracker script `assets/js/analytics-tracker.js` still records page views to localStorage. An admin-only view now lives at `admin/analytics.html`.
 
-### Local-only (not in repo)
-- `fetch_photos.py` / `fetch_photos_local.py` - Google Places photo scrapers. Run locally from Ty's machine because the scraper API key cannot be used server-side and the sandboxed environment can't reach `places.googleapis.com`.
+### Local-only (gitignored, not in repo)
+- `fetch_photos.py` / `fetch_photos_local.py` / `fetch_missing_photos.py` - Google Places photo scrapers.
+- `fetch_contact_info.py` + `contact_targets.json` + `contact_results.json` - phone/website backfill (reads Places, writes a results JSON, never touches the DB; Claude applies results via MCP).
+- All run locally from Ty's machine because the scraper API key cannot be used server-side and the sandboxed environment can't reach `places.googleapis.com`.
+- NOTE: photo importing is now better done in-browser via `admin/import-photos.html` (server-side Edge Function, key lives in Supabase secrets). The local photo scrapers predate that tool.
 
 ---
 
@@ -130,7 +148,7 @@ Key columns:
 - `price_range` ('$', '$$', etc.)
 - `hours` (JSONB, see format below)
 - `features` (text[] - tags including the `"Chain"` flag)
-- `image_url` (single hero/card image), `photos` (text[] up to 5 Google Places URLs), `photo_positions` (text[] CSS object-position values)
+- `image_url` (single hero/card image), `photos` (text[] up to 5 URLs, **mirrored into the Supabase Storage `business-photos/<id>/` bucket** so the site is not dependent on the original host), `photo_positions` (text[] CSS object-position values)
 - `google_place_id`
 - `is_featured`, `is_active`, `is_locally_owned`, `is_claimed`
 - `story` (long-form owner story)
@@ -164,6 +182,12 @@ Key columns:
 - `get_homepage_stats()` RPC powering all homepage trust-bar counts. Never hardcode these.
 - `check_review_rate_limit()` abuse protection on review writes.
 - `block_banned_email()`, `handle_new_user()`, `handle_updated_at()` triggers.
+
+### Edge Functions (in `supabase/functions/`, deploy to Supabase separately from Cloudflare)
+- `fetch-google-photos` - Places photos by Place ID, with **Place ID auto-resolve** (text search by name + city) and **batch fill** (`fill_missing` dry-run preview + approve). Admin-gated via the `ADMIN_EMAILS` allowlist; needs the `GOOGLE_PLACES_API_KEY` secret. Calls `mirror-photos` after writing.
+- `mirror-photos` - downloads photo URLs and uploads them into the `business-photos` Storage bucket.
+- `import-from-website`, `manage-business-photos`, `cleanup-orphan-photos`.
+- These power `admin/import-photos.html`. Edge functions do **not** deploy via Cloudflare; if the admin tool errors on fetch, confirm the function is deployed and its secrets (`GOOGLE_PLACES_API_KEY`, `ADMIN_EMAILS`) are set on the Supabase project.
 
 ### Database constraints (enforced at the DB layer)
 - `no_chain_featured` chains can never be `is_featured = true`
@@ -337,57 +361,97 @@ npm test              # CI / list reporter
 npm run test:report   # HTML report
 ```
 
-Tests mock Supabase via `tests/e2e/fixtures/supabase-mock.js` and serve the static site on `localhost:3000` via `npx serve`. Coverage as of now:
-- Homepage (nav, hero, trust stats, community picks)
+Tests mock Supabase via `tests/e2e/fixtures/supabase-mock.js` and serve the static site on `localhost:3000` via `npx serve`. Coverage as of now (29 tests):
+- Homepage (nav, hero, trust stats, community picks, Organization/WebSite JSON-LD)
 - Directory
-- Business detail
+- Business detail (incl. LocalBusiness JSON-LD)
+- Business photo swiper (mobile)
+- Events (cards, multi-day badge, modal)
+- Still untested: deals, profile, submit forms, blog.
 
 Add tests when shipping non-trivial frontend changes.
 
 ---
 
-## Current state snapshot (May 25, 2026)
+## Current state snapshot (June 6, 2026)
 
-- **117 active businesses** (74 Minooka, 22 Channahon, 16 Shorewood, 5 around the 815)
-- **86 locally owned, 28 chains, 3 unclassified**
+- **128 active businesses** (81 Minooka, 25 Channahon, 16 Shorewood, 6 around the 815)
+- **97 locally owned, 28 chains, 0 unclassified** (every active row is now classified)
 - **6 organic reviews** (none flagged)
 - **6 newsletter subscribers**, 1 approved business claim
-- **8 upcoming events**, no pending events
-- **23 businesses missing photos**, 13 missing phones, 27 missing websites
-- **No active deals**
+- **8 active events** (6 upcoming by date), no pending events
+- **15 businesses missing photos** (14 local + 1 chain), 17 missing phones, 35 missing websites
+- **No active deals**, empty advertise waitlist
+
+(These counts drift. Re-verify against the live DB before trusting them; see "Keeping this file current" below.)
 
 ---
 
 ## Open work
 
-These are the genuinely outstanding items. Items previously on this list that have been quietly completed (Submit Business form, meta/OG tags, 404 page, "Serves the 815" badge) are off.
+These are the genuinely outstanding items. Recently completed and now OFF this list:
+`is_locally_owned IS NULL` resolved (0 left), Taco Fixx confirmed in the DB, LocalBusiness
++ Organization/WebSite JSON-LD added, sitemap `<lastmod>` added (all shipped in PR #65).
 
 ### Data quality
-- Fill missing photos for the 20 local businesses that lack them (chains less urgent since they're not on the homepage anyway)
-- Fill missing phone numbers (13)
-- Resolve the 3 businesses with `is_locally_owned IS NULL` (should be classified one way or the other)
-- Verify Taco Fixx is actually in the DB (past session notes are inconsistent)
+- Fill missing photos for the 14 local businesses that lack them. Use `admin/import-photos.html` -> "Fill all missing photos" (chains less urgent since they're not on the homepage anyway).
+- Fill missing phone numbers (17) and websites (35). Tooling: local `fetch_contact_info.py` -> `contact_results.json` -> Claude applies via MCP. Many small businesses genuinely have no website; never fabricate one.
+- **Data bug:** both Jimmy John's listings (Channahon + Minooka) share the same `google_place_id`. Give each its own, or contact lookups return one identical record for both.
 
 ### Growth
-- Scan Shorewood for missing additions (only 16 businesses vs. Minooka's 74)
+- Scan Shorewood for missing additions (only 16 businesses vs. Minooka's 81)
 - Seed reviews from friends/family to push above 10
-- Build up event and deal listings
+- Build up event and deal listings (0 active deals)
 
 ### SEO / discoverability
 - Confirm sitemap is submitted to Google Search Console
-- Add `<lastmod>` dates to sitemap URLs
-- Add `/pages/profile.html` exclusion (or leave as not-indexed; it's already absent from sitemap, which is correct)
+- Validate the new JSON-LD with Google's Rich Results Test after deploy
 
 ### Code maintenance
-- Shared nav/footer components to eliminate copy-paste across HTML files
+- Shared nav/footer components to eliminate copy-paste across HTML files (~950 lines duplicated)
 - Newsletter export to Mailchimp/Resend (infrastructure exists via `newsletter_subscribers` table)
 - Reintroduce paid advertising tiers once directory density supports it
 
 ---
 
+## Keeping this file current (weekly refresh)
+
+This file drifts. Goal: refresh it about once a week so Ty does not re-explain state.
+The refresh is mostly mechanical. To do it:
+
+1. Update the **Current state snapshot** by running this one query via the Supabase MCP
+   (`execute_sql`, `project_id: kyneaettrynagavewefi`) and pasting the numbers in:
+   ```sql
+   SELECT
+     count(*) FILTER (WHERE is_active) AS active,
+     count(*) FILTER (WHERE is_active AND is_locally_owned IS TRUE) AS locally_owned,
+     count(*) FILTER (WHERE is_active AND 'Chain'=ANY(features)) AS chains,
+     count(*) FILTER (WHERE is_active AND is_locally_owned IS NULL) AS unclassified,
+     count(*) FILTER (WHERE is_active AND lower(city)='minooka') AS minooka,
+     count(*) FILTER (WHERE is_active AND lower(city)='channahon') AS channahon,
+     count(*) FILTER (WHERE is_active AND lower(city)='shorewood') AS shorewood,
+     count(*) FILTER (WHERE is_active AND lower(city) NOT IN ('minooka','channahon','shorewood')) AS around_815,
+     count(*) FILTER (WHERE is_active AND (photos IS NULL OR array_length(photos,1) IS NULL OR array_length(photos,1)=0)) AS missing_photos,
+     count(*) FILTER (WHERE is_active AND (phone IS NULL OR phone='')) AS missing_phone,
+     count(*) FILTER (WHERE is_active AND (website IS NULL OR website='')) AS missing_website,
+     (SELECT count(*) FROM reviews WHERE is_flagged IS NOT TRUE) AS reviews,
+     (SELECT count(*) FROM events WHERE is_active) AS active_events,
+     (SELECT count(*) FROM deals WHERE is_active) AS active_deals,
+     (SELECT count(*) FROM newsletter_subscribers) AS newsletter
+   FROM businesses;
+   ```
+2. Reconcile the **file structure** tree and **Open work** list against the actual repo:
+   `git ls-files` for new/removed files, and cross off open-work items that are done.
+3. Bump the two "Last updated" / snapshot dates.
+4. Commit on a branch and open a PR (do not push to `main` directly).
+
+There is a reusable command for this: **`/weekly-refresh`** (see `.claude/commands/`).
+
 ## Things to remember
 
-- **The repo is now public** as of May 25, 2026. Don't put secrets in it.
-- **Memory and Project instructions can drift.** When in doubt about the current state of files or features, check the actual repo before making changes or recommendations.
+- **The repo is public.** Don't put secrets in it. Local-only scrapers are gitignored.
+- **Memory and Project instructions can drift.** When in doubt about the current state of files or features, check the actual repo / live DB before making changes or recommendations.
 - **Cloudflare Pages, not Netlify.** Netlify was the original host but the project moved.
+- **Cloudflare deploys static files from `main`; Edge Functions deploy to Supabase separately.** A committed function is not necessarily a deployed one.
+- **Photos live in Supabase Storage** (`business-photos` bucket), mirrored from the source so the site never hotlinks. Use `admin/import-photos.html`, not the old local scrapers.
 - **No em-dashes in any written content, ever.**
