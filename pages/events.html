@@ -1283,6 +1283,9 @@ async function loadEvents() {
 
   allEvents = data || [];
   renderAll();
+  // Deep link: /pages/events.html?event=<id> opens that event's modal on load.
+  const wantId = new URLSearchParams(location.search).get('event');
+  if (wantId && allEvents.some(e => e.id === wantId)) openEventModal(wantId);
 }
 
 // Initialise to current month and kick off fetch
