@@ -212,7 +212,16 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
   .nav-inner { height: 72px; padding: 0 16px; }
   .footer-grid { grid-template-columns: 1fr; }
 }
+.view-toggle { display: none; border: 1.5px solid var(--gray-light); border-radius: 100px; overflow: hidden; }
+.view-toggle button { border: none; background: white; padding: 8px 14px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: var(--charcoal-light); cursor: pointer; }
+.view-toggle button.active { background: var(--orange); color: white; }
+#biz-map { display: none; height: 600px; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--gray-light); }
+.map-popup-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+.map-popup-cat { font-size: 12px; color: var(--charcoal-light); margin-bottom: 4px; }
+.map-popup-stars { color: var(--orange); font-size: 13px; }
+.map-popup-link { display: inline-block; margin-top: 4px; color: var(--orange); font-weight: 700; font-size: 13px; text-decoration: none; }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 
@@ -320,6 +329,10 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       <div class="results-toolbar">
         <div class="results-count" id="results-count">Loading businesses...</div>
         <div style="display:flex;gap:10px;align-items:center;">
+          <div class="view-toggle" id="view-toggle">
+            <button id="view-list-btn" class="active" onclick="setView('list')">☰ List</button>
+            <button id="view-map-btn" onclick="setView('map')">🗺 Map</button>
+          </div>
           <select class="sort-select" id="sort-select" onchange="applyFilters()">
             <option value="featured">Best Match</option>
             <option value="rating">Highest Rated</option>
@@ -335,6 +348,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
           <div>Loading local businesses...</div>
         </div>
       </div>
+      <div id="biz-map"></div>
     </div>
   </div>
 </div>
@@ -391,6 +405,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="/assets/js/util.js"></script>
 <script src="/assets/js/analytics-tracker.js"></script>
 <script>
@@ -404,6 +419,10 @@ let activeCategory = '';
 let minRating = 0;
 let activePrices = [];
 let activeTab = 'local';
+let viewMode = 'list';
+let lastResults = [];
+let leafletMap = null;
+let markersLayer = null;
 
 function starsHtml(rating) {
   const full = Math.round(rating);
@@ -530,6 +549,49 @@ function renderList(businesses) {
   list.innerHTML = businesses.map(renderCard).join('');
 }
 
+// Initialise the Leaflet map once, centered on the three core towns.
+function ensureMap() {
+  if (leafletMap) return;
+  leafletMap = L.map('biz-map').setView([41.47, -88.23], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(leafletMap);
+  markersLayer = L.layerGroup().addTo(leafletMap);
+}
+
+// Plot one pin per business that has coordinates, fitting the view to them.
+function renderMap(results) {
+  if (!markersLayer) return;
+  markersLayer.clearLayers();
+  const pts = [];
+  (results || []).forEach(b => {
+    const lat = parseFloat(b.latitude), lng = parseFloat(b.longitude);
+    if (!isFinite(lat) || !isFinite(lng)) return;
+    const rating = parseFloat(b.avg_rating) || 0;
+    const popup = `<div class="map-popup-name">${escapeHtml(b.name)}</div>`
+      + `<div class="map-popup-cat">${catEmoji(b.category)} ${escapeHtml(b.category || '')}</div>`
+      + (rating > 0 ? `<div class="map-popup-stars">${starsHtml(rating)} ${rating.toFixed(1)}</div>` : '')
+      + `<a class="map-popup-link" href="/pages/business.html?id=${b.id}">View business →</a>`;
+    markersLayer.addLayer(L.marker([lat, lng]).bindPopup(popup));
+    pts.push([lat, lng]);
+  });
+  if (pts.length) leafletMap.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
+}
+
+function setView(mode) {
+  viewMode = mode;
+  document.getElementById('view-list-btn').classList.toggle('active', mode === 'list');
+  document.getElementById('view-map-btn').classList.toggle('active', mode === 'map');
+  document.getElementById('biz-list').style.display = mode === 'map' ? 'none' : 'flex';
+  document.getElementById('biz-map').style.display = mode === 'map' ? 'block' : 'none';
+  if (mode === 'map') {
+    ensureMap();
+    renderMap(lastResults);
+    setTimeout(() => leafletMap.invalidateSize(), 0);
+  }
+}
+
 async function loadBusinesses() {
   try {
     const { data, error } = await db
@@ -542,6 +604,9 @@ async function loadBusinesses() {
     allBusinesses = data || [];
     const chainCount = allBusinesses.filter(b => (b.features||[]).includes('Chain')).length;
     document.getElementById('chain-count').textContent = chainCount;
+    // Reveal the Map toggle only once businesses actually have coordinates.
+    const hasCoords = allBusinesses.some(b => isFinite(parseFloat(b.latitude)) && isFinite(parseFloat(b.longitude)));
+    if (hasCoords) document.getElementById('view-toggle').style.display = 'inline-flex';
     applyFilters();
   } catch (err) {
     console.error(err);
@@ -584,7 +649,9 @@ function applyFilters() {
   else if (sort === 'newest') results.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
   else results.sort((a,b) => (parseFloat(b.avg_rating)||0) - (parseFloat(a.avg_rating)||0));
 
+  lastResults = results;
   renderList(results);
+  if (viewMode === 'map') renderMap(results);
 }
 
 function syncUrl() {

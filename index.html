@@ -932,6 +932,20 @@ footer {
   margin-bottom: 16px;
 }
 .forgot-link:hover { text-decoration: underline; }
+.upcoming-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.upcoming-card { display: flex; gap: 14px; background: var(--cream); border: 1.5px solid var(--cream-dark); border-radius: 12px; padding: 16px; text-decoration: none; color: inherit; transition: .15s ease; }
+.upcoming-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.upcoming-date { background: var(--orange); color: #fff; border-radius: 8px; padding: 8px 10px; text-align: center; min-width: 56px; height: fit-content; }
+.upcoming-month { font-size: 11px; font-weight: 700; letter-spacing: 1px; display: block; }
+.upcoming-day { font-size: 24px; font-weight: 800; line-height: 1.1; display: block; }
+.upcoming-dow { font-size: 11px; opacity: .9; display: block; }
+.upcoming-body { min-width: 0; }
+.upcoming-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; line-height: 1.3; }
+.upcoming-meta { font-size: 12px; color: var(--charcoal-light); display: flex; align-items: center; gap: 5px; }
+.upcoming-tag { display: inline-block; margin-top: 6px; background: var(--orange-pale); color: var(--orange); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+.upcoming-deal .upcoming-date { background: #2D6A4F; }
+@media (max-width: 900px) { .upcoming-row { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .upcoming-row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1118,6 +1132,20 @@ footer {
     <div class="biz-grid" id="community-picks-grid">
       <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray);">Loading local businesses...</div>
     </div>
+  </div>
+</section>
+
+<!-- ══════════ COMING UP IN THE 815 ══════════ -->
+<section class="favorites fade-in" id="upcoming-section" style="display:none;">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <span class="section-tag">Happening Locally</span>
+        <h2 class="section-title">Coming up in the 815</h2>
+      </div>
+      <a class="section-link" href="/pages/events.html">See all events <span>→</span></a>
+    </div>
+    <div class="upcoming-row" id="upcoming-row"></div>
   </div>
 </section>
 
@@ -1359,13 +1387,18 @@ window.addEventListener('scroll', () => {
   }
 
   try {
-    const [bizRes, reviewRes] = await Promise.all([
+    const today = new Date().toISOString().slice(0, 10);
+    const [bizRes, reviewRes, eventRes, dealRes] = await Promise.all([
       db.from('businesses_with_ratings').select('*').eq('is_active', true).order('created_at', { ascending: false }),
-      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6)
+      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6),
+      db.from('events').select('title,event_date,start_time,location_name,city,url').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(4),
+      db.from('deals').select('title,discount,business_name').eq('is_active', true).or(`expiry_date.is.null,expiry_date.gte.${today}`)
     ]);
 
     const businesses = bizRes.data || [];
     const reviews = reviewRes.data || [];
+    const events = eventRes.data || [];
+    const deals = dealRes.data || [];
 
     // ── STATS ──
     const totalBiz = businesses.length;
@@ -1487,6 +1520,47 @@ window.addEventListener('scroll', () => {
           </a>`;
       }).join('');
       document.getElementById('new-arrivals-section').style.display = '';
+    }
+
+    // ── COMING UP (real upcoming events + active deals) ──
+    const MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const fmtTime = t => {
+      if (!t) return '';
+      const [h, m] = t.split(':').map(Number);
+      const ap = h >= 12 ? 'PM' : 'AM';
+      const hr = ((h + 11) % 12) + 1;
+      return `${hr}:${String(m).padStart(2, '0')} ${ap}`;
+    };
+    const eventCards = events.map(e => {
+      const d = e.event_date ? new Date(e.event_date + 'T00:00:00') : null;
+      const dateBlock = d
+        ? `<div class="upcoming-date"><span class="upcoming-month">${MON[d.getMonth()]}</span><span class="upcoming-day">${d.getDate()}</span><span class="upcoming-dow">${DOW[d.getDay()]}</span></div>`
+        : '';
+      const place = e.location_name || e.city;
+      return `
+        <a class="upcoming-card" href="${escapeHtml(e.url || '/pages/events.html')}">
+          ${dateBlock}
+          <div class="upcoming-body">
+            <div class="upcoming-title">${escapeHtml(e.title || 'Community event')}</div>
+            ${e.start_time ? `<div class="upcoming-meta">🕐 ${fmtTime(e.start_time)}</div>` : ''}
+            ${place ? `<div class="upcoming-meta">📍 ${escapeHtml(place)}</div>` : ''}
+          </div>
+        </a>`;
+    });
+    const dealCards = deals.map(dl => `
+      <a class="upcoming-card upcoming-deal" href="/pages/deals.html">
+        <div class="upcoming-date"><span class="upcoming-month">DEAL</span><span class="upcoming-day">🏷</span></div>
+        <div class="upcoming-body">
+          <div class="upcoming-title">${escapeHtml(dl.title || dl.business_name || 'Local deal')}</div>
+          ${dl.business_name ? `<div class="upcoming-meta">🏪 ${escapeHtml(dl.business_name)}</div>` : ''}
+          ${dl.discount ? `<span class="upcoming-tag">${escapeHtml(dl.discount)}</span>` : ''}
+        </div>
+      </a>`);
+    const upcomingCards = eventCards.concat(dealCards).slice(0, 4);
+    if (upcomingCards.length) {
+      document.getElementById('upcoming-row').innerHTML = upcomingCards.join('');
+      document.getElementById('upcoming-section').style.display = '';
     }
 
     // ── SPOTLIGHT (top rated featured business) ──

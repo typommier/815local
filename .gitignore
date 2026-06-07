@@ -2,7 +2,8 @@ node_modules/
 playwright-report/
 test-results/
 
-# Local-only photo scrapers (run on Ty's machine, need server-side keys)
+# Local-only scrapers (run on Ty's machine, need server-side keys)
 fetch_photos.py
 fetch_photos_local.py
 fetch_missing_photos.py
+geocode_businesses.py
