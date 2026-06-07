@@ -1121,6 +1121,20 @@ footer {
   </div>
 </section>
 
+<!-- ══════════ NEW TO THE 815 ══════════ -->
+<section class="favorites fade-in" id="new-arrivals-section" style="display:none;">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <span class="section-tag">Just Added</span>
+        <h2 class="section-title">New to the 815</h2>
+      </div>
+      <a class="section-link" href="/pages/directory.html?sort=newest">See all <span>→</span></a>
+    </div>
+    <div class="biz-grid" id="new-arrivals-grid"></div>
+  </div>
+</section>
+
 <!-- ══════════ SPOTLIGHT ══════════ -->
 <section class="spotlight fade-in" id="spotlight-section" style="display:none;">
   <div class="container">
@@ -1434,6 +1448,45 @@ window.addEventListener('scroll', () => {
             </div>
           </a>`;
       }).join('');
+    }
+
+    // ── NEW ARRIVALS (genuinely recent additions only) ──
+    // created_at marks when a listing was added. The April/May 2026 bulk import is
+    // excluded by this cutoff, so only real incremental additions surface here. The
+    // section stays hidden until there is something genuinely new to show.
+    const NEW_CUTOFF = new Date('2026-06-01T00:00:00');
+    const newArrivals = homeTownPicks
+      .filter(b => b.created_at && new Date(b.created_at) >= NEW_CUTOFF)
+      .slice(0, 4);
+    if (newArrivals.length) {
+      document.getElementById('new-arrivals-grid').innerHTML = newArrivals.map(b => {
+        const rating = parseFloat(b.avg_rating) || 0;
+        const count = b.review_count || 0;
+        const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+        const photoBlock = photoSrc
+          ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div></div>`
+          : '';
+        const features = (b.features || []).slice(0,2).map(f => `<span class="tag">${escapeHtml(f)}</span>`).join('');
+        return `
+          <a href="/pages/business.html?id=${b.id}" class="biz-card" style="text-decoration:none;color:inherit;">
+            ${photoBlock}
+            <div class="biz-body">
+              <div class="biz-cats">${catEmoji[b.category]||'🏪'} ${escapeHtml(b.category)}${b.subcategory?' · '+escapeHtml(b.subcategory):''}</div>
+              <div class="biz-name">${escapeHtml(b.name)}<span style="display:inline-block;background:#2D6A4F;color:white;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:2px 8px;border-radius:100px;margin-left:8px;vertical-align:middle;">NEW</span></div>
+              <div class="biz-rating-row">
+                <span class="stars">${stars(rating)}</span>
+                <span class="biz-rating">${rating > 0 ? rating.toFixed(1) : 'New'}</span>
+                <span class="biz-review-count">${count > 0 ? '('+count+' review'+(count!==1?'s':'')+')' : 'No reviews yet'}</span>
+              </div>
+              <div class="biz-tags">${features}</div>
+              <div class="biz-footer">
+                <span class="biz-info">📍 ${escapeHtml(b.city || '')}</span>
+                <span class="biz-cta">View <span>→</span></span>
+              </div>
+            </div>
+          </a>`;
+      }).join('');
+      document.getElementById('new-arrivals-section').style.display = '';
     }
 
     // ── SPOTLIGHT (top rated featured business) ──
