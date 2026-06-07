@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Importer — 815local Admin</title>
+<title>Photo Importer | 815local Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -168,7 +168,7 @@ a { color: inherit; text-decoration: none; }
         </div>
         <div class="form-row inline">
           <label for="gp-place-id">Google Place ID</label>
-          <input id="gp-place-id" type="text" placeholder="optional — click Find to auto-resolve from the name">
+          <input id="gp-place-id" type="text" placeholder="optional, click Find to auto-resolve from the name">
           <button id="gp-find-btn" type="button" class="btn" style="background:var(--cream-dark);color:var(--charcoal);padding:10px 16px;flex:0;">Find</button>
         </div>
         <div class="form-row inline" id="gp-match-row" style="display:none;">
@@ -330,14 +330,14 @@ async function loadBusinesses() {
     return a.name.localeCompare(b.name);
   });
 
-  const urlOpts = ['<option value="">— Select a business —</option>'];
-  const gpOpts  = ['<option value="">— Select a business —</option>'];
+  const urlOpts = ['<option value="">… Select a business, </option>'];
+  const gpOpts  = ['<option value="">… Select a business, </option>'];
   for (const b of sorted) {
     const hasPhoto = (b.photos && b.photos.length) || b.image_url;
     const photoFlag = hasPhoto ? '📷' : '∅';
     const claimed = b.is_claimed ? '✓' : '';
     const placeFlag = b.google_place_id ? '🗺' : '';
-    const cityTxt = b.city ? '— ' + b.city : '';
+    const cityTxt = b.city ? ', ' + b.city : '';
 
     const urlTags = [claimed, photoFlag, b.website ? '' : '(no website)'].filter(Boolean).join(' ');
     urlOpts.push(`<option value="${b.id}" data-website="${escapeAttr(b.website)}">${b.name} ${cityTxt}  ${urlTags}</option>`);
@@ -561,7 +561,7 @@ $gpFindBtn.addEventListener('click', async () => {
     $gpPlaceId.value = r.place_id;
     const matchName = r.resolved_name || (r.had_place_id ? 'Saved Place ID' : r.place_id);
     $gpMatch.innerHTML = '<strong>' + escTxt(matchName) + '</strong>'
-      + (r.resolved_address ? ' — ' + escTxt(r.resolved_address) : '')
+      + (r.resolved_address ? ', ' + escTxt(r.resolved_address) : '')
       + ' · ' + (r.photo_count || 0) + ' photo' + ((r.photo_count === 1) ? '' : 's')
       + '. Confirm this is the business, then Fetch.';
     $gpMatchRow.style.display = '';
@@ -629,7 +629,7 @@ function renderBatch(results) {
       : '<span style="color:var(--gray);">no Google match</span>';
     const countBadge = hasMatch
       ? (r.photo_count || 0) + ' photo' + (r.photo_count === 1 ? '' : 's')
-      : '—';
+      : ', ';
     return `<tr data-id="${escTxt(r.business_id)}">
       <td style="padding:8px 10px;vertical-align:top;"><input type="checkbox" class="batch-cb" data-id="${escTxt(r.business_id)}" ${good ? 'checked' : ''} ${hasMatch && r.photo_count ? '' : 'disabled'} style="width:18px;height:18px;"></td>
       <td style="padding:8px 10px;vertical-align:top;"><strong>${escTxt(r.name)}</strong><div style="color:var(--gray);font-size:12px;">${escTxt(r.city || '')}</div></td>

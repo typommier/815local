@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 const path = require('path');
 
 const SUPABASE_MOCK = path.join(__dirname, 'fixtures/supabase-mock.js');
-// serve's cleanUrls feature strips .html — use the extension-free path with query params
+// serve's cleanUrls feature strips .html, use the extension-free path with query params
 const MOCK_BIZ_ID = 'biz-001';
 const BIZ_PAGE = '/pages/business';
 

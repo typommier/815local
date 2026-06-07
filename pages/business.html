@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Business — 815local</title>
-<meta name="description" content="View business details, hours, reviews, and contact information on 815local — your local business directory.">
-<meta property="og:title" content="Business — 815local">
-<meta property="og:description" content="View business details, hours, reviews, and contact information on 815local — your local business directory.">
+<title>Business | 815local</title>
+<meta name="description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
+<meta property="og:title" content="Business | 815local">
+<meta property="og:description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
 <meta property="og:type" content="business.business">
 <meta property="og:url" content="https://815local.com/pages/business.html">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
@@ -72,7 +72,7 @@ a { color:inherit; text-decoration:none; }
 .gallery-grid.gg-n4 { grid-template-columns:2fr 1fr; grid-template-rows:repeat(3, 147px); }
 .gallery-grid.gg-n4 .gallery-main { grid-row:span 3; }
 .gallery-all-btn { position:absolute; bottom:16px; right:16px; background:white; color:var(--charcoal); padding:8px 18px; border-radius:100px; font-size:13px; font-weight:600; cursor:pointer; box-shadow:var(--shadow-md); }
-/* Mobile swiper — hidden on desktop, shown below 480px via media query */
+/* Mobile swiper, hidden on desktop, shown below 480px via media query */
 .gallery-swiper { display:none; position:relative; background:var(--charcoal); }
 .swipe-track { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
 .swipe-track::-webkit-scrollbar { display:none; }
@@ -295,7 +295,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
 .flag-submit:hover { background:var(--orange-light); }
 .flag-submit:disabled { opacity:0.5; cursor:not-allowed; }
 .review-flagged-notice { font-size:12px; color:var(--gray); font-style:italic; padding:4px 0; }
-/* Honeypot — visually hidden from real users */
+/* Honeypot, visually hidden from real users */
 .hp-field { position:absolute; left:-9999px; top:-9999px; opacity:0; height:0; overflow:hidden; }
 
 /* Mobile */
@@ -411,7 +411,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <div id="h-area-served" style="display:none;margin-top:8px;"><span class="area-served-badge">📍 Serves the 815</span></div>
           <p class="biz-subtitle" id="h-desc">Description</p>
           <div class="biz-rating-big">
-            <span class="biz-rating-num" id="h-rating">—</span>
+            <span class="biz-rating-num" id="h-rating">…</span>
             <span class="biz-stars-big stars" id="h-stars">☆☆☆☆☆</span>
             <a class="biz-reviews-link" href="#reviews" id="h-review-count">0 reviews</a>
             <span style="color:var(--gray-light);">·</span>
@@ -480,7 +480,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <!-- Summary -->
           <div class="review-summary" id="review-summary">
             <div style="text-align:center;">
-              <div class="review-big-num" id="sum-rating">—</div>
+              <div class="review-big-num" id="sum-rating">…</div>
               <div class="review-stars-lg" id="sum-stars">☆☆☆☆☆</div>
               <div class="review-total" id="sum-count">0 reviews</div>
             </div>
@@ -524,7 +524,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
                 </div>
               </div>
               <div style="font-size:13px;color:var(--charcoal-light);margin-bottom:12px;">Posting as: <strong id="reviewer-display-name"></strong></div>
-              <textarea class="form-textarea" id="review-text" placeholder="What did you love? Be specific — your neighbors want to know!"></textarea>
+              <textarea class="form-textarea" id="review-text" placeholder="What did you love? Be specific, your neighbors want to know!"></textarea>
               <!-- Honeypot: bots fill this, humans never see it -->
               <div class="hp-field" aria-hidden="true">
                 <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
@@ -661,7 +661,7 @@ let selectedFlagReason = null;
 let currentUser = null;
 let currentProfile = null;
 
-// Session token — persists for this browser tab session, used for rate limiting
+// Session token, persists for this browser tab session, used for rate limiting
 function getSessionToken() {
   let token = sessionStorage.getItem('815_session');
   if (!token) {
@@ -858,9 +858,9 @@ function renderJsonLd(b) {
 
 function renderBusiness(b) {
   // Page title + OG tags
-  document.title = b.name + ' — 815local';
-  const desc = b.description ? b.description.slice(0, 160) : (b.category + ' in the 815 area — find hours, reviews, and contact info on 815local.');
-  document.querySelector('meta[property="og:title"]')?.setAttribute('content', b.name + ' — 815local');
+  document.title = b.name + ', 815local';
+  const desc = b.description ? b.description.slice(0, 160) : (b.category + ' in the 815 area, find hours, reviews, and contact info on 815local.');
+  document.querySelector('meta[property="og:title"]')?.setAttribute('content', b.name + ' | 815local');
   document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
   document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
   const canonicalUrl = 'https://815local.com/pages/business.html?id=' + (b.id || '');
@@ -880,7 +880,7 @@ function renderBusiness(b) {
   document.getElementById('breadcrumb-cat').textContent = b.category;
   document.getElementById('breadcrumb-name').textContent = b.name;
 
-  // Gallery — use photos[] array first (from Google Places scraper), fall back to image_url
+  // Gallery, use photos[] array first (from Google Places scraper), fall back to image_url
   const photos = (b.photos && b.photos.length) ? b.photos : (b.image_url ? [b.image_url] : []);
   const photoPos = (i) => {
     const safe = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
@@ -892,7 +892,7 @@ function renderBusiness(b) {
   const mainCell = document.getElementById('gallery-main');
 
   if (photos.length === 0) {
-    // No photos — show an owner-claim CTA in place of the gallery
+    // No photos, show an owner-claim CTA in place of the gallery
     const claimUrl = '/pages/submit/claim-business.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
     gallerySection.innerHTML = `
       <div class="container" style="padding:36px 20px;text-align:center;color:white;">
@@ -928,7 +928,7 @@ function renderBusiness(b) {
       }
     });
 
-    // Mobile swiper — same photos[] array, swapped in via media query below 480px
+    // Mobile swiper, same photos[] array, swapped in via media query below 480px
     const swiper = document.getElementById('gallery-swiper');
     const track = document.getElementById('swipe-track');
     const dots = document.getElementById('swipe-dots');
@@ -1011,7 +1011,7 @@ function renderBusiness(b) {
   }
   document.getElementById('sb-dir-btn').href = b.address ? 'https://maps.google.com/?q=' + encodeURIComponent(b.address) : '#';
 
-  // OpenStreetMap iframe — free, no API key needed
+  // OpenStreetMap iframe, free, no API key needed
   const mapContainer = document.getElementById('map-container');
   if (b.address) {
     const fullAddress = `${b.address}, ${b.city || ''}, ${b.state || 'IL'} ${b.zip || ''}`.trim();
@@ -1031,7 +1031,7 @@ function renderBusiness(b) {
       </a>`;
   }
 
-  // Order / Book Online button — wording follows category (food places "Order", others "Book")
+  // Order / Book Online button, wording follows category (food places "Order", others "Book")
   const orderBtn = document.getElementById('sb-order-btn');
   const headerOrderBtn = document.getElementById('h-order-btn');
   if (b.order_url) {
@@ -1096,7 +1096,7 @@ function renderBusiness(b) {
   if (isPark) {
     hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">🌳 ${escapeHtml(parkAllHours || 'Open dawn to dusk daily')}</span></div>`;
   } else if (allEmpty) {
-    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">📅 By appointment — contact directly for hours</span></div>`;
+    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">📅 By appointment, contact directly for hours</span></div>`;
   } else if (allSame) {
     hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">${escapeHtml(openVals[0])}</span></div>`;
   } else {
@@ -1123,7 +1123,7 @@ async function loadReviews(id) {
     .order('created_at', { ascending: false });
 
   if (!reviews || !reviews.length) {
-    document.getElementById('reviews-list').innerHTML = `<div style="padding:24px 0;color:var(--gray);font-size:14px;">No reviews yet — be the first to share your experience!</div>`;
+    document.getElementById('reviews-list').innerHTML = `<div style="padding:24px 0;color:var(--gray);font-size:14px;">No reviews yet, be the first to share your experience!</div>`;
     renderRatingSummary([], 0);
     return;
   }
@@ -1156,7 +1156,7 @@ async function loadReviews(id) {
 
 function renderRatingSummary(reviews, avgRating) {
   const count = reviews.length;
-  document.getElementById('sum-rating').textContent = avgRating > 0 ? avgRating.toFixed(1) : '—';
+  document.getElementById('sum-rating').textContent = avgRating > 0 ? avgRating.toFixed(1) : ', ';
   document.getElementById('sum-stars').textContent = avgRating > 0 ? starsHtml(avgRating) : '☆☆☆☆☆';
   document.getElementById('sum-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
 
@@ -1180,7 +1180,7 @@ async function submitReview() {
   const text = document.getElementById('review-text').value.trim();
   const btn = document.getElementById('submit-review-btn');
 
-  // Honeypot check — bots fill this hidden field, humans don't
+  // Honeypot check, bots fill this hidden field, humans don't
   if (document.getElementById('hp-website').value) {
     // Silently appear to succeed so bots don't retry
     document.getElementById('form-success').style.display = 'block';
@@ -1286,7 +1286,7 @@ async function submitFlag() {
     selectedFlagReason = null;
     btn.textContent = 'Report Review';
 
-    // Reload — flagged review will disappear from the public list
+    // Reload, flagged review will disappear from the public list
     loadReviews(bizId);
   } catch(e) {
     alert('Error reporting review: ' + e.message);

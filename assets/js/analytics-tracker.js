@@ -1,7 +1,7 @@
 /**
  * 815local Analytics Tracker
  * Lightweight client-side tracker using localStorage + BroadcastChannel
- * Drop-in script — add <script src="/assets/js/analytics-tracker.js"></script>
+ * Drop-in script. Add <script src="/assets/js/analytics-tracker.js"></script>
  * before </body> on every page.
  */
 (function() {
