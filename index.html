@@ -1236,7 +1236,8 @@ footer {
         <p class="newsletter-sub">New spots, local deals, upcoming events, delivered to your inbox every week. No spam, just your neighborhood.</p>
       </div>
       <form class="newsletter-form" onsubmit="doNewsletterSubscribe(event)">
-        <input class="newsletter-input" id="newsletter-email" type="email" placeholder="your@email.com">
+        <label for="newsletter-email" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Email address</label>
+        <input class="newsletter-input" id="newsletter-email" type="email" placeholder="your@email.com" aria-label="Email address">
         <button class="newsletter-submit" id="newsletter-btn">Subscribe →</button>
         <div id="newsletter-msg" style="font-size:13px;margin-top:6px;min-height:18px;"></div>
       </form>
@@ -1664,6 +1665,11 @@ function openAuthModal(view) {
   switchAuthView(view || 'signin');
   document.getElementById('auth-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    const v = document.getElementById('auth-view-' + (view || 'signin'));
+    const first = v && v.querySelector('input');
+    if (first) first.focus();
+  }, 50);
 }
 
 function closeAuthModal() {
@@ -1671,6 +1677,10 @@ function closeAuthModal() {
   document.body.style.overflow = '';
   clearAuthMessages();
 }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('auth-overlay').classList.contains('open')) closeAuthModal();
+});
 
 function switchAuthView(view) {
   ['signin','signup','forgot'].forEach(v => {
@@ -1913,8 +1923,8 @@ async function doNewsletterSubscribe(e) {
 
 <!-- ══════════ AUTH MODAL ══════════ -->
 <div class="auth-overlay" id="auth-overlay" onclick="if(event.target===this)closeAuthModal()">
-  <div class="auth-modal">
-    <span class="auth-close" onclick="closeAuthModal()">×</span>
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-label="815local account">
+    <span class="auth-close" role="button" tabindex="0" aria-label="Close" onclick="closeAuthModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();closeAuthModal();}">×</span>
 
     <!-- SIGN IN VIEW -->
     <div id="auth-view-signin">
