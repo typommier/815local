@@ -1522,7 +1522,7 @@ window.addEventListener('scroll', () => {
     try {
     const today = new Date().toISOString().slice(0, 10);
     const [eventRes, dealRes] = await Promise.all([
-      db.from('events').select('title,event_date,start_time,location_name,city,url').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(4),
+      db.from('events').select('id,title,event_date,start_time,location_name,city').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(4),
       db.from('deals').select('title,discount,business_name').eq('is_active', true).or(`expiry_date.is.null,expiry_date.gte.${today}`)
     ]);
     const events = eventRes.data || [];
@@ -1543,7 +1543,7 @@ window.addEventListener('scroll', () => {
         : '';
       const place = e.location_name || e.city;
       return `
-        <a class="upcoming-card" href="${escapeHtml(e.url || '/pages/events.html')}">
+        <a class="upcoming-card" href="/pages/events.html?event=${e.id}">
           ${dateBlock}
           <div class="upcoming-body">
             <div class="upcoming-title">${escapeHtml(e.title || 'Community event')}</div>
