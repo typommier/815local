@@ -966,7 +966,12 @@ function renderBusiness(b) {
   ].join('');
 
   // Sidebar
-  document.getElementById('sb-phone-btn').href = b.phone ? 'tel:' + b.phone.replace(/\D/g,'') : '#';
+  const sbPhoneBtn = document.getElementById('sb-phone-btn');
+  if (b.phone) {
+    sbPhoneBtn.href = 'tel:' + b.phone.replace(/\D/g,'');
+  } else {
+    sbPhoneBtn.style.display = 'none';
+  }
   document.getElementById('sb-dir-btn').href = b.address ? 'https://maps.google.com/?q=' + encodeURIComponent(b.address) : '#';
 
   // OpenStreetMap iframe — free, no API key needed
