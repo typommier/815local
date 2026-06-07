@@ -1411,18 +1411,20 @@ window.addEventListener('scroll', () => {
   }
 
   try {
-    const [bizRes, reviewRes] = await Promise.all([
+    const [bizRes, reviewRes, statsRes] = await Promise.all([
       db.from('businesses_with_ratings').select('*').eq('is_active', true).order('created_at', { ascending: false }),
-      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6)
+      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6),
+      db.rpc('get_homepage_stats')
     ]);
 
     const businesses = bizRes.data || [];
     const reviews = reviewRes.data || [];
+    const stats = statsRes.data || {};
 
-    // ── STATS ──
+    // ── STATS (counts come from the get_homepage_stats RPC, not the limited queries above) ──
     const totalBiz = businesses.length;
-    document.getElementById('stat-businesses').textContent = totalBiz;
-    const totalReviews = reviews.length;
+    document.getElementById('stat-businesses').textContent = stats.business_count ?? totalBiz;
+    const totalReviews = stats.review_count ?? reviews.length;
     document.getElementById('stat-reviews').textContent = totalReviews > 0 ? totalReviews : '0';
     const statLine = document.getElementById('hero-stat-line');
     if (statLine && totalBiz > 0) {
