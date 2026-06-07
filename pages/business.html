@@ -764,6 +764,31 @@ function parseHoursRange(val) {
   return (opens && closes) ? { opens, closes } : null;
 }
 
+// true = open, false = closed, null = hours unknown (hide the badge). Uses Central time (IL).
+function isOpenNow(hours) {
+  if (!hours || typeof hours !== 'object') return null;
+  const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  const toMin = hm => { const p = hm.split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); };
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const day = now.getDay();
+  // Spillover from yesterday's range that runs past midnight (e.g. a 5 PM - 2 AM bar).
+  const yest = parseHoursRange(hours[days[(day + 6) % 7]]);
+  if (yest) {
+    const o = toMin(yest.opens), c = toMin(yest.closes);
+    if (c <= o && mins < c) return true;
+  }
+  // Decide from today's value only: parseable range -> compare; "Closed" -> false; else unknown.
+  const todayRaw = (hours[days[day]] || '').trim();
+  const today = parseHoursRange(todayRaw);
+  if (today) {
+    const o = toMin(today.opens), c = toMin(today.closes);
+    return c > o ? (mins >= o && mins < c) : (mins >= o);
+  }
+  if (todayRaw.toLowerCase() === 'closed') return false;
+  return null; // by appointment / missing / unparseable
+}
+
 // Build schema.org openingHoursSpecification[] from the stored hours JSONB, or null.
 function hoursToSpec(hours) {
   if (!hours || typeof hours !== 'object') return null;
@@ -959,7 +984,12 @@ function renderBusiness(b) {
 
   // Quick info
   const qi = document.getElementById('h-quick-info');
+  const openStatus = isOpenNow(b.hours);
+  const openItem = openStatus === true
+    ? `<div class="biz-quick-item" style="color:#2D6A4F;font-weight:700;">🟢 Open now</div>`
+    : (openStatus === false ? `<div class="biz-quick-item" style="color:var(--gray);font-weight:600;">Closed now</div>` : '');
   qi.innerHTML = [
+    openItem,
     b.address ? `<div class="biz-quick-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>${escapeHtml(b.address)}</div>` : '',
     b.phone ? `<div class="biz-quick-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.19 11.9 19.79 19.79 0 0 1 1.12 3.23A2 2 0 0 1 3.1 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${escapeHtml(b.phone)}</div>` : '',
     b.website ? `<div class="biz-quick-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><a href="${escapeHtml(/^https?:\/\//i.test(b.website) ? b.website : 'https://' + b.website)}" target="_blank" style="color:var(--orange);">${escapeHtml(b.website)}</a></div>` : '',
