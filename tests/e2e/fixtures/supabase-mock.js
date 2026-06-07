@@ -207,6 +207,7 @@ function makeQuery(table) {
     lt() { return q; },
     or() { return q; },
     is() { return q; },
+    in() { return q; },
     ilike() { return q; },
     order() { return q; },
     limit(n) { state.limitN = n; return q; },
@@ -237,6 +238,19 @@ window.supabase = {
           upsert(rows) { return Promise.resolve({ data: rows, error: null }); },
           update(rows) { return { eq() { return Promise.resolve({ data: rows, error: null }); } }; },
         };
+      },
+      rpc(fn) {
+        if (fn === 'get_homepage_stats') {
+          return Promise.resolve({
+            data: {
+              review_count: REVIEWS.length,
+              business_count: BUSINESSES.filter(b => b.is_active).length,
+              event_count: EVENTS.filter(e => e.is_active).length,
+            },
+            error: null,
+          });
+        }
+        return Promise.resolve({ data: null, error: null });
       },
       auth: {
         getSession() { return Promise.resolve({ data: { session: null }, error: null }); },
