@@ -1387,18 +1387,13 @@ window.addEventListener('scroll', () => {
   }
 
   try {
-    const today = new Date().toISOString().slice(0, 10);
-    const [bizRes, reviewRes, eventRes, dealRes] = await Promise.all([
+    const [bizRes, reviewRes] = await Promise.all([
       db.from('businesses_with_ratings').select('*').eq('is_active', true).order('created_at', { ascending: false }),
-      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6),
-      db.from('events').select('title,event_date,start_time,location_name,city,url').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(4),
-      db.from('deals').select('title,discount,business_name').eq('is_active', true).or(`expiry_date.is.null,expiry_date.gte.${today}`)
+      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6)
     ]);
 
     const businesses = bizRes.data || [];
     const reviews = reviewRes.data || [];
-    const events = eventRes.data || [];
-    const deals = dealRes.data || [];
 
     // ── STATS ──
     const totalBiz = businesses.length;
@@ -1523,6 +1518,15 @@ window.addEventListener('scroll', () => {
     }
 
     // ── COMING UP (real upcoming events + active deals) ──
+    // Non-critical and isolated: a failure here must never block the rest of the page.
+    try {
+    const today = new Date().toISOString().slice(0, 10);
+    const [eventRes, dealRes] = await Promise.all([
+      db.from('events').select('title,event_date,start_time,location_name,city,url').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(4),
+      db.from('deals').select('title,discount,business_name').eq('is_active', true).or(`expiry_date.is.null,expiry_date.gte.${today}`)
+    ]);
+    const events = eventRes.data || [];
+    const deals = dealRes.data || [];
     const MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
     const fmtTime = t => {
@@ -1561,6 +1565,9 @@ window.addEventListener('scroll', () => {
     if (upcomingCards.length) {
       document.getElementById('upcoming-row').innerHTML = upcomingCards.join('');
       document.getElementById('upcoming-section').style.display = '';
+    }
+    } catch (e) {
+      console.error('Coming up strip failed to load', e);
     }
 
     // ── SPOTLIGHT (top rated featured business) ──
