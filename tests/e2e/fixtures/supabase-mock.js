@@ -201,6 +201,13 @@ function makeQuery(table) {
     select(cols) { state.selectCols = cols; return q; },
     eq(col, val) { state.filters[col] = val; return q; },
     neq(col, val) { return q; },
+    gte() { return q; },
+    gt() { return q; },
+    lte() { return q; },
+    lt() { return q; },
+    or() { return q; },
+    is() { return q; },
+    ilike() { return q; },
     order() { return q; },
     limit(n) { state.limitN = n; return q; },
     single() {
