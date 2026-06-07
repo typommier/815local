@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>815local — Your Local Everything</title>
+<title>815local | Your Local Everything</title>
 <meta name="description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
-<meta property="og:title" content="815local — Your Local Everything">
+<meta property="og:title" content="815local | Your Local Everything">
 <meta property="og:description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://815local.com/">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="815local | Your Local Everything">
+<meta name="twitter:description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
+<meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta property="og:site_name" content="815local">
 <link rel="canonical" href="https://815local.com/">
 <script type="application/ld+json">
@@ -1013,7 +1017,7 @@ footer {
           Your Local<br><em>Everything.</em>
         </h1>
         <p class="hero-subtitle">
-          Reviews, restaurants, services & events — all in one place. Discover the best of the 815, recommended by your neighbors.
+          Reviews, restaurants, services & events, all in one place. Discover the best of the 815, recommended by your neighbors.
         </p>
         <div style="display:flex; align-items:center; gap:16px; margin-top:36px; flex-wrap:wrap;">
           <a class="btn btn-primary" href="/pages/directory.html" style="font-size:15px; padding:14px 32px;">Browse Businesses</a>
@@ -1064,7 +1068,7 @@ footer {
       <div class="trust-item">
         <div class="trust-icon">⭐</div>
         <div>
-          <div class="trust-num" id="stat-reviews">—</div>
+          <div class="trust-num" id="stat-reviews">…</div>
           <div class="trust-lbl">Community Reviews</div>
         </div>
       </div>
@@ -1072,7 +1076,7 @@ footer {
       <div class="trust-item">
         <div class="trust-icon">🏪</div>
         <div>
-          <div class="trust-num" id="stat-businesses">—</div>
+          <div class="trust-num" id="stat-businesses">…</div>
           <div class="trust-lbl">Local Businesses</div>
         </div>
       </div>
@@ -1111,27 +1115,27 @@ footer {
       <div class="cat-item active" data-cat="Food & Drink" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#FEF3EC;">🍔</div>
         <div class="cat-name">Food & Drink</div>
-        <div class="cat-count" data-category="Food & Drink">— places</div>
+        <div class="cat-count" data-category="Food & Drink">… places</div>
       </div>
       <div class="cat-item" data-cat="Health & Wellness" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#F0FFF4;">💆</div>
         <div class="cat-name">Health & Wellness</div>
-        <div class="cat-count" data-category="Health & Wellness">— places</div>
+        <div class="cat-count" data-category="Health & Wellness">… places</div>
       </div>
       <div class="cat-item" data-cat="Retail & Shops" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#F5F0FF;">🛍️</div>
         <div class="cat-name">Retail & Shops</div>
-        <div class="cat-count" data-category="Retail & Shops">— places</div>
+        <div class="cat-count" data-category="Retail & Shops">… places</div>
       </div>
       <div class="cat-item" data-cat="Home Services" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#EFF8FF;">🔧</div>
         <div class="cat-name">Home Services</div>
-        <div class="cat-count" data-category="Home Services">— places</div>
+        <div class="cat-count" data-category="Home Services">… places</div>
       </div>
       <div class="cat-item" data-cat="Arts & Events" onclick="filterCat(this)">
         <div class="cat-icon" style="background:#FFFBEC;">🎭</div>
         <div class="cat-name">Arts & Events</div>
-        <div class="cat-count" data-category="Arts & Events">— places</div>
+        <div class="cat-count" data-category="Arts & Events">… places</div>
       </div>
     </div>
   </div>
@@ -1229,10 +1233,11 @@ footer {
     <div class="newsletter-inner">
       <div class="newsletter-text">
         <h2 class="newsletter-title">Stay 815 local. 📬</h2>
-        <p class="newsletter-sub">New spots, local deals, upcoming events — delivered to your inbox every week. No spam, just your neighborhood.</p>
+        <p class="newsletter-sub">New spots, local deals, upcoming events, delivered to your inbox every week. No spam, just your neighborhood.</p>
       </div>
       <form class="newsletter-form" onsubmit="doNewsletterSubscribe(event)">
-        <input class="newsletter-input" id="newsletter-email" type="email" placeholder="your@email.com">
+        <label for="newsletter-email" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Email address</label>
+        <input class="newsletter-input" id="newsletter-email" type="email" placeholder="your@email.com" aria-label="Email address">
         <button class="newsletter-submit" id="newsletter-btn">Subscribe →</button>
         <div id="newsletter-msg" style="font-size:13px;margin-top:6px;min-height:18px;"></div>
       </form>
@@ -1277,7 +1282,7 @@ footer {
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2026 815local.com — Proudly serving the 815</span>
+      <span class="footer-copy">© 2026 815local.com · Proudly serving the 815</span>
       <span style="margin-left:24px;font-size:13px;">
         <a href="/legal/privacy.html" style="color:rgba(255,255,255,0.5);text-decoration:none;">Privacy</a>
         &nbsp;·&nbsp;
@@ -1432,7 +1437,7 @@ window.addEventListener('scroll', () => {
       el.textContent = n + (n === 1 ? ' place' : ' places');
     });
 
-    // ── HERO PHOTOS (local businesses only — no chains) ──
+    // ── HERO PHOTOS (local businesses only, no chains) ──
     const withPhotos = businesses.filter(b => b.image_url && !(b.features || []).includes('Chain'));
     for (let i = withPhotos.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -1468,7 +1473,7 @@ window.addEventListener('scroll', () => {
     const picks = homeTownPicks.slice(0, 6);
     const grid = document.getElementById('community-picks-grid');
     if (picks.length === 0) {
-      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray);">No businesses yet — <a href="/pages/submit/business.html" style="color:var(--orange);">add the first one!</a></div>`;
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray);">No businesses yet, <a href="/pages/submit/business.html" style="color:var(--orange);">add the first one!</a></div>`;
     } else {
       grid.innerHTML = picks.map(b => {
         const rating = parseFloat(b.avg_rating) || 0;
@@ -1660,6 +1665,11 @@ function openAuthModal(view) {
   switchAuthView(view || 'signin');
   document.getElementById('auth-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    const v = document.getElementById('auth-view-' + (view || 'signin'));
+    const first = v && v.querySelector('input');
+    if (first) first.focus();
+  }, 50);
 }
 
 function closeAuthModal() {
@@ -1667,6 +1677,10 @@ function closeAuthModal() {
   document.body.style.overflow = '';
   clearAuthMessages();
 }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('auth-overlay').classList.contains('open')) closeAuthModal();
+});
 
 function switchAuthView(view) {
   ['signin','signup','forgot'].forEach(v => {
@@ -1791,7 +1805,7 @@ async function doSignUp() {
 
   btn.disabled = false; btn.textContent = 'Create Account';
 
-  // Supabase sends confirmation email — tell the user
+  // Supabase sends confirmation email, tell the user
   showMsg('signup-success', 'Account created! Check your email to confirm your address, then sign in.', false);
   setTimeout(() => switchAuthView('signin'), 4000);
 }
@@ -1909,8 +1923,8 @@ async function doNewsletterSubscribe(e) {
 
 <!-- ══════════ AUTH MODAL ══════════ -->
 <div class="auth-overlay" id="auth-overlay" onclick="if(event.target===this)closeAuthModal()">
-  <div class="auth-modal">
-    <span class="auth-close" onclick="closeAuthModal()">×</span>
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-label="815local account">
+    <span class="auth-close" role="button" tabindex="0" aria-label="Close" onclick="closeAuthModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();closeAuthModal();}">×</span>
 
     <!-- SIGN IN VIEW -->
     <div id="auth-view-signin">
@@ -1966,7 +1980,7 @@ async function doNewsletterSubscribe(e) {
       </div>
       <label class="auth-checkbox">
         <input type="checkbox" id="signup-newsletter" />
-        <span>Send me the 815local newsletter — local news, events, and new businesses in Minooka, Channahon & Shorewood.</span>
+        <span>Send me the 815local newsletter, local news, events, and new businesses in Minooka, Channahon & Shorewood.</span>
       </label>
       <button class="auth-btn" id="signup-btn" onclick="doSignUp()">Create Account</button>
       <div class="auth-switch">Already have an account? <a onclick="switchAuthView('signin')">Sign in</a></div>

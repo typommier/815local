@@ -32,7 +32,7 @@ test.describe('Homepage', () => {
     await page.waitForFunction(
       () => {
         const el = document.getElementById('stat-businesses');
-        return el && el.textContent.trim() !== '—';
+        return el && el.textContent.trim() !== '…';
       },
       { timeout: 8000 }
     );
@@ -44,7 +44,7 @@ test.describe('Homepage', () => {
     const grid = page.locator('#community-picks-grid');
     await expect(grid).toBeVisible();
 
-    // Grid should be populated — either cards or an empty-state message
+    // Grid should be populated, either cards or an empty-state message
     await expect(grid).not.toBeEmpty({ timeout: 8000 });
 
     const cards = grid.locator('a.biz-card');

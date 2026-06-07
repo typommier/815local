@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Events Calendar — 815local</title>
-<meta name="description" content="Find local events happening in the 815 area. Concerts, community gatherings, markets, and more — your local events calendar.">
-<meta property="og:title" content="Events Calendar — 815local">
-<meta property="og:description" content="Find local events happening in the 815 area. Concerts, community gatherings, markets, and more — your local events calendar.">
+<title>Events Calendar | 815local</title>
+<meta name="description" content="Find local events happening in the 815 area. Concerts, community gatherings, markets, and more, your local events calendar.">
+<meta property="og:title" content="Events Calendar | 815local">
+<meta property="og:description" content="Find local events happening in the 815 area. Concerts, community gatherings, markets, and more, your local events calendar.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://815local.com/pages/events.html">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Events Calendar | 815local">
+<meta name="twitter:description" content="Find local events happening in the 815 area. Concerts, community gatherings, markets, and more, your local events calendar.">
+<meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta property="og:site_name" content="815local">
 <link rel="canonical" href="https://815local.com/pages/events.html">
 <link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
@@ -452,18 +456,18 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       <div class="hero-left">
         <div class="hero-eyebrow">Community Events</div>
         <h1 class="hero-title">What's happening<br>in the <em>815.</em></h1>
-        <p class="hero-sub">From farmers markets to live music, art walks to community cookouts — find every local event worth your weekend.</p>
+        <p class="hero-sub">From farmers markets to live music, art walks to community cookouts, find every local event worth your weekend.</p>
         <div class="hero-stats">
           <div class="hero-stat">
-            <div class="hero-stat-num" id="stat-month">—</div>
+            <div class="hero-stat-num" id="stat-month">…</div>
             <div class="hero-stat-lbl">Events this month</div>
           </div>
           <div class="hero-stat">
-            <div class="hero-stat-num" id="stat-upcoming">—</div>
+            <div class="hero-stat-num" id="stat-upcoming">…</div>
             <div class="hero-stat-lbl">Coming up</div>
           </div>
           <div class="hero-stat">
-            <div class="hero-stat-num" id="stat-free">—</div>
+            <div class="hero-stat-num" id="stat-free">…</div>
             <div class="hero-stat-lbl">Free events</div>
           </div>
         </div>
@@ -586,7 +590,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       <div class="sidebar-card">
         <div class="mini-cal">
           <div class="mini-cal-header">
-            <span class="mini-cal-month" id="mini-cal-month">—</span>
+            <span class="mini-cal-month" id="mini-cal-month">…</span>
             <div class="mini-cal-arrows">
               <div class="mini-arrow" onclick="changeMonth(-1)">‹</div>
               <div class="mini-arrow" onclick="changeMonth(1)">›</div>
@@ -611,7 +615,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
           </div>
           <div class="fe-body">
             <div class="fe-type" id="fe-type">⭐ Featured Event</div>
-            <div class="fe-title" id="fe-title">—</div>
+            <div class="fe-title" id="fe-title">…</div>
             <div class="fe-meta" id="fe-meta"></div>
             <a id="fe-rsvp-link" href="#" target="_blank" rel="noopener">
               <button class="fe-rsvp">More Info →</button>
@@ -687,7 +691,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2026 815local.com — Proudly serving the 815</span>
+      <span class="footer-copy">© 2026 815local.com · Proudly serving the 815</span>
       <div class="footer-legal">
         <a href="/legal/privacy.html">Privacy Policy</a>
         <a href="/legal/terms.html">Terms of Use</a>
@@ -743,6 +747,7 @@ const TYPE_META = {
 
 // ── State
 let allEvents    = [];   // all loaded from Supabase
+let bizNameMap   = {};   // business_id -> name, for "at this business" links
 let activeFilter = 'all';
 let currentYear  = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
@@ -947,7 +952,7 @@ function renderList() {
       <div style="padding:60px 32px;text-align:center;color:var(--gray);">
         <div style="font-size:40px;margin-bottom:12px;">📅</div>
         <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:8px;color:var(--charcoal);">No events found</div>
-        <div style="font-size:14px;">Try a different filter or check back soon — more events are added regularly.</div>
+        <div style="font-size:14px;">Try a different filter or check back soon, more events are added regularly.</div>
       </div>`;
     return;
   }
@@ -1111,7 +1116,8 @@ function openEventModal(id) {
     <div>🕗 ${timeStr}</div>
     <div>📍 ${locText}${mapsQ ? ` · <a href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener">Map</a>` : ''}${addrLine}</div>
     <div>🎫 ${priceStr}</div>
-    ${ev.organizer ? `<div>👤 ${escapeHtml(ev.organizer)}</div>` : ''}`;
+    ${ev.organizer ? `<div>👤 ${escapeHtml(ev.organizer)}</div>` : ''}
+    ${ev.business_id && bizNameMap[ev.business_id] ? `<div>🏢 <a href="/pages/business.html?id=${ev.business_id}">${escapeHtml(bizNameMap[ev.business_id])}</a></div>` : ''}`;
 
   // Description
   const descEl = document.getElementById('ev-modal-desc');
@@ -1282,10 +1288,57 @@ async function loadEvents() {
   }
 
   allEvents = data || [];
+
+  // Map business_id -> name so events tied to a listing can link to it.
+  const bizIds = [...new Set(allEvents.map(e => e.business_id).filter(Boolean))];
+  if (bizIds.length) {
+    const { data: bizes } = await db.from('businesses').select('id,name').in('id', bizIds);
+    (bizes || []).forEach(b => { bizNameMap[b.id] = b.name; });
+  }
+
   renderAll();
+  injectEventSchema();
   // Deep link: /pages/events.html?event=<id> opens that event's modal on load.
   const wantId = new URLSearchParams(location.search).get('event');
   if (wantId && allEvents.some(e => e.id === wantId)) openEventModal(wantId);
+}
+
+// Emit Event JSON-LD for upcoming, active events (rich results). Omits missing fields.
+function injectEventSchema() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const items = allEvents
+    .filter(ev => ev.is_active && parseLocalDate(ev.event_date) >= today)
+    .map(ev => {
+      const o = {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": ev.title,
+        "startDate": ev.event_date + (ev.start_time ? 'T' + ev.start_time.slice(0,5) : ''),
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "url": "https://815local.com/pages/events.html?event=" + ev.id
+      };
+      if (ev.end_time) o.endDate = ev.event_date + 'T' + ev.end_time.slice(0,5);
+      if (ev.description) o.description = ev.description;
+      if (ev.image_url) o.image = [ev.image_url];
+      if (ev.organizer) o.organizer = { "@type": "Organization", "name": ev.organizer };
+      const placeName = ev.location_name || ev.city;
+      if (placeName || ev.address) {
+        const addr = { "@type": "PostalAddress", "addressRegion": ev.state || "IL" };
+        if (ev.address) addr.streetAddress = ev.address;
+        if (ev.city) addr.addressLocality = ev.city;
+        o.location = { "@type": "Place", "name": placeName || ev.city || "815 area", "address": addr };
+      }
+      if (ev.price) {
+        o.offers = { "@type": "Offer", "availability": "https://schema.org/InStock", "url": o.url };
+        if (/free/i.test(ev.price)) o.offers.price = "0";
+      }
+      return o;
+    });
+  if (!items.length) return;
+  let el = document.getElementById('events-jsonld');
+  if (!el) { el = document.createElement('script'); el.type = 'application/ld+json'; el.id = 'events-jsonld'; document.head.appendChild(el); }
+  el.textContent = JSON.stringify(items.length === 1 ? items[0] : items).replace(/</g, '\\u003c');
 }
 
 // Initialise to current month and kick off fetch

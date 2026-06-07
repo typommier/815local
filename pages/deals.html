@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Local Deals — 815local</title>
+<title>Local Deals | 815local</title>
 <meta name="description" content="Find exclusive deals and discounts from local businesses in the 815 area. Save money while supporting your community.">
-<meta property="og:title" content="Local Deals — 815local">
+<meta property="og:title" content="Local Deals | 815local">
 <meta property="og:description" content="Find exclusive deals and discounts from local businesses in the 815 area. Save money while supporting your community.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://815local.com/pages/deals.html">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Local Deals | 815local">
+<meta name="twitter:description" content="Find exclusive deals and discounts from local businesses in the 815 area. Save money while supporting your community.">
+<meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta property="og:site_name" content="815local">
 <link rel="canonical" href="https://815local.com/pages/deals.html">
 <link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
@@ -118,6 +122,17 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 @media (max-width: 1000px) { .deals-layout { grid-template-columns: 1fr; } .sidebar { flex-direction: row; flex-wrap: wrap; } .sidebar-card { flex: 1; min-width: 240px; } }
 @media (max-width: 700px) { .container { padding: 0 16px; } .nav-links { display: none; } .hero-title { font-size: 32px; } .deal-examples { grid-template-columns: 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } .hero-title { font-size: 26px; } .container { padding: 0 16px; } .sidebar-card { min-width: unset; width: 100%; } .deal-card { padding: 16px; } }
+
+/* MOBILE BOTTOM NAV */
+.mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.08); z-index: 200; padding: 0 0 env(safe-area-inset-bottom,0); justify-content: space-around; align-items: stretch; }
+.mbn-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 12px; cursor: pointer; flex: 1; color: rgba(255,255,255,0.45); font-family: 'Plus Jakarta Sans', sans-serif; text-decoration: none; transition: color 0.15s; }
+.mbn-item.active, .mbn-item:hover { color: var(--orange); }
+.mbn-icon { font-size: 22px; line-height: 1; }
+.mbn-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+@media (max-width: 680px) {
+  .mobile-bottom-nav { display: flex; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom,0)); }
+}
 </style>
 </head>
 <body>
@@ -218,7 +233,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
           <div class="how-it-works">
             <div class="how-step">
               <div class="how-num">1</div>
-              <p>Business owners submit a deal — a discount, special, or limited offer</p>
+              <p>Business owners submit a deal, a discount, special, or limited offer</p>
             </div>
             <div class="how-step">
               <div class="how-num">2</div>
@@ -233,7 +248,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 
         <div class="sidebar-card">
           <h3>📍 Browse businesses now</h3>
-          <p>Don't wait for deals — find great local businesses in the directory today.</p>
+          <p>Don't wait for deals, find great local businesses in the directory today.</p>
           <a href="/pages/directory.html" class="btn btn-outline" style="width:100%;justify-content:center;font-size:13px;">Open Directory →</a>
         </div>
 
@@ -280,7 +295,7 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2026 815local.com — Proudly serving the 815</span>
+      <span class="footer-copy">© 2026 815local.com · Proudly serving the 815</span>
       <div class="footer-legal">
         <a href="/legal/privacy.html">Privacy Policy</a>
         <a href="/legal/terms.html">Terms of Use</a>
@@ -290,5 +305,11 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 </footer>
 
 <script src="/assets/js/analytics-tracker.js"></script>
+<nav class="mobile-bottom-nav">
+  <a href="/" class="mbn-item" data-page="home"><div class="mbn-icon">🏠</div><div class="mbn-label">Home</div></a>
+  <a href="/pages/directory.html" class="mbn-item" data-page="browse"><div class="mbn-icon">🔍</div><div class="mbn-label">Browse</div></a>
+  <a href="/pages/events.html" class="mbn-item" data-page="events"><div class="mbn-icon">📅</div><div class="mbn-label">Events</div></a>
+  <a href="/pages/profile.html" class="mbn-item" data-page="profile"><div class="mbn-icon">👤</div><div class="mbn-label">Profile</div></a>
+</nav>
 </body>
 </html>
