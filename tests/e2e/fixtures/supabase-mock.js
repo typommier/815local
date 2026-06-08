@@ -246,6 +246,7 @@ window.supabase = {
               review_count: REVIEWS.length,
               business_count: BUSINESSES.filter(b => b.is_active).length,
               event_count: EVENTS.filter(e => e.is_active).length,
+              user_count: 14,
             },
             error: null,
           });

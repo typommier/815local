@@ -1082,6 +1082,14 @@ footer {
       </div>
       <div class="trust-divider"></div>
       <div class="trust-item">
+        <div class="trust-icon">👥</div>
+        <div>
+          <div class="trust-num" id="stat-members">…</div>
+          <div class="trust-lbl">Community Members</div>
+        </div>
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
         <div class="trust-icon">📍</div>
         <div>
           <div class="trust-num">815</div>
@@ -1426,6 +1434,7 @@ window.addEventListener('scroll', () => {
     document.getElementById('stat-businesses').textContent = stats.business_count ?? totalBiz;
     const totalReviews = stats.review_count ?? reviews.length;
     document.getElementById('stat-reviews').textContent = totalReviews > 0 ? totalReviews : '0';
+    document.getElementById('stat-members').textContent = stats.user_count ?? 0;
     const statLine = document.getElementById('hero-stat-line');
     if (statLine && totalBiz > 0) {
       statLine.textContent = `${totalBiz} local businesses across Minooka, Channahon & Shorewood`;
