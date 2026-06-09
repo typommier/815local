@@ -27,7 +27,7 @@ function parseHoursRange(val) {
   const v = (val || '').trim();
   const low = v.toLowerCase();
   if (!v || low === 'closed' || low.includes('appointment')) return null;
-  const parts = v.split(/\s+-\s+/);
+  const parts = v.split(/\s+[-–]\s+/);
   if (parts.length !== 2) return null;
   const opens = to24h(parts[0]);
   const closes = to24h(parts[1]);
