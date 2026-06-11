@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business | 815local</title>
+<meta name="description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
+<meta property="og:title" content="Business | 815local">
+<meta property="og:description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
+<meta property="og:type" content="business.business">
+<meta property="og:url" content="https://815local.com/pages/business.html">
+<meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Business | 815local">
+<meta name="twitter:description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
+<meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta property="og:site_name" content="815local">
+<link rel="canonical" href="https://815local.com/pages/business.html">
+<link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:#C4622D; --orange-light:#E07A48; --orange-pale:#F5E6DC;
+  --cream:#F7F1E3; --cream-dark:#EDE4CF; --charcoal:#1E1B18;
+  --charcoal-mid:#3D3530; --charcoal-light:#6B5E55;
+  --gray:#9B8C82; --gray-light:#D4C9C0; --white:#FDFAF5;
+  --shadow-sm:0 2px 8px rgba(30,27,24,0.08);
+  --shadow-md:0 6px 24px rgba(30,27,24,0.12);
+  --shadow-lg:0 16px 48px rgba(30,27,24,0.18);
+  --radius:12px; --radius-sm:8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--white); color:var(--charcoal); line-height:1.6; -webkit-font-smoothing:antialiased; }
+h1,h2,h3,h4 { font-family:'Playfair Display',serif; line-height:1.2; }
+a { color:inherit; text-decoration:none; }
+.container { max-width:1240px; margin:0 auto; padding:0 32px; }
+.btn { display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:100px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:all 0.2s; border:none; }
+.btn-primary { background:var(--orange); color:white; }
+.btn-primary:hover { background:var(--orange-light); }
+.btn-outline { background:transparent; color:var(--charcoal); border:2px solid var(--gray-light); }
+.stars { color:var(--orange); }
+.tag { display:inline-flex; align-items:center; padding:4px 12px; border-radius:100px; font-size:12px; font-weight:500; background:var(--cream-dark); color:var(--charcoal-mid); }
+.tag-open { background:rgba(196,98,45,0.12); color:var(--orange); }
+.section-tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:10px; }
+
+/* NAV */
+#main-nav { position:sticky; top:0; z-index:100; background:var(--charcoal); border-bottom:1px solid rgba(255,255,255,0.06); }
+.nav-inner { display:flex; align-items:center; height:110px; }
+.nav-logo { flex-shrink:0; margin-right:36px; }
+.nav-logo img { height:104px; width:auto; filter:drop-shadow(0 2px 8px rgba(196,98,45,0.35)); }
+.nav-links { display:flex; align-items:center; gap:4px; margin-right:auto; }
+.nav-link { padding:8px 16px; font-size:14px; font-weight:500; color:rgba(255,255,255,0.65); border-radius:100px; transition:all 0.15s; cursor:pointer; }
+.nav-link:hover,.nav-link.active { color:white; background:rgba(255,255,255,0.08); }
+.nav-signin { font-size:13px; font-weight:500; color:rgba(255,255,255,0.65); padding:8px 16px; cursor:pointer; }
+
+/* BREADCRUMB */
+.breadcrumb { background:var(--cream); padding:12px 0; border-bottom:1px solid var(--cream-dark); }
+.breadcrumb-inner { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--gray); }
+.breadcrumb-inner a { color:var(--orange); }
+
+/* GALLERY */
+.gallery { background:var(--charcoal); }
+.gallery-grid { display:grid; grid-template-columns:2fr 1fr 1fr; grid-template-rows:220px 220px; gap:3px; max-height:443px; overflow:hidden; }
+.gallery-cell { background:var(--charcoal-mid); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:rgba(255,255,255,0.2); font-size:13px; position:relative; cursor:pointer; }
+.gallery-cell svg { opacity:0.15; }
+.gallery-main { grid-row:span 2; }
+/* Photo-count-adaptive layouts: collapses empty cells when there aren't enough photos */
+.gallery-grid.gg-n1 { grid-template-columns:1fr; grid-template-rows:443px; }
+.gallery-grid.gg-n1 .gallery-main { grid-row:auto; background-size:contain; background-repeat:no-repeat; }
+.gallery-grid.gg-n2 { grid-template-columns:1fr 1fr; grid-template-rows:443px; }
+.gallery-grid.gg-n2 .gallery-main { grid-row:auto; }
+.gallery-grid.gg-n3 { grid-template-columns:2fr 1fr; grid-template-rows:220px 220px; }
+.gallery-grid.gg-n4 { grid-template-columns:2fr 1fr; grid-template-rows:repeat(3, 147px); }
+.gallery-grid.gg-n4 .gallery-main { grid-row:span 3; }
+.gallery-all-btn { position:absolute; bottom:16px; right:16px; background:white; color:var(--charcoal); padding:8px 18px; border-radius:100px; font-size:13px; font-weight:600; cursor:pointer; box-shadow:var(--shadow-md); }
+/* Mobile swiper, hidden on desktop, shown below 480px via media query */
+.gallery-swiper { display:none; position:relative; background:var(--charcoal); }
+.swipe-track { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.swipe-track::-webkit-scrollbar { display:none; }
+.swipe-slide { flex:0 0 100%; height:260px; scroll-snap-align:center; background-size:cover; background-position:center; background-color:var(--charcoal-mid); cursor:pointer; }
+.swipe-counter { position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.55); color:#fff; font-size:12px; font-weight:600; padding:4px 10px; border-radius:100px; pointer-events:none; }
+.swipe-dots { display:flex; justify-content:center; gap:6px; padding:8px 0 10px; background:var(--charcoal); }
+.swipe-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.3); transition:background 0.15s, width 0.15s; }
+.swipe-dot.active { background:#fff; width:18px; border-radius:3px; }
+
+/* BIZ HEADER */
+.biz-header { background:var(--white); padding:32px 0 0; border-bottom:1px solid var(--cream-dark); }
+.biz-header-inner { display:flex; align-items:flex-start; gap:24px; padding-bottom:24px; }
+.biz-header-left { flex:1; }
+.biz-cat-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.biz-cat-pill { padding:4px 12px; border-radius:100px; background:var(--orange-pale); color:var(--orange); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+.biz-title { font-size:44px; font-weight:900; margin-bottom:12px; }
+.biz-subtitle { font-size:16px; color:var(--charcoal-light); margin-bottom:16px; }
+.biz-rating-big { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.biz-rating-num { font-family:'Playfair Display',serif; font-size:32px; font-weight:900; }
+.biz-stars-big { font-size:20px; }
+.biz-reviews-link { font-size:14px; color:var(--orange); font-weight:600; cursor:pointer; }
+.biz-quick-info { display:flex; gap:20px; flex-wrap:wrap; }
+.biz-quick-item { display:flex; align-items:center; gap:6px; font-size:14px; color:var(--charcoal-light); }
+.biz-header-actions { display:flex; flex-direction:column; gap:10px; flex-shrink:0; }
+.action-btn { display:flex; align-items:center; gap:8px; padding:10px 18px; border-radius:100px; border:1.5px solid var(--gray-light); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.15s; background:white; color:var(--charcoal); }
+.action-btn:hover { border-color:var(--orange); color:var(--orange); }
+.biz-header-tabs { display:flex; gap:0; border-top:1px solid var(--cream-dark); margin-top:20px; }
+.biz-tab { padding:14px 24px; font-size:14px; font-weight:600; color:var(--gray); cursor:pointer; border-bottom:3px solid transparent; transition:all 0.15s; }
+.biz-tab:hover { color:var(--charcoal); }
+.biz-tab.active { color:var(--orange); border-bottom-color:var(--orange); }
+
+/* MAIN LAYOUT */
+.biz-body { padding:40px 0 80px; }
+.biz-layout { display:grid; grid-template-columns:1fr 340px; gap:40px; align-items:start; }
+.left-col { display:flex; flex-direction:column; gap:40px; }
+
+/* About */
+.about-title { font-size:24px; font-weight:700; margin-bottom:16px; }
+.about-text { font-size:15px; color:var(--charcoal-light); line-height:1.8; margin-bottom:20px; white-space:pre-line; }
+.about-attrs { display:flex; flex-wrap:wrap; gap:10px; }
+.about-attr { display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:100px; border:1.5px solid var(--cream-dark); font-size:13px; font-weight:500; color:var(--charcoal-mid); background:white; }
+
+/* Hours */
+.hours-title { font-size:24px; font-weight:700; margin-bottom:16px; }
+.hours-grid { border:1.5px solid var(--gray-light); border-radius:var(--radius); overflow:hidden; }
+.hours-row { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid var(--cream-dark); font-size:14px; }
+.hours-row:last-child { border-bottom:none; }
+.hours-row.today { background:var(--orange-pale); }
+.hours-day { font-weight:600; }
+.hours-row.today .hours-day { color:var(--orange); }
+.hours-time { color:var(--charcoal-light); }
+.hours-closed { color:var(--gray); font-style:italic; }
+.hours-open-badge { background:var(--orange); color:white; font-size:11px; font-weight:700; padding:2px 8px; border-radius:100px; }
+.owner-verified-badge { display:inline-flex; align-items:center; gap:5px; background:#2D6A4F; color:white; font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; vertical-align:middle; margin-left:10px; white-space:nowrap; }
+.area-served-badge { display:inline-flex; align-items:center; gap:5px; background:#0E7490; color:white; font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; vertical-align:middle; margin-left:10px; white-space:nowrap; }
+
+/* Amenities */
+.amenities-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.amenity { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--cream-dark); font-size:13px; font-weight:500; background:white; }
+
+/* Reviews */
+.reviews-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+.reviews-title { font-size:24px; font-weight:700; }
+.review-summary { display:flex; gap:32px; align-items:center; padding:24px; background:var(--cream); border-radius:var(--radius); margin-bottom:28px; }
+.review-big-num { font-family:'Playfair Display',serif; font-size:56px; font-weight:900; line-height:1; }
+.review-stars-lg { font-size:22px; color:var(--orange); margin-bottom:4px; }
+.review-total { font-size:13px; color:var(--gray); }
+.rating-bars { flex:1; display:flex; flex-direction:column; gap:8px; }
+.rating-bar-row { display:flex; align-items:center; gap:10px; font-size:13px; }
+.rating-bar-label { width:40px; text-align:right; font-weight:600; color:var(--charcoal-mid); }
+.rating-bar-track { flex:1; height:8px; background:var(--cream-dark); border-radius:100px; overflow:hidden; }
+.rating-bar-fill { height:100%; background:var(--orange); border-radius:100px; transition:width 0.8s ease; }
+.rating-bar-count { width:28px; color:var(--gray); }
+.review-card { padding:24px 0; border-bottom:1px solid var(--cream-dark); }
+.review-card:last-child { border-bottom:none; }
+.review-top { display:flex; align-items:flex-start; gap:14px; margin-bottom:14px; }
+.reviewer-avatar { width:44px; height:44px; border-radius:50%; background:var(--orange-pale); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--orange); flex-shrink:0; }
+.reviewer-name { font-size:15px; font-weight:700; margin-bottom:2px; }
+.reviewer-meta { font-size:12px; color:var(--gray); }
+.review-stars-row { margin-left:auto; text-align:right; }
+.review-stars-sm { font-size:14px; color:var(--orange); }
+.review-date-sm { font-size:11px; color:var(--gray); margin-top:2px; }
+.review-text-full { font-size:14px; color:var(--charcoal-light); line-height:1.8; margin-bottom:14px; font-style:italic; }
+.review-actions { display:flex; gap:16px; }
+.review-action { font-size:12px; font-weight:600; color:var(--gray); cursor:pointer; display:flex; align-items:center; gap:4px; transition:color 0.15s; }
+.review-action:hover { color:var(--orange); }
+
+/* Review form */
+.review-form-card { background:var(--cream); border-radius:var(--radius); padding:24px; margin-bottom:24px; }
+.review-form-title { font-size:18px; font-weight:700; margin-bottom:16px; }
+.star-picker { display:flex; gap:8px; margin-bottom:16px; }
+.star-pick { font-size:32px; cursor:pointer; color:#ddd; transition:color 0.15s; }
+.star-pick.lit { color:var(--orange); }
+.form-input { width:100%; border:1.5px solid var(--gray-light); border-radius:var(--radius-sm); padding:10px 14px; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; color:var(--charcoal); outline:none; transition:border-color 0.15s; margin-bottom:12px; background:white; }
+.form-input:focus { border-color:var(--orange); }
+.form-textarea { width:100%; border:1.5px solid var(--gray-light); border-radius:var(--radius-sm); padding:12px 14px; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; color:var(--charcoal); resize:vertical; min-height:100px; outline:none; transition:border-color 0.15s; margin-bottom:12px; background:white; }
+.form-textarea:focus { border-color:var(--orange); }
+.submit-review-btn { background:var(--orange); color:white; border:none; border-radius:100px; padding:11px 28px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:14px; cursor:pointer; transition:background 0.2s; }
+.submit-review-btn:hover { background:var(--orange-light); }
+.submit-review-btn:disabled { opacity:0.6; cursor:not-allowed; }
+.form-success { background:rgba(45,106,79,0.1); border:1px solid rgba(45,106,79,0.3); color:#2D6A4F; border-radius:var(--radius-sm); padding:12px 16px; font-size:14px; font-weight:600; display:none; margin-top:12px; }
+
+/* SIDEBAR */
+.sidebar { display:flex; flex-direction:column; gap:20px; position:sticky; top:130px; }
+.sidebar-card { background:white; border:1.5px solid var(--gray-light); border-radius:var(--radius); overflow:hidden; }
+.sidebar-body { padding:20px; }
+.sidebar-title { font-size:16px; font-weight:700; margin-bottom:16px; }
+.contact-item { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid var(--cream-dark); font-size:14px; }
+.contact-item:last-child { border-bottom:none; }
+.contact-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+.contact-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--gray); display:block; margin-bottom:2px; }
+.contact-value { color:var(--charcoal); font-weight:500; }
+.contact-value a { color:var(--orange); }
+.cta-stack { display:flex; flex-direction:column; gap:10px; padding:20px; }
+.map-placeholder { height:180px; background:var(--cream-dark); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:var(--charcoal-light); font-size:13px; border-bottom:1px solid var(--gray-light); cursor:pointer; overflow:hidden; }
+.map-placeholder svg { opacity:0.3; }
+.claim-card { background:var(--charcoal); border-radius:var(--radius); padding:20px; }
+.claim-title { font-size:15px; font-weight:700; color:white; margin-bottom:6px; }
+.claim-sub { font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:16px; line-height:1.5; }
+.claim-btn { display:block; text-align:center; padding:10px; border-radius:100px; border:1.5px solid rgba(255,255,255,0.2); font-size:13px; font-weight:600; color:white; cursor:pointer; transition:all 0.15s; }
+.claim-btn:hover { background:rgba(255,255,255,0.1); }
+
+/* Nearby */
+.nearby { padding:60px 0 80px; background:var(--cream); }
+.nearby-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.nearby-card { background:white; border-radius:var(--radius); overflow:hidden; border:1.5px solid var(--gray-light); transition:all 0.2s; cursor:pointer; display:flex; }
+.nearby-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:transparent; }
+.nearby-photo { width:100px; flex-shrink:0; background:var(--cream-dark); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.nearby-photo svg { opacity:0.2; }
+.nearby-info { padding:14px 16px; flex:1; }
+.nearby-cat { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--orange); margin-bottom:4px; }
+.nearby-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:6px; }
+.nearby-stars { color:var(--orange); font-size:12px; }
+
+/* Loading */
+.loading-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 0; gap:16px; color:var(--gray); }
+.loading-spinner { width:40px; height:40px; border:3px solid var(--cream-dark); border-top-color:var(--orange); border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.not-found { text-align:center; padding:80px 32px; }
+.not-found h2 { font-size:32px; margin-bottom:12px; }
+.not-found p { color:var(--gray); margin-bottom:24px; }
+
+/* Footer */
+footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06); padding:60px 0 32px; }
+.footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:48px; margin-bottom:48px; }
+.footer-logo { height:104px; width:auto; margin-bottom:16px; filter:drop-shadow(0 2px 8px rgba(196,98,45,0.3)); }
+.footer-tagline { font-size:14px; color:rgba(255,255,255,0.45); line-height:1.7; max-width:240px; margin-bottom:24px; }
+.footer-social { display:flex; gap:10px; }
+.footer-social-btn { width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:center; font-size:15px; cursor:pointer; }
+.footer-heading { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:rgba(255,255,255,0.3); margin-bottom:20px; }
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-links li a { font-size:14px; color:rgba(255,255,255,0.55); transition:color 0.15s; }
+.footer-links li a:hover { color:white; }
+.footer-bottom { display:flex; align-items:center; justify-content:space-between; padding-top:28px; border-top:1px solid rgba(255,255,255,0.06); }
+.footer-copy { font-size:13px; color:rgba(255,255,255,0.3); }
+.footer-legal { display:flex; gap:24px; }
+.footer-legal a { font-size:13px; color:rgba(255,255,255,0.3); }
+
+/* Google Reviews Badge */
+.google-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: white;
+  border: 1.5px solid var(--gray-light);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
+  margin-top: 10px;
+}
+.google-badge:hover {
+  border-color: #4285F4;
+  box-shadow: 0 4px 16px rgba(66,133,244,0.15);
+  transform: translateY(-1px);
+}
+.google-badge-logo {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+.google-badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+.google-badge-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.google-badge-cta {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4285F4;
+}
+.google-badge-arrow {
+  font-size: 16px;
+  color: var(--gray-light);
+}
+
+/* Flag modal */
+.flag-modal-overlay { display:none; position:fixed; inset:0; background:rgba(30,27,24,0.55); z-index:500; align-items:center; justify-content:center; }
+.flag-modal-overlay.open { display:flex; }
+.flag-modal { background:white; border-radius:var(--radius); padding:28px; max-width:420px; width:90%; box-shadow:var(--shadow-lg); }
+.flag-modal-title { font-size:18px; font-weight:700; margin-bottom:6px; }
+.flag-modal-sub { font-size:13px; color:var(--gray); margin-bottom:20px; }
+.flag-reasons { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.flag-reason-btn { padding:10px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--gray-light); background:white; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:500; color:var(--charcoal-mid); cursor:pointer; text-align:left; transition:all 0.15s; }
+.flag-reason-btn:hover { border-color:var(--orange); color:var(--orange); background:var(--orange-pale); }
+.flag-reason-btn.selected { border-color:var(--orange); color:var(--orange); background:var(--orange-pale); }
+.flag-modal-actions { display:flex; gap:10px; justify-content:flex-end; }
+.flag-cancel { padding:9px 18px; border-radius:100px; border:1.5px solid var(--gray-light); background:white; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; color:var(--charcoal-mid); }
+.flag-submit { padding:9px 18px; border-radius:100px; border:none; background:var(--orange); color:white; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; cursor:pointer; transition:background 0.2s; }
+.flag-submit:hover { background:var(--orange-light); }
+.flag-submit:disabled { opacity:0.5; cursor:not-allowed; }
+.review-flagged-notice { font-size:12px; color:var(--gray); font-style:italic; padding:4px 0; }
+/* Honeypot, visually hidden from real users */
+.hp-field { position:absolute; left:-9999px; top:-9999px; opacity:0; height:0; overflow:hidden; }
+
+/* Mobile */
+.mobile-bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.08); z-index:200; padding:0 0 env(safe-area-inset-bottom,0); justify-content:space-around; align-items:stretch; }
+.mbn-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:10px 12px; cursor:pointer; flex:1; color:rgba(255,255,255,0.45); font-family:'Plus Jakarta Sans',sans-serif; text-decoration:none; transition:color 0.15s; }
+.mbn-item.active,.mbn-item:hover { color:var(--orange); }
+.mbn-icon { font-size:22px; line-height:1; }
+.mbn-label { font-size:10px; font-weight:600; letter-spacing:0.5px; }
+@media (max-width:680px) {
+  .mobile-bottom-nav { display:flex; }
+  body { padding-bottom:calc(64px + env(safe-area-inset-bottom,0)); }
+  .nav-links { display:none; }
+  .biz-title { font-size:28px !important; }
+  .biz-header-inner { flex-direction:column; }
+  .biz-layout { grid-template-columns:1fr; }
+  .sidebar { position:static; }
+  .gallery-grid { grid-template-columns:1fr 1fr; grid-template-rows:160px 120px; }
+  .gallery-main { grid-column:span 2; }
+  .gallery-grid.gg-n1 { grid-template-columns:1fr; grid-template-rows:240px; }
+  .gallery-grid.gg-n1 .gallery-main { grid-column:auto; }
+  .gallery-grid.gg-n2 { grid-template-columns:1fr 1fr; grid-template-rows:240px; }
+  .gallery-grid.gg-n2 .gallery-main { grid-column:auto; }
+  .amenities-grid { grid-template-columns:1fr 1fr; }
+  .nearby-grid { grid-template-columns:1fr; }
+  .footer-grid { grid-template-columns:1fr; }
+  .biz-header-tabs { overflow-x:auto; }
+  .biz-tab { white-space:nowrap; padding:12px 16px; font-size:13px; }
+}
+@media (max-width:480px) {
+  .container { padding:0 16px; }
+  .biz-title { font-size:22px !important; }
+  .biz-header-inner { gap:12px; }
+  .gallery-grid { display:none; }
+  .gallery-swiper { display:block; }
+  .amenities-grid { grid-template-columns:1fr; }
+  .biz-tab { padding:10px 12px; font-size:12px; }
+  .nav-inner { height:72px; padding:0 16px; }
+  .review-card { padding:16px; }
+  .sidebar-card { padding:16px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Explore</a>
+        <a class="nav-link" href="/pages/directory.html">Browse</a>
+        <a class="nav-link" href="/pages/events.html">Events</a>
+        <a class="nav-link" href="/pages/blog.html">Blog</a>
+        <a class="nav-link" href="/pages/about.html">About</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-left:auto;">
+        <a href="/pages/submit/business.html" class="btn btn-primary" style="font-size:13px;padding:9px 18px;">+ List Business</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-inner">
+      <a href="/">815local</a>
+      <span>›</span>
+      <a href="/pages/directory.html">Browse</a>
+      <span>›</span>
+      <span id="breadcrumb-cat">Business</span>
+      <span>›</span>
+      <span id="breadcrumb-name">Loading...</span>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery">
+  <div class="gallery-grid" id="gallery-grid">
+    <div class="gallery-cell gallery-main" id="gallery-main">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+      <span id="gallery-biz-name">Business photo</span>
+      <div class="gallery-all-btn" id="gallery-all-btn">📷 Add Photos</div>
+    </div>
+    <div class="gallery-cell" id="gallery-2"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Interior</div>
+    <div class="gallery-cell" id="gallery-3"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Details</div>
+    <div class="gallery-cell" id="gallery-4"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>Ambiance</div>
+    <div class="gallery-cell" id="gallery-5"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>More photos</div>
+  </div>
+  <div class="gallery-swiper" id="gallery-swiper" style="display:none;">
+    <div class="swipe-track" id="swipe-track"></div>
+    <div class="swipe-counter" id="swipe-counter" style="display:none;"></div>
+    <div class="swipe-dots" id="swipe-dots"></div>
+  </div>
+</div>
+
+<!-- BIZ HEADER -->
+<div class="biz-header" id="biz-header">
+  <div class="container">
+    <div id="biz-header-loading" class="loading-state"><div class="loading-spinner"></div><div>Loading business...</div></div>
+    <div id="biz-header-content" style="display:none;">
+      <div class="biz-header-inner">
+        <div class="biz-header-left">
+          <div class="biz-cat-row">
+            <span class="biz-cat-pill" id="h-cat">Category</span>
+            <span class="biz-cat-pill" id="h-subcat" style="background:var(--cream-dark);color:var(--charcoal-mid);"></span>
+          </div>
+          <h1 class="biz-title" id="h-name">Business Name</h1>
+          <div id="h-claimed" style="display:none;margin-top:8px;"><span class="owner-verified-badge">✓ Owner Verified</span></div>
+          <div id="h-area-served" style="display:none;margin-top:8px;"><span class="area-served-badge">📍 Serves the 815</span></div>
+          <p class="biz-subtitle" id="h-desc">Description</p>
+          <div class="biz-rating-big">
+            <span class="biz-rating-num" id="h-rating">…</span>
+            <span class="biz-stars-big stars" id="h-stars">☆☆☆☆☆</span>
+            <a class="biz-reviews-link" href="#reviews" id="h-review-count">0 reviews</a>
+            <span style="color:var(--gray-light);">·</span>
+            <span style="font-size:14px;color:var(--gray);" id="h-price">$$</span>
+          </div>
+          <div class="biz-quick-info" id="h-quick-info"></div>
+        </div>
+        <div class="biz-header-actions">
+          <a class="btn btn-primary" id="h-reserve-btn" href="#reviews" style="justify-content:center;">📞 Contact Business</a>
+          <a class="btn btn-primary" id="h-order-btn" href="#" target="_blank" rel="noopener" style="justify-content:center;display:none;background:#2D6A4F;"><span class="order-btn-icon">🛒</span> <span class="order-btn-label">Order Online</span></a>
+          <div style="display:flex;gap:8px;">
+            <button class="action-btn" id="h-save-btn">♡ Save</button>
+            <button class="action-btn" id="h-share-btn">↗ Share</button>
+            <button class="action-btn" id="h-dir-btn">📍 Directions</button>
+          </div>
+          <button class="btn btn-outline" style="justify-content:center;" onclick="document.getElementById('write-review').scrollIntoView({behavior:'smooth'})">✏️ Write a Review</button>
+        </div>
+      </div>
+      <div class="biz-header-tabs">
+        <div class="biz-tab active" onclick="scrollToSection('about')">Overview</div>
+        <div class="biz-tab" onclick="scrollToSection('reviews')">Reviews</div>
+        <div class="biz-tab" onclick="scrollToSection('hours')">Hours & Info</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN BODY -->
+<div class="biz-body">
+  <div class="container">
+    <div class="biz-layout">
+      <div class="left-col">
+
+        <!-- About -->
+        <div id="about">
+          <div class="section-tag">About</div>
+          <h2 class="about-title" id="about-title">About this business</h2>
+          <p class="about-text" id="about-text"></p>
+          <div class="about-attrs" id="about-attrs"></div>
+        </div>
+
+        <!-- Hours -->
+        <div id="hours">
+          <div class="section-tag">Hours</div>
+          <h2 class="hours-title">When we're open</h2>
+          <div class="hours-grid" id="hours-grid"></div>
+        </div>
+
+        <!-- Upcoming events at this business (hidden until there are any) -->
+        <div id="biz-events" style="display:none;">
+          <div class="section-tag">Events</div>
+          <h2 class="about-title">Upcoming here</h2>
+          <div id="biz-events-list"></div>
+        </div>
+
+        <!-- Reviews -->
+        <div id="reviews">
+          <div class="reviews-header">
+            <div>
+              <div class="section-tag">Community Reviews</div>
+              <h2 class="reviews-title">What locals are saying</h2>
+            </div>
+            <button class="btn btn-primary" onclick="document.getElementById('write-review').scrollIntoView({behavior:'smooth'})">✏️ Write a Review</button>
+          </div>
+
+          <!-- Summary -->
+          <div class="review-summary" id="review-summary">
+            <div style="text-align:center;">
+              <div class="review-big-num" id="sum-rating">…</div>
+              <div class="review-stars-lg" id="sum-stars">☆☆☆☆☆</div>
+              <div class="review-total" id="sum-count">0 reviews</div>
+            </div>
+            <div class="rating-bars" id="rating-bars"></div>
+          </div>
+
+          <!-- Review list -->
+          <div id="reviews-list"></div>
+
+          <!-- Write Review Form -->
+          <div class="review-form-card" id="write-review">
+            <div class="review-form-title">✏️ Write a Review</div>
+
+            <!-- Auth gate: shown when not signed in -->
+            <div id="review-auth-gate" style="display:none;text-align:center;padding:24px 0;">
+              <div style="font-size:32px;margin-bottom:12px;">🔒</div>
+              <div style="font-size:15px;font-weight:600;margin-bottom:8px;">Sign in to leave a review</div>
+              <div style="font-size:14px;color:var(--charcoal-light);margin-bottom:20px;">Create a free account to share your experience with the 815 community.</div>
+              <a href="/pages/profile.html" class="btn btn-primary">Create a Profile →</a>
+            </div>
+
+            <!-- Profile gate: shown when signed in but display_name not set -->
+            <div id="review-profile-gate" style="display:none;text-align:center;padding:24px 0;">
+              <div style="font-size:32px;margin-bottom:12px;">👤</div>
+              <div style="font-size:15px;font-weight:600;margin-bottom:8px;">Complete your profile first</div>
+              <div style="font-size:14px;color:var(--charcoal-light);margin-bottom:20px;">Add a display name to your profile before leaving a review.</div>
+              <a href="/pages/profile.html" class="btn btn-primary">Complete Profile →</a>
+            </div>
+
+            <!-- Review form: shown when signed in with a complete profile -->
+            <div id="review-form-fields" style="display:none;">
+              <div style="font-size:14px;color:var(--charcoal-light);margin-bottom:16px;">Share your experience with the 815 community.</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Your Rating</div>
+                <div class="star-picker" id="star-picker">
+                  <span class="star-pick" onclick="setStar(1)">★</span>
+                  <span class="star-pick" onclick="setStar(2)">★</span>
+                  <span class="star-pick" onclick="setStar(3)">★</span>
+                  <span class="star-pick" onclick="setStar(4)">★</span>
+                  <span class="star-pick" onclick="setStar(5)">★</span>
+                </div>
+              </div>
+              <div style="font-size:13px;color:var(--charcoal-light);margin-bottom:12px;">Posting as: <strong id="reviewer-display-name"></strong></div>
+              <textarea class="form-textarea" id="review-text" placeholder="What did you love? Be specific, your neighbors want to know!"></textarea>
+              <!-- Honeypot: bots fill this, humans never see it -->
+              <div class="hp-field" aria-hidden="true">
+                <input type="text" id="hp-website" name="website" tabindex="-1" autocomplete="off">
+              </div>
+              <button class="submit-review-btn" id="submit-review-btn" onclick="submitReview()">Submit Review →</button>
+              <div class="form-success" id="form-success">✅ Thank you! Your review has been posted.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /left-col -->
+
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <div id="map-container" class="map-placeholder" onclick="openMap()" style="padding:0;overflow:hidden;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Interactive Map
+          </div>
+          <div class="sidebar-body">
+            <div class="sidebar-title">Contact & Info</div>
+            <div id="sidebar-contact"></div>
+          </div>
+          <div class="cta-stack">
+            <a class="btn btn-primary" id="sb-phone-btn" href="#" style="justify-content:center;">📞 Call Now</a>
+            <a class="btn btn-outline" id="sb-dir-btn" href="#" style="justify-content:center;">📍 Get Directions</a>
+            <a class="btn btn-primary" id="sb-order-btn" href="#" target="_blank" rel="noopener" style="justify-content:center;display:none;background:#2D6A4F;"><span class="order-btn-icon">🛒</span> <span class="order-btn-label">Order Online</span></a>
+            <a class="google-badge" id="google-badge" href="#" target="_blank" rel="noopener" style="display:none;">
+              <svg class="google-badge-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              <div class="google-badge-text">
+                <span class="google-badge-label">See reviews on</span>
+                <span class="google-badge-cta">Google Maps →</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="claim-card" id="claim-card">
+          <div class="claim-title">Is this your business?</div>
+          <p class="claim-sub">Claim your listing to respond to reviews and update your info.</p>
+          <a class="claim-btn" href="/pages/submit/claim-business.html">Claim this Business →</a>
+        </div>
+        <div class="claim-card" id="deal-card" style="margin-top:12px;background:var(--orange);">
+          <div class="claim-title">Post a Deal</div>
+          <p class="claim-sub">Promote a special offer to thousands of locals in the 815.</p>
+          <a class="claim-btn deal-btn" id="deal-btn" href="/pages/submit/deal.html" style="border-color:rgba(255,255,255,0.4);">Post a Deal for this Business →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEARBY -->
+<section class="nearby">
+  <div class="container">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;">
+      <div>
+        <div class="section-tag">You Might Also Like</div>
+        <h2 style="font-size:30px;font-weight:700;">More great spots nearby</h2>
+      </div>
+      <a href="/pages/directory.html" style="font-size:14px;font-weight:600;color:var(--orange);">Browse all →</a>
+    </div>
+    <div class="nearby-grid" id="nearby-grid">
+      <div class="loading-state" style="grid-column:span 3;"><div class="loading-spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" class="footer-logo"></picture>
+        <p class="footer-tagline">Your one-stop community hub for local business reviews, services, restaurants, and events in the 815 area.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61589234260823" target="_blank" rel="noopener" class="footer-social-btn" title="Facebook">📘</a>
+        </div>
+      </div>
+      <div><div class="footer-heading">Explore</div><ul class="footer-links"><li><a href="/pages/directory.html">Browse All</a></li><li><a href="/pages/events.html">Events</a></li></ul></div>
+      <div><div class="footer-heading">Community</div><ul class="footer-links"><li><a href="#reviews">Write a Review</a></li><li><a href="/pages/events.html">Events Calendar</a></li></ul></div>
+      <div><div class="footer-heading">Business</div><ul class="footer-links"><li><a href="/pages/submit/business.html">List Your Business</a></li><li><a href="mailto:815local@gmail.com">Contact Us</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 815local.com</span>
+      <div class="footer-legal"><a href="/legal/privacy.html">Privacy</a><a href="/legal/terms.html">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLAG REVIEW MODAL -->
+<div class="flag-modal-overlay" id="flag-modal-overlay" onclick="closeFlagModal(event)">
+  <div class="flag-modal">
+    <div class="flag-modal-title">🚩 Report this review</div>
+    <div class="flag-modal-sub">Help keep 815local trustworthy. What's wrong with this review?</div>
+    <div class="flag-reasons" id="flag-reasons">
+      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Fake or spam')">🤖 Fake or spam</button>
+      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Not about this business')">❓ Not about this business</button>
+      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Inappropriate content')">⚠️ Inappropriate content</button>
+      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Conflict of interest')">💼 Conflict of interest (competitor or owner)</button>
+    </div>
+    <div class="flag-modal-actions">
+      <button class="flag-cancel" onclick="closeFlagModal()">Cancel</button>
+      <button class="flag-submit" id="flag-submit-btn" onclick="submitFlag()" disabled>Report Review</button>
+    </div>
+  </div>
+</div>
+
+<nav class="mobile-bottom-nav">
+  <a href="/" class="mbn-item"><div class="mbn-icon">🏠</div><div class="mbn-label">Home</div></a>
+  <a href="/pages/directory.html" class="mbn-item active"><div class="mbn-icon">🔍</div><div class="mbn-label">Browse</div></a>
+  <a href="/pages/events.html" class="mbn-item"><div class="mbn-icon">📅</div><div class="mbn-label">Events</div></a>
+  <a href="/pages/profile.html" class="mbn-item"><div class="mbn-icon">👤</div><div class="mbn-label">Profile</div></a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/analytics-tracker.js"></script>
+<script>
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const params = new URLSearchParams(window.location.search);
+const bizId = params.get('id');
+let selectedRating = 0;
+let currentBiz = null;
+let flagTargetReviewId = null;
+let selectedFlagReason = null;
+let currentUser = null;
+let currentProfile = null;
+
+// Session token, persists for this browser tab session, used for rate limiting
+function getSessionToken() {
+  let token = sessionStorage.getItem('815_session');
+  if (!token) {
+    token = crypto.randomUUID();
+    sessionStorage.setItem('815_session', token);
+  }
+  return token;
+}
+
+function starsHtml(r) {
+  const f = Math.round(r);
+  return '★'.repeat(f) + '☆'.repeat(5 - f);
+}
+
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) window.scrollTo({ top: el.offsetTop - 140, behavior: 'smooth' });
+  document.querySelectorAll('.biz-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function setStar(n) {
+  selectedRating = n;
+  document.querySelectorAll('.star-pick').forEach((s,i) => {
+    s.classList.toggle('lit', i < n);
+  });
+}
+
+function openMap() {
+  if (currentBiz?.address) {
+    window.open('https://maps.google.com/?q=' + encodeURIComponent(currentBiz.address), '_blank');
+  }
+}
+
+function getDayName() {
+  return ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][new Date().getDay()];
+}
+
+async function savePhotoUrl(url) {
+  const { error } = await db.from('businesses').update({ image_url: url }).eq('id', bizId);
+  if (!error) {
+    const mainCell = document.getElementById('gallery-main');
+    mainCell.style.backgroundImage = `url('${url}')`;
+    mainCell.style.backgroundSize = 'cover';
+    mainCell.style.backgroundPosition = 'center';
+    mainCell.innerHTML = `<div class="gallery-all-btn" onclick="window.open('${url}','_blank')">📷 View Photo</div>`;
+    [2,3,4,5].forEach(i => {
+      const cell = document.getElementById('gallery-' + i);
+      if (cell) {
+        cell.style.backgroundImage = `url('${url}')`;
+        cell.style.backgroundSize = 'cover';
+        cell.style.backgroundPosition = 'center';
+        cell.style.filter = 'brightness(0.7)';
+        cell.innerHTML = '';
+      }
+    });
+    alert('✅ Photo saved! It will now appear on your listing.');
+  } else {
+    alert('Error saving photo: ' + error.message);
+  }
+}
+
+async function loadBusiness() {
+  if (!bizId) {
+    showNotFound();
+    return;
+  }
+
+  try {
+    const { data: biz, error } = await db
+      .from('businesses_with_ratings')
+      .select('*')
+      .eq('id', bizId)
+      .single();
+
+    if (error || !biz) { showNotFound(); return; }
+    currentBiz = biz;
+    renderBusiness(biz);
+    loadReviews(bizId);
+    loadNearby(biz.category, bizId);
+  } catch(e) {
+    showNotFound();
+  }
+}
+
+// Convert a stored 12-hour time ("9:00 AM") into 24-hour "HH:MM", or null if unparseable.
+function to24h(s) {
+  const m = (s || '').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return null;
+  let h = parseInt(m[1], 10);
+  const ap = m[3].toUpperCase();
+  if (ap === 'PM' && h !== 12) h += 12;
+  if (ap === 'AM' && h === 12) h = 0;
+  return String(h).padStart(2, '0') + ':' + m[2];
+}
+
+// Parse a stored hours string ("9:00 AM - 5:00 PM") into {opens,closes}, or null
+// when closed / by appointment / unparseable.
+function parseHoursRange(val) {
+  const v = (val || '').trim();
+  const low = v.toLowerCase();
+  if (!v || low === 'closed' || low.includes('appointment')) return null;
+  const parts = v.split(/\s+[-–]\s+/);
+  if (parts.length !== 2) return null;
+  const opens = to24h(parts[0]);
+  const closes = to24h(parts[1]);
+  return (opens && closes) ? { opens, closes } : null;
+}
+
+// true = open, false = closed, null = hours unknown (hide the badge). Uses Central time (IL).
+function isOpenNow(hours) {
+  if (!hours || typeof hours !== 'object') return null;
+  const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  const toMin = hm => { const p = hm.split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); };
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const day = now.getDay();
+  // Spillover from yesterday's range that runs past midnight (e.g. a 5 PM - 2 AM bar).
+  const yest = parseHoursRange(hours[days[(day + 6) % 7]]);
+  if (yest) {
+    const o = toMin(yest.opens), c = toMin(yest.closes);
+    if (c <= o && mins < c) return true;
+  }
+  // Decide from today's value only: parseable range -> compare; "Closed" -> false; else unknown.
+  const todayRaw = (hours[days[day]] || '').trim();
+  const today = parseHoursRange(todayRaw);
+  if (today) {
+    const o = toMin(today.opens), c = toMin(today.closes);
+    return c > o ? (mins >= o && mins < c) : (mins >= o);
+  }
+  if (todayRaw.toLowerCase() === 'closed') return false;
+  return null; // by appointment / missing / unparseable
+}
+
+// Build schema.org openingHoursSpecification[] from the stored hours JSONB, or null.
+function hoursToSpec(hours) {
+  if (!hours || typeof hours !== 'object') return null;
+  const dayMap = {
+    monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday',
+    thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday'
+  };
+  const spec = [];
+  Object.keys(dayMap).forEach(d => {
+    const r = parseHoursRange(hours[d]);
+    if (r) spec.push({ '@type': 'OpeningHoursSpecification', dayOfWeek: dayMap[d], opens: r.opens, closes: r.closes });
+  });
+  return spec.length ? spec : null;
+}
+
+// Inject (or refresh) the LocalBusiness JSON-LD block built from the loaded record.
+// Only real data: every field is omitted when missing, and aggregateRating appears
+// only when the business actually has reviews.
+function renderJsonLd(b) {
+  const canonicalUrl = 'https://815local.com/pages/business.html?id=' + (b.id || '');
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': canonicalUrl,
+    name: b.name,
+    url: canonicalUrl
+  };
+  if (b.description) data.description = b.description.slice(0, 300);
+  if (b.address || b.city || b.zip) {
+    const addr = { '@type': 'PostalAddress', addressCountry: 'US' };
+    if (b.address) addr.streetAddress = b.address;
+    if (b.city) addr.addressLocality = b.city;
+    if (b.state) addr.addressRegion = b.state;
+    if (b.zip) addr.postalCode = b.zip;
+    data.address = addr;
+  }
+  if (b.phone) data.telephone = b.phone;
+  if (b.price_range) data.priceRange = b.price_range;
+  const img = b.image_url || (b.photos && b.photos[0]);
+  if (img) data.image = img;
+  if (b.website) data.sameAs = [b.website];
+  const spec = hoursToSpec(b.hours);
+  if (spec) data.openingHoursSpecification = spec;
+  if ((b.review_count || 0) > 0 && parseFloat(b.avg_rating) > 0) {
+    data.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: parseFloat(b.avg_rating).toFixed(1),
+      reviewCount: b.review_count
+    };
+  }
+  let el = document.getElementById('ld-business');
+  if (!el) {
+    el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.id = 'ld-business';
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(data);
+}
+
+function renderBusiness(b) {
+  // Page title + OG tags
+  document.title = b.name + ', 815local';
+  const desc = b.description ? b.description.slice(0, 160) : (b.category + ' in the 815 area, find hours, reviews, and contact info on 815local.');
+  document.querySelector('meta[property="og:title"]')?.setAttribute('content', b.name + ' | 815local');
+  document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
+  document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
+  const canonicalUrl = 'https://815local.com/pages/business.html?id=' + (b.id || '');
+  const ogUrl = document.querySelector('meta[property="og:url"]');
+  if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
+  canonical.href = canonicalUrl;
+  if (b.image_url || (b.photos && b.photos[0])) {
+    document.querySelector('meta[property="og:image"]')?.setAttribute('content', b.image_url || b.photos[0]);
+  }
+
+  // LocalBusiness structured data (JSON-LD) for rich results
+  renderJsonLd(b);
+
+  // Breadcrumb
+  document.getElementById('breadcrumb-cat').textContent = b.category;
+  document.getElementById('breadcrumb-name').textContent = b.name;
+
+  // Gallery, use photos[] array first (from Google Places scraper), fall back to image_url
+  const photos = (b.photos && b.photos.length) ? b.photos : (b.image_url ? [b.image_url] : []);
+  const photoPos = (i) => {
+    const safe = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
+    const v = b.photo_positions && b.photo_positions[i];
+    return safe.has(v) ? v : 'center';
+  };
+  const gallerySection = document.querySelector('.gallery');
+  const galleryGrid = document.getElementById('gallery-grid');
+  const mainCell = document.getElementById('gallery-main');
+
+  if (photos.length === 0) {
+    // No photos, show an owner-claim CTA in place of the gallery
+    const claimUrl = '/pages/submit/claim-business.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
+    gallerySection.innerHTML = `
+      <div class="container" style="padding:36px 20px;text-align:center;color:white;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.45;margin-bottom:10px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <div style="font-size:17px;font-weight:700;margin-bottom:6px;">No photos yet</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:16px;">Are you the owner? Claim this listing to add photos.</div>
+        <a href="${claimUrl}" style="display:inline-block;background:white;color:var(--charcoal);padding:9px 22px;border-radius:100px;font-size:13px;font-weight:600;text-decoration:none;">Claim &amp; add photos →</a>
+      </div>`;
+  } else {
+    mainCell.style.backgroundImage = `url('${photos[0]}')`;
+    mainCell.style.backgroundSize = 'cover';
+    mainCell.style.backgroundPosition = photoPos(0);
+    mainCell.innerHTML = `<div class="gallery-all-btn" id="gallery-all-btn" onclick="window.open('${photos[0]}','_blank')">📷 View Photo</div>`;
+
+    // Apply a count-aware class so empty cells don't leave black gaps.
+    galleryGrid.classList.add('gg-n' + Math.min(photos.length, 5));
+
+    // Fill thumbnails for photos 2..n, remove any cell with no photo.
+    [2,3,4,5].forEach((cellNum, idx) => {
+      const cell = document.getElementById('gallery-' + cellNum);
+      if (!cell) return;
+      const photoUrl = photos[idx + 1];
+      if (photoUrl) {
+        cell.style.backgroundImage = `url('${photoUrl}')`;
+        cell.style.backgroundSize = 'cover';
+        cell.style.backgroundPosition = photoPos(idx + 1);
+        cell.style.filter = 'brightness(0.7)';
+        cell.innerHTML = '';
+        cell.onclick = () => window.open(photoUrl, '_blank');
+        cell.style.cursor = 'pointer';
+      } else {
+        cell.remove();
+      }
+    });
+
+    // Mobile swiper, same photos[] array, swapped in via media query below 480px
+    const swiper = document.getElementById('gallery-swiper');
+    const track = document.getElementById('swipe-track');
+    const dots = document.getElementById('swipe-dots');
+    const counter = document.getElementById('swipe-counter');
+    track.innerHTML = photos.map((url, i) =>
+      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}" style="background-image:url('${url.replace(/'/g, "\\'")}');background-position:${photoPos(i)}"></div>`
+    ).join('');
+    track.querySelectorAll('.swipe-slide').forEach((slide, i) => {
+      slide.addEventListener('click', () => window.open(photos[i], '_blank'));
+    });
+    if (photos.length > 1) {
+      counter.style.display = 'block';
+      counter.textContent = `1 / ${photos.length}`;
+      dots.innerHTML = photos.map((_, i) => `<span class="swipe-dot${i===0?' active':''}"></span>`).join('');
+      track.addEventListener('scroll', () => {
+        const idx = Math.round(track.scrollLeft / track.clientWidth);
+        counter.textContent = `${idx+1} / ${photos.length}`;
+        dots.querySelectorAll('.swipe-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      }, { passive: true });
+    }
+    swiper.style.display = '';
+  }
+
+  // Header
+  document.getElementById('biz-header-loading').style.display = 'none';
+  document.getElementById('biz-header-content').style.display = 'block';
+  document.getElementById('h-cat').textContent = b.category;
+  const subcat = document.getElementById('h-subcat');
+  if (b.subcategory) subcat.textContent = b.subcategory;
+  else subcat.style.display = 'none';
+  document.getElementById('h-name').textContent = b.name;
+  if (b.is_claimed) {
+    document.getElementById('h-claimed').style.display = 'block';
+    document.getElementById('claim-card').style.display = 'none';
+  }
+  const cityNorm = (b.city || '').trim().toLowerCase();
+  if (cityNorm.length > 0 && !['minooka','channahon','shorewood'].includes(cityNorm)) {
+    document.getElementById('h-area-served').style.display = 'block';
+  }
+  document.getElementById('h-desc').textContent = b.description || '';
+  const rating = parseFloat(b.avg_rating) || 0;
+  const count = b.review_count || 0;
+  document.getElementById('h-rating').textContent = rating > 0 ? rating.toFixed(1) : 'New';
+  document.getElementById('h-stars').textContent = rating > 0 ? starsHtml(rating) : '☆☆☆☆☆';
+  document.getElementById('h-review-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
+  const hPrice = document.getElementById('h-price');
+  if (b.category === 'Parks & Outdoor' || !b.price_range) {
+    hPrice.style.display = 'none';
+    if (hPrice.previousElementSibling) hPrice.previousElementSibling.style.display = 'none';
+  } else {
+    hPrice.textContent = b.price_range;
+  }
+
+  if (b.category === 'Parks & Outdoor') {
+    ['h-reserve-btn','sb-phone-btn','claim-card','deal-card'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  }
+
+  // Quick info
+  const qi = document.getElementById('h-quick-info');
+  const openStatus = isOpenNow(b.hours);
+  const openItem = openStatus === true
+    ? `<div class="biz-quick-item" style="color:#2D6A4F;font-weight:700;">🟢 Open now</div>`
+    : (openStatus === false ? `<div class="biz-quick-item" style="color:var(--gray);font-weight:600;">Closed now</div>` : '');
+  qi.innerHTML = [
+    openItem,
+    b.address ? `<div class="biz-quick-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>${escapeHtml(b.address)}</div>` : '',
+    b.phone ? `<div class="biz-quick-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.19 11.9 19.79 19.79 0 0 1 1.12 3.23A2 2 0 0 1 3.1 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${escapeHtml(b.phone)}</div>` : '',
+    b.website ? `<div class="biz-quick-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><a href="${escapeHtml(/^https?:\/\//i.test(b.website) ? b.website : 'https://' + b.website)}" target="_blank" style="color:var(--orange);">${escapeHtml(b.website)}</a></div>` : '',
+  ].join('');
+
+  // Sidebar
+  const sbPhoneBtn = document.getElementById('sb-phone-btn');
+  if (b.phone) {
+    sbPhoneBtn.href = 'tel:' + b.phone.replace(/\D/g,'');
+  } else {
+    sbPhoneBtn.style.display = 'none';
+  }
+  document.getElementById('sb-dir-btn').href = b.address ? 'https://maps.google.com/?q=' + encodeURIComponent(b.address) : '#';
+
+  // OpenStreetMap iframe, free, no API key needed
+  const mapContainer = document.getElementById('map-container');
+  if (b.address) {
+    const fullAddress = `${b.address}, ${b.city || ''}, ${b.state || 'IL'} ${b.zip || ''}`.trim();
+    const googleMapsUrl = 'https://maps.google.com/?q=' + encodeURIComponent(fullAddress);
+    const osmQuery = encodeURIComponent(fullAddress);
+    mapContainer.style.cssText = 'height:180px;padding:0;overflow:hidden;position:relative;border-bottom:1px solid var(--gray-light);display:block;';
+    mapContainer.innerHTML = `
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?query=${osmQuery}&zoom=15&layers=M"
+        style="width:100%;height:100%;border:none;display:block;"
+        loading="lazy"
+        title="Map of ${escapeHtml(b.name)}">
+      </iframe>
+      <a href="${googleMapsUrl}" target="_blank"
+         style="position:absolute;bottom:8px;right:8px;background:white;border-radius:4px;padding:4px 8px;font-size:11px;font-weight:600;color:var(--orange);text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,0.2);">
+        Open in Google Maps ↗
+      </a>`;
+  }
+
+  // Order / Book Online button, wording follows category (food places "Order", others "Book")
+  const orderBtn = document.getElementById('sb-order-btn');
+  const headerOrderBtn = document.getElementById('h-order-btn');
+  if (b.order_url) {
+    const isFood = b.category === 'Food & Drink';
+    const label = isFood ? 'Order Online' : 'Book Online';
+    const icon  = isFood ? '🛒' : '📅';
+    [orderBtn, headerOrderBtn].forEach(btn => {
+      btn.href = b.order_url;
+      btn.querySelector('.order-btn-label').textContent = label;
+      btn.querySelector('.order-btn-icon').textContent  = icon;
+      btn.style.display = 'flex';
+    });
+  }
+
+  // Google Reviews badge
+  const googleBadge = document.getElementById('google-badge');
+  if (b.google_place_id) {
+    googleBadge.href = 'https://search.google.com/local/reviews?placeid=' + b.google_place_id;
+    googleBadge.style.display = 'inline-flex';
+  } else if (b.name && b.address) {
+    // Fallback: search Google Maps by name + address
+    googleBadge.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(b.name + ' ' + b.address);
+    googleBadge.style.display = 'inline-flex';
+  }
+
+  const claimBtn = document.querySelector('.claim-btn');
+  if (claimBtn) {
+    claimBtn.href = '/pages/submit/claim-business.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
+  }
+  const dealBtn = document.getElementById('deal-btn');
+  if (dealBtn) {
+    dealBtn.href = '/pages/submit/deal.html?id=' + encodeURIComponent(bizId || '') + '&name=' + encodeURIComponent(b.name || '');
+  }
+
+  const sc = document.getElementById('sidebar-contact');
+  sc.innerHTML = [
+    b.address ? `<div class="contact-item"><span class="contact-icon">📍</span><div><span class="contact-label">Address</span><span class="contact-value">${escapeHtml(b.address)}</span></div></div>` : '',
+    b.phone ? `<div class="contact-item"><span class="contact-icon">📞</span><div><span class="contact-label">Phone</span><span class="contact-value"><a href="tel:${b.phone.replace(/\D/g,'')}">${escapeHtml(b.phone)}</a></span></div></div>` : '',
+    b.website ? `<div class="contact-item"><span class="contact-icon">🌐</span><div><span class="contact-label">Website</span><span class="contact-value"><a href="${escapeHtml(/^https?:\/\//i.test(b.website) ? b.website : 'https://' + b.website)}" target="_blank">${escapeHtml(b.website)}</a></span></div></div>` : '',
+    (b.category !== 'Parks & Outdoor' && b.price_range) ? `<div class="contact-item"><span class="contact-icon">💵</span><div><span class="contact-label">Price Range</span><span class="contact-value">${escapeHtml(b.price_range)}</span></div></div>` : '',
+  ].join('');
+
+  // About
+  document.getElementById('about-title').textContent = 'About ' + b.name;
+  document.getElementById('about-text').textContent = b.story || b.description || '';
+  const attrs = document.getElementById('about-attrs');
+  attrs.innerHTML = (b.features || []).map(f => `<span class="about-attr">${escapeHtml(f)}</span>`).join('');
+
+  // Hours
+  const today = getDayName();
+  const hours = b.hours || {};
+  const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+  const hoursEl = document.getElementById('hours-grid');
+
+  const dayVals = days.map(d => (hours[d] || '').trim());
+  const openVals = dayVals.filter(v => v && v.toLowerCase() !== 'closed');
+  const allEmpty = openVals.length === 0;
+  const allSame = openVals.length === 7 && openVals.every(v => v.toLowerCase() === openVals[0].toLowerCase());
+  const isPark = b.category === 'Parks & Outdoor';
+  const parkAllHours = isPark && hours && hours.all ? hours.all : null;
+
+  if (isPark) {
+    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">🌳 ${escapeHtml(parkAllHours || 'Open dawn to dusk daily')}</span></div>`;
+  } else if (allEmpty) {
+    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">📅 By appointment, contact directly for hours</span></div>`;
+  } else if (allSame) {
+    hoursEl.innerHTML = `<div class="hours-row" style="justify-content:center;"><span class="hours-time">${escapeHtml(openVals[0])}</span></div>`;
+  } else {
+    hoursEl.innerHTML = days.map(d => {
+      const isToday = d === today;
+      const val = hours[d];
+      return `<div class="hours-row ${isToday ? 'today' : ''}">
+        <span class="hours-day">${d.charAt(0).toUpperCase()+d.slice(1)} ${isToday ? '<span class="hours-open-badge">Today</span>' : ''}</span>
+        ${val && val.toLowerCase() !== 'closed' ? `<span class="hours-time">${escapeHtml(val)}</span>` : '<span class="hours-closed">Closed</span>'}
+      </div>`;
+    }).join('');
+  }
+
+  // Review form biz name
+  document.querySelector('.review-form-title').textContent = '✏️ Review ' + b.name;
+}
+
+async function loadReviews(id) {
+  const { data: reviews } = await db
+    .from('reviews')
+    .select('*')
+    .eq('business_id', id)
+    .eq('is_flagged', false)
+    .order('created_at', { ascending: false });
+
+  if (!reviews || !reviews.length) {
+    document.getElementById('reviews-list').innerHTML = `<div style="padding:24px 0;color:var(--gray);font-size:14px;">No reviews yet, be the first to share your experience!</div>`;
+    renderRatingSummary([], 0);
+    return;
+  }
+
+  renderRatingSummary(reviews, parseFloat(currentBiz?.avg_rating) || 0);
+
+  document.getElementById('reviews-list').innerHTML = reviews.map(r => {
+    const initials = r.reviewer_name?.charAt(0).toUpperCase() || '?';
+    const date = new Date(r.created_at).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+    return `<div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar">${escapeHtml(initials)}</div>
+        <div>
+          <div class="reviewer-name">${escapeHtml(r.reviewer_name)}</div>
+          <div class="reviewer-meta">815local Community Member</div>
+        </div>
+        <div class="review-stars-row">
+          <div class="review-stars-sm stars">${starsHtml(r.rating)}</div>
+          <div class="review-date-sm">${date}</div>
+        </div>
+      </div>
+      <p class="review-text-full">"${escapeHtml(r.review_text)}"</p>
+      <div class="review-actions">
+        <span class="review-action" onclick="markHelpful(this, '${r.id}')" ${sessionStorage.getItem('815_helpful_' + r.id) ? 'style="opacity:0.5;pointer-events:none;"' : ''}>👍 Helpful (${r.helpful_count || 0})</span>
+        <span class="review-action" onclick="openFlagModal('${r.id}')" style="margin-left:auto;">🚩 Report</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderRatingSummary(reviews, avgRating) {
+  const count = reviews.length;
+  document.getElementById('sum-rating').textContent = avgRating > 0 ? avgRating.toFixed(1) : ', ';
+  document.getElementById('sum-stars').textContent = avgRating > 0 ? starsHtml(avgRating) : '☆☆☆☆☆';
+  document.getElementById('sum-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
+
+  // Rating bars
+  const counts = [5,4,3,2,1].map(n => reviews.filter(r => r.rating === n).length);
+  const max = Math.max(...counts, 1);
+  document.getElementById('rating-bars').innerHTML = [5,4,3,2,1].map((n,i) => `
+    <div class="rating-bar-row">
+      <span class="rating-bar-label">${n}★</span>
+      <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${Math.round(counts[i]/max*100)}%"></div></div>
+      <span class="rating-bar-count">${counts[i]}</span>
+    </div>`).join('');
+}
+
+async function submitReview() {
+  if (!currentUser || !currentProfile?.display_name) {
+    updateReviewForm();
+    return;
+  }
+
+  const text = document.getElementById('review-text').value.trim();
+  const btn = document.getElementById('submit-review-btn');
+
+  // Honeypot check, bots fill this hidden field, humans don't
+  if (document.getElementById('hp-website').value) {
+    // Silently appear to succeed so bots don't retry
+    document.getElementById('form-success').style.display = 'block';
+    return;
+  }
+
+  if (!selectedRating) { alert('Please select a star rating.'); return; }
+  if (!text || text.length < 10) { alert('Please write at least a sentence about your experience.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    const { error } = await db.from('reviews').insert({
+      business_id: bizId,
+      user_id: currentUser.id,
+      reviewer_name: currentProfile.display_name,
+      rating: selectedRating,
+      review_text: text,
+      session_token: getSessionToken(),
+      review_source: 'web'
+    });
+
+    if (error) {
+      // Rate limit errors come back from the RLS policy check
+      if (error.message && error.message.includes('rate')) {
+        alert('You have submitted several reviews recently. Please wait a bit before submitting another.');
+      } else {
+        throw error;
+      }
+      btn.disabled = false;
+      btn.textContent = 'Submit Review →';
+      return;
+    }
+
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('review-text').value = '';
+    setStar(0); selectedRating = 0;
+    btn.textContent = 'Submit Review →';
+    btn.disabled = false;
+
+    // Reload reviews
+    setTimeout(() => loadReviews(bizId), 500);
+  } catch(e) {
+    alert('Error submitting review: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Submit Review →';
+  }
+}
+
+async function markHelpful(el, reviewId) {
+  const storageKey = '815_helpful_' + reviewId;
+  if (sessionStorage.getItem(storageKey)) return;
+  sessionStorage.setItem(storageKey, '1');
+  el.style.opacity = '0.5';
+  el.style.pointerEvents = 'none';
+  const current = parseInt(el.textContent.match(/\d+/)?.[0] || 0);
+  await db.from('reviews').update({ helpful_count: current + 1 }).eq('id', reviewId);
+  loadReviews(bizId);
+}
+
+// --- Flag modal ---
+function openFlagModal(reviewId) {
+  flagTargetReviewId = reviewId;
+  selectedFlagReason = null;
+  document.querySelectorAll('.flag-reason-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('flag-submit-btn').disabled = true;
+  document.getElementById('flag-modal-overlay').classList.add('open');
+}
+
+function closeFlagModal(event) {
+  // If click was on the overlay background itself (not the modal), close
+  if (event && event.target !== document.getElementById('flag-modal-overlay')) return;
+  document.getElementById('flag-modal-overlay').classList.remove('open');
+  flagTargetReviewId = null;
+  selectedFlagReason = null;
+}
+
+function selectFlagReason(btn, reason) {
+  document.querySelectorAll('.flag-reason-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedFlagReason = reason;
+  document.getElementById('flag-submit-btn').disabled = false;
+}
+
+async function submitFlag() {
+  if (!flagTargetReviewId || !selectedFlagReason) return;
+  const btn = document.getElementById('flag-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Reporting...';
+
+  try {
+    const { error } = await db.from('reviews').update({
+      is_flagged: true,
+      flag_reason: selectedFlagReason,
+      flagged_at: new Date().toISOString()
+    }).eq('id', flagTargetReviewId);
+
+    if (error) throw error;
+
+    document.getElementById('flag-modal-overlay').classList.remove('open');
+    flagTargetReviewId = null;
+    selectedFlagReason = null;
+    btn.textContent = 'Report Review';
+
+    // Reload, flagged review will disappear from the public list
+    loadReviews(bizId);
+  } catch(e) {
+    alert('Error reporting review: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Report Review';
+  }
+}
+
+async function loadNearby(category, excludeId) {
+  const { data } = await db
+    .from('businesses_with_ratings')
+    .select('*')
+    .eq('category', category)
+    .eq('is_active', true)
+    .neq('id', excludeId)
+    .limit(3);
+
+  const grid = document.getElementById('nearby-grid');
+  if (!data || !data.length) { grid.innerHTML = ''; return; }
+
+  grid.innerHTML = data.map(b => {
+    const imgSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+    return `
+    <a href="/pages/business.html?id=${b.id}" class="nearby-card">
+      ${imgSrc ? `<div class="nearby-photo"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(b.name)}" style="width:100%;height:100%;object-fit:cover;display:block;"></div>` : ''}
+      <div class="nearby-info">
+        <div class="nearby-cat">${escapeHtml(b.category)}</div>
+        <div class="nearby-name">${escapeHtml(b.name)}</div>
+        <div class="nearby-rating">
+          <span class="nearby-stars">${starsHtml(parseFloat(b.avg_rating)||0)}</span>
+          <span style="font-weight:700;font-size:13px;">${parseFloat(b.avg_rating)>0?parseFloat(b.avg_rating).toFixed(1):'New'}</span>
+          <span style="font-size:12px;color:var(--gray);">(${b.review_count||0})</span>
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function showNotFound() {
+  document.getElementById('biz-header-loading').style.display = 'none';
+  document.getElementById('biz-header').innerHTML = `<div class="container"><div class="not-found">
+    <h2>Business not found</h2>
+    <p>This listing may have been removed or the link is incorrect.</p>
+    <a href="/pages/directory.html" class="btn btn-primary">Browse All Businesses</a>
+  </div></div>`;
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('main-nav').style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none';
+});
+
+async function initAuth() {
+  const { data: { session } } = await db.auth.getSession();
+  currentUser = session?.user ?? null;
+  if (currentUser) {
+    const { data } = await db.from('profiles').select('display_name').eq('id', currentUser.id).single();
+    currentProfile = data;
+  }
+  updateReviewForm();
+}
+
+function updateReviewForm() {
+  const authGate = document.getElementById('review-auth-gate');
+  const profileGate = document.getElementById('review-profile-gate');
+  const formFields = document.getElementById('review-form-fields');
+  if (!currentUser) {
+    authGate.style.display = 'block';
+    profileGate.style.display = 'none';
+    formFields.style.display = 'none';
+  } else if (!currentProfile?.display_name) {
+    authGate.style.display = 'none';
+    profileGate.style.display = 'block';
+    formFields.style.display = 'none';
+  } else {
+    authGate.style.display = 'none';
+    profileGate.style.display = 'none';
+    formFields.style.display = 'block';
+    document.getElementById('reviewer-display-name').textContent = currentProfile.display_name;
+  }
+}
+
+loadBusiness();
+initAuth();
+initSaveShare();
+loadBizEvents();
+
+function fmtEvTime(t) {
+  if (!t) return '';
+  const [h, m] = t.split(':');
+  let hh = parseInt(h, 10);
+  const ap = hh >= 12 ? 'PM' : 'AM';
+  hh = hh % 12 || 12;
+  return ` · ${hh}:${m} ${ap}`;
+}
+
+async function loadBizEvents() {
+  if (!bizId) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const { data } = await db.from('events')
+    .select('id,title,event_date,start_time')
+    .eq('business_id', bizId).eq('is_active', true)
+    .gte('event_date', today)
+    .order('event_date', { ascending: true }).limit(5);
+  if (!data || !data.length) return;
+  const list = document.getElementById('biz-events-list');
+  list.innerHTML = data.map(ev => {
+    const d = new Date(ev.event_date + 'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    return `<a href="/pages/events.html?event=${ev.id}" style="display:block;padding:12px 0;border-bottom:1px solid var(--gray-light);color:var(--charcoal);text-decoration:none;">
+      <span style="font-weight:700;color:var(--orange);">${dateStr}${fmtEvTime(ev.start_time)}</span>&nbsp;&nbsp;${escapeHtml(ev.title)}</a>`;
+  }).join('');
+  document.getElementById('biz-events').style.display = 'block';
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast-msg');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-msg';
+    t.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:var(--charcoal);color:#fff;padding:10px 18px;border-radius:100px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity 0.2s;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; }, 1800);
+}
+
+function setSaveBtn(btn, saved) {
+  btn.innerHTML = saved ? '❤️ Saved' : '♡ Save';
+}
+
+async function initSaveShare() {
+  const dirBtn = document.getElementById('h-dir-btn');
+  if (dirBtn) dirBtn.addEventListener('click', openMap);
+
+  const shareBtn = document.getElementById('h-share-btn');
+  if (shareBtn) shareBtn.addEventListener('click', async () => {
+    const url = window.location.href;
+    const title = currentBiz?.name ? currentBiz.name + ' on 815local' : '815local';
+    if (navigator.share) {
+      try { await navigator.share({ title, url }); } catch (e) {}
+    } else {
+      try { await navigator.clipboard.writeText(url); showToast('Link copied'); }
+      catch (e) { showToast('Could not copy link'); }
+    }
+  });
+
+  const saveBtn = document.getElementById('h-save-btn');
+  if (!saveBtn || !bizId) return;
+  const { data: { session } } = await db.auth.getSession();
+  const user = session?.user ?? null;
+  let savedId = null;
+  if (user) {
+    const { data } = await db.from('saved_businesses')
+      .select('id').eq('user_id', user.id).eq('business_id', bizId).maybeSingle();
+    savedId = data?.id ?? null;
+    setSaveBtn(saveBtn, !!savedId);
+  }
+  saveBtn.addEventListener('click', async () => {
+    if (!user) {
+      showToast('Sign in to save businesses');
+      setTimeout(() => { window.location.href = '/pages/profile.html'; }, 900);
+      return;
+    }
+    saveBtn.disabled = true;
+    if (savedId) {
+      const { error } = await db.from('saved_businesses').delete().eq('id', savedId);
+      if (!error) { savedId = null; setSaveBtn(saveBtn, false); }
+    } else {
+      const { data, error } = await db.from('saved_businesses')
+        .insert({ user_id: user.id, business_id: bizId }).select('id').single();
+      if (!error) { savedId = data.id; setSaveBtn(saveBtn, true); showToast('Saved'); }
+    }
+    saveBtn.disabled = false;
+  });
+}
+</script>
+</body>
+</html>

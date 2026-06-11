@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>815local | Your Local Everything</title>
+<meta name="description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
+<meta property="og:title" content="815local | Your Local Everything">
+<meta property="og:description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://815local.com/">
+<meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="815local | Your Local Everything">
+<meta name="twitter:description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
+<meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<meta property="og:site_name" content="815local">
+<link rel="canonical" href="https://815local.com/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://815local.com/#organization",
+      "name": "815local",
+      "url": "https://815local.com/",
+      "logo": "https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png",
+      "email": "815local@gmail.com",
+      "areaServed": ["Minooka, IL", "Channahon, IL", "Shorewood, IL", "815 area code, Illinois"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://815local.com/#website",
+      "name": "815local",
+      "url": "https://815local.com/",
+      "publisher": { "@id": "https://815local.com/#organization" },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://815local.com/pages/directory.html?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+}
+</script>
+<link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── v2 identity ── */
+  --ink:#221A17; --ink-soft:#4B3E38; --ink-faint:#786A62;
+  --paper:#F1E7D2; --paper-2:#E8DBBF; --paper-3:#DECEAC;
+  --bone:#FBF6EA;
+  --orange:#C4622D; --orange-deep:#A44C1E; --ember:#E07A48;
+  --river:#245C52; --river-deep:#18443C; --river-light:#3C8073;
+  --gold:#D7A23E;
+  --line:rgba(34,26,23,0.16); --line-soft:rgba(34,26,23,0.09); --line-light:rgba(251,246,234,0.16);
+  --shadow-sm:0 2px 10px rgba(34,26,23,0.08);
+  --shadow-md:0 10px 34px rgba(34,26,23,0.14);
+  --shadow-lg:0 26px 70px rgba(34,26,23,0.22);
+  --r:14px; --r-sm:9px; --r-lg:22px;
+  --maxw:1280px;
+  --fast:0.18s cubic-bezier(.4,0,.2,1);
+  --med:0.35s cubic-bezier(.4,0,.2,1);
+  /* ── legacy tokens retained for auth modal + inline styles ── */
+  --orange-light:#E07A48; --orange-pale:#F5E6DC;
+  --cream:#F1E7D2; --cream-dark:#E8DBBF;
+  --charcoal:#221A17; --charcoal-mid:#4B3E38; --charcoal-light:#786A62;
+  --gray:#9B8C82; --gray-light:#D4C9C0; --white:#FBF6EA;
+  --radius:14px; --radius-sm:9px;
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; }
+::selection { background: var(--orange); color: var(--bone); }
+
+/* ── type primitives ── */
+.display { font-family: 'Bricolage Grotesque','Hanken Grotesk',sans-serif; font-weight: 800; line-height: 0.96; letter-spacing: -0.02em; }
+.mono { font-family: 'Space Mono', ui-monospace, monospace; letter-spacing: 0.02em; }
+.eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); display: inline-flex; align-items: center; gap: 9px; }
+.eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--orange); display: inline-block; }
+.eyebrow.on-dark { color: var(--ember); }
+.eyebrow.on-dark::before { background: var(--ember); }
+
+/* ── layout ── */
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 40px; }
+.section { padding: 96px 0; position: relative; }
+.sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 44px; }
+.sec-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(30px, 4vw, 50px); line-height: 1.0; letter-spacing: -0.02em; }
+.sec-title em { font-style: italic; color: var(--orange); }
+.sec-link { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: var(--ink); display: inline-flex; align-items: center; gap: 7px; padding-bottom: 4px; border-bottom: 2px solid var(--ink); white-space: nowrap; transition: gap var(--fast), color var(--fast), border-color var(--fast); }
+.sec-link:hover { gap: 12px; color: var(--orange); border-color: var(--orange); }
+
+/* ── buttons ── */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 26px; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 15px; border-radius: 100px; border: 2px solid transparent; transition: transform var(--fast), background var(--fast), color var(--fast), box-shadow var(--fast), border-color var(--fast); cursor: pointer; }
+.btn svg { width: 17px; height: 17px; }
+.btn-primary { background: var(--orange); color: var(--bone); }
+.btn-primary:hover { background: var(--orange-deep); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn-ink { background: var(--ink); color: var(--bone); }
+.btn-ink:hover { background: #000; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn-outline { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-outline:hover { background: var(--ink); color: var(--bone); }
+.btn-ghost-light { background: rgba(251,246,234,0.06); color: var(--bone); border-color: var(--line-light); }
+.btn-ghost-light:hover { background: rgba(251,246,234,0.12); border-color: rgba(251,246,234,0.4); }
+
+/* ── town shield ── */
+.shield { font-family: 'Space Mono', monospace; display: inline-flex; flex-direction: column; align-items: center; border: 1.5px solid currentColor; border-radius: 8px 8px 10px 10px; padding: 6px 14px 8px; line-height: 1; position: relative; }
+.shield .s-top { font-size: 9px; letter-spacing: 0.18em; opacity: 0.6; margin-bottom: 3px; }
+.shield .s-name { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* ── top utility bar ── */
+.topbar { background: var(--ink); color: var(--bone); font-family: 'Space Mono', monospace; font-size: 11.5px; letter-spacing: 0.06em; }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; height: 34px; }
+.topbar-left { display: flex; align-items: center; gap: 18px; }
+.topbar-left .tb-towns { color: rgba(251,246,234,0.62); text-transform: uppercase; }
+.topbar-left .tb-dot { color: var(--orange); }
+.topbar-right { display: flex; align-items: center; gap: 16px; color: rgba(251,246,234,0.62); }
+.topbar-right .tb-live { color: var(--ember); display: inline-flex; align-items: center; gap: 6px; }
+.tb-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 0 0 rgba(224,122,72,0.6); animation: pulse 2.2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(224,122,72,0.55); } 70% { box-shadow: 0 0 0 8px rgba(224,122,72,0); } 100% { box-shadow: 0 0 0 0 rgba(224,122,72,0); } }
+
+/* ── nav ── */
+#main-nav { position: sticky; top: 0; z-index: 100; background: var(--ink); border-bottom: 1.5px solid var(--line-light); transition: box-shadow var(--med), background var(--med); }
+#main-nav.scrolled { box-shadow: var(--shadow-md); background: rgba(34,26,23,0.94); backdrop-filter: blur(10px); }
+.nav-inner { display: flex; align-items: center; gap: 26px; height: 76px; }
+.nav-logo { flex-shrink: 0; display: flex; align-items: center; }
+.nav-logo img { height: 56px; width: auto; }
+.nav-links { display: flex; align-items: center; gap: 2px; margin-right: auto; }
+.nav-link { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.03em; color: rgba(251,246,234,0.72); padding: 9px 15px; border-radius: 8px; transition: color var(--fast), background var(--fast); position: relative; }
+.nav-link:hover { color: var(--bone); background: rgba(251,246,234,0.08); }
+.nav-link.active { color: var(--ember); }
+.nav-search { display: flex; align-items: center; gap: 9px; background: var(--bone); border: 1.5px solid var(--line); border-radius: 100px; padding: 9px 16px; min-width: 210px; cursor: pointer; transition: border-color var(--fast); }
+.nav-search:hover { border-color: var(--orange); }
+.nav-search svg { opacity: 0.55; flex-shrink: 0; }
+.nav-search span { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink-faint); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-signin { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; color: rgba(251,246,234,0.8); transition: color var(--fast); cursor: pointer; }
+.nav-signin:hover { color: var(--bone); }
+
+/* ── hero ── */
+.hero { position: relative; padding: 64px 0 0; overflow: hidden; background: var(--paper); }
+.hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; padding-bottom: 64px; }
+.hero-eyebrow { margin-bottom: 24px; }
+.hero-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(48px, 7.4vw, 104px); line-height: 0.9; letter-spacing: -0.035em; margin-bottom: 22px; }
+.hero-title .line2 { display: block; }
+.hero-title em { font-style: italic; color: var(--orange); position: relative; }
+.hero-title .under { display: inline-block; position: relative; }
+.hero-title .under svg { position: absolute; left: 0; bottom: -0.16em; width: 100%; height: 0.22em; overflow: visible; }
+.hero-sub { font-size: 18px; color: var(--ink-soft); max-width: 460px; line-height: 1.65; margin-bottom: 28px; }
+.hero-sub b { color: var(--ink); font-weight: 700; }
+.searchbar { display: flex; align-items: stretch; background: var(--bone); border: 2px solid var(--ink); border-radius: 100px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; max-width: 560px; margin-bottom: 22px; }
+.search-seg { display: flex; align-items: center; gap: 10px; padding: 13px 18px; cursor: pointer; }
+.search-seg:not(:last-of-type) { border-right: 1.5px solid var(--line); }
+.search-seg svg { color: var(--orange); flex-shrink: 0; }
+.search-seg .s-lab { font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); display: block; }
+.search-seg .s-val { font-size: 14px; font-weight: 600; color: var(--ink); }
+.search-seg.grow { flex: 1; min-width: 0; }
+.search-go { margin: 5px; padding: 0 24px; background: var(--orange); color: var(--bone); border: none; border-radius: 100px; font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; transition: background var(--fast); }
+.search-go:hover { background: var(--orange-deep); }
+.hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+.hero-statline { margin: 10px 0 22px; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink-faint); }
+.hero-towns { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.hero-towns .ht-lab { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); }
+.hero-towns .shield { color: var(--ink); cursor: pointer; transition: color var(--fast), transform var(--fast); }
+.hero-towns .shield:hover { color: var(--orange); transform: translateY(-2px); }
+.hero-visual { position: relative; height: 540px; }
+.hv-card { position: absolute; border-radius: var(--r); border: 2px solid var(--ink); overflow: hidden; background: var(--paper-2); box-shadow: var(--shadow-md); }
+.hv-main { inset: 0 24px 90px 0; }
+.hv-sub { width: 200px; height: 200px; right: 0; bottom: 30px; z-index: 3; }
+.hv-stat { position: absolute; top: 22px; left: 22px; z-index: 5; background: var(--orange); color: var(--bone); border: 2px solid var(--ink); border-radius: var(--r-sm); padding: 13px 17px; box-shadow: 5px 5px 0 var(--ink); }
+.hv-stat .hs-num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 30px; line-height: 1; }
+.hv-stat .hs-lab { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; margin-top: 3px; }
+.hv-review { position: absolute; left: 6px; bottom: 16px; z-index: 6; background: var(--bone); border: 2px solid var(--ink); border-radius: var(--r-sm); padding: 12px 14px; display: flex; align-items: center; gap: 11px; box-shadow: 5px 5px 0 var(--ink); min-width: 230px; animation: floatUp 0.6s ease 0.3s both; }
+.hv-review .av { width: 38px; height: 38px; border-radius: 50%; background: var(--river); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+.hv-review .rv-name { font-size: 13px; font-weight: 700; }
+.hv-review .rv-stars { color: var(--orange); font-size: 12px; letter-spacing: 1px; }
+.hv-review .rv-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+@keyframes floatUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── placeholder treatment ── */
+.ph-fill { width: 100%; height: 100%; background: repeating-linear-gradient(45deg, rgba(34,26,23,0.05) 0 2px, transparent 2px 9px), var(--paper-3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--ink-soft); position: relative; }
+.ph-fill .ph-ico { opacity: 0.34; }
+.ph-fill .ph-cap { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.55; }
+.ph-fill.dark { background: repeating-linear-gradient(45deg, rgba(251,246,234,0.05) 0 2px, transparent 2px 9px), var(--river-deep); color: rgba(251,246,234,0.6); }
+
+/* ── live ticker ── */
+.ticker { background: var(--ink); color: var(--bone); border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); overflow: hidden; position: relative; }
+.ticker-rail { display: flex; align-items: stretch; }
+.ticker-label { flex-shrink: 0; background: var(--orange); color: var(--bone); display: flex; align-items: center; gap: 9px; padding: 0 22px; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; z-index: 2; }
+.ticker-viewport { overflow: hidden; flex: 1; display: flex; align-items: center; }
+.ticker-track { display: flex; align-items: center; gap: 0; white-space: nowrap; animation: marquee 38s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.tk-item { display: inline-flex; align-items: center; gap: 10px; padding: 13px 26px; font-family: 'Space Mono', monospace; font-size: 13px; color: rgba(251,246,234,0.82); }
+.tk-item .tk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ember); flex-shrink: 0; }
+.tk-item b { color: var(--bone); font-weight: 700; }
+.tk-item .tk-pin { color: var(--ember); }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── stats band ── */
+.stats { background: var(--bone); border-bottom: 1.5px solid var(--line); }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat { padding: 40px 28px; text-align: center; border-right: 1.5px solid var(--line); position: relative; }
+.stat:last-child { border-right: none; }
+.stat .st-num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(38px, 4.4vw, 56px); line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
+.stat .st-num em { color: var(--orange); font-style: normal; }
+.stat .st-lab { font-family: 'Space Mono', monospace; font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 10px; }
+
+/* ── categories ── */
+.cats { background: var(--paper); }
+.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.cat { display: flex; align-items: center; gap: 16px; padding: 22px 22px; background: var(--bone); border: 1.5px solid var(--line); border-radius: var(--r); cursor: pointer; position: relative; overflow: hidden; transition: transform var(--fast), box-shadow var(--fast), border-color var(--fast); }
+.cat:hover { transform: translateY(-3px); box-shadow: 6px 6px 0 var(--ink); border-color: var(--ink); }
+.cat-ico { width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 25px; border: 1.5px solid var(--line); }
+.cat-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; }
+.cat-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-faint); margin-top: 3px; }
+.cat-arrow { margin-left: auto; color: var(--ink-faint); transition: transform var(--fast), color var(--fast); }
+.cat:hover .cat-arrow { transform: translateX(3px); color: var(--orange); }
+
+/* ── business cards ── */
+.biz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.biz-card { background: var(--bone); border: 1.5px solid var(--ink); border-radius: var(--r); overflow: hidden; cursor: pointer; transition: transform var(--med), box-shadow var(--med); display: block; color: inherit; }
+.biz-card:hover { transform: translateY(-5px); box-shadow: 10px 12px 0 var(--ink); }
+.biz-photo { height: 184px; position: relative; border-bottom: 1.5px solid var(--ink); }
+.biz-badge { position: absolute; top: 12px; left: 12px; z-index: 2; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--ink); color: var(--bone); padding: 5px 10px; border-radius: 100px; }
+.biz-badge.orange { background: var(--orange); }
+.biz-badge.river { background: var(--river); }
+.biz-save { position: absolute; top: 11px; right: 11px; z-index: 2; width: 34px; height: 34px; border-radius: 50%; background: var(--bone); border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--ink); transition: background var(--fast), color var(--fast), transform var(--fast); }
+.biz-save:hover { transform: scale(1.1); }
+.biz-save.saved { background: var(--orange); color: var(--bone); }
+.biz-body { padding: 18px 20px 20px; }
+.biz-cat { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+.biz-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.05; margin-bottom: 10px; }
+.biz-rate { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.biz-rate .stars { color: var(--orange); letter-spacing: 1px; font-size: 14px; }
+.biz-rate .num { font-weight: 800; font-size: 15px; }
+.biz-rate .cnt { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ink-faint); }
+.chips { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 100px; border: 1.5px solid var(--line); color: var(--ink-soft); }
+.chip.open { border-color: var(--river); color: var(--river); }
+.biz-foot { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1.5px solid var(--line-soft); }
+.biz-foot .loc { font-family: 'Space Mono', monospace; font-size: 11.5px; color: var(--ink-faint); }
+.biz-foot .go { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--orange); display: inline-flex; align-items: center; gap: 5px; transition: gap var(--fast); }
+.biz-card:hover .biz-foot .go { gap: 9px; }
+
+/* ── spotlight ── */
+.spotlight { background: var(--river-deep); color: var(--bone); position: relative; overflow: hidden; }
+.spotlight::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(251,246,234,0.03) 0 2px, transparent 2px 11px); pointer-events: none; }
+.spot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; position: relative; }
+.spot-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(34px, 4.6vw, 56px); line-height: 0.98; letter-spacing: -0.02em; margin: 18px 0 18px; }
+.spot-title em { font-style: italic; color: var(--ember); }
+.spot-desc { font-size: 16.5px; color: rgba(251,246,234,0.72); line-height: 1.7; margin-bottom: 26px; max-width: 480px; }
+.spot-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+.spot-meta .num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 26px; }
+.spot-meta .stars { color: var(--ember); font-size: 16px; letter-spacing: 1px; }
+.spot-meta .cnt { font-family: 'Space Mono', monospace; font-size: 12px; color: rgba(251,246,234,0.5); }
+.spot-attrs { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 34px; }
+.spot-attr { font-family: 'Space Mono', monospace; font-size: 12px; padding: 6px 14px; border-radius: 100px; border: 1.5px solid var(--line-light); color: rgba(251,246,234,0.78); }
+.spot-photo { position: relative; height: 440px; border: 2px solid var(--bone); border-radius: var(--r); overflow: hidden; box-shadow: 10px 12px 0 rgba(0,0,0,0.3); }
+.spot-quote { position: absolute; left: 18px; right: 18px; bottom: 18px; background: rgba(24,18,16,0.78); backdrop-filter: blur(10px); border: 1.5px solid var(--line-light); border-radius: var(--r-sm); padding: 16px 18px; z-index: 2; }
+.spot-quote .q { font-size: 14px; font-style: italic; color: rgba(251,246,234,0.92); line-height: 1.6; margin-bottom: 11px; }
+.spot-quote .who { display: flex; align-items: center; gap: 10px; }
+.spot-quote .who .av { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 13px; }
+.spot-quote .who .nm { font-size: 13px; font-weight: 700; }
+.spot-quote .who .sb { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(251,246,234,0.5); }
+
+/* ── fresh strip (new arrivals + events) ── */
+.fresh { background: var(--paper); }
+.fresh-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.fresh-card { background: var(--bone); border: 1.5px solid var(--line); border-radius: var(--r); overflow: hidden; cursor: pointer; transition: transform var(--fast), box-shadow var(--fast), border-color var(--fast); display: block; color: inherit; }
+.fresh-card:hover { transform: translateY(-3px); box-shadow: 6px 6px 0 var(--ink); border-color: var(--ink); }
+.fresh-photo { height: 130px; position: relative; border-bottom: 1.5px solid var(--line); }
+.fresh-new { position: absolute; top: 10px; left: 10px; font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 4px 9px; border-radius: 100px; }
+.fresh-body { padding: 14px 16px 16px; }
+.fresh-cat { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--river); margin-bottom: 5px; }
+.fresh-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; margin-bottom: 7px; }
+.fresh-meta { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-faint); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+/* event date header inside fresh-card */
+.ev-date { background: var(--ink); color: var(--bone); padding: 14px 16px; display: flex; align-items: baseline; gap: 8px; border-bottom: 1.5px solid var(--ink); }
+.ev-mon { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; color: var(--ember); }
+.ev-day { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 28px; line-height: 1; }
+.ev-dow { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(251,246,234,0.5); margin-left: auto; }
+
+/* ── reviews ── */
+.reviews { background: var(--bone); border-top: 1.5px solid var(--line); }
+.rev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.rev { background: var(--paper); border: 1.5px solid var(--line); border-radius: var(--r); padding: 24px; position: relative; }
+.rev-quote-mark { font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 52px; line-height: 0.5; color: var(--orange); opacity: 0.25; position: absolute; top: 22px; right: 22px; }
+.rev-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.rev-av { width: 46px; height: 46px; border-radius: 50%; background: var(--river); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 18px; flex-shrink: 0; }
+.rev-name { font-size: 15px; font-weight: 700; }
+.rev-handle { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-faint); }
+.rev-biz { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--orange); margin-bottom: 11px; }
+.rev-text { font-size: 14.5px; color: var(--ink-soft); line-height: 1.65; }
+.rev-stars { color: var(--orange); letter-spacing: 1px; font-size: 13px; margin-bottom: 11px; }
+
+/* ── newsletter ── */
+.news { background: var(--orange); color: var(--bone); position: relative; overflow: hidden; }
+.news::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(34,26,23,0.05) 0 2px, transparent 2px 12px); }
+.news-inner { display: flex; align-items: center; justify-content: space-between; gap: 56px; position: relative; }
+.news-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(32px, 4.2vw, 50px); line-height: 0.98; letter-spacing: -0.02em; margin-bottom: 14px; }
+.news-sub { font-size: 16px; color: rgba(251,246,234,0.85); max-width: 420px; line-height: 1.6; }
+.news-form { display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; max-width: 420px; }
+.news-input { background: var(--bone); border: 2px solid var(--ink); border-radius: 100px; padding: 15px 22px; min-width: 280px; font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; color: var(--ink); outline: none; box-shadow: 5px 5px 0 var(--ink); }
+.news-input::placeholder { color: var(--ink-faint); }
+.news-btn { background: var(--ink); color: var(--bone); border: 2px solid var(--ink); border-radius: 100px; padding: 15px 28px; font-weight: 800; font-size: 15px; box-shadow: 5px 5px 0 rgba(34,26,23,0.4); transition: transform var(--fast); white-space: nowrap; }
+.news-btn:hover { transform: translateY(-2px); }
+
+/* ── footer ── */
+footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
+.foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.foot-logo { height: 60px; width: auto; margin-bottom: 18px; }
+.foot-tag { font-size: 14px; color: rgba(251,246,234,0.5); line-height: 1.7; max-width: 270px; margin-bottom: 22px; }
+.foot-towns { display: flex; gap: 8px; flex-wrap: wrap; }
+.foot-towns .shield { color: rgba(251,246,234,0.5); font-size: 10px; }
+.foot-towns .shield .s-name { font-size: 11px; }
+.foot-h { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(251,246,234,0.4); margin-bottom: 18px; }
+.foot-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.foot-links a { font-size: 14px; color: rgba(251,246,234,0.62); transition: color var(--fast); }
+.foot-links a:hover { color: var(--bone); }
+.footer-social { display: flex; gap: 10px; }
+.footer-social-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(251,246,234,0.07); display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; transition: background 0.15s; color: rgba(251,246,234,0.6); text-decoration: none; }
+.footer-social-btn:hover { background: rgba(251,246,234,0.14); color: var(--bone); }
+.foot-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 26px; border-top: 1px solid var(--line-light); }
+.foot-copy { font-family: 'Space Mono', monospace; font-size: 12px; color: rgba(251,246,234,0.4); }
+.foot-legal { display: flex; gap: 22px; }
+.foot-legal a { font-family: 'Space Mono', monospace; font-size: 12px; color: rgba(251,246,234,0.4); transition: color var(--fast); }
+.foot-legal a:hover { color: rgba(251,246,234,0.75); }
+
+/* ── reveal anim ── */
+.fade-in { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.7,.2,1); }
+.fade-in.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .fade-in { opacity: 1; transform: none; transition: none; } .ticker-track, .tb-pulse { animation: none; } }
+
+/* ── mobile bottom nav ── */
+.mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--ink); border-top: 1.5px solid var(--orange); z-index: 200; padding: 0 0 env(safe-area-inset-bottom, 0); justify-content: space-around; align-items: stretch; }
+.mbn-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 10px 12px; cursor: pointer; flex: 1; color: rgba(251,246,234,0.5); font-family: 'Space Mono', monospace; text-decoration: none; transition: color 0.15s; }
+.mbn-item.active, .mbn-item:hover { color: var(--ember); }
+.mbn-icon { font-size: 20px; line-height: 1; }
+.mbn-label { font-size: 9px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ── responsive ── */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .hero-visual { display: none; }
+  .nav-search { display: none; }
+  .nav-inner { gap: 18px; }
+  .nav-link { padding: 9px 12px; }
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+  .biz-grid { grid-template-columns: repeat(2, 1fr); }
+  .fresh-row { grid-template-columns: repeat(2, 1fr); }
+  .rev-grid { grid-template-columns: 1fr; }
+  .spot-grid { grid-template-columns: 1fr; gap: 36px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .news-inner { flex-direction: column; align-items: flex-start; gap: 28px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1.5px solid var(--line); }
+}
+@media (max-width: 680px) {
+  .container { padding: 0 22px; }
+  .section { padding: 64px 0; }
+  .topbar-right .tb-time, .topbar-left .tb-badge { display: none; }
+  .nav-links, .nav-search { display: none; }
+  .nav-inner { height: 64px; gap: 14px; }
+  .nav-logo img { height: 46px; }
+  .hero { padding: 40px 0 0; }
+  .searchbar { flex-direction: column; border-radius: var(--r); box-shadow: 4px 4px 0 var(--ink); align-items: stretch; }
+  .search-seg { border-right: none !important; border-bottom: 1.5px solid var(--line); }
+  .search-go { margin: 8px; padding: 13px; justify-content: center; }
+  .sec-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .cat-grid { grid-template-columns: 1fr; }
+  .biz-grid { grid-template-columns: 1fr; }
+  .fresh-row { grid-template-columns: 1fr; }
+  .rev-grid { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .news-form { flex-direction: column; width: 100%; }
+  .news-input { min-width: 0; width: 100%; }
+  .ticker-label span.lab-txt { display: none; }
+  .mobile-bottom-nav { display: flex; }
+  body { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0)); }
+  footer { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0)); }
+}
+
+/* ── AUTH MODAL (preserved) ── */
+.auth-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 9000; align-items: center; justify-content: center; }
+.auth-overlay.open { display: flex; }
+.auth-modal { background: var(--bone); border-radius: 20px; padding: 40px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); position: relative; max-height: 90vh; overflow-y: auto; }
+.auth-close { position: absolute; top: 16px; right: 20px; font-size: 22px; cursor: pointer; color: var(--gray); line-height: 1; }
+.auth-close:hover { color: var(--charcoal); }
+.auth-logo { text-align: center; margin-bottom: 24px; }
+.auth-logo img { height: 36px; display: inline-block; }
+.auth-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px; text-align: center; }
+.auth-sub { font-size: 14px; color: var(--gray); text-align: center; margin-bottom: 28px; }
+.auth-field { margin-bottom: 16px; }
+.auth-field label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--charcoal); margin-bottom: 6px; }
+.auth-field input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--gray-light); border-radius: 10px; font-family: inherit; font-size: 14px; color: var(--charcoal); outline: none; transition: border 0.2s; }
+.auth-field input:focus { border-color: var(--orange); }
+.auth-checkbox { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; cursor: pointer; }
+.auth-checkbox input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--orange); flex-shrink: 0; }
+.auth-checkbox span { font-size: 13px; color: var(--charcoal-mid); line-height: 1.4; }
+.auth-btn { width: 100%; padding: 14px; background: var(--orange); color: white; border: none; border-radius: 100px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
+.auth-btn:hover { background: var(--orange-light); }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.auth-switch { text-align: center; margin-top: 20px; font-size: 13px; color: var(--gray); }
+.auth-switch a { color: var(--orange); font-weight: 600; cursor: pointer; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
+.auth-error { background: #fdecea; color: #c0392b; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; }
+.auth-success { background: #e8f5e9; color: #2D6A4F; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; }
+.avatar-upload-area { border: 2px dashed var(--gray-light); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; margin-bottom: 16px; position: relative; }
+.avatar-upload-area:hover { border-color: var(--orange); }
+.avatar-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.avatar-preview { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; margin: 0 auto 8px; display: none; border: 3px solid var(--orange); }
+.avatar-upload-icon { font-size: 32px; margin-bottom: 6px; }
+.avatar-upload-label { font-size: 13px; color: var(--gray); }
+.avatar-upload-label strong { color: var(--orange); }
+.avatar-terms { font-size: 11px; color: var(--gray); text-align: center; margin-top: 6px; line-height: 1.4; }
+.forgot-link { font-size: 12px; color: var(--orange); cursor: pointer; float: right; margin-top: -12px; margin-bottom: 16px; }
+.forgot-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ TOP UTILITY BAR ══════════ -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <span class="tb-dot">●</span>
+        <span class="tb-towns">Minooka · Channahon · Shorewood</span>
+        <span class="tb-badge" style="color:rgba(251,246,234,0.4)">Grundy + Will County, IL</span>
+      </div>
+      <div class="topbar-right">
+        <span class="tb-live" id="open-indicator" style="display:none;"><span class="tb-pulse"></span> <span id="open-count">—</span> open right now</span>
+        <span class="tb-time" id="local-clock">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="815 Local home">
+        <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link active" href="/">Explore</a>
+        <a class="nav-link" href="/pages/directory.html">Browse</a>
+        <a class="nav-link" href="/pages/events.html">Events</a>
+        <a class="nav-link" href="/pages/blog.html">Blog</a>
+        <a class="nav-link" href="/pages/about.html">About</a>
+      </div>
+      <a class="nav-search" href="/pages/directory.html" aria-label="Search the directory">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Search the 815…</span>
+      </a>
+      <div class="nav-actions">
+        <span class="nav-signin" id="nav-signin-btn" onclick="openAuthModal('signin')">Sign In</span>
+        <div id="nav-user-menu" style="display:none;position:relative;">
+          <div onclick="toggleUserDropdown()" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <img id="nav-avatar" src="" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);display:none;" />
+            <div id="nav-avatar-initial" style="width:32px;height:32px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;"></div>
+            <span id="nav-user-name" style="font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);"></span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div id="user-dropdown" style="display:none;position:absolute;right:0;top:calc(100% + 8px);background:white;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.15);min-width:160px;overflow:hidden;z-index:1000;">
+            <a href="/pages/profile.html" style="display:block;padding:12px 16px;font-size:13px;color:var(--charcoal);text-decoration:none;border-bottom:1px solid var(--gray-light);">My Profile</a>
+            <div onclick="signOut()" style="padding:12px 16px;font-size:13px;color:#c0392b;cursor:pointer;">Sign Out</div>
+          </div>
+        </div>
+        <a class="btn btn-primary" href="/pages/submit/business.html" style="font-size:13px; padding:10px 18px;">+ List Business</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- LEFT -->
+      <div class="hero-left">
+        <span class="eyebrow hero-eyebrow">Est. 2026 · The 815</span>
+        <h1 class="hero-title">
+          Your local
+          <span class="line2"><span class="under"><em>everything.</em><svg viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M2 8 C 60 2, 120 2, 180 6 S 260 10, 298 4" fill="none" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/></svg></span></span>
+        </h1>
+        <p class="hero-sub">
+          Reviews, restaurants, services &amp; events, all in one place. Discover the best of the 815, recommended by your neighbors.
+        </p>
+
+        <div class="searchbar">
+          <div class="search-seg grow" onclick="location.href='/pages/directory.html'">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <div>
+              <span class="s-lab">Find</span>
+              <span class="s-val">Pizza, plumbers, a new salon…</span>
+            </div>
+          </div>
+          <div class="search-seg" style="min-width:150px;" onclick="location.href='/pages/directory.html'">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div>
+              <span class="s-lab">Town</span>
+              <span class="s-val">All 3 towns</span>
+            </div>
+          </div>
+          <button class="search-go" type="button" onclick="location.href='/pages/directory.html'">Search <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/pages/directory.html">Browse Businesses</a>
+          <a class="btn btn-outline" href="/pages/submit/business.html">Add Your Business</a>
+        </div>
+
+        <p class="hero-statline"><span id="hero-stat-line">Covering Minooka, Channahon &amp; Shorewood</span></p>
+
+        <div class="hero-towns">
+          <span class="ht-lab">Pick a town:</span>
+          <a class="shield" href="/pages/directory.html?q=Minooka"><span class="s-top">EXIT 122</span><span class="s-name">MINOOKA</span></a>
+          <a class="shield" href="/pages/directory.html?q=Channahon"><span class="s-top">RTE 6</span><span class="s-name">CHANNAHON</span></a>
+          <a class="shield" href="/pages/directory.html?q=Shorewood"><span class="s-top">RTE 59</span><span class="s-name">SHOREWOOD</span></a>
+        </div>
+      </div>
+
+      <!-- RIGHT VISUAL -->
+      <div class="hero-media hero-visual">
+        <div class="hv-stat">
+          <div class="hs-num" id="hero-biz-count">…</div>
+          <div class="hs-lab">Local businesses</div>
+        </div>
+        <div class="hv-card hv-main" id="hero-photo-a">
+          <div class="ph-fill">
+            <svg class="ph-ico" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
+            <span class="ph-cap">815 Local</span>
+          </div>
+        </div>
+        <div class="hv-card hv-sub" id="hero-photo-b">
+          <div class="ph-fill dark">
+            <svg class="ph-ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
+          </div>
+        </div>
+        <div class="hv-review" id="hero-review-card" style="display:none;">
+          <div class="av" id="hero-reviewer-av">★</div>
+          <div>
+            <div class="rv-name" id="hero-reviewer-name"></div>
+            <div class="rv-stars" id="hero-reviewer-stars"></div>
+            <div class="rv-sub" id="hero-reviewer-biz"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LIVE TICKER ══════════ -->
+<div class="ticker" id="ticker" style="display:none;" aria-label="Live local updates">
+  <div class="container" style="padding:0;max-width:none;">
+    <div class="ticker-rail">
+      <div class="ticker-label"><span class="tb-pulse"></span> <span class="lab-txt">Right Now in the 815</span></div>
+      <div class="ticker-viewport">
+        <div class="ticker-track" id="ticker-track"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STATS ══════════ -->
+<section class="stats">
+  <div class="container" style="padding:0;">
+    <div class="stats-grid">
+      <div class="stat"><div class="st-num" id="stat-reviews">…</div><div class="st-lab">Community Reviews</div></div>
+      <div class="stat"><div class="st-num" id="stat-businesses">…</div><div class="st-lab">Local Businesses</div></div>
+      <div class="stat"><div class="st-num" id="stat-members">…</div><div class="st-lab">Community Members</div></div>
+      <div class="stat"><div class="st-num" id="stat-events">3</div><div class="st-lab">Towns Covered</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CATEGORIES ══════════ -->
+<section class="section cats fade-in">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:14px;">Browse the directory</span>
+        <h2 class="sec-title">What are you <em>looking for?</em></h2>
+      </div>
+      <a class="sec-link" href="/pages/directory.html">All categories →</a>
+    </div>
+    <div class="cat-grid">
+      <div class="cat" data-cat="Food & Drink" onclick="filterCat(this)"><div class="cat-ico" style="background:#FBEDDF;">🍔</div><div><div class="cat-name">Food &amp; Drink</div><div class="cat-count" data-category="Food & Drink">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Health & Wellness" onclick="filterCat(this)"><div class="cat-ico" style="background:#E4EFE9;">💆</div><div><div class="cat-name">Health &amp; Wellness</div><div class="cat-count" data-category="Health & Wellness">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Retail & Shops" onclick="filterCat(this)"><div class="cat-ico" style="background:#F4E9DA;">🛍️</div><div><div class="cat-name">Retail &amp; Shops</div><div class="cat-count" data-category="Retail & Shops">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Home Services" onclick="filterCat(this)"><div class="cat-ico" style="background:#EAE6F0;">🔧</div><div><div class="cat-name">Home Services</div><div class="cat-count" data-category="Home Services">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Arts & Events" onclick="filterCat(this)"><div class="cat-ico" style="background:#FBEFDC;">🎭</div><div><div class="cat-name">Arts &amp; Events</div><div class="cat-count" data-category="Arts & Events">… places</div></div><span class="cat-arrow">→</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ COMING UP IN THE 815 ══════════ -->
+<section class="section fade-in" id="upcoming-section" style="display:none; background:var(--bone); border-top:1.5px solid var(--line);">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:14px;">Happening locally</span>
+        <h2 class="sec-title">Coming up in <em>the 815</em></h2>
+      </div>
+      <a class="sec-link" href="/pages/events.html">Full calendar →</a>
+    </div>
+    <div class="fresh-row" id="upcoming-row"></div>
+  </div>
+</section>
+
+<!-- ══════════ COMMUNITY FAVORITES ══════════ -->
+<section class="section fade-in" id="restaurants" style="background:var(--paper);">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:14px;">Community picks</span>
+        <h2 class="sec-title">Loved by your <em>neighbors</em></h2>
+      </div>
+      <a class="sec-link" href="/pages/directory.html">See all businesses →</a>
+    </div>
+    <div class="biz-grid" id="community-picks-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink-faint);">Loading local businesses...</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ NEW TO THE 815 ══════════ -->
+<section class="section fresh fade-in" id="new-arrivals-section" style="display:none;">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:14px;">Just added</span>
+        <h2 class="sec-title">New to <em>the 815</em></h2>
+      </div>
+      <a class="sec-link" href="/pages/directory.html?sort=newest">See all new →</a>
+    </div>
+    <div class="fresh-row" id="new-arrivals-grid"></div>
+  </div>
+</section>
+
+<!-- ══════════ SPOTLIGHT ══════════ -->
+<section class="section spotlight fade-in" id="spotlight-section" style="display:none;">
+  <div class="container">
+    <div class="spot-grid">
+      <div>
+        <span class="eyebrow on-dark">Featured business</span>
+        <h2 class="spot-title" id="spotlight-name"></h2>
+        <p class="spot-desc" id="spotlight-desc"></p>
+        <div class="spot-meta">
+          <span class="num" id="spotlight-rating"></span>
+          <span class="stars" id="spotlight-stars"></span>
+          <span class="cnt" id="spotlight-review-count"></span>
+        </div>
+        <div class="spot-attrs" id="spotlight-attrs"></div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn btn-primary" id="spotlight-link" href="#">View business</a>
+        </div>
+      </div>
+      <div class="spot-photo">
+        <div class="ph-fill dark" id="spotlight-photo" style="position:absolute;inset:0;background-size:cover;background-position:center;">
+          <svg class="ph-ico" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
+          <span class="ph-cap">Featured</span>
+        </div>
+        <div class="spot-quote" id="spotlight-quote" style="display:none;">
+          <p class="q" id="spotlight-quote-text"></p>
+          <div class="who"><div class="av" id="spotlight-quote-av"></div><div><div class="nm" id="spotlight-quote-name"></div><div class="sb" id="spotlight-quote-sub"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ REVIEWS ══════════ -->
+<section class="section reviews fade-in" id="reviews-section" style="display:none;">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow" style="margin-bottom:14px;">Community voice</span>
+        <h2 class="sec-title">What locals <em>are saying</em></h2>
+      </div>
+      <a class="sec-link" href="/pages/directory.html">All businesses →</a>
+    </div>
+    <div class="rev-grid" id="reviews-grid"></div>
+  </div>
+</section>
+
+<!-- ══════════ NEWSLETTER ══════════ -->
+<section class="section news fade-in">
+  <div class="container">
+    <div class="news-inner">
+      <div>
+        <span class="eyebrow on-dark" style="color:var(--ink);">📬 The weekly</span>
+        <h2 class="news-title">Stay 815 local.</h2>
+        <p class="news-sub">New spots, local deals and what's on this weekend, straight to your inbox. No spam, just your neighborhood.</p>
+      </div>
+      <form class="news-form" onsubmit="doNewsletterSubscribe(event)">
+        <label for="newsletter-email" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Email address</label>
+        <input class="news-input" id="newsletter-email" type="email" placeholder="you@neighborhood.com" aria-label="Email address">
+        <button class="news-btn" id="newsletter-btn" type="submit">Subscribe →</button>
+        <div id="newsletter-msg" style="font-size:13px;margin-top:6px;min-height:18px;flex-basis:100%;color:var(--bone);"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local" class="foot-logo"></picture>
+        <p class="foot-tag">Your one-stop community hub for local business reviews, services, restaurants, and events across the 815.</p>
+        <div class="foot-towns">
+          <span class="shield"><span class="s-top">RTE</span><span class="s-name">MINOOKA</span></span>
+          <span class="shield"><span class="s-top">RTE</span><span class="s-name">CHANNAHON</span></span>
+          <span class="shield"><span class="s-top">RTE</span><span class="s-name">SHOREWOOD</span></span>
+        </div>
+        <div class="footer-social" style="margin-top:18px;">
+          <a href="https://www.facebook.com/profile.php?id=61589234260823" target="_blank" rel="noopener" class="footer-social-btn" title="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-h">Explore</div>
+        <ul class="foot-links">
+          <li><a href="/pages/directory.html?category=Food+%26+Drink">Food &amp; Drink</a></li>
+          <li><a href="/pages/directory.html?category=Health+%26+Wellness">Health &amp; Wellness</a></li>
+          <li><a href="/pages/directory.html?category=Home+Services">Home Services</a></li>
+          <li><a href="/pages/directory.html?category=Retail+%26+Shops">Retail &amp; Shops</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-h">Community</div>
+        <ul class="foot-links">
+          <li><a href="/pages/events.html">Events Calendar</a></li>
+          <li><a href="/pages/directory.html">Browse All Businesses</a></li>
+          <li><a href="/pages/submit/business.html">Add Your Business</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot-h">815 Local</div>
+        <ul class="foot-links">
+          <li><a href="/pages/about.html">About Us</a></li>
+          <li><a href="/pages/blog.html">Blog</a></li>
+          <li><a href="/pages/submit/business.html">List Your Business</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="foot-copy">© 2026 815local.com · Proudly serving the 815</span>
+      <div class="foot-legal">
+        <a href="/legal/privacy.html">Privacy</a>
+        <a href="/legal/terms.html">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#C4622D",
+  "heroLayout": "split",
+  "cardStyle": "border"
+}/*EDITMODE-END*/;
+
+applyTweaks(TWEAK_DEFAULTS);
+
+function applyTweaks(t) {
+  document.documentElement.style.setProperty('--orange', t.accentColor);
+  document.documentElement.style.setProperty('--orange-deep', darken(t.accentColor));
+  document.documentElement.style.setProperty('--orange-light', lighten(t.accentColor));
+  document.documentElement.style.setProperty('--ember', lighten(t.accentColor));
+  document.documentElement.style.setProperty('--orange-pale', paleOf(t.accentColor));
+}
+function lighten(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.min(255,r+30)},${Math.min(255,g+30)},${Math.min(255,b+30)})`;
+}
+function darken(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.max(0,r-28)},${Math.max(0,g-28)},${Math.max(0,b-28)})`;
+}
+function paleOf(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},0.1)`;
+}
+
+function filterCat(el) {
+  document.querySelectorAll('.cat').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const cat = el.dataset.cat;
+  if (cat) {
+    window.location.href = '/pages/directory.html?category=' + encodeURIComponent(cat);
+  } else {
+    window.location.href = '/pages/directory.html';
+  }
+}
+
+function heroTagSearch(term) {
+  window.location.href = '/pages/directory.html?q=' + encodeURIComponent(term);
+}
+
+// Edit-mode bridge (no-op if panel absent)
+window.addEventListener('message', e => {
+  const panel = document.getElementById('tweaks-panel');
+  if (!panel) return;
+  if (e.data?.type === '__activate_edit_mode') panel.style.display = 'block';
+  if (e.data?.type === '__deactivate_edit_mode') panel.style.display = 'none';
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Sticky nav shadow on scroll
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  if (nav) nav.classList.toggle('scrolled', window.scrollY > 12);
+}, { passive: true });
+
+// Live local clock
+function tickClock() {
+  const el = document.getElementById('local-clock');
+  if (!el) return;
+  el.textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) + ' CT';
+}
+tickClock();
+setInterval(tickClock, 30000);
+
+// Restore scroll position
+const savedScroll = localStorage.getItem('815local_scroll');
+if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
+window.addEventListener('scroll', () => {
+  localStorage.setItem('815local_scroll', window.scrollY);
+}, { passive: true });
+</script>
+
+<!-- ══ MOBILE BOTTOM NAV ══ -->
+<nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+  <a href="/" class="mbn-item" data-page="home">
+    <div class="mbn-icon">🏠</div>
+    <div class="mbn-label">Home</div>
+  </a>
+  <a href="/pages/directory.html" class="mbn-item" data-page="browse">
+    <div class="mbn-icon">🔍</div>
+    <div class="mbn-label">Browse</div>
+  </a>
+  <a href="/pages/events.html" class="mbn-item" data-page="events">
+    <div class="mbn-icon">📅</div>
+    <div class="mbn-label">Events</div>
+  </a>
+  <a href="/pages/profile.html" class="mbn-item" data-page="profile">
+    <div class="mbn-icon">👤</div>
+    <div class="mbn-label">Profile</div>
+  </a>
+</nav>
+
+<script id="mobile-nav-init">
+(function() {
+  var active = 'home';
+  document.querySelectorAll('.mbn-item').forEach(function(el) {
+    if (el.dataset.page === active) el.classList.add('active');
+  });
+})();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/util.js"></script>
+<script>
+(async function initHomepage() {
+  const { createClient } = supabase;
+  const db = createClient(
+    'https://kyneaettrynagavewefi.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
+  );
+
+  const catEmoji = { 'Food & Drink':'🍔','Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️','Home Services':'🔧','Arts & Events':'🎭' };
+  function stars(r) { const f=Math.round(r||0); return '★'.repeat(f)+'☆'.repeat(5-f); }
+  const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
+  function photoPos(positions, i) {
+    const v = positions && positions[i];
+    return PHOTO_POS_SAFE.has(v) ? v : 'center';
+  }
+  function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
+  // ── open-now from real hours JSONB ──
+  function parseClock(s) {
+    const m = (s||'').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!m) return null;
+    let h = parseInt(m[1],10) % 12;
+    if (/PM/i.test(m[3])) h += 12;
+    return h * 60 + parseInt(m[2],10);
+  }
+  function isOpenNow(hours) {
+    if (!hours || typeof hours !== 'object') return false;
+    const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+    const now = new Date();
+    const v = hours[days[now.getDay()]];
+    if (!v || /closed|appointment/i.test(v)) return false;
+    const parts = String(v).split(/\s*[-–—]\s*/);
+    if (parts.length < 2) return false;
+    const open = parseClock(parts[0]); const close = parseClock(parts[1]);
+    if (open === null || close === null) return false;
+    const cur = now.getHours() * 60 + now.getMinutes();
+    return close <= open ? (cur >= open || cur < close) : (cur >= open && cur < close);
+  }
+
+  try {
+    const [bizRes, reviewRes, statsRes] = await Promise.all([
+      db.from('businesses_with_ratings').select('*').eq('is_active', true).order('created_at', { ascending: false }),
+      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6),
+      db.rpc('get_homepage_stats')
+    ]);
+
+    const businesses = bizRes.data || [];
+    const reviews = reviewRes.data || [];
+    const stats = statsRes.data || {};
+
+    // ── STATS ──
+    const totalBiz = businesses.length;
+    document.getElementById('stat-businesses').textContent = stats.business_count ?? totalBiz;
+    const totalReviews = stats.review_count ?? reviews.length;
+    document.getElementById('stat-reviews').textContent = totalReviews > 0 ? totalReviews : '0';
+    document.getElementById('stat-members').textContent = stats.user_count ?? 0;
+    setText('hero-biz-count', String(stats.business_count ?? totalBiz));
+    const statLine = document.getElementById('hero-stat-line');
+    if (statLine && totalBiz > 0) {
+      statLine.textContent = `${totalBiz} local businesses across Minooka, Channahon & Shorewood`;
+    }
+
+    // ── OPEN NOW (real hours) ──
+    let openNow = 0;
+    businesses.forEach(b => { if (isOpenNow(b.hours)) openNow++; });
+    if (openNow > 0) {
+      setText('open-count', openNow);
+      const ind = document.getElementById('open-indicator');
+      if (ind) ind.style.display = '';
+    }
+
+    // ── CATEGORY COUNTS ──
+    const counts = {};
+    businesses.forEach(b => { counts[b.category] = (counts[b.category] || 0) + 1; });
+    document.querySelectorAll('.cat-count[data-category]').forEach(el => {
+      const n = counts[el.dataset.category] || 0;
+      el.textContent = n + (n === 1 ? ' place' : ' places');
+    });
+
+    // ── HERO PHOTOS (local businesses only, no chains) ──
+    const withPhotos = businesses.filter(b => b.image_url && !(b.features || []).includes('Chain'));
+    for (let i = withPhotos.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
+    }
+    const heroPos = p => (p && PHOTO_POS_SAFE.has(p[0])) ? p[0] : 'top';
+    ['hero-photo-a','hero-photo-b'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && withPhotos[i]) {
+        el.innerHTML = `<a href="/pages/business.html?id=${withPhotos[i].id}" style="display:block;width:100%;height:100%;background:url('${withPhotos[i].image_url}') ${heroPos(withPhotos[i].photo_positions)}/cover no-repeat;" title="${escapeHtml(withPhotos[i].name)}"></a>`;
+      }
+    });
+
+    // ── FLOATING REVIEW (real latest review) ──
+    if (reviews.length > 0) {
+      const r = reviews[0];
+      const bizName = r.businesses?.name || '';
+      setText('hero-reviewer-name', r.reviewer_name || 'Local Resident');
+      setText('hero-reviewer-stars', stars(r.rating));
+      setText('hero-reviewer-biz', bizName ? `Just reviewed ${bizName}` : 'Just left a review');
+      setText('hero-reviewer-av', (r.reviewer_name || 'A')[0].toUpperCase());
+      const card = document.getElementById('hero-review-card');
+      if (card) card.style.display = '';
+    }
+
+    // ── COMMUNITY PICKS ──
+    const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
+    const homeTownPicks = businesses.filter(b => {
+      const c = (b.city || '').trim().toLowerCase();
+      return c.length === 0 || HOME_TOWNS.has(c);
+    });
+    function bizCard(b, opts) {
+      opts = opts || {};
+      const rating = parseFloat(b.avg_rating) || 0;
+      const count = b.review_count || 0;
+      const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+      const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
+      const saveBtn = `<button class="biz-save" type="button" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('saved');this.textContent=this.classList.contains('saved')?'♥':'♡';" aria-label="Save">♡</button>`;
+      const badge = opts.badge ? `<span class="biz-badge ${opts.badgeClass||''}">${opts.badge}</span>` : '';
+      const photoBlock = photoSrc
+        ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div>${badge}${saveBtn}</div>`
+        : '';
+      const chipParts = [];
+      if (isOpenNow(b.hours)) chipParts.push('<span class="chip open">● Open now</span>');
+      if (b.price_range) chipParts.push(`<span class="chip">${escapeHtml(b.price_range)}</span>`);
+      (b.features || []).slice(0, 2).forEach(f => chipParts.push(`<span class="chip">${escapeHtml(f)}</span>`));
+      const chips = chipParts.length ? `<div class="chips">${chipParts.join('')}</div>` : '';
+      const rateRow = rating > 0
+        ? `<div class="biz-rate"><span class="stars">${stars(rating)}</span><span class="num">${rating.toFixed(1)}</span><span class="cnt">${count > 0 ? '(' + count + ')' : ''}</span></div>`
+        : `<div class="biz-rate"><span class="cnt">No reviews yet</span></div>`;
+      return `
+        <a href="/pages/business.html?id=${b.id}" class="biz-card">
+          ${photoBlock}
+          <div class="biz-body">
+            <div class="biz-cat">${escapeHtml(b.category || '')}${sub}</div>
+            <div class="biz-name">${escapeHtml(b.name)}</div>
+            ${rateRow}
+            ${chips}
+            <div class="biz-foot"><span class="loc">📍 ${escapeHtml(b.city || 'the 815')}</span><span class="go">View →</span></div>
+          </div>
+        </a>`;
+    }
+    const picks = homeTownPicks.slice(0, 6);
+    const grid = document.getElementById('community-picks-grid');
+    if (picks.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink-faint);">No businesses yet, <a href="/pages/submit/business.html" style="color:var(--orange);">add the first one!</a></div>`;
+    } else {
+      grid.innerHTML = picks.map(b => bizCard(b)).join('');
+    }
+
+    // ── NEW ARRIVALS (genuinely recent additions only) ──
+    const NEW_CUTOFF = new Date('2026-06-01T00:00:00');
+    const newArrivals = homeTownPicks
+      .filter(b => b.created_at && new Date(b.created_at) >= NEW_CUTOFF)
+      .slice(0, 4);
+    if (newArrivals.length) {
+      document.getElementById('new-arrivals-grid').innerHTML = newArrivals.map(b => {
+        const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+        const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
+        const photoBlock = photoSrc
+          ? `<div class="fresh-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div><span class="fresh-new">New</span></div>`
+          : '';
+        const inlineNew = photoSrc ? '' : '<span class="fresh-new" style="position:static;display:inline-block;">New</span>';
+        return `
+          <a class="fresh-card" href="/pages/business.html?id=${b.id}">
+            ${photoBlock}
+            <div class="fresh-body">
+              <div class="fresh-cat">${escapeHtml(b.category || '')}${sub}</div>
+              <div class="fresh-name">${escapeHtml(b.name)}</div>
+              <div class="fresh-meta">${inlineNew}📍 ${escapeHtml(b.city || 'the 815')}</div>
+            </div>
+          </a>`;
+      }).join('');
+      document.getElementById('new-arrivals-section').style.display = '';
+    }
+
+    // ── COMING UP (real upcoming events + active deals) ──
+    let upcomingEvents = [];
+    const MON = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const fmtTime = t => {
+      if (!t) return '';
+      const [h, m] = t.split(':').map(Number);
+      const ap = h >= 12 ? 'PM' : 'AM';
+      const hr = ((h + 11) % 12) + 1;
+      return `${hr}:${String(m).padStart(2, '0')} ${ap}`;
+    };
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      const [eventRes, dealRes] = await Promise.all([
+        db.from('events').select('id,title,event_date,start_time,location_name,city').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(4),
+        db.from('deals').select('title,discount,business_name').eq('is_active', true).or(`expiry_date.is.null,expiry_date.gte.${today}`)
+      ]);
+      const events = eventRes.data || [];
+      const deals = dealRes.data || [];
+      upcomingEvents = events;
+      const eventCards = events.map(e => {
+        const d = e.event_date ? new Date(e.event_date + 'T00:00:00') : null;
+        const place = e.location_name || e.city || '';
+        const meta = [e.start_time ? '🕐 ' + fmtTime(e.start_time) : '', place ? '📍 ' + escapeHtml(place) : ''].filter(Boolean).join(' · ');
+        return `
+          <a class="fresh-card" href="/pages/events.html?event=${e.id}">
+            <div class="ev-date">
+              <span class="ev-mon">${d ? MON[d.getMonth()] : ''}</span>
+              <span class="ev-day">${d ? d.getDate() : ''}</span>
+              <span class="ev-dow">${d ? DOW[d.getDay()] : ''}</span>
+            </div>
+            <div class="fresh-body">
+              <div class="fresh-cat">${escapeHtml(place || 'Event')}</div>
+              <div class="fresh-name">${escapeHtml(e.title || 'Community event')}</div>
+              ${meta ? `<div class="fresh-meta">${meta}</div>` : ''}
+            </div>
+          </a>`;
+      });
+      const dealCards = deals.map(dl => `
+        <a class="fresh-card" href="/pages/deals.html">
+          <div class="ev-date" style="background:var(--river);"><span class="ev-mon" style="color:var(--bone);">DEAL</span><span class="ev-day">🏷</span></div>
+          <div class="fresh-body">
+            <div class="fresh-cat">${escapeHtml(dl.business_name || 'Local deal')}</div>
+            <div class="fresh-name">${escapeHtml(dl.title || dl.business_name || 'Local deal')}</div>
+            ${dl.discount ? `<div class="fresh-meta"><span class="fresh-new" style="position:static;display:inline-block;background:var(--gold);">${escapeHtml(dl.discount)}</span></div>` : ''}
+          </div>
+        </a>`);
+      const upcomingCards = eventCards.concat(dealCards).slice(0, 4);
+      if (upcomingCards.length) {
+        document.getElementById('upcoming-row').innerHTML = upcomingCards.join('');
+        document.getElementById('upcoming-section').style.display = '';
+      }
+    } catch (e) {
+      console.error('Coming up strip failed to load', e);
+    }
+
+    // ── LIVE TICKER (real recent activity) ──
+    try {
+      const tickerItems = [];
+      newArrivals.forEach(b => {
+        tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">🆕</span> <b>${escapeHtml(b.name)}</b> just joined${b.city ? ' in ' + escapeHtml(b.city) : ''}</span>`);
+      });
+      reviews.slice(0, 4).forEach(r => {
+        const bn = r.businesses?.name;
+        if (bn) tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">⭐</span> New review for <b>${escapeHtml(bn)}</b></span>`);
+      });
+      upcomingEvents.forEach(e => {
+        const d = e.event_date ? new Date(e.event_date + 'T00:00:00') : null;
+        const ds = d ? `${MON[d.getMonth()]} ${d.getDate()}` : '';
+        tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">🎟️</span> <b>${escapeHtml(e.title || 'Event')}</b>${ds ? ' · ' + ds : ''}${e.city ? ' · ' + escapeHtml(e.city) : ''}</span>`);
+      });
+      if (tickerItems.length) {
+        const track = document.getElementById('ticker-track');
+        track.innerHTML = tickerItems.join('') + tickerItems.join('');
+        document.getElementById('ticker').style.display = '';
+      }
+    } catch (e) {
+      console.error('Ticker failed to build', e);
+    }
+
+    // ── SPOTLIGHT (top rated featured business) ──
+    const spotlight = businesses.find(b => b.avg_rating > 0);
+    if (spotlight) {
+      const rating = parseFloat(spotlight.avg_rating) || 0;
+      const count = spotlight.review_count || 0;
+      document.getElementById('spotlight-name').innerHTML = `Meet <em>${escapeHtml(spotlight.name)}</em>`;
+      document.getElementById('spotlight-desc').textContent = spotlight.description || `A local favorite in ${spotlight.city || 'the 815'}.`;
+      document.getElementById('spotlight-rating').textContent = rating > 0 ? rating.toFixed(1) : '';
+      document.getElementById('spotlight-stars').textContent = stars(rating);
+      document.getElementById('spotlight-review-count').textContent = count > 0 ? `${count} review${count!==1?'s':''}` : '';
+      document.getElementById('spotlight-link').href = `/pages/business.html?id=${spotlight.id}`;
+      const attrs = [
+        spotlight.category ? `${catEmoji[spotlight.category]||'🏪'} ${escapeHtml(spotlight.category)}` : '',
+        spotlight.city ? `📍 ${escapeHtml(spotlight.city)}` : '',
+        escapeHtml(spotlight.price_range || '')
+      ].filter(Boolean).map(a => `<span class="spot-attr">${a}</span>`).join('');
+      document.getElementById('spotlight-attrs').innerHTML = attrs;
+      const spotPhoto = document.getElementById('spotlight-photo');
+      if (spotlight.image_url && spotPhoto) {
+        spotPhoto.style.backgroundImage = `url('${spotlight.image_url}')`;
+        spotPhoto.style.backgroundSize = 'cover';
+        spotPhoto.style.backgroundPosition = photoPos(spotlight.photo_positions, 0);
+        spotPhoto.innerHTML = '';
+      }
+      // Real review quote for the spotlight business, if we have one
+      const sq = reviews.find(r => r.business_id === spotlight.id && r.review_text);
+      if (sq) {
+        setText('spotlight-quote-text', `"${sq.review_text}"`);
+        setText('spotlight-quote-name', sq.reviewer_name || 'Local Resident');
+        setText('spotlight-quote-sub', stars(sq.rating));
+        setText('spotlight-quote-av', (sq.reviewer_name || 'A')[0].toUpperCase());
+        const q = document.getElementById('spotlight-quote');
+        if (q) q.style.display = '';
+      }
+      document.getElementById('spotlight-section').style.display = '';
+    }
+
+    // ── REVIEWS ──
+    if (reviews.length > 0) {
+      const reviewsGrid = document.getElementById('reviews-grid');
+      reviewsGrid.innerHTML = reviews.slice(0, 3).map(r => {
+        const bizName = r.businesses?.name || '';
+        const initial = (r.reviewer_name || 'A')[0].toUpperCase();
+        const place = r.businesses?.category || '815 Local';
+        return `
+          <article class="rev">
+            <span class="rev-quote-mark">"</span>
+            <div class="rev-head">
+              <div class="rev-av">${escapeHtml(initial)}</div>
+              <div>
+                <div class="rev-name">${escapeHtml(r.reviewer_name || 'Local Resident')}</div>
+                <div class="rev-handle">${escapeHtml(place)}</div>
+              </div>
+            </div>
+            ${bizName ? `<div class="rev-biz">📍 ${escapeHtml(bizName)}</div>` : ''}
+            <div class="rev-stars">${stars(r.rating)}</div>
+            <p class="rev-text">${escapeHtml(r.review_text || '')}</p>
+          </article>`;
+      }).join('');
+      document.getElementById('reviews-section').style.display = '';
+    }
+
+  } catch(e) {
+    console.warn('815local homepage error:', e);
+  }
+})();
+</script>
+
+<script>
+// ── AUTH: Supabase client (reuse if already initialized) ──
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const _authDb = (typeof db !== 'undefined') ? db : supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── MODAL CONTROLS ──
+function openAuthModal(view) {
+  switchAuthView(view || 'signin');
+  document.getElementById('auth-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    const v = document.getElementById('auth-view-' + (view || 'signin'));
+    const first = v && v.querySelector('input');
+    if (first) first.focus();
+  }, 50);
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  clearAuthMessages();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('auth-overlay').classList.contains('open')) closeAuthModal();
+});
+
+function switchAuthView(view) {
+  ['signin','signup','forgot'].forEach(v => {
+    document.getElementById('auth-view-' + v).style.display = v === view ? '' : 'none';
+  });
+  clearAuthMessages();
+}
+
+function clearAuthMessages() {
+  document.querySelectorAll('.auth-error, .auth-success').forEach(el => {
+    el.style.display = 'none';
+    el.textContent = '';
+  });
+}
+
+function showMsg(id, msg, isError) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.className = isError ? 'auth-error' : 'auth-success';
+}
+
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.textContent = loading ? 'Please wait...' : btn.dataset.label || btn.textContent;
+}
+
+// ── AVATAR SELECTION ──
+let selectedAvatarFile = null;
+
+function handleAvatarSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  if (!['image/jpeg','image/png','image/webp'].includes(file.type)) {
+    alert('Please upload a JPG, PNG, or WebP image.');
+    input.value = '';
+    return;
+  }
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Image must be under 2MB. Please choose a smaller file.');
+    input.value = '';
+    return;
+  }
+
+  selectedAvatarFile = file;
+  const preview = document.getElementById('avatar-preview');
+  const icon = document.getElementById('avatar-upload-icon');
+  const reader = new FileReader();
+  reader.onload = e => {
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    icon.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── SIGN IN ──
+async function doSignIn() {
+  const email = document.getElementById('signin-email').value.trim();
+  const password = document.getElementById('signin-password').value;
+  if (!email || !password) { showMsg('signin-error', 'Please enter your email and password.', true); return; }
+
+  const btn = document.getElementById('signin-btn');
+  btn.disabled = true; btn.textContent = 'Signing in...';
+
+  const { data, error } = await _authDb.auth.signInWithPassword({ email, password });
+  btn.disabled = false; btn.textContent = 'Sign In';
+
+  if (error) { showMsg('signin-error', error.message, true); return; }
+
+  closeAuthModal();
+  await updateNavForUser(data.user);
+}
+
+// ── SIGN UP ──
+async function doSignUp() {
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const password = document.getElementById('signup-password').value;
+  const newsletter = document.getElementById('signup-newsletter').checked;
+
+  if (!name) { showMsg('signup-error', 'Please enter your name.', true); return; }
+  if (!email) { showMsg('signup-error', 'Please enter your email.', true); return; }
+  if (!password || password.length < 6) { showMsg('signup-error', 'Password must be at least 6 characters.', true); return; }
+
+  const btn = document.getElementById('signup-btn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+
+  const { data, error } = await _authDb.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { display_name: name, newsletter_opt_in: newsletter }
+    }
+  });
+
+  if (error) {
+    btn.disabled = false; btn.textContent = 'Create Account';
+    showMsg('signup-error', error.message, true);
+    return;
+  }
+
+  if (selectedAvatarFile && data.user) {
+    try {
+      const ext = selectedAvatarFile.name.split('.').pop();
+      const path = data.user.id + '/avatar.' + ext;
+      const { error: uploadError } = await _authDb.storage
+        .from('avatars')
+        .upload(path, selectedAvatarFile, { upsert: true });
+
+      if (!uploadError) {
+        const { data: urlData } = _authDb.storage.from('avatars').getPublicUrl(path);
+        await _authDb.from('profiles').update({ avatar_url: urlData.publicUrl }).eq('id', data.user.id);
+      }
+    } catch(e) { console.warn('Avatar upload failed:', e); }
+  }
+
+  btn.disabled = false; btn.textContent = 'Create Account';
+
+  showMsg('signup-success', 'Account created! Check your email to confirm your address, then sign in.', false);
+  setTimeout(() => switchAuthView('signin'), 4000);
+}
+
+// ── FORGOT PASSWORD ──
+async function doForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) { showMsg('forgot-error', 'Please enter your email address.', true); return; }
+
+  const btn = document.getElementById('forgot-btn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+
+  const { error } = await _authDb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '//pages/profile.html'
+  });
+
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+
+  if (error) { showMsg('forgot-error', error.message, true); return; }
+  showMsg('forgot-success', 'Reset link sent! Check your email.', false);
+}
+
+// ── NAV USER STATE ──
+async function updateNavForUser(user) {
+  if (!user) return;
+
+  const signinBtn = document.getElementById('nav-signin-btn');
+  const userMenu = document.getElementById('nav-user-menu');
+  const userName = document.getElementById('nav-user-name');
+  const avatar = document.getElementById('nav-avatar');
+  const initial = document.getElementById('nav-avatar-initial');
+
+  signinBtn.style.display = 'none';
+  userMenu.style.display = '';
+
+  const { data: profile } = await _authDb.from('profiles').select('display_name, avatar_url').eq('id', user.id).single();
+  const name = (profile && profile.display_name) || user.email.split('@')[0];
+  userName.textContent = name;
+  initial.textContent = name.charAt(0).toUpperCase();
+
+  if (profile && profile.avatar_url) {
+    avatar.src = profile.avatar_url;
+    avatar.style.display = 'block';
+    initial.style.display = 'none';
+  }
+}
+
+function toggleUserDropdown() {
+  const dd = document.getElementById('user-dropdown');
+  dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+}
+
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('nav-user-menu');
+  if (menu && !menu.contains(e.target)) {
+    const dd = document.getElementById('user-dropdown');
+    if (dd) dd.style.display = 'none';
+  }
+});
+
+async function signOut() {
+  await _authDb.auth.signOut();
+  document.getElementById('nav-signin-btn').style.display = '';
+  document.getElementById('nav-user-menu').style.display = 'none';
+}
+
+// ── NEWSLETTER SUBSCRIBE ──
+async function doNewsletterSubscribe(e) {
+  e.preventDefault();
+  const input = document.getElementById('newsletter-email');
+  const btn   = document.getElementById('newsletter-btn');
+  const msg   = document.getElementById('newsletter-msg');
+  const email = input.value.trim();
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.style.color = '#fff0e8';
+    msg.textContent = 'Please enter a valid email address.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Subscribing...';
+  msg.textContent = '';
+
+  const { error } = await _authDb.from('newsletter_subscribers').insert({ email });
+
+  btn.disabled = false;
+  btn.textContent = 'Subscribe →';
+
+  if (error && error.code === '23505') {
+    msg.style.color = '#fff0e8';
+    msg.textContent = "You're already subscribed!";
+  } else if (error) {
+    msg.style.color = '#fff0e8';
+    msg.textContent = 'Something went wrong. Try again shortly.';
+  } else {
+    input.value = '';
+    msg.style.color = '#fff';
+    msg.textContent = "You're in! We'll keep you posted.";
+  }
+}
+
+// ── CHECK SESSION ON LOAD ──
+(async function() {
+  const { data: { session } } = await _authDb.auth.getSession();
+  if (session && session.user) {
+    await updateNavForUser(session.user);
+  }
+})();
+</script>
+
+<script src="/assets/js/analytics-tracker.js"></script>
+
+<!-- ══════════ AUTH MODAL ══════════ -->
+<div class="auth-overlay" id="auth-overlay" onclick="if(event.target===this)closeAuthModal()">
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-label="815local account">
+    <span class="auth-close" role="button" tabindex="0" aria-label="Close" onclick="closeAuthModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();closeAuthModal();}">×</span>
+
+    <!-- SIGN IN VIEW -->
+    <div id="auth-view-signin">
+      <div class="auth-logo"><picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></picture></div>
+      <div class="auth-title">Welcome back</div>
+      <div class="auth-sub">Sign in to your 815local account</div>
+      <div class="auth-error" id="signin-error"></div>
+      <div class="auth-success" id="signin-success"></div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="signin-email" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="signin-password" placeholder="••••••••" />
+      </div>
+      <div style="text-align:right;margin-top:-8px;margin-bottom:16px;">
+        <a class="forgot-link" onclick="switchAuthView('forgot')" style="float:none;">Forgot password?</a>
+      </div>
+      <button class="auth-btn" id="signin-btn" onclick="doSignIn()">Sign In</button>
+      <div class="auth-switch">Don't have an account? <a onclick="switchAuthView('signup')">Create one</a></div>
+    </div>
+
+    <!-- SIGN UP VIEW -->
+    <div id="auth-view-signup" style="display:none;">
+      <div class="auth-logo"><picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></picture></div>
+      <div class="auth-title">Join 815local</div>
+      <div class="auth-sub">Create your free account</div>
+      <div class="auth-error" id="signup-error"></div>
+      <div class="auth-success" id="signup-success"></div>
+      <div class="auth-field">
+        <label>Your Name</label>
+        <input type="text" id="signup-name" placeholder="Jane Smith" />
+      </div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Min. 6 characters" />
+      </div>
+      <div class="auth-field">
+        <label>Profile Photo <span style="font-weight:400;text-transform:none;color:var(--gray);">(optional)</span></label>
+        <div class="avatar-upload-area" id="avatar-upload-area">
+          <input type="file" id="avatar-file-input" accept="image/jpeg,image/png,image/webp" onchange="handleAvatarSelect(this)" />
+          <img id="avatar-preview" class="avatar-preview" src="" alt="Preview" />
+          <div class="avatar-upload-icon" id="avatar-upload-icon">📷</div>
+          <div class="avatar-upload-label"><strong>Click to upload</strong> or drag & drop</div>
+          <div class="avatar-upload-label">JPG, PNG or WebP · Max 2MB</div>
+        </div>
+        <div class="avatar-terms">By uploading a photo you confirm it is appropriate. Violations result in account termination.</div>
+      </div>
+      <label class="auth-checkbox">
+        <input type="checkbox" id="signup-newsletter" />
+        <span>Send me the 815local newsletter, local news, events, and new businesses in Minooka, Channahon & Shorewood.</span>
+      </label>
+      <button class="auth-btn" id="signup-btn" onclick="doSignUp()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="switchAuthView('signin')">Sign in</a></div>
+    </div>
+
+    <!-- FORGOT PASSWORD VIEW -->
+    <div id="auth-view-forgot" style="display:none;">
+      <div class="auth-logo"><picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></picture></div>
+      <div class="auth-title">Reset your password</div>
+      <div class="auth-sub">Enter your email and we'll send you a reset link</div>
+      <div class="auth-error" id="forgot-error"></div>
+      <div class="auth-success" id="forgot-success"></div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="forgot-email" placeholder="you@example.com" />
+      </div>
+      <button class="auth-btn" id="forgot-btn" onclick="doForgotPassword()">Send Reset Link</button>
+      <div class="auth-switch"><a onclick="switchAuthView('signin')">← Back to Sign In</a></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
