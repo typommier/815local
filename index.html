@@ -645,7 +645,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
   <div class="container">
     <div class="spot-grid">
       <div>
-        <span class="eyebrow on-dark">Featured business</span>
+        <span class="eyebrow on-dark" id="spotlight-eyebrow">Featured business</span>
         <h2 class="spot-title" id="spotlight-name"></h2>
         <p class="spot-desc" id="spotlight-desc"></p>
         <div class="spot-meta">
@@ -1021,7 +1021,7 @@ window.addEventListener('scroll', () => {
             <div class="biz-name">${escapeHtml(b.name)}</div>
             ${rateRow}
             ${chips}
-            <div class="biz-foot"><span class="loc">📍 ${escapeHtml(b.city || 'the 815')}</span><span class="go">View →</span></div>
+            <div class="biz-foot"><span class="loc">📍 ${escapeHtml(b.address ? b.address.split(',')[0].trim() : (b.city || 'the 815'))}</span><span class="go">View →</span></div>
           </div>
         </a>`;
     }
@@ -1052,7 +1052,7 @@ window.addEventListener('scroll', () => {
             <div class="fresh-body">
               <div class="fresh-cat">${escapeHtml(b.category || '')}${sub}</div>
               <div class="fresh-name">${escapeHtml(b.name)}</div>
-              <div class="fresh-meta">${inlineNew}📍 ${escapeHtml(b.city || 'the 815')}</div>
+              <div class="fresh-meta">${inlineNew}📍 ${escapeHtml(b.address ? b.address.split(',')[0].trim() : (b.city || 'the 815'))}</div>
             </div>
           </a>`;
       }).join('');
@@ -1144,12 +1144,20 @@ window.addEventListener('scroll', () => {
     if (spotlight) {
       const rating = parseFloat(spotlight.avg_rating) || 0;
       const count = spotlight.review_count || 0;
+      // Some featured listings are places, not businesses (parks, trails). Adjust wording.
+      const PLACE_CATS = new Set(['Parks & Outdoor','Parks & Recreation','Parks','Outdoors','Recreation']);
+      const isPlace = PLACE_CATS.has(spotlight.category);
+      const noun = isPlace ? 'place' : 'business';
+      const eyebrowEl = document.getElementById('spotlight-eyebrow');
+      if (eyebrowEl) eyebrowEl.textContent = isPlace ? 'Featured place' : 'Featured business';
       document.getElementById('spotlight-name').innerHTML = `Meet <em>${escapeHtml(spotlight.name)}</em>`;
       document.getElementById('spotlight-desc').textContent = spotlight.description || `A local favorite in ${spotlight.city || 'the 815'}.`;
       document.getElementById('spotlight-rating').textContent = rating > 0 ? rating.toFixed(1) : '';
       document.getElementById('spotlight-stars').textContent = stars(rating);
       document.getElementById('spotlight-review-count').textContent = count > 0 ? `${count} review${count!==1?'s':''}` : '';
-      document.getElementById('spotlight-link').href = `/pages/business.html?id=${spotlight.id}`;
+      const spotLink = document.getElementById('spotlight-link');
+      spotLink.href = `/pages/business.html?id=${spotlight.id}`;
+      spotLink.textContent = `View ${noun}`;
       const attrs = [
         spotlight.category ? `${catEmoji[spotlight.category]||'🏪'} ${escapeHtml(spotlight.category)}` : '',
         spotlight.city ? `📍 ${escapeHtml(spotlight.city)}` : '',
