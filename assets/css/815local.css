@@ -34,7 +34,7 @@
   /* fonts */
   --font-display:'Space Grotesk','Inter',system-ui,sans-serif;
   --font-text:'Inter',system-ui,sans-serif;
-  --font-mono:'Space Mono',ui-monospace,monospace;
+  --font-mono:'Inter',system-ui,sans-serif;
 }
 
 /* ── base (loaded after each page's inline <style>, so this wins) ── */
@@ -125,9 +125,9 @@ h1, h2, h3, h4, .display { font-family: var(--font-display); letter-spacing: -0.
 /* ── nav (charcoal, bare logo) ── */
 #main-nav { display: block; position: sticky; top: 0; z-index: 100; background: var(--ink); border-bottom: 1.5px solid var(--line-light); padding: 0; transition: box-shadow var(--med), background var(--med); }
 #main-nav.scrolled { box-shadow: var(--shadow-md); background: rgba(34,26,23,0.94); backdrop-filter: blur(10px); }
-#main-nav .nav-inner { display: flex; align-items: center; gap: 26px; height: 76px; }
+#main-nav .nav-inner { display: flex; align-items: center; gap: 26px; height: 160px; }
 #main-nav .nav-logo { flex-shrink: 0; display: flex; align-items: center; margin: 0; }
-#main-nav .nav-logo img { height: 56px; width: auto; filter: none; }
+#main-nav .nav-logo img { height: 150px; width: auto; filter: none; }
 .nav-links { display: flex; align-items: center; gap: 2px; margin-right: auto; }
 .nav-link { font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: 0.03em; color: rgba(251,246,234,0.72); padding: 9px 15px; border-radius: 8px; transition: color var(--fast), background var(--fast); position: relative; }
 .nav-link:hover { color: var(--bone); background: rgba(251,246,234,0.08); }
@@ -197,8 +197,8 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; borde
   .container { padding: 0 22px; }
   .topbar-right .tb-time, .topbar-left .tb-badge { display: none; }
   .nav-links { display: none; }
-  #main-nav .nav-inner { height: 64px; gap: 14px; }
-  #main-nav .nav-logo img { height: 46px; }
+  #main-nav .nav-inner { height: 92px; gap: 14px; }
+  #main-nav .nav-logo img { height: 80px; }
   .sec-head { flex-direction: column; align-items: flex-start; gap: 14px; }
   .foot-grid, .footer-grid { grid-template-columns: 1fr 1fr; }
   .mobile-bottom-nav { display: flex; }
