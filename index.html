@@ -955,14 +955,18 @@ window.addEventListener('scroll', () => {
     });
 
     // ── HERO PHOTOS (local businesses only, no chains) ──
-    const withPhotos = businesses.filter(b => b.image_url && !(b.features || []).includes('Chain'));
+    // Eligible if image_url is set OR the first entry in photos[] exists.
+    const withPhotos = businesses.filter(b =>
+      (b.image_url || (Array.isArray(b.photos) && b.photos[0])) &&
+      !(b.features || []).includes('Chain')
+    );
     for (let i = withPhotos.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
     }
     const heroPos = p => (p && PHOTO_POS_SAFE.has(p[0])) ? p[0] : 'center';
     // Single hero photo that cycles through real business images like a slideshow.
-    const slidePhotos = withPhotos.slice(0, 8);
+    const slidePhotos = withPhotos;
     if (slidePhotos.length) {
       const ph = document.getElementById('hero-photo-ph');
       if (ph) ph.style.display = 'none';
@@ -974,7 +978,8 @@ window.addEventListener('scroll', () => {
         const b = slidePhotos[i];
         const layer = layers[cur];
         if (!layer) return;
-        layer.style.backgroundImage = `url('${b.image_url}')`;
+        const src = b.image_url || (b.photos && b.photos[0]);
+        layer.style.backgroundImage = `url('${src}')`;
         layer.style.backgroundPosition = heroPos(b.photo_positions);
         layers.forEach((l, n) => { if (l) l.classList.toggle('show', n === cur); });
         if (link) link.href = `/pages/business.html?id=${b.id}`;
