@@ -954,17 +954,27 @@ window.addEventListener('scroll', () => {
       el.textContent = n + (n === 1 ? ' place' : ' places');
     });
 
-    // ── HERO PHOTOS (local businesses only, no chains) ──
+    // ── HERO PHOTOS (Minooka/Channahon/Shorewood only, no chains) ──
     // Eligible if image_url is set OR the first entry in photos[] exists.
-    const withPhotos = businesses.filter(b =>
-      (b.image_url || (Array.isArray(b.photos) && b.photos[0])) &&
-      !(b.features || []).includes('Chain')
-    );
+    const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
+    const HERO_EXCLUDE = new Set([
+      'ridge dental group',
+      'sabuco beck, p.c.',
+      'minooka animal hospital'
+    ]);
+    const withPhotos = businesses.filter(b => {
+      if (!(b.image_url || (Array.isArray(b.photos) && b.photos[0]))) return false;
+      if ((b.features || []).includes('Chain')) return false;
+      const city = (b.city || '').trim().toLowerCase();
+      if (!HOME_TOWNS.has(city)) return false;
+      if (HERO_EXCLUDE.has((b.name || '').trim().toLowerCase())) return false;
+      return true;
+    });
     for (let i = withPhotos.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
     }
-    const heroPos = p => (p && PHOTO_POS_SAFE.has(p[0])) ? p[0] : 'center';
+    const heroPos = p => (p && PHOTO_POS_SAFE.has(p[0])) ? p[0] : 'top';
     // Single hero photo that cycles through real business images like a slideshow.
     const slidePhotos = withPhotos;
     if (slidePhotos.length) {
@@ -994,7 +1004,6 @@ window.addEventListener('scroll', () => {
     }
 
     // ── COMMUNITY PICKS ──
-    const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
     const homeTownPicks = businesses.filter(b => {
       const c = (b.city || '').trim().toLowerCase();
       return c.length === 0 || HOME_TOWNS.has(c);
