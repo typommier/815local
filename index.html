@@ -50,7 +50,8 @@
 <link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/815local.css">
 
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -81,7 +82,7 @@
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
-  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   background: var(--paper);
   color: var(--ink);
   line-height: 1.6;
@@ -95,7 +96,7 @@ button { font-family: inherit; cursor: pointer; }
 ::selection { background: var(--orange); color: var(--bone); }
 
 /* ── type primitives ── */
-.display { font-family: 'Bricolage Grotesque','Hanken Grotesk',sans-serif; font-weight: 800; line-height: 0.96; letter-spacing: -0.02em; }
+.display { font-family: 'Space Grotesk','Inter',sans-serif; font-weight: 800; line-height: 0.96; letter-spacing: -0.02em; }
 .mono { font-family: 'Space Mono', ui-monospace, monospace; letter-spacing: 0.02em; }
 .eyebrow { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); display: inline-flex; align-items: center; gap: 9px; }
 .eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--orange); display: inline-block; }
@@ -106,13 +107,13 @@ button { font-family: inherit; cursor: pointer; }
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 40px; }
 .section { padding: 96px 0; position: relative; }
 .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 44px; }
-.sec-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(30px, 4vw, 50px); line-height: 1.0; letter-spacing: -0.02em; }
+.sec-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(30px, 4vw, 50px); line-height: 1.0; letter-spacing: -0.02em; }
 .sec-title em { font-style: italic; color: var(--orange); }
 .sec-link { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: var(--ink); display: inline-flex; align-items: center; gap: 7px; padding-bottom: 4px; border-bottom: 2px solid var(--ink); white-space: nowrap; transition: gap var(--fast), color var(--fast), border-color var(--fast); }
 .sec-link:hover { gap: 12px; color: var(--orange); border-color: var(--orange); }
 
 /* ── buttons ── */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 26px; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 15px; border-radius: 100px; border: 2px solid transparent; transition: transform var(--fast), background var(--fast), color var(--fast), box-shadow var(--fast), border-color var(--fast); cursor: pointer; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 14px 26px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; border-radius: 100px; border: 2px solid transparent; transition: transform var(--fast), background var(--fast), color var(--fast), box-shadow var(--fast), border-color var(--fast); cursor: pointer; }
 .btn svg { width: 17px; height: 17px; }
 .btn-primary { background: var(--orange); color: var(--bone); }
 .btn-primary:hover { background: var(--orange-deep); transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -161,7 +162,7 @@ button { font-family: inherit; cursor: pointer; }
 .hero { position: relative; padding: 64px 0 0; overflow: hidden; background: var(--paper); }
 .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; padding-bottom: 64px; }
 .hero-eyebrow { margin-bottom: 24px; }
-.hero-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(48px, 7.4vw, 104px); line-height: 0.9; letter-spacing: -0.035em; margin-bottom: 22px; }
+.hero-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(48px, 7.4vw, 104px); line-height: 0.9; letter-spacing: -0.035em; margin-bottom: 22px; }
 .hero-title .line2 { display: block; }
 .hero-title em { font-style: italic; color: var(--orange); position: relative; }
 .hero-title .under { display: inline-block; position: relative; }
@@ -184,18 +185,10 @@ button { font-family: inherit; cursor: pointer; }
 .hero-towns .shield { color: var(--ink); cursor: pointer; transition: color var(--fast), transform var(--fast); }
 .hero-towns .shield:hover { color: var(--orange); transform: translateY(-2px); }
 .hero-visual { position: relative; height: 540px; }
-.hv-card { position: absolute; border-radius: var(--r); border: 2px solid var(--ink); overflow: hidden; background: var(--paper-2); box-shadow: var(--shadow-md); }
-.hv-main { inset: 0 24px 90px 0; }
-.hv-sub { width: 200px; height: 200px; right: 0; bottom: 30px; z-index: 3; }
-.hv-stat { position: absolute; top: 22px; left: 22px; z-index: 5; background: var(--orange); color: var(--bone); border: 2px solid var(--ink); border-radius: var(--r-sm); padding: 13px 17px; box-shadow: 5px 5px 0 var(--ink); }
-.hv-stat .hs-num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 30px; line-height: 1; }
-.hv-stat .hs-lab { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.9; margin-top: 3px; }
-.hv-review { position: absolute; left: 6px; bottom: 16px; z-index: 6; background: var(--bone); border: 2px solid var(--ink); border-radius: var(--r-sm); padding: 12px 14px; display: flex; align-items: center; gap: 11px; box-shadow: 5px 5px 0 var(--ink); min-width: 230px; animation: floatUp 0.6s ease 0.3s both; }
-.hv-review .av { width: 38px; height: 38px; border-radius: 50%; background: var(--river); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 16px; flex-shrink: 0; }
-.hv-review .rv-name { font-size: 13px; font-weight: 700; }
-.hv-review .rv-stars { color: var(--orange); font-size: 12px; letter-spacing: 1px; }
-.hv-review .rv-sub { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--ink-faint); }
-@keyframes floatUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.hv-photo { position: absolute; inset: 0; display: block; border-radius: var(--r); border: 2px solid var(--ink); overflow: hidden; background: var(--paper-2); box-shadow: 10px 12px 0 var(--ink); }
+.hv-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1s ease; }
+.hv-slide.show { opacity: 1; }
+.hv-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 34px 18px 16px; background: linear-gradient(transparent, rgba(34,26,23,0.82)); color: var(--bone); font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.03em; }
 
 /* ── placeholder treatment ── */
 .ph-fill { width: 100%; height: 100%; background: repeating-linear-gradient(45deg, rgba(34,26,23,0.05) 0 2px, transparent 2px 9px), var(--paper-3); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--ink-soft); position: relative; }
@@ -221,7 +214,7 @@ button { font-family: inherit; cursor: pointer; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
 .stat { padding: 40px 28px; text-align: center; border-right: 1.5px solid var(--line); position: relative; }
 .stat:last-child { border-right: none; }
-.stat .st-num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(38px, 4.4vw, 56px); line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
+.stat .st-num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(38px, 4.4vw, 56px); line-height: 1; color: var(--ink); letter-spacing: -0.02em; }
 .stat .st-num em { color: var(--orange); font-style: normal; }
 .stat .st-lab { font-family: 'Space Mono', monospace; font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 10px; }
 
@@ -231,7 +224,7 @@ button { font-family: inherit; cursor: pointer; }
 .cat { display: flex; align-items: center; gap: 16px; padding: 22px 22px; background: var(--bone); border: 1.5px solid var(--line); border-radius: var(--r); cursor: pointer; position: relative; overflow: hidden; transition: transform var(--fast), box-shadow var(--fast), border-color var(--fast); }
 .cat:hover { transform: translateY(-3px); box-shadow: 6px 6px 0 var(--ink); border-color: var(--ink); }
 .cat-ico { width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 25px; border: 1.5px solid var(--line); }
-.cat-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; }
+.cat-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; }
 .cat-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-faint); margin-top: 3px; }
 .cat-arrow { margin-left: auto; color: var(--ink-faint); transition: transform var(--fast), color var(--fast); }
 .cat:hover .cat-arrow { transform: translateX(3px); color: var(--orange); }
@@ -249,7 +242,7 @@ button { font-family: inherit; cursor: pointer; }
 .biz-save.saved { background: var(--orange); color: var(--bone); }
 .biz-body { padding: 18px 20px 20px; }
 .biz-cat { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
-.biz-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.05; margin-bottom: 10px; }
+.biz-name { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.05; margin-bottom: 10px; }
 .biz-rate { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
 .biz-rate .stars { color: var(--orange); letter-spacing: 1px; font-size: 14px; }
 .biz-rate .num { font-weight: 800; font-size: 15px; }
@@ -266,11 +259,11 @@ button { font-family: inherit; cursor: pointer; }
 .spotlight { background: var(--river-deep); color: var(--bone); position: relative; overflow: hidden; }
 .spotlight::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(251,246,234,0.03) 0 2px, transparent 2px 11px); pointer-events: none; }
 .spot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; position: relative; }
-.spot-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(34px, 4.6vw, 56px); line-height: 0.98; letter-spacing: -0.02em; margin: 18px 0 18px; }
+.spot-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(34px, 4.6vw, 56px); line-height: 0.98; letter-spacing: -0.02em; margin: 18px 0 18px; }
 .spot-title em { font-style: italic; color: var(--ember); }
 .spot-desc { font-size: 16.5px; color: rgba(251,246,234,0.72); line-height: 1.7; margin-bottom: 26px; max-width: 480px; }
 .spot-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
-.spot-meta .num { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 26px; }
+.spot-meta .num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 26px; }
 .spot-meta .stars { color: var(--ember); font-size: 16px; letter-spacing: 1px; }
 .spot-meta .cnt { font-family: 'Space Mono', monospace; font-size: 12px; color: rgba(251,246,234,0.5); }
 .spot-attrs { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 34px; }
@@ -279,7 +272,7 @@ button { font-family: inherit; cursor: pointer; }
 .spot-quote { position: absolute; left: 18px; right: 18px; bottom: 18px; background: rgba(24,18,16,0.78); backdrop-filter: blur(10px); border: 1.5px solid var(--line-light); border-radius: var(--r-sm); padding: 16px 18px; z-index: 2; }
 .spot-quote .q { font-size: 14px; font-style: italic; color: rgba(251,246,234,0.92); line-height: 1.6; margin-bottom: 11px; }
 .spot-quote .who { display: flex; align-items: center; gap: 10px; }
-.spot-quote .who .av { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 13px; }
+.spot-quote .who .av { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk'; font-weight: 800; font-size: 13px; }
 .spot-quote .who .nm { font-size: 13px; font-weight: 700; }
 .spot-quote .who .sb { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(251,246,234,0.5); }
 
@@ -292,21 +285,21 @@ button { font-family: inherit; cursor: pointer; }
 .fresh-new { position: absolute; top: 10px; left: 10px; font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 4px 9px; border-radius: 100px; }
 .fresh-body { padding: 14px 16px 16px; }
 .fresh-cat { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--river); margin-bottom: 5px; }
-.fresh-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; margin-bottom: 7px; }
+.fresh-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.1; margin-bottom: 7px; }
 .fresh-meta { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-faint); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 /* event date header inside fresh-card */
 .ev-date { background: var(--ink); color: var(--bone); padding: 14px 16px; display: flex; align-items: baseline; gap: 8px; border-bottom: 1.5px solid var(--ink); }
 .ev-mon { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; color: var(--ember); }
-.ev-day { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 28px; line-height: 1; }
+.ev-day { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 28px; line-height: 1; }
 .ev-dow { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(251,246,234,0.5); margin-left: auto; }
 
 /* ── reviews ── */
 .reviews { background: var(--bone); border-top: 1.5px solid var(--line); }
 .rev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .rev { background: var(--paper); border: 1.5px solid var(--line); border-radius: var(--r); padding: 24px; position: relative; }
-.rev-quote-mark { font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 52px; line-height: 0.5; color: var(--orange); opacity: 0.25; position: absolute; top: 22px; right: 22px; }
+.rev-quote-mark { font-family: 'Space Grotesk'; font-weight: 800; font-size: 52px; line-height: 0.5; color: var(--orange); opacity: 0.25; position: absolute; top: 22px; right: 22px; }
 .rev-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-.rev-av { width: 46px; height: 46px; border-radius: 50%; background: var(--river); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 18px; flex-shrink: 0; }
+.rev-av { width: 46px; height: 46px; border-radius: 50%; background: var(--river); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk'; font-weight: 800; font-size: 18px; flex-shrink: 0; }
 .rev-name { font-size: 15px; font-weight: 700; }
 .rev-handle { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-faint); }
 .rev-biz { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--orange); margin-bottom: 11px; }
@@ -317,10 +310,10 @@ button { font-family: inherit; cursor: pointer; }
 .news { background: var(--orange); color: var(--bone); position: relative; overflow: hidden; }
 .news::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(34,26,23,0.05) 0 2px, transparent 2px 12px); }
 .news-inner { display: flex; align-items: center; justify-content: space-between; gap: 56px; position: relative; }
-.news-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(32px, 4.2vw, 50px); line-height: 0.98; letter-spacing: -0.02em; margin-bottom: 14px; }
+.news-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(32px, 4.2vw, 50px); line-height: 0.98; letter-spacing: -0.02em; margin-bottom: 14px; }
 .news-sub { font-size: 16px; color: rgba(251,246,234,0.85); max-width: 420px; line-height: 1.6; }
 .news-form { display: flex; gap: 10px; flex-shrink: 0; flex-wrap: wrap; max-width: 420px; }
-.news-input { background: var(--bone); border: 2px solid var(--ink); border-radius: 100px; padding: 15px 22px; min-width: 280px; font-family: 'Hanken Grotesk', sans-serif; font-size: 15px; color: var(--ink); outline: none; box-shadow: 5px 5px 0 var(--ink); }
+.news-input { background: var(--bone); border: 2px solid var(--ink); border-radius: 100px; padding: 15px 22px; min-width: 280px; font-family: 'Inter', sans-serif; font-size: 15px; color: var(--ink); outline: none; box-shadow: 5px 5px 0 var(--ink); }
 .news-input::placeholder { color: var(--ink-faint); }
 .news-btn { background: var(--ink); color: var(--bone); border: 2px solid var(--ink); border-radius: 100px; padding: 15px 28px; font-weight: 800; font-size: 15px; box-shadow: 5px 5px 0 rgba(34,26,23,0.4); transition: transform var(--fast); white-space: nowrap; }
 .news-btn:hover { transform: translateY(-2px); }
@@ -361,7 +354,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
 /* ── responsive ── */
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1fr; gap: 36px; }
-  .hero-visual { display: none; }
+  .hero-visual { height: 360px; order: -1; }
   .nav-search { display: none; }
   .nav-inner { gap: 18px; }
   .nav-link { padding: 9px 12px; }
@@ -409,7 +402,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
 .auth-close:hover { color: var(--charcoal); }
 .auth-logo { text-align: center; margin-bottom: 24px; }
 .auth-logo img { height: 36px; display: inline-block; }
-.auth-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px; text-align: center; }
+.auth-title { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px; text-align: center; }
 .auth-sub { font-size: 14px; color: var(--gray); text-align: center; margin-bottom: 28px; }
 .auth-field { margin-bottom: 16px; }
 .auth-field label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--charcoal); margin-bottom: 6px; }
@@ -543,31 +536,17 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
         </div>
       </div>
 
-      <!-- RIGHT VISUAL -->
+      <!-- RIGHT VISUAL: single cycling business photo -->
       <div class="hero-media hero-visual">
-        <div class="hv-stat">
-          <div class="hs-num" id="hero-biz-count">…</div>
-          <div class="hs-lab">Local businesses</div>
-        </div>
-        <div class="hv-card hv-main" id="hero-photo-a">
-          <div class="ph-fill">
-            <svg class="ph-ico" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
+        <a class="hv-photo" id="hero-photo-link" href="/pages/directory.html" aria-label="Browse local businesses">
+          <div class="hv-slide" id="hero-slide-a"></div>
+          <div class="hv-slide" id="hero-slide-b"></div>
+          <div class="ph-fill" id="hero-photo-ph">
+            <svg class="ph-ico" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
             <span class="ph-cap">815 Local</span>
           </div>
-        </div>
-        <div class="hv-card hv-sub" id="hero-photo-b">
-          <div class="ph-fill dark">
-            <svg class="ph-ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
-          </div>
-        </div>
-        <div class="hv-review" id="hero-review-card" style="display:none;">
-          <div class="av" id="hero-reviewer-av">★</div>
-          <div>
-            <div class="rv-name" id="hero-reviewer-name"></div>
-            <div class="rv-stars" id="hero-reviewer-stars"></div>
-            <div class="rv-sub" id="hero-reviewer-biz"></div>
-          </div>
-        </div>
+          <div class="hv-cap" id="hero-photo-cap" style="display:none;"></div>
+        </a>
       </div>
     </div>
   </div>
@@ -953,7 +932,6 @@ window.addEventListener('scroll', () => {
     const totalReviews = stats.review_count ?? reviews.length;
     document.getElementById('stat-reviews').textContent = totalReviews > 0 ? totalReviews : '0';
     document.getElementById('stat-members').textContent = stats.user_count ?? 0;
-    setText('hero-biz-count', String(stats.business_count ?? totalBiz));
     const statLine = document.getElementById('hero-stat-line');
     if (statLine && totalBiz > 0) {
       statLine.textContent = `${totalBiz} local businesses across Minooka, Channahon & Shorewood`;
@@ -982,24 +960,32 @@ window.addEventListener('scroll', () => {
       const j = Math.floor(Math.random() * (i + 1));
       [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
     }
-    const heroPos = p => (p && PHOTO_POS_SAFE.has(p[0])) ? p[0] : 'top';
-    ['hero-photo-a','hero-photo-b'].forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (el && withPhotos[i]) {
-        el.innerHTML = `<a href="/pages/business.html?id=${withPhotos[i].id}" style="display:block;width:100%;height:100%;background:url('${withPhotos[i].image_url}') ${heroPos(withPhotos[i].photo_positions)}/cover no-repeat;" title="${escapeHtml(withPhotos[i].name)}"></a>`;
+    const heroPos = p => (p && PHOTO_POS_SAFE.has(p[0])) ? p[0] : 'center';
+    // Single hero photo that cycles through real business images like a slideshow.
+    const slidePhotos = withPhotos.slice(0, 8);
+    if (slidePhotos.length) {
+      const ph = document.getElementById('hero-photo-ph');
+      if (ph) ph.style.display = 'none';
+      const link = document.getElementById('hero-photo-link');
+      const cap = document.getElementById('hero-photo-cap');
+      const layers = [document.getElementById('hero-slide-a'), document.getElementById('hero-slide-b')];
+      let idx = 0, cur = 0;
+      function showSlide(i) {
+        const b = slidePhotos[i];
+        const layer = layers[cur];
+        if (!layer) return;
+        layer.style.backgroundImage = `url('${b.image_url}')`;
+        layer.style.backgroundPosition = heroPos(b.photo_positions);
+        layers.forEach((l, n) => { if (l) l.classList.toggle('show', n === cur); });
+        if (link) link.href = `/pages/business.html?id=${b.id}`;
+        if (cap) { cap.textContent = b.name; cap.style.display = ''; }
+        cur = 1 - cur;
       }
-    });
-
-    // ── FLOATING REVIEW (real latest review) ──
-    if (reviews.length > 0) {
-      const r = reviews[0];
-      const bizName = r.businesses?.name || '';
-      setText('hero-reviewer-name', r.reviewer_name || 'Local Resident');
-      setText('hero-reviewer-stars', stars(r.rating));
-      setText('hero-reviewer-biz', bizName ? `Just reviewed ${bizName}` : 'Just left a review');
-      setText('hero-reviewer-av', (r.reviewer_name || 'A')[0].toUpperCase());
-      const card = document.getElementById('hero-review-card');
-      if (card) card.style.display = '';
+      showSlide(0);
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduce && slidePhotos.length > 1) {
+        setInterval(() => { idx = (idx + 1) % slidePhotos.length; showSlide(idx); }, 4500);
+      }
     }
 
     // ── COMMUNITY PICKS ──

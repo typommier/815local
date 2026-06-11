@@ -8,7 +8,7 @@
 <meta name="twitter:title" content="My Profile – 815 Local">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
-  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/assets/js/util.js"></script>
   <style>
@@ -32,7 +32,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: var(--cream);
       color: var(--charcoal);
       min-height: 100vh;
@@ -51,7 +51,7 @@
       z-index: 100;
     }
     .nav-logo {
-      font-family: 'Caveat Brush', cursive;
+      font-family: 'Space Grotesk', cursive;
       color: var(--orange);
       font-size: 1.5rem;
       text-decoration: none;
@@ -163,7 +163,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
       overflow: hidden;
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -580,16 +580,28 @@
       .form-row { grid-template-columns: 1fr; }
     }
   </style>
+  <link rel="stylesheet" href="/assets/css/815local.css">
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a class="nav-logo" href="/">815local</a>
-  <div class="nav-links">
-    <a href="/pages/directory.html">Browse</a>
-    <a href="/pages/events.html">Events</a>
-    <button class="signout-btn" id="signout-btn" style="display:none">Sign out</button>
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="815 Local home">
+        <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Explore</a>
+        <a class="nav-link" href="/pages/directory.html">Browse</a>
+        <a class="nav-link" href="/pages/events.html">Events</a>
+        <a class="nav-link" href="/pages/blog.html">Blog</a>
+        <a class="nav-link" href="/pages/about.html">About</a>
+      </div>
+      <div class="nav-actions">
+        <button class="signout-btn" id="signout-btn" style="display:none">Sign out</button>
+      </div>
+    </div>
   </div>
 </nav>
 
