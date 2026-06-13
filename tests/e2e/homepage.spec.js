@@ -62,6 +62,14 @@ test.describe('Homepage', () => {
     expect(href).toMatch(/\/pages\/business\.html\?id=.+/);
   });
 
+  test('community picks excludes photo-less businesses', async ({ page }) => {
+    const grid = page.locator('#community-picks-grid');
+    await expect(grid.locator('a.biz-card').first()).toBeVisible({ timeout: 8000 });
+    // Rosario's has a photo and should appear; Elm City Barbershop has none and should not.
+    await expect(grid).toContainText("Rosario's Tavern");
+    await expect(grid).not.toContainText('Elm City Barbershop');
+  });
+
   test('newsletter form is present', async ({ page }) => {
     await expect(page.locator('#newsletter-email')).toBeVisible();
     await expect(page.locator('#newsletter-btn, button[type="submit"]')).toBeVisible();

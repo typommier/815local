@@ -954,6 +954,10 @@ window.addEventListener('scroll', () => {
       el.textContent = n + (n === 1 ? ' place' : ' places');
     });
 
+    // A business counts as having a photo if image_url is set OR photos[0] exists.
+    // Used to keep photo-less businesses off the homepage (they still show in the directory).
+    const hasPhoto = b => !!(b.image_url || (Array.isArray(b.photos) && b.photos[0]));
+
     // ── HERO PHOTOS (Minooka/Channahon/Shorewood only, no chains) ──
     // Eligible if image_url is set OR the first entry in photos[] exists.
     const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
@@ -963,7 +967,7 @@ window.addEventListener('scroll', () => {
       'minooka animal hospital'
     ]);
     const withPhotos = businesses.filter(b => {
-      if (!(b.image_url || (Array.isArray(b.photos) && b.photos[0]))) return false;
+      if (!hasPhoto(b)) return false;
       if ((b.features || []).includes('Chain')) return false;
       const city = (b.city || '').trim().toLowerCase();
       if (!HOME_TOWNS.has(city)) return false;
@@ -1006,7 +1010,8 @@ window.addEventListener('scroll', () => {
     // ── COMMUNITY PICKS ──
     const homeTownPicks = businesses.filter(b => {
       const c = (b.city || '').trim().toLowerCase();
-      return c.length === 0 || HOME_TOWNS.has(c);
+      if (!(c.length === 0 || HOME_TOWNS.has(c))) return false;
+      return hasPhoto(b);
     });
     function bizCard(b, opts) {
       opts = opts || {};
@@ -1154,7 +1159,7 @@ window.addEventListener('scroll', () => {
     }
 
     // ── SPOTLIGHT (top rated featured business) ──
-    const spotlight = businesses.find(b => b.avg_rating > 0);
+    const spotlight = businesses.find(b => b.avg_rating > 0 && hasPhoto(b));
     if (spotlight) {
       const rating = parseFloat(spotlight.avg_rating) || 0;
       const count = spotlight.review_count || 0;
