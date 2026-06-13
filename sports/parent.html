@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Game — Dugout</title>
+  <meta name="description" content="Follow the game live. Free, no app required.">
+  <style>
+    :root {
+      --navy: #1B2A4A;
+      --orange: #E05A2B;
+      --green: #16A34A;
+      --amber: #D97706;
+      --red: #DC2626;
+      --surface: #F8FAFC;
+      --text: #111827;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--navy);
+      min-height: 100svh;
+      color: var(--text);
+    }
+    .wrapper {
+      max-width: 400px;
+      margin: 0 auto;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      background: var(--navy);
+      padding: 20px 20px 12px;
+      text-align: center;
+    }
+    .app-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .opponent-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 600;
+    }
+
+    .score-card {
+      background: white;
+      margin: 0 16px;
+      border-radius: 20px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    }
+    .score-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+    .score-team { text-align: center; }
+    .score-name {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .score-num {
+      font-size: 72px;
+      font-weight: 900;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .score-sep { font-size: 32px; color: var(--border); font-weight: 300; margin-top: 20px; }
+    .inning-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .live-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--red);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: white;
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .final-chip {
+      display: inline-block;
+      background: var(--muted);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+
+    .info-cards {
+      padding: 16px 16px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .info-card {
+      background: white;
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .info-card-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .info-card-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .info-card-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .pitch-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pitch-count {
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .pitch-safe { color: var(--green); }
+    .pitch-warn { color: var(--amber); }
+    .pitch-over { color: var(--red); }
+
+    .footer {
+      text-align: center;
+      padding: 16px 20px 24px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+    }
+    .footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+
+    .refresh-note {
+      text-align: center;
+      padding: 8px 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+    }
+
+    #loading, #error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60svh;
+      padding: 40px;
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      gap: 12px;
+      font-size: 16px;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top-color: var(--orange);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div id="loading">
+      <div class="spinner"></div>
+      <span>Loading game...</span>
+    </div>
+
+    <div id="error" style="display:none">
+      <span style="font-size:40px">😕</span>
+      <span>Game not found.</span>
+      <span style="font-size:14px;color:rgba(255,255,255,0.4)">Check the link and try again.</span>
+    </div>
+
+    <div id="game-view" style="display:none;flex-direction:column;flex:1;">
+      <div class="top-bar">
+        <div class="app-name">Dugout</div>
+        <div class="opponent-label" id="opponent-label"></div>
+      </div>
+
+      <div class="score-card" style="margin-top:-2px;border-radius:0 0 20px 20px;margin-left:0;margin-right:0;">
+        <div class="score-row">
+          <div class="score-team">
+            <div class="score-name">Us</div>
+            <div class="score-num" id="our-score">0</div>
+          </div>
+          <div class="score-sep">–</div>
+          <div class="score-team">
+            <div class="score-name" id="them-name">Them</div>
+            <div class="score-num" id="their-score">0</div>
+          </div>
+        </div>
+        <div class="inning-label" id="inning-label"></div>
+        <div id="status-chip"></div>
+      </div>
+
+      <div class="info-cards">
+        <div class="info-card" id="batter-card" style="display:none">
+          <div class="info-card-label">Now Batting</div>
+          <div class="info-card-value" id="batter-name"></div>
+          <div class="info-card-sub" id="batter-jersey"></div>
+        </div>
+
+        <div class="info-card" id="pitcher-card" style="display:none">
+          <div class="info-card-label">Pitching</div>
+          <div class="pitch-row">
+            <div>
+              <div class="info-card-value" id="pitcher-name"></div>
+              <div class="info-card-sub">Today's count</div>
+            </div>
+            <div class="pitch-count" id="pitch-count"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="refresh-note" id="refresh-note">Updating...</div>
+
+      <div class="footer">
+        Free forever. No app needed.<br>
+        Powered by <a href="https://815local.com">Dugout</a> &mdash; the coach app that doesn't charge parents.
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+
+    const token = new URLSearchParams(location.search).get('t');
+    let secondsAgo = 0;
+    let interval;
+
+    function el(id) { return document.getElementById(id); }
+
+    function formatInning(n, half) {
+      const ord = n + (['th','st','nd','rd'][((n % 100) - 20) % 10] || ['th','st','nd','rd'][n % 100] || 'th');
+      return (half === 'top' ? 'Top' : 'Bot') + ' ' + ord;
+    }
+
+    function pitchClass(count) {
+      if (count >= 85) return 'pitch-over';
+      if (count >= 65) return 'pitch-warn';
+      return 'pitch-safe';
+    }
+
+    async function fetchGame() {
+      if (!token) {
+        el('loading').style.display = 'none';
+        el('error').style.display = 'flex';
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/sp_parent_view?share_token=eq.${encodeURIComponent(token)}&select=*`,
+          { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+        );
+        const rows = await res.json();
+        const d = rows?.[0];
+
+        if (!d) {
+          el('loading').style.display = 'none';
+          el('error').style.display = 'flex';
+          return;
+        }
+
+        el('loading').style.display = 'none';
+        el('game-view').style.display = 'flex';
+
+        el('opponent-label').textContent = 'vs. ' + d.opponent;
+        el('them-name').textContent = d.opponent.slice(0, 8);
+        el('our-score').textContent = d.our_score;
+        el('their-score').textContent = d.their_score;
+        el('inning-label').textContent = formatInning(d.current_inning, d.inning_half);
+
+        const chipEl = el('status-chip');
+        if (d.status === 'live') {
+          chipEl.innerHTML = '<div class="live-chip"><div class="live-dot"></div>LIVE</div>';
+        } else if (d.status === 'final') {
+          chipEl.innerHTML = '<div class="final-chip">FINAL</div>';
+        } else {
+          chipEl.innerHTML = '';
+        }
+
+        if (d.batter_name) {
+          el('batter-card').style.display = 'block';
+          el('batter-name').textContent = d.batter_name;
+          el('batter-jersey').textContent = d.batter_jersey ? '#' + d.batter_jersey : '';
+        }
+
+        if (d.pitcher_name) {
+          el('pitcher-card').style.display = 'block';
+          el('pitcher-name').textContent = d.pitcher_name;
+          const countEl = el('pitch-count');
+          countEl.textContent = d.current_pitch_count ?? 0;
+          countEl.className = 'pitch-count ' + pitchClass(d.current_pitch_count ?? 0);
+        }
+
+        secondsAgo = 0;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Initial fetch
+    fetchGame();
+
+    // Poll every 15 seconds
+    const pollInterval = setInterval(fetchGame, 15000);
+
+    // "Updated Xs ago" counter
+    const countInterval = setInterval(() => {
+      secondsAgo++;
+      const noteEl = el('refresh-note');
+      if (noteEl) noteEl.textContent = `Updated ${secondsAgo}s ago`;
+    }, 1000);
+  </script>
+</body>
+</html>
