@@ -838,9 +838,9 @@ function tickClock() {
 tickClock();
 setInterval(tickClock, 30000);
 
-// Restore scroll position
+// Restore scroll position (but not when following an anchor link)
 const savedScroll = localStorage.getItem('815local_scroll');
-if (savedScroll) window.scrollTo(0, parseInt(savedScroll));
+if (savedScroll && !window.location.hash) window.scrollTo(0, parseInt(savedScroll));
 window.addEventListener('scroll', () => {
   localStorage.setItem('815local_scroll', window.scrollY);
 }, { passive: true });
