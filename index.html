@@ -844,6 +844,15 @@ if (savedScroll && !window.location.hash) window.scrollTo(0, parseInt(savedScrol
 window.addEventListener('scroll', () => {
   localStorage.setItem('815local_scroll', window.scrollY);
 }, { passive: true });
+
+// Re-scroll to anchor target after async content loads
+// (sections above the target may be display:none until Supabase data arrives)
+if (window.location.hash) {
+  setTimeout(() => {
+    const target = document.querySelector(window.location.hash);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 800);
+}
 </script>
 
 <!-- ══ MOBILE BOTTOM NAV ══ -->
