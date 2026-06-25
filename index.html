@@ -469,7 +469,6 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
         <span>Search the 815…</span>
       </a>
       <div class="nav-actions">
-        <span class="nav-signin" id="nav-signin-btn" onclick="openAuthModal('signin')">Sign In</span>
         <div id="nav-user-menu" style="display:none;position:relative;">
           <div onclick="toggleUserDropdown()" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
             <img id="nav-avatar" src="" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);display:none;" />
@@ -687,7 +686,8 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
 </section>
 
 <!-- ══════════ NEWSLETTER ══════════ -->
-<section id="newsletter" class="section news fade-in">
+<!-- Hidden until a publishing cadence is committed. Bring back by removing style="display:none;". -->
+<section id="newsletter" class="section news fade-in" style="display:none;">
   <div class="container">
     <div class="news-inner">
       <div>
@@ -746,6 +746,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
           <li><a href="/pages/about.html">About Us</a></li>
           <li><a href="/pages/blog.html">Blog</a></li>
           <li><a href="/pages/submit/business.html">List Your Business</a></li>
+          <li><a href="#" onclick="event.preventDefault();openAuthModal('signin')">Business Owner Sign In</a></li>
         </ul>
       </div>
     </div>
@@ -1026,10 +1027,9 @@ if (window.location.hash) {
       const count = b.review_count || 0;
       const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
       const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
-      const saveBtn = `<button class="biz-save" type="button" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('saved');this.textContent=this.classList.contains('saved')?'♥':'♡';" aria-label="Save">♡</button>`;
       const badge = opts.badge ? `<span class="biz-badge ${opts.badgeClass||''}">${opts.badge}</span>` : '';
       const photoBlock = photoSrc
-        ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div>${badge}${saveBtn}</div>`
+        ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div>${badge}</div>`
         : '';
       const chipParts = [];
       if (isOpenNow(b.hours)) chipParts.push('<span class="chip open">● Open now</span>');
@@ -1257,6 +1257,16 @@ function openAuthModal(view) {
   }, 50);
 }
 
+// Open the auth modal from other pages via `/?signin=1` or `/?signin=signup`.
+(() => {
+  const p = new URLSearchParams(window.location.search);
+  const signin = p.get('signin');
+  if (signin) {
+    openAuthModal(signin === 'signup' ? 'signup' : 'signin');
+    history.replaceState(null, '', window.location.pathname);
+  }
+})();
+
 function closeAuthModal() {
   document.getElementById('auth-overlay').classList.remove('open');
   document.body.style.overflow = '';
@@ -1347,7 +1357,6 @@ async function doSignUp() {
   const name = document.getElementById('signup-name').value.trim();
   const email = document.getElementById('signup-email').value.trim();
   const password = document.getElementById('signup-password').value;
-  const newsletter = document.getElementById('signup-newsletter').checked;
 
   if (!name) { showMsg('signup-error', 'Please enter your name.', true); return; }
   if (!email) { showMsg('signup-error', 'Please enter your email.', true); return; }
@@ -1360,7 +1369,7 @@ async function doSignUp() {
     email,
     password,
     options: {
-      data: { display_name: name, newsletter_opt_in: newsletter }
+      data: { display_name: name }
     }
   });
 
@@ -1413,13 +1422,11 @@ async function doForgotPassword() {
 async function updateNavForUser(user) {
   if (!user) return;
 
-  const signinBtn = document.getElementById('nav-signin-btn');
   const userMenu = document.getElementById('nav-user-menu');
   const userName = document.getElementById('nav-user-name');
   const avatar = document.getElementById('nav-avatar');
   const initial = document.getElementById('nav-avatar-initial');
 
-  signinBtn.style.display = 'none';
   userMenu.style.display = '';
 
   const { data: profile } = await _authDb.from('profiles').select('display_name, avatar_url').eq('id', user.id).single();
@@ -1449,7 +1456,6 @@ document.addEventListener('click', function(e) {
 
 async function signOut() {
   await _authDb.auth.signOut();
-  document.getElementById('nav-signin-btn').style.display = '';
   document.getElementById('nav-user-menu').style.display = 'none';
 }
 
@@ -1530,8 +1536,8 @@ async function doNewsletterSubscribe(e) {
     <!-- SIGN UP VIEW -->
     <div id="auth-view-signup" style="display:none;">
       <div class="auth-logo"><picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></picture></div>
-      <div class="auth-title">Join 815local</div>
-      <div class="auth-sub">Create your free account</div>
+      <div class="auth-title">Business owner sign up</div>
+      <div class="auth-sub">Create an account to claim your listing and manage your business profile.</div>
       <div class="auth-error" id="signup-error"></div>
       <div class="auth-success" id="signup-success"></div>
       <div class="auth-field">
@@ -1557,10 +1563,6 @@ async function doNewsletterSubscribe(e) {
         </div>
         <div class="avatar-terms">By uploading a photo you confirm it is appropriate. Violations result in account termination.</div>
       </div>
-      <label class="auth-checkbox">
-        <input type="checkbox" id="signup-newsletter" />
-        <span>Send me the 815local newsletter, local news, events, and new businesses in Minooka, Channahon & Shorewood.</span>
-      </label>
       <button class="auth-btn" id="signup-btn" onclick="doSignUp()">Create Account</button>
       <div class="auth-switch">Already have an account? <a onclick="switchAuthView('signin')">Sign in</a></div>
     </div>
