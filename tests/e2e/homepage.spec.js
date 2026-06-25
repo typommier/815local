@@ -48,7 +48,7 @@ test.describe('Homepage', () => {
     await expect(grid).not.toBeEmpty({ timeout: 8000 });
 
     const cards = grid.locator('a.biz-card');
-    const emptyMsg = grid.locator('text=No businesses yet');
+    const emptyMsg = grid.locator('text=More local picks coming soon');
     const count = await cards.count();
     const hasEmpty = await emptyMsg.isVisible().catch(() => false);
 
