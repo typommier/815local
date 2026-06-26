@@ -1064,9 +1064,41 @@ function renderBusiness(b) {
 
   // About
   document.getElementById('about-title').textContent = 'About ' + b.name;
-  document.getElementById('about-text').textContent = b.story || b.description || '';
+
+  // Long-form owner story only. Do not fall back to the description, which already
+  // shows in the header subtitle; repeating it here reads as duplicated/sloppy.
+  const aboutText = document.getElementById('about-text');
+  if (b.story && b.story.trim()) {
+    aboutText.textContent = b.story;
+    aboutText.style.display = '';
+  } else {
+    aboutText.style.display = 'none';
+  }
+
+  // "Good to know" facts panel: real signals already on the business object, each
+  // hidden when its data is missing. Fills the lower spot instead of echoing the header.
+  const facts = [];
+  const chainTag = (b.features || []).some(f => (f || '').trim().toLowerCase() === 'chain');
+  if (b.is_locally_owned) facts.push('🏡 Locally Owned');
+  else if (chainTag) facts.push('🔗 Chain');
+
+  if (cityNorm.length > 0) {
+    if (!['minooka','channahon','shorewood'].includes(cityNorm)) facts.push('📍 Serves the 815');
+    else facts.push('📍 ' + b.city.trim());
+  }
+
+  if (b.subcategory) facts.push(b.category + ' · ' + b.subcategory);
+  else if (b.category) facts.push(b.category);
+
+  if (b.category !== 'Parks & Outdoor' && b.price_range) facts.push('💵 ' + b.price_range);
+
+  // Feature tags, minus the internal "Chain" flag already surfaced above.
+  (b.features || []).forEach(f => {
+    if ((f || '').trim().toLowerCase() !== 'chain') facts.push(f);
+  });
+
   const attrs = document.getElementById('about-attrs');
-  attrs.innerHTML = (b.features || []).map(f => `<span class="about-attr">${escapeHtml(f)}</span>`).join('');
+  attrs.innerHTML = facts.map(f => `<span class="about-attr">${escapeHtml(f)}</span>`).join('');
 
   // Hours
   const today = getDayName();
