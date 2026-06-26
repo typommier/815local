@@ -499,7 +499,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
           <span class="line2"><span class="under"><em>everything.</em><svg viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M2 8 C 60 2, 120 2, 180 6 S 260 10, 298 4" fill="none" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/></svg></span></span>
         </h1>
         <p class="hero-sub">
-          Reviews, restaurants, services &amp; events, all in one place. Discover the best of the 815, recommended by your neighbors.
+          Restaurants, services, shops, and events across Minooka, Channahon, and Shorewood. The whole 815, in one local directory.
         </p>
 
         <div class="searchbar">
@@ -631,7 +631,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
     <div class="sec-head">
       <div>
         <span class="eyebrow" style="margin-bottom:14px;">Just added</span>
-        <h2 class="sec-title">New to <em>the 815</em></h2>
+        <h2 class="sec-title">New to the <em>directory</em></h2>
       </div>
       <a class="sec-link" href="/pages/directory.html?sort=newest">See all new →</a>
     </div>
@@ -1060,7 +1060,7 @@ if (window.location.hash) {
     }
 
     // ── NEW ARRIVALS (genuinely recent additions only) ──
-    const NEW_CUTOFF = new Date('2026-06-01T00:00:00');
+    const NEW_CUTOFF = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const newArrivals = homeTownPicks
       .filter(b => hasPhoto(b) && !isChain(b))
       .filter(b => b.created_at && new Date(b.created_at) >= NEW_CUTOFF)
@@ -1142,7 +1142,7 @@ if (window.location.hash) {
     try {
       const tickerItems = [];
       newArrivals.forEach(b => {
-        tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">🆕</span> <b>${escapeHtml(b.name)}</b> just joined${b.city ? ' in ' + escapeHtml(b.city) : ''}</span>`);
+        tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">🆕</span> <b>${escapeHtml(b.name)}</b> was just added</span>`);
       });
       reviews.slice(0, 4).forEach(r => {
         const bn = r.businesses?.name;
