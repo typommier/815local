@@ -522,11 +522,11 @@ function renderCard(b) {
           <div class="blc-cat">${catEmoji(b.category)} ${escapeHtml(b.category)}${b.subcategory ? ' · ' + escapeHtml(b.subcategory) : ''}${b.price_range ? ' · ' + escapeHtml(b.price_range) : ''}</div>
           <div class="blc-name">${escapeHtml(b.name)}${(b.features||[]).includes('Chain') ? '<span class="blc-chain-label">Chain</span>' : ''}${b.is_claimed ? '<span class="owner-verified-badge">✓ Owner Verified</span>' : ''}${isAroundThe815(b) ? '<span class="area-served-badge">📍 Serves the 815</span>' : ''}</div>
           <div class="blc-desc">${escapeHtml(b.description || '')}</div>
-          <div class="blc-rating-row">
+          ${rating > 0 ? `<div class="blc-rating-row">
             <span class="blc-stars">${starsHtml(rating)}</span>
-            <span class="blc-num">${rating > 0 ? rating.toFixed(1) : 'New'}</span>
-            <span class="blc-count">${count > 0 ? '(' + count + ' review' + (count !== 1 ? 's' : '') + ')' : 'No reviews yet'}</span>
-          </div>
+            <span class="blc-num">${rating.toFixed(1)}</span>
+            <span class="blc-count">(${count} review${count !== 1 ? 's' : ''})</span>
+          </div>` : ''}
           <div class="blc-tags">
             ${features.map(f => `<span class="tag">${escapeHtml(f)}</span>`).join('')}
           </div>

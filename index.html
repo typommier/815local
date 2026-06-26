@@ -1016,7 +1016,7 @@ if (window.location.hash) {
       const chips = chipParts.length ? `<div class="chips">${chipParts.join('')}</div>` : '';
       const rateRow = rating > 0
         ? `<div class="biz-rate"><span class="stars">${stars(rating)}</span><span class="num">${rating.toFixed(1)}</span><span class="cnt">${count > 0 ? '(' + count + ')' : ''}</span></div>`
-        : `<div class="biz-rate"><span class="cnt">No reviews yet</span></div>`;
+        : '';
       return `
         <a href="/pages/business.html?id=${b.id}" class="biz-card">
           ${photoBlock}

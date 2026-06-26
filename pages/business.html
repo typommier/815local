@@ -419,7 +419,7 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
             <span class="biz-rating-num" id="h-rating">…</span>
             <span class="biz-stars-big stars" id="h-stars">☆☆☆☆☆</span>
             <a class="biz-reviews-link" href="#reviews" id="h-review-count">0 reviews</a>
-            <span style="color:var(--gray-light);">·</span>
+            <span id="h-rating-sep" style="color:var(--gray-light);">·</span>
             <span style="font-size:14px;color:var(--gray);" id="h-price">$$</span>
           </div>
           <div class="biz-quick-info" id="h-quick-info"></div>
@@ -953,9 +953,15 @@ function renderBusiness(b) {
   document.getElementById('h-desc').textContent = b.description || '';
   const rating = parseFloat(b.avg_rating) || 0;
   const count = b.review_count || 0;
-  document.getElementById('h-rating').textContent = rating > 0 ? rating.toFixed(1) : 'New';
-  document.getElementById('h-stars').textContent = rating > 0 ? starsHtml(rating) : '☆☆☆☆☆';
-  document.getElementById('h-review-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
+  if (rating > 0) {
+    document.getElementById('h-rating').textContent = rating.toFixed(1);
+    document.getElementById('h-stars').textContent = starsHtml(rating);
+    document.getElementById('h-review-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
+  } else {
+    ['h-rating','h-stars','h-review-count','h-rating-sep'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.style.display = 'none';
+    });
+  }
   const hPrice = document.getElementById('h-price');
   if (b.category === 'Parks & Outdoor' || !b.price_range) {
     hPrice.style.display = 'none';
@@ -1295,11 +1301,11 @@ async function loadNearby(category, excludeId) {
       <div class="nearby-info">
         <div class="nearby-cat">${escapeHtml(b.category)}</div>
         <div class="nearby-name">${escapeHtml(b.name)}</div>
-        <div class="nearby-rating">
-          <span class="nearby-stars">${starsHtml(parseFloat(b.avg_rating)||0)}</span>
-          <span style="font-weight:700;font-size:13px;">${parseFloat(b.avg_rating)>0?parseFloat(b.avg_rating).toFixed(1):'New'}</span>
+        ${(parseFloat(b.avg_rating)||0) > 0 ? `<div class="nearby-rating">
+          <span class="nearby-stars">${starsHtml(parseFloat(b.avg_rating))}</span>
+          <span style="font-weight:700;font-size:13px;">${parseFloat(b.avg_rating).toFixed(1)}</span>
           <span style="font-size:12px;color:var(--gray);">(${b.review_count||0})</span>
-        </div>
+        </div>` : ''}
       </div>
     </a>`;
   }).join('');
