@@ -469,7 +469,6 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
         <span>Search the 815…</span>
       </a>
       <div class="nav-actions">
-        <span class="nav-signin" id="nav-signin-btn" onclick="openAuthModal('signin')">Sign In</span>
         <div id="nav-user-menu" style="display:none;position:relative;">
           <div onclick="toggleUserDropdown()" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
             <img id="nav-avatar" src="" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);display:none;" />
@@ -500,7 +499,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
           <span class="line2"><span class="under"><em>everything.</em><svg viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M2 8 C 60 2, 120 2, 180 6 S 260 10, 298 4" fill="none" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/></svg></span></span>
         </h1>
         <p class="hero-sub">
-          Reviews, restaurants, services &amp; events, all in one place. Discover the best of the 815, recommended by your neighbors.
+          Restaurants, services, shops, and events across Minooka, Channahon, and Shorewood. The whole 815, in one local directory.
         </p>
 
         <div class="searchbar">
@@ -632,7 +631,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
     <div class="sec-head">
       <div>
         <span class="eyebrow" style="margin-bottom:14px;">Just added</span>
-        <h2 class="sec-title">New to <em>the 815</em></h2>
+        <h2 class="sec-title">New to the <em>directory</em></h2>
       </div>
       <a class="sec-link" href="/pages/directory.html?sort=newest">See all new →</a>
     </div>
@@ -687,7 +686,8 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
 </section>
 
 <!-- ══════════ NEWSLETTER ══════════ -->
-<section id="newsletter" class="section news fade-in">
+<!-- Hidden until a publishing cadence is committed. Bring back by removing style="display:none;". -->
+<section id="newsletter" class="section news fade-in" style="display:none;">
   <div class="container">
     <div class="news-inner">
       <div>
@@ -746,6 +746,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
           <li><a href="/pages/about.html">About Us</a></li>
           <li><a href="/pages/blog.html">Blog</a></li>
           <li><a href="/pages/submit/business.html">List Your Business</a></li>
+          <li><a href="#" onclick="event.preventDefault();openAuthModal('signin')">Business Owner Sign In</a></li>
         </ul>
       </div>
     </div>
@@ -894,7 +895,7 @@ if (window.location.hash) {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
   );
 
-  const catEmoji = { 'Food & Drink':'🍔','Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️','Home Services':'🔧','Arts & Events':'🎭' };
+  const catEmoji = { 'Food & Drink':'🍔','Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️','Home Services':'🔧','Arts & Events':'🎭','Professional Services':'💼','Kids & Family':'👶','Parks & Outdoor':'🌳','Storage':'📦','Real Estate':'🏠','Body Art':'🎨','Lodging':'🛏️','Car Wash':'🚗' };
   function stars(r) { const f=Math.round(r||0); return '★'.repeat(f)+'☆'.repeat(5-f); }
   const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
   function photoPos(positions, i) {
@@ -966,6 +967,8 @@ if (window.location.hash) {
     // ── HERO PHOTOS (Minooka/Channahon/Shorewood only, no chains) ──
     // Eligible if image_url is set OR the first entry in photos[] exists.
     const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
+    const hasPhoto = b => Boolean(b.image_url || (Array.isArray(b.photos) && b.photos[0]));
+    const isChain = b => Array.isArray(b.features) && b.features.includes('Chain');
     const HERO_EXCLUDE = new Set([
       'ridge dental group',
       'sabuco beck, p.c.',
@@ -1017,16 +1020,16 @@ if (window.location.hash) {
       const c = (b.city || '').trim().toLowerCase();
       return c.length === 0 || HOME_TOWNS.has(c);
     });
+    const picksPool = homeTownPicks.filter(b => hasPhoto(b) && !isChain(b));
     function bizCard(b, opts) {
       opts = opts || {};
       const rating = parseFloat(b.avg_rating) || 0;
       const count = b.review_count || 0;
       const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
       const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
-      const saveBtn = `<button class="biz-save" type="button" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('saved');this.textContent=this.classList.contains('saved')?'♥':'♡';" aria-label="Save">♡</button>`;
       const badge = opts.badge ? `<span class="biz-badge ${opts.badgeClass||''}">${opts.badge}</span>` : '';
       const photoBlock = photoSrc
-        ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div>${badge}${saveBtn}</div>`
+        ? `<div class="biz-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div>${badge}</div>`
         : '';
       const chipParts = [];
       if (isOpenNow(b.hours)) chipParts.push('<span class="chip open">● Open now</span>');
@@ -1048,34 +1051,31 @@ if (window.location.hash) {
           </div>
         </a>`;
     }
-    const picks = homeTownPicks.slice(0, 6);
+    const picks = picksPool.slice(0, 6);
     const grid = document.getElementById('community-picks-grid');
     if (picks.length === 0) {
-      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink-faint);">No businesses yet, <a href="/pages/submit/business.html" style="color:var(--orange);">add the first one!</a></div>`;
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--ink-faint);">More local picks coming soon. <a href="/pages/directory.html" style="color:var(--orange);">Browse the directory →</a></div>`;
     } else {
       grid.innerHTML = picks.map(b => bizCard(b)).join('');
     }
 
     // ── NEW ARRIVALS (genuinely recent additions only) ──
-    const NEW_CUTOFF = new Date('2026-06-01T00:00:00');
+    const NEW_CUTOFF = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const newArrivals = homeTownPicks
+      .filter(b => hasPhoto(b) && !isChain(b))
       .filter(b => b.created_at && new Date(b.created_at) >= NEW_CUTOFF)
       .slice(0, 4);
     if (newArrivals.length) {
       document.getElementById('new-arrivals-grid').innerHTML = newArrivals.map(b => {
-        const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+        const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : b.image_url;
         const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
-        const photoBlock = photoSrc
-          ? `<div class="fresh-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div><span class="fresh-new">New</span></div>`
-          : '';
-        const inlineNew = photoSrc ? '' : '<span class="fresh-new" style="position:static;display:inline-block;">New</span>';
         return `
           <a class="fresh-card" href="/pages/business.html?id=${b.id}">
-            ${photoBlock}
+            <div class="fresh-photo"><div style="width:100%;height:100%;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div><span class="fresh-new">New</span></div>
             <div class="fresh-body">
               <div class="fresh-cat">${escapeHtml(b.category || '')}${sub}</div>
               <div class="fresh-name">${escapeHtml(b.name)}</div>
-              <div class="fresh-meta">${inlineNew}📍 ${escapeHtml(b.address ? b.address.split(',')[0].trim() : (b.city || 'the 815'))}</div>
+              <div class="fresh-meta">📍 ${escapeHtml(b.address ? b.address.split(',')[0].trim() : (b.city || 'the 815'))}</div>
             </div>
           </a>`;
       }).join('');
@@ -1142,7 +1142,7 @@ if (window.location.hash) {
     try {
       const tickerItems = [];
       newArrivals.forEach(b => {
-        tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">🆕</span> <b>${escapeHtml(b.name)}</b> just joined${b.city ? ' in ' + escapeHtml(b.city) : ''}</span>`);
+        tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">🆕</span> <b>${escapeHtml(b.name)}</b> was just added</span>`);
       });
       reviews.slice(0, 4).forEach(r => {
         const bn = r.businesses?.name;
@@ -1163,7 +1163,7 @@ if (window.location.hash) {
     }
 
     // ── SPOTLIGHT (top rated featured business) ──
-    const spotlight = businesses.find(b => b.avg_rating > 0);
+    const spotlight = businesses.find(b => b.avg_rating > 0 && hasPhoto(b) && !isChain(b));
     if (spotlight) {
       const rating = parseFloat(spotlight.avg_rating) || 0;
       const count = spotlight.review_count || 0;
@@ -1188,8 +1188,9 @@ if (window.location.hash) {
       ].filter(Boolean).map(a => `<span class="spot-attr">${a}</span>`).join('');
       document.getElementById('spotlight-attrs').innerHTML = attrs;
       const spotPhoto = document.getElementById('spotlight-photo');
-      if (spotlight.image_url && spotPhoto) {
-        spotPhoto.style.backgroundImage = `url('${spotlight.image_url}')`;
+      const spotSrc = spotlight.image_url || (spotlight.photos && spotlight.photos[0]);
+      if (spotSrc && spotPhoto) {
+        spotPhoto.style.backgroundImage = `url('${spotSrc}')`;
         spotPhoto.style.backgroundSize = 'cover';
         spotPhoto.style.backgroundPosition = photoPos(spotlight.photo_positions, 0);
         spotPhoto.innerHTML = '';
@@ -1255,6 +1256,16 @@ function openAuthModal(view) {
     if (first) first.focus();
   }, 50);
 }
+
+// Open the auth modal from other pages via `/?signin=1` or `/?signin=signup`.
+(() => {
+  const p = new URLSearchParams(window.location.search);
+  const signin = p.get('signin');
+  if (signin) {
+    openAuthModal(signin === 'signup' ? 'signup' : 'signin');
+    history.replaceState(null, '', window.location.pathname);
+  }
+})();
 
 function closeAuthModal() {
   document.getElementById('auth-overlay').classList.remove('open');
@@ -1346,7 +1357,6 @@ async function doSignUp() {
   const name = document.getElementById('signup-name').value.trim();
   const email = document.getElementById('signup-email').value.trim();
   const password = document.getElementById('signup-password').value;
-  const newsletter = document.getElementById('signup-newsletter').checked;
 
   if (!name) { showMsg('signup-error', 'Please enter your name.', true); return; }
   if (!email) { showMsg('signup-error', 'Please enter your email.', true); return; }
@@ -1359,7 +1369,7 @@ async function doSignUp() {
     email,
     password,
     options: {
-      data: { display_name: name, newsletter_opt_in: newsletter }
+      data: { display_name: name }
     }
   });
 
@@ -1412,13 +1422,11 @@ async function doForgotPassword() {
 async function updateNavForUser(user) {
   if (!user) return;
 
-  const signinBtn = document.getElementById('nav-signin-btn');
   const userMenu = document.getElementById('nav-user-menu');
   const userName = document.getElementById('nav-user-name');
   const avatar = document.getElementById('nav-avatar');
   const initial = document.getElementById('nav-avatar-initial');
 
-  signinBtn.style.display = 'none';
   userMenu.style.display = '';
 
   const { data: profile } = await _authDb.from('profiles').select('display_name, avatar_url').eq('id', user.id).single();
@@ -1448,7 +1456,6 @@ document.addEventListener('click', function(e) {
 
 async function signOut() {
   await _authDb.auth.signOut();
-  document.getElementById('nav-signin-btn').style.display = '';
   document.getElementById('nav-user-menu').style.display = 'none';
 }
 
@@ -1529,8 +1536,8 @@ async function doNewsletterSubscribe(e) {
     <!-- SIGN UP VIEW -->
     <div id="auth-view-signup" style="display:none;">
       <div class="auth-logo"><picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815local"></picture></div>
-      <div class="auth-title">Join 815local</div>
-      <div class="auth-sub">Create your free account</div>
+      <div class="auth-title">Business owner sign up</div>
+      <div class="auth-sub">Create an account to claim your listing and manage your business profile.</div>
       <div class="auth-error" id="signup-error"></div>
       <div class="auth-success" id="signup-success"></div>
       <div class="auth-field">
@@ -1556,10 +1563,6 @@ async function doNewsletterSubscribe(e) {
         </div>
         <div class="avatar-terms">By uploading a photo you confirm it is appropriate. Violations result in account termination.</div>
       </div>
-      <label class="auth-checkbox">
-        <input type="checkbox" id="signup-newsletter" />
-        <span>Send me the 815local newsletter, local news, events, and new businesses in Minooka, Channahon & Shorewood.</span>
-      </label>
       <button class="auth-btn" id="signup-btn" onclick="doSignUp()">Create Account</button>
       <div class="auth-switch">Already have an account? <a onclick="switchAuthView('signin')">Sign in</a></div>
     </div>

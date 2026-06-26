@@ -48,7 +48,7 @@ test.describe('Homepage', () => {
     await expect(grid).not.toBeEmpty({ timeout: 8000 });
 
     const cards = grid.locator('a.biz-card');
-    const emptyMsg = grid.locator('text=No businesses yet');
+    const emptyMsg = grid.locator('text=More local picks coming soon');
     const count = await cards.count();
     const hasEmpty = await emptyMsg.isVisible().catch(() => false);
 
@@ -62,9 +62,12 @@ test.describe('Homepage', () => {
     expect(href).toMatch(/\/pages\/business\.html\?id=.+/);
   });
 
-  test('newsletter form is present', async ({ page }) => {
-    await expect(page.locator('#newsletter-email')).toBeVisible();
-    await expect(page.locator('#newsletter-btn, button[type="submit"]')).toBeVisible();
+  test('newsletter form is wired but hidden', async ({ page }) => {
+    // Section is hidden until a publishing cadence is committed. The form
+    // markup stays so we can flip it back on quickly; assert it exists in
+    // the DOM but is not visible.
+    await expect(page.locator('#newsletter-email')).toBeAttached();
+    await expect(page.locator('#newsletter-email')).not.toBeVisible();
   });
 
   test('Organization/WebSite JSON-LD is present in the head', async ({ page }) => {
