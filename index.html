@@ -567,10 +567,9 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
 <section class="stats">
   <div class="container" style="padding:0;">
     <div class="stats-grid">
-      <div class="stat"><div class="st-num" id="stat-reviews">…</div><div class="st-lab">Community Reviews</div></div>
       <div class="stat"><div class="st-num" id="stat-businesses">…</div><div class="st-lab">Local Businesses</div></div>
-      <div class="stat"><div class="st-num" id="stat-members">…</div><div class="st-lab">Community Members</div></div>
-      <div class="stat"><div class="st-num" id="stat-events">3</div><div class="st-lab">Towns Covered</div></div>
+      <div class="stat"><div class="st-num" id="stat-categories">…</div><div class="st-lab">Categories</div></div>
+      <div class="stat"><div class="st-num" id="stat-towns">3</div><div class="st-lab">Towns Covered</div></div>
     </div>
   </div>
 </section>
@@ -614,8 +613,8 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
   <div class="container">
     <div class="sec-head">
       <div>
-        <span class="eyebrow" style="margin-bottom:14px;">Reviews</span>
-        <h2 class="sec-title">What locals are <em>saying</em></h2>
+        <span class="eyebrow" style="margin-bottom:14px;">Local picks</span>
+        <h2 class="sec-title">Local spots worth <em>knowing</em></h2>
       </div>
       <a class="sec-link" href="/pages/directory.html">See all businesses →</a>
     </div>
@@ -662,29 +661,12 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
           <svg class="ph-ico" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
           <span class="ph-cap">Featured</span>
         </div>
-        <div class="spot-quote" id="spotlight-quote" style="display:none;">
-          <p class="q" id="spotlight-quote-text"></p>
-          <div class="who"><div class="av" id="spotlight-quote-av"></div><div><div class="nm" id="spotlight-quote-name"></div><div class="sb" id="spotlight-quote-sub"></div></div></div>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ══════════ REVIEWS ══════════ -->
-<section class="section reviews fade-in" id="reviews-section" style="display:none;">
-  <div class="container">
-    <div class="sec-head">
-      <div>
-        <span class="eyebrow" style="margin-bottom:14px;">Community voice</span>
-        <h2 class="sec-title">What locals <em>are saying</em></h2>
-      </div>
-      <a class="sec-link" href="/pages/directory.html">All businesses →</a>
-    </div>
-    <div class="rev-grid" id="reviews-grid"></div>
-  </div>
-</section>
-
 <!-- ══════════ NEWSLETTER ══════════ -->
 <!-- Hidden until a publishing cadence is committed. Bring back by removing style="display:none;". -->
 <section id="newsletter" class="section news fade-in" style="display:none;">
@@ -926,22 +908,18 @@ if (window.location.hash) {
   }
 
   try {
-    const [bizRes, reviewRes, statsRes] = await Promise.all([
+    const [bizRes, statsRes] = await Promise.all([
       db.from('businesses_with_ratings').select('*').eq('is_active', true).order('created_at', { ascending: false }),
-      db.from('reviews').select('*, businesses(name, category)').order('created_at', { ascending: false }).limit(6),
       db.rpc('get_homepage_stats')
     ]);
 
     const businesses = bizRes.data || [];
-    const reviews = reviewRes.data || [];
     const stats = statsRes.data || {};
 
     // ── STATS ──
     const totalBiz = businesses.length;
     document.getElementById('stat-businesses').textContent = stats.business_count ?? totalBiz;
-    const totalReviews = stats.review_count ?? reviews.length;
-    document.getElementById('stat-reviews').textContent = totalReviews > 0 ? totalReviews : '0';
-    document.getElementById('stat-members').textContent = stats.user_count ?? 0;
+    document.getElementById('stat-categories').textContent = new Set(businesses.map(b => b.category).filter(Boolean)).size;
     const statLine = document.getElementById('hero-stat-line');
     if (statLine && totalBiz > 0) {
       statLine.textContent = `${totalBiz} local businesses across Minooka, Channahon & Shorewood`;
@@ -1144,10 +1122,6 @@ if (window.location.hash) {
       newArrivals.forEach(b => {
         tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">🆕</span> <b>${escapeHtml(b.name)}</b> was just added</span>`);
       });
-      reviews.slice(0, 4).forEach(r => {
-        const bn = r.businesses?.name;
-        if (bn) tickerItems.push(`<span class="tk-item"><span class="tk-dot"></span><span class="tk-pin">⭐</span> New review for <b>${escapeHtml(bn)}</b></span>`);
-      });
       upcomingEvents.forEach(e => {
         const d = e.event_date ? new Date(e.event_date + 'T00:00:00') : null;
         const ds = d ? `${MON[d.getMonth()]} ${d.getDate()}` : '';
@@ -1195,42 +1169,7 @@ if (window.location.hash) {
         spotPhoto.style.backgroundPosition = photoPos(spotlight.photo_positions, 0);
         spotPhoto.innerHTML = '';
       }
-      // Real review quote for the spotlight business, if we have one
-      const sq = reviews.find(r => r.business_id === spotlight.id && r.review_text);
-      if (sq) {
-        setText('spotlight-quote-text', `"${sq.review_text}"`);
-        setText('spotlight-quote-name', sq.reviewer_name || 'Local Resident');
-        setText('spotlight-quote-sub', stars(sq.rating));
-        setText('spotlight-quote-av', (sq.reviewer_name || 'A')[0].toUpperCase());
-        const q = document.getElementById('spotlight-quote');
-        if (q) q.style.display = '';
-      }
       document.getElementById('spotlight-section').style.display = '';
-    }
-
-    // ── REVIEWS ──
-    if (reviews.length > 0) {
-      const reviewsGrid = document.getElementById('reviews-grid');
-      reviewsGrid.innerHTML = reviews.slice(0, 3).map(r => {
-        const bizName = r.businesses?.name || '';
-        const initial = (r.reviewer_name || 'A')[0].toUpperCase();
-        const place = r.businesses?.category || '815 Local';
-        return `
-          <article class="rev">
-            <span class="rev-quote-mark">"</span>
-            <div class="rev-head">
-              <div class="rev-av">${escapeHtml(initial)}</div>
-              <div>
-                <div class="rev-name">${escapeHtml(r.reviewer_name || 'Local Resident')}</div>
-                <div class="rev-handle">${escapeHtml(place)}</div>
-              </div>
-            </div>
-            ${bizName ? `<div class="rev-biz">📍 ${escapeHtml(bizName)}</div>` : ''}
-            <div class="rev-stars">${stars(r.rating)}</div>
-            <p class="rev-text">${escapeHtml(r.review_text || '')}</p>
-          </article>`;
-      }).join('');
-      document.getElementById('reviews-section').style.display = '';
     }
 
   } catch(e) {
