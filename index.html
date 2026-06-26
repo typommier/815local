@@ -443,7 +443,6 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
         <span class="tb-badge" style="color:rgba(251,246,234,0.4)">Grundy + Will County, IL</span>
       </div>
       <div class="topbar-right">
-        <span class="tb-live" id="open-indicator" style="display:none;"><span class="tb-pulse"></span> <span id="open-count">—</span> open right now</span>
         <span class="tb-time" id="local-clock">—</span>
       </div>
     </div>
@@ -570,6 +569,7 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
       <div class="stat"><div class="st-num" id="stat-businesses">…</div><div class="st-lab">Local Businesses</div></div>
       <div class="stat"><div class="st-num" id="stat-categories">…</div><div class="st-lab">Categories</div></div>
       <div class="stat"><div class="st-num" id="stat-towns">3</div><div class="st-lab">Towns Covered</div></div>
+      <div class="stat"><div class="st-num" id="stat-open">—</div><div class="st-lab">Open Now</div></div>
     </div>
   </div>
 </section>
@@ -925,14 +925,15 @@ if (window.location.hash) {
       statLine.textContent = `${totalBiz} local businesses across Minooka, Channahon & Shorewood`;
     }
 
-    // ── OPEN NOW (real hours) ──
-    let openNow = 0;
-    businesses.forEach(b => { if (isOpenNow(b.hours)) openNow++; });
-    if (openNow > 0) {
-      setText('open-count', openNow);
-      const ind = document.getElementById('open-indicator');
-      if (ind) ind.style.display = '';
+    // ── OPEN NOW (real hours, live) ──
+    function updateOpenNow() {
+      let openNow = 0;
+      businesses.forEach(b => { if (isOpenNow(b.hours)) openNow++; });
+      const el = document.getElementById('stat-open');
+      if (el) el.textContent = openNow;
     }
+    updateOpenNow();
+    setInterval(updateOpenNow, 60000);
 
     // ── CATEGORY COUNTS ──
     const counts = {};
