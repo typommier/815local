@@ -72,13 +72,6 @@ function buildJsonLd(b, canonicalUrl) {
   if (b.website) data.sameAs = [b.website];
   const spec = hoursToSpec(b.hours);
   if (spec) data.openingHoursSpecification = spec;
-  if ((b.review_count || 0) > 0 && parseFloat(b.avg_rating) > 0) {
-    data.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: parseFloat(b.avg_rating).toFixed(1),
-      reviewCount: b.review_count
-    };
-  }
   // Escape the closing-tag sequence so the JSON can sit safely inside <script>.
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
@@ -113,7 +106,7 @@ export async function onRequest(context) {
   const title = biz.name + ', 815local';
   const desc = biz.description
     ? biz.description.slice(0, 160)
-    : (biz.category + ' in the 815 area, find hours, reviews, and contact info on 815local.');
+    : (biz.category + ' in the 815 area, find hours and contact info on 815local.');
   const ogTitle = biz.name + ' | 815local';
   const img = biz.image_url || (biz.photos && biz.photos[0]) || null;
   const jsonLd = buildJsonLd(biz, canonicalUrl);

@@ -109,11 +109,6 @@ a { color: inherit; text-decoration: none; }
 .filter-option input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--orange); cursor: pointer; flex-shrink: 0; }
 .filter-option label { font-size: 14px; color: var(--charcoal-mid); cursor: pointer; flex: 1; }
 .filter-option .filter-count { font-size: 12px; color: var(--gray); }
-.rating-filter { display: flex; flex-direction: column; gap: 8px; }
-.rating-opt { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 0; }
-.rating-opt-stars { color: var(--orange); font-size: 13px; }
-.rating-opt-label { font-size: 13px; color: var(--charcoal-mid); }
-.rating-opt.active .rating-opt-label { color: var(--orange); font-weight: 600; }
 .price-btns { display: flex; gap: 8px; }
 .price-btn { flex: 1; padding: 8px 0; border-radius: var(--radius-sm); border: 1.5px solid var(--gray-light); font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.15s; color: var(--charcoal-mid); }
 .price-btn:hover, .price-btn.active { border-color: var(--orange); color: var(--orange); background: var(--orange-pale); }
@@ -148,10 +143,6 @@ a { color: inherit; text-decoration: none; }
 .blc-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--orange); margin-bottom: 4px; }
 .blc-name { font-family: 'Space Grotesk', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
 .blc-desc { font-size: 14px; color: var(--charcoal-light); line-height: 1.6; margin-bottom: 12px; max-width: 480px; }
-.blc-rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-.blc-stars { color: var(--orange); font-size: 15px; }
-.blc-num { font-weight: 700; font-size: 15px; }
-.blc-count { font-size: 13px; color: var(--gray); }
 .blc-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
 .blc-meta { display: flex; gap: 16px; flex-wrap: wrap; }
 .blc-meta-item { font-size: 13px; color: var(--charcoal-light); display: flex; align-items: center; gap: 5px; }
@@ -227,7 +218,6 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
 #biz-map { display: none; height: 600px; border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--gray-light); }
 .map-popup-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
 .map-popup-cat { font-size: 12px; color: var(--charcoal-light); margin-bottom: 4px; }
-.map-popup-stars { color: var(--orange); font-size: 13px; }
 .map-popup-link { display: inline-block; margin-top: 4px; color: var(--orange); font-weight: 700; font-size: 13px; text-decoration: none; }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -306,14 +296,6 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
         <span class="filter-clear" onclick="clearFilters()">Clear all</span>
       </div>
       <div class="filter-section">
-        <div class="filter-section-title">Minimum Rating</div>
-        <div class="rating-filter">
-          <div class="rating-opt" onclick="setRating(this,'4.5')"><span class="rating-opt-stars">★★★★★</span><span class="rating-opt-label">4.5 & up</span></div>
-          <div class="rating-opt" onclick="setRating(this,'4.0')"><span class="rating-opt-stars">★★★★☆</span><span class="rating-opt-label">4.0 & up</span></div>
-          <div class="rating-opt active" onclick="setRating(this,'0')"><span class="rating-opt-stars">★☆☆☆☆</span><span class="rating-opt-label">Any rating</span></div>
-        </div>
-      </div>
-      <div class="filter-section">
         <div class="filter-section-title">Price Range</div>
         <div class="price-btns">
           <div class="price-btn" data-price="$" onclick="togglePrice(this)">$</div>
@@ -345,8 +327,6 @@ footer { background: var(--charcoal); border-top: 1px solid rgba(255,255,255,0.0
           </div>
           <select class="sort-select" id="sort-select" onchange="applyFilters()">
             <option value="featured">Best Match</option>
-            <option value="rating">Highest Rated</option>
-            <option value="reviews">Most Reviewed</option>
             <option value="newest">Newest</option>
           </select>
         </div>
@@ -429,18 +409,12 @@ try { const { createClient } = supabase; db = createClient(SUPABASE_URL, SUPABAS
 
 let allBusinesses = [];
 let activeCategory = '';
-let minRating = 0;
 let activePrices = [];
 let activeTab = 'local';
 let viewMode = 'list';
 let lastResults = [];
 let leafletMap = null;
 let markersLayer = null;
-
-function starsHtml(rating) {
-  const full = Math.round(rating);
-  return '★'.repeat(full) + '☆'.repeat(5 - full);
-}
 
 function catEmoji(cat) {
   const map = { 'Food & Drink':'🍔', 'Health & Wellness':'💆', 'Beauty & Salons':'💇', 'Retail & Shops':'🛍️', 'Home Services':'🔧', 'Professional Services':'💼', 'Real Estate':'🏡', 'Kids & Family':'🧸', 'Arts & Events':'🎭', 'Parks & Outdoor':'🌳' };
@@ -501,8 +475,6 @@ function isOpenNow(hours) {
 }
 
 function renderCard(b) {
-  const rating = parseFloat(b.avg_rating) || 0;
-  const count = b.review_count || 0;
   const features = (b.features || []).slice(0, 3);
   const open = isOpenNow(b.hours);
   const openHtml = open === true
@@ -522,11 +494,6 @@ function renderCard(b) {
           <div class="blc-cat">${catEmoji(b.category)} ${escapeHtml(b.category)}${b.subcategory ? ' · ' + escapeHtml(b.subcategory) : ''}${b.price_range ? ' · ' + escapeHtml(b.price_range) : ''}</div>
           <div class="blc-name">${escapeHtml(b.name)}${(b.features||[]).includes('Chain') ? '<span class="blc-chain-label">Chain</span>' : ''}${b.is_claimed ? '<span class="owner-verified-badge">✓ Owner Verified</span>' : ''}${isAroundThe815(b) ? '<span class="area-served-badge">📍 Serves the 815</span>' : ''}</div>
           <div class="blc-desc">${escapeHtml(b.description || '')}</div>
-          ${rating > 0 ? `<div class="blc-rating-row">
-            <span class="blc-stars">${starsHtml(rating)}</span>
-            <span class="blc-num">${rating.toFixed(1)}</span>
-            <span class="blc-count">(${count} review${count !== 1 ? 's' : ''})</span>
-          </div>` : ''}
           <div class="blc-tags">
             ${features.map(f => `<span class="tag">${escapeHtml(f)}</span>`).join('')}
           </div>
@@ -580,10 +547,8 @@ function renderMap(results) {
   (results || []).forEach(b => {
     const lat = parseFloat(b.latitude), lng = parseFloat(b.longitude);
     if (!isFinite(lat) || !isFinite(lng)) return;
-    const rating = parseFloat(b.avg_rating) || 0;
     const popup = `<div class="map-popup-name">${escapeHtml(b.name)}</div>`
       + `<div class="map-popup-cat">${catEmoji(b.category)} ${escapeHtml(b.category || '')}</div>`
-      + (rating > 0 ? `<div class="map-popup-stars">${starsHtml(rating)} ${rating.toFixed(1)}</div>` : '')
       + `<a class="map-popup-link" href="/pages/business.html?id=${b.id}">View business →</a>`;
     markersLayer.addLayer(L.marker([lat, lng]).bindPopup(popup));
     pts.push([lat, lng]);
@@ -642,7 +607,6 @@ function applyFilters() {
     if (activeTab === 'chains' && !isChain) return false;
     if (activeTab === 'area'   && (isChain || !isArea)) return false;
     if (activeCategory && b.category !== activeCategory) return false;
-    if (minRating > 0 && (parseFloat(b.avg_rating) || 0) < minRating) return false;
     if (activePrices.length && !activePrices.includes(b.price_range)) return false;
     if (openNow && isOpenNow(b.hours) !== true) return false;
     if (search) {
@@ -656,10 +620,8 @@ function applyFilters() {
     return true;
   });
 
-  if (sort === 'rating') results.sort((a,b) => (parseFloat(b.avg_rating)||0) - (parseFloat(a.avg_rating)||0));
-  else if (sort === 'reviews') results.sort((a,b) => (b.review_count||0) - (a.review_count||0));
-  else if (sort === 'newest') results.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-  else results.sort((a,b) => (parseFloat(b.avg_rating)||0) - (parseFloat(a.avg_rating)||0));
+  if (sort === 'newest') results.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  else results.sort((a,b) => (Number(b.is_featured) - Number(a.is_featured)) || (a.name || '').localeCompare(b.name || ''));
 
   lastResults = results;
   renderActiveFilters();
@@ -679,7 +641,6 @@ function renderActiveFilters() {
     chips.push(chipHtml(escapeHtml(activeTab === 'chains' ? 'Chains' : 'Around the 815'), 'clearFilterTab()'));
   }
   if (activeCategory) chips.push(chipHtml(escapeHtml(activeCategory), 'clearFilterCategory()'));
-  if (minRating > 0) chips.push(chipHtml(minRating + '+ ★', 'clearFilterRating()'));
   activePrices.forEach(p => chips.push(chipHtml(escapeHtml(p), `clearFilterPrice('${p}')`)));
   if (document.getElementById('open-now-check').checked) chips.push(chipHtml('Open now', 'clearFilterOpenNow()'));
   const q = document.getElementById('search-input').value.trim();
@@ -700,11 +661,6 @@ function clearFilterCategory() {
   document.querySelectorAll('.cat-pill').forEach((p, i) => p.classList.toggle('active', i === 0));
   const cd = document.getElementById('cat-display'); if (cd) cd.textContent = 'All Types';
   applyFilters(); syncUrl();
-}
-function clearFilterRating() {
-  minRating = 0;
-  document.querySelectorAll('.rating-opt').forEach((o, i) => o.classList.toggle('active', i === 2));
-  applyFilters();
 }
 function clearFilterPrice(p) {
   activePrices = activePrices.filter(x => x !== p);
@@ -749,13 +705,6 @@ function setCat(el) {
   syncUrl();
 }
 
-function setRating(el, val) {
-  document.querySelectorAll('.rating-opt').forEach(o => o.classList.remove('active'));
-  el.classList.add('active');
-  minRating = parseFloat(val);
-  applyFilters();
-}
-
 function togglePrice(el) {
   el.classList.toggle('active');
   activePrices = [...document.querySelectorAll('.price-btn.active')].map(b => b.dataset.price);
@@ -764,12 +713,10 @@ function togglePrice(el) {
 
 function clearFilters() {
   activeCategory = '';
-  minRating = 0;
   activePrices = [];
   document.getElementById('open-now-check').checked = false;
   document.getElementById('search-input').value = '';
   document.querySelectorAll('.cat-pill').forEach((p,i) => p.classList.toggle('active', i===0));
-  document.querySelectorAll('.rating-opt').forEach((o,i) => o.classList.toggle('active', i===2));
   document.querySelectorAll('.price-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('cat-display').textContent = 'All Types';
   applyFilters();
@@ -814,7 +761,7 @@ window.addEventListener('scroll', () => {
     document.getElementById('search-input').value = search;
   }
   const sortParam = params.get('sort');
-  if (sortParam && ['featured','rating','reviews','newest'].includes(sortParam)) {
+  if (sortParam && ['featured','newest'].includes(sortParam)) {
     document.getElementById('sort-select').value = sortParam;
   }
 })();

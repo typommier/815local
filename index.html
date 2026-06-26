@@ -242,11 +242,7 @@ button { font-family: inherit; cursor: pointer; }
 .biz-save.saved { background: var(--orange); color: var(--bone); }
 .biz-body { padding: 18px 20px 20px; }
 .biz-cat { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
-.biz-name { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.05; margin-bottom: 10px; }
-.biz-rate { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
-.biz-rate .stars { color: var(--orange); letter-spacing: 1px; font-size: 14px; }
-.biz-rate .num { font-weight: 800; font-size: 15px; }
-.biz-rate .cnt { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-faint); }
+.biz-name { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.05; margin-bottom: 14px; }
 .chips { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
 .chip { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 100px; border: 1.5px solid var(--line); color: var(--ink-soft); }
 .chip.open { border-color: var(--river); color: var(--river); }
@@ -262,10 +258,6 @@ button { font-family: inherit; cursor: pointer; }
 .spot-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: clamp(34px, 4.6vw, 56px); line-height: 0.98; letter-spacing: -0.02em; margin: 18px 0 18px; }
 .spot-title em { font-style: italic; color: var(--ember); }
 .spot-desc { font-size: 16.5px; color: rgba(251,246,234,0.72); line-height: 1.7; margin-bottom: 26px; max-width: 480px; }
-.spot-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
-.spot-meta .num { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 26px; }
-.spot-meta .stars { color: var(--ember); font-size: 16px; letter-spacing: 1px; }
-.spot-meta .cnt { font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(251,246,234,0.5); }
 .spot-attrs { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 34px; }
 .spot-attr { font-family: 'Inter', sans-serif; font-size: 12px; padding: 6px 14px; border-radius: 100px; border: 1.5px solid var(--line-light); color: rgba(251,246,234,0.78); }
 .spot-photo { position: relative; height: 440px; border: 2px solid var(--bone); border-radius: var(--r); overflow: hidden; box-shadow: 10px 12px 0 rgba(0,0,0,0.3); }
@@ -292,19 +284,6 @@ button { font-family: inherit; cursor: pointer; }
 .ev-mon { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; color: var(--ember); }
 .ev-day { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 28px; line-height: 1; }
 .ev-dow { font-family: 'Inter', sans-serif; font-size: 10px; color: rgba(251,246,234,0.5); margin-left: auto; }
-
-/* ── reviews ── */
-.reviews { background: var(--bone); border-top: 1.5px solid var(--line); }
-.rev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-.rev { background: var(--paper); border: 1.5px solid var(--line); border-radius: var(--r); padding: 24px; position: relative; }
-.rev-quote-mark { font-family: 'Space Grotesk'; font-weight: 800; font-size: 52px; line-height: 0.5; color: var(--orange); opacity: 0.25; position: absolute; top: 22px; right: 22px; }
-.rev-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-.rev-av { width: 46px; height: 46px; border-radius: 50%; background: var(--river); color: var(--bone); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk'; font-weight: 800; font-size: 18px; flex-shrink: 0; }
-.rev-name { font-size: 15px; font-weight: 700; }
-.rev-handle { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--ink-faint); }
-.rev-biz { display: inline-flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; color: var(--orange); margin-bottom: 11px; }
-.rev-text { font-size: 14.5px; color: var(--ink-soft); line-height: 1.65; }
-.rev-stars { color: var(--orange); letter-spacing: 1px; font-size: 13px; margin-bottom: 11px; }
 
 /* ── newsletter ── */
 .news { background: var(--orange); color: var(--bone); position: relative; overflow: hidden; }
@@ -361,7 +340,6 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
   .biz-grid { grid-template-columns: repeat(2, 1fr); }
   .fresh-row { grid-template-columns: repeat(2, 1fr); }
-  .rev-grid { grid-template-columns: 1fr; }
   .spot-grid { grid-template-columns: 1fr; gap: 36px; }
   .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
   .news-inner { flex-direction: column; align-items: flex-start; gap: 28px; }
@@ -384,7 +362,6 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
   .cat-grid { grid-template-columns: 1fr; }
   .biz-grid { grid-template-columns: 1fr; }
   .fresh-row { grid-template-columns: 1fr; }
-  .rev-grid { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr 1fr; }
   .news-form { flex-direction: column; width: 100%; }
   .news-input { min-width: 0; width: 100%; }
@@ -646,11 +623,6 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
         <span class="eyebrow on-dark" id="spotlight-eyebrow">Featured business</span>
         <h2 class="spot-title" id="spotlight-name"></h2>
         <p class="spot-desc" id="spotlight-desc"></p>
-        <div class="spot-meta">
-          <span class="num" id="spotlight-rating"></span>
-          <span class="stars" id="spotlight-stars"></span>
-          <span class="cnt" id="spotlight-review-count"></span>
-        </div>
         <div class="spot-attrs" id="spotlight-attrs"></div>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
           <a class="btn btn-primary" id="spotlight-link" href="#">View business</a>
@@ -666,7 +638,6 @@ footer { background: var(--ink); color: var(--bone); padding: 70px 0 32px; }
   </div>
 </section>
 
-<!-- ══════════ REVIEWS ══════════ -->
 <!-- ══════════ NEWSLETTER ══════════ -->
 <!-- Hidden until a publishing cadence is committed. Bring back by removing style="display:none;". -->
 <section id="newsletter" class="section news fade-in" style="display:none;">
@@ -878,7 +849,6 @@ if (window.location.hash) {
   );
 
   const catEmoji = { 'Food & Drink':'🍔','Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️','Home Services':'🔧','Arts & Events':'🎭','Professional Services':'💼','Kids & Family':'👶','Parks & Outdoor':'🌳','Storage':'📦','Real Estate':'🏠','Body Art':'🎨','Lodging':'🛏️','Car Wash':'🚗' };
-  function stars(r) { const f=Math.round(r||0); return '★'.repeat(f)+'☆'.repeat(5-f); }
   const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
   function photoPos(positions, i) {
     const v = positions && positions[i];
@@ -1002,8 +972,6 @@ if (window.location.hash) {
     const picksPool = homeTownPicks.filter(b => hasPhoto(b) && !isChain(b));
     function bizCard(b, opts) {
       opts = opts || {};
-      const rating = parseFloat(b.avg_rating) || 0;
-      const count = b.review_count || 0;
       const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
       const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
       const badge = opts.badge ? `<span class="biz-badge ${opts.badgeClass||''}">${opts.badge}</span>` : '';
@@ -1015,16 +983,12 @@ if (window.location.hash) {
       if (b.price_range) chipParts.push(`<span class="chip">${escapeHtml(b.price_range)}</span>`);
       (b.features || []).slice(0, 2).forEach(f => chipParts.push(`<span class="chip">${escapeHtml(f)}</span>`));
       const chips = chipParts.length ? `<div class="chips">${chipParts.join('')}</div>` : '';
-      const rateRow = rating > 0
-        ? `<div class="biz-rate"><span class="stars">${stars(rating)}</span><span class="num">${rating.toFixed(1)}</span><span class="cnt">${count > 0 ? '(' + count + ')' : ''}</span></div>`
-        : '';
       return `
         <a href="/pages/business.html?id=${b.id}" class="biz-card">
           ${photoBlock}
           <div class="biz-body">
             <div class="biz-cat">${escapeHtml(b.category || '')}${sub}</div>
             <div class="biz-name">${escapeHtml(b.name)}</div>
-            ${rateRow}
             ${chips}
             <div class="biz-foot"><span class="loc">📍 ${escapeHtml(b.address ? b.address.split(',')[0].trim() : (b.city || 'the 815'))}</span><span class="go">View →</span></div>
           </div>
@@ -1137,11 +1101,10 @@ if (window.location.hash) {
       console.error('Ticker failed to build', e);
     }
 
-    // ── SPOTLIGHT (top rated featured business) ──
-    const spotlight = businesses.find(b => b.avg_rating > 0 && hasPhoto(b) && !isChain(b));
+    // ── SPOTLIGHT (a featured local business, else the newest local with a photo) ──
+    const spotlight = businesses.find(b => b.is_featured && hasPhoto(b) && !isChain(b))
+      || businesses.find(b => hasPhoto(b) && !isChain(b));
     if (spotlight) {
-      const rating = parseFloat(spotlight.avg_rating) || 0;
-      const count = spotlight.review_count || 0;
       // Some featured listings are places, not businesses (parks, trails). Adjust wording.
       const PLACE_CATS = new Set(['Parks & Outdoor','Parks & Recreation','Parks','Outdoors','Recreation']);
       const isPlace = PLACE_CATS.has(spotlight.category);
@@ -1150,9 +1113,6 @@ if (window.location.hash) {
       if (eyebrowEl) eyebrowEl.textContent = isPlace ? 'Featured place' : 'Featured business';
       document.getElementById('spotlight-name').innerHTML = `Meet <em>${escapeHtml(spotlight.name)}</em>`;
       document.getElementById('spotlight-desc').textContent = spotlight.description || `A local favorite in ${spotlight.city || 'the 815'}.`;
-      document.getElementById('spotlight-rating').textContent = rating > 0 ? rating.toFixed(1) : '';
-      document.getElementById('spotlight-stars').textContent = stars(rating);
-      document.getElementById('spotlight-review-count').textContent = count > 0 ? `${count} review${count!==1?'s':''}` : '';
       const spotLink = document.getElementById('spotlight-link');
       spotLink.href = `/pages/business.html?id=${spotlight.id}`;
       spotLink.textContent = `View ${noun}`;

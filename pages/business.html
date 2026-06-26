@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Business | 815local</title>
-<meta name="description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
+<meta name="description" content="View business details, hours, and contact information on 815local, your local business directory.">
 <meta property="og:title" content="Business | 815local">
-<meta property="og:description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
+<meta property="og:description" content="View business details, hours, and contact information on 815local, your local business directory.">
 <meta property="og:type" content="business.business">
 <meta property="og:url" content="https://815local.com/pages/business.html">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Business | 815local">
-<meta name="twitter:description" content="View business details, hours, reviews, and contact information on 815local, your local business directory.">
+<meta name="twitter:description" content="View business details, hours, and contact information on 815local, your local business directory.">
 <meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta property="og:site_name" content="815local">
 <link rel="canonical" href="https://815local.com/pages/business.html">
@@ -94,10 +94,8 @@ a { color:inherit; text-decoration:none; }
 .biz-cat-pill { padding:4px 12px; border-radius:100px; background:var(--orange-pale); color:var(--orange); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
 .biz-title { font-size:44px; font-weight:900; margin-bottom:12px; }
 .biz-subtitle { font-size:16px; color:var(--charcoal-light); margin-bottom:16px; }
-.biz-rating-big { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-.biz-rating-num { font-family:'Space Grotesk',serif; font-size:32px; font-weight:900; }
-.biz-stars-big { font-size:20px; }
-.biz-reviews-link { font-size:14px; color:var(--orange); font-weight:600; cursor:pointer; }
+.biz-price-row { margin-bottom:16px; }
+.biz-price { font-size:15px; color:var(--gray); font-weight:600; }
 .biz-quick-info { display:flex; gap:20px; flex-wrap:wrap; }
 .biz-quick-item { display:flex; align-items:center; gap:6px; font-size:14px; color:var(--charcoal-light); }
 .biz-header-actions { display:flex; flex-direction:column; gap:10px; flex-shrink:0; }
@@ -137,48 +135,6 @@ a { color:inherit; text-decoration:none; }
 .amenities-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
 .amenity { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--cream-dark); font-size:13px; font-weight:500; background:white; }
 
-/* Reviews */
-.reviews-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
-.reviews-title { font-size:24px; font-weight:700; }
-.review-summary { display:flex; gap:32px; align-items:center; padding:24px; background:var(--cream); border-radius:var(--radius); margin-bottom:28px; }
-.review-big-num { font-family:'Space Grotesk',serif; font-size:56px; font-weight:900; line-height:1; }
-.review-stars-lg { font-size:22px; color:var(--orange); margin-bottom:4px; }
-.review-total { font-size:13px; color:var(--gray); }
-.rating-bars { flex:1; display:flex; flex-direction:column; gap:8px; }
-.rating-bar-row { display:flex; align-items:center; gap:10px; font-size:13px; }
-.rating-bar-label { width:40px; text-align:right; font-weight:600; color:var(--charcoal-mid); }
-.rating-bar-track { flex:1; height:8px; background:var(--cream-dark); border-radius:100px; overflow:hidden; }
-.rating-bar-fill { height:100%; background:var(--orange); border-radius:100px; transition:width 0.8s ease; }
-.rating-bar-count { width:28px; color:var(--gray); }
-.review-card { padding:24px 0; border-bottom:1px solid var(--cream-dark); }
-.review-card:last-child { border-bottom:none; }
-.review-top { display:flex; align-items:flex-start; gap:14px; margin-bottom:14px; }
-.reviewer-avatar { width:44px; height:44px; border-radius:50%; background:var(--orange-pale); display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',serif; font-size:18px; font-weight:700; color:var(--orange); flex-shrink:0; }
-.reviewer-name { font-size:15px; font-weight:700; margin-bottom:2px; }
-.reviewer-meta { font-size:12px; color:var(--gray); }
-.review-stars-row { margin-left:auto; text-align:right; }
-.review-stars-sm { font-size:14px; color:var(--orange); }
-.review-date-sm { font-size:11px; color:var(--gray); margin-top:2px; }
-.review-text-full { font-size:14px; color:var(--charcoal-light); line-height:1.8; margin-bottom:14px; font-style:italic; }
-.review-actions { display:flex; gap:16px; }
-.review-action { font-size:12px; font-weight:600; color:var(--gray); cursor:pointer; display:flex; align-items:center; gap:4px; transition:color 0.15s; }
-.review-action:hover { color:var(--orange); }
-
-/* Review form */
-.review-form-card { background:var(--cream); border-radius:var(--radius); padding:24px; margin-bottom:24px; }
-.review-form-title { font-size:18px; font-weight:700; margin-bottom:16px; }
-.star-picker { display:flex; gap:8px; margin-bottom:16px; }
-.star-pick { font-size:32px; cursor:pointer; color:#ddd; transition:color 0.15s; }
-.star-pick.lit { color:var(--orange); }
-.form-input { width:100%; border:1.5px solid var(--gray-light); border-radius:var(--radius-sm); padding:10px 14px; font-family:'Inter',sans-serif; font-size:14px; color:var(--charcoal); outline:none; transition:border-color 0.15s; margin-bottom:12px; background:white; }
-.form-input:focus { border-color:var(--orange); }
-.form-textarea { width:100%; border:1.5px solid var(--gray-light); border-radius:var(--radius-sm); padding:12px 14px; font-family:'Inter',sans-serif; font-size:14px; color:var(--charcoal); resize:vertical; min-height:100px; outline:none; transition:border-color 0.15s; margin-bottom:12px; background:white; }
-.form-textarea:focus { border-color:var(--orange); }
-.submit-review-btn { background:var(--orange); color:white; border:none; border-radius:100px; padding:11px 28px; font-family:'Inter',sans-serif; font-weight:700; font-size:14px; cursor:pointer; transition:background 0.2s; }
-.submit-review-btn:hover { background:var(--orange-light); }
-.submit-review-btn:disabled { opacity:0.6; cursor:not-allowed; }
-.form-success { background:rgba(45,106,79,0.1); border:1px solid rgba(45,106,79,0.3); color:#2D6A4F; border-radius:var(--radius-sm); padding:12px 16px; font-size:14px; font-weight:600; display:none; margin-top:12px; }
-
 /* SIDEBAR */
 .sidebar { display:flex; flex-direction:column; gap:20px; position:sticky; top:130px; }
 .sidebar-card { background:white; border:1.5px solid var(--gray-light); border-radius:var(--radius); overflow:hidden; }
@@ -209,7 +165,6 @@ a { color:inherit; text-decoration:none; }
 .nearby-info { padding:14px 16px; flex:1; }
 .nearby-cat { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--orange); margin-bottom:4px; }
 .nearby-name { font-family:'Space Grotesk',serif; font-size:16px; font-weight:700; margin-bottom:6px; }
-.nearby-stars { color:var(--orange); font-size:12px; }
 
 /* Loading */
 .loading-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 0; gap:16px; color:var(--gray); }
@@ -283,25 +238,6 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
   color: var(--gray-light);
 }
 
-/* Flag modal */
-.flag-modal-overlay { display:none; position:fixed; inset:0; background:rgba(30,27,24,0.55); z-index:500; align-items:center; justify-content:center; }
-.flag-modal-overlay.open { display:flex; }
-.flag-modal { background:white; border-radius:var(--radius); padding:28px; max-width:420px; width:90%; box-shadow:var(--shadow-lg); }
-.flag-modal-title { font-size:18px; font-weight:700; margin-bottom:6px; }
-.flag-modal-sub { font-size:13px; color:var(--gray); margin-bottom:20px; }
-.flag-reasons { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
-.flag-reason-btn { padding:10px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--gray-light); background:white; font-family:'Inter',sans-serif; font-size:13px; font-weight:500; color:var(--charcoal-mid); cursor:pointer; text-align:left; transition:all 0.15s; }
-.flag-reason-btn:hover { border-color:var(--orange); color:var(--orange); background:var(--orange-pale); }
-.flag-reason-btn.selected { border-color:var(--orange); color:var(--orange); background:var(--orange-pale); }
-.flag-modal-actions { display:flex; gap:10px; justify-content:flex-end; }
-.flag-cancel { padding:9px 18px; border-radius:100px; border:1.5px solid var(--gray-light); background:white; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer; color:var(--charcoal-mid); }
-.flag-submit { padding:9px 18px; border-radius:100px; border:none; background:var(--orange); color:white; font-family:'Inter',sans-serif; font-size:13px; font-weight:700; cursor:pointer; transition:background 0.2s; }
-.flag-submit:hover { background:var(--orange-light); }
-.flag-submit:disabled { opacity:0.5; cursor:not-allowed; }
-.review-flagged-notice { font-size:12px; color:var(--gray); font-style:italic; padding:4px 0; }
-/* Honeypot, visually hidden from real users */
-.hp-field { position:absolute; left:-9999px; top:-9999px; opacity:0; height:0; overflow:hidden; }
-
 /* Mobile */
 .mobile-bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.08); z-index:200; padding:0 0 env(safe-area-inset-bottom,0); justify-content:space-around; align-items:stretch; }
 .mbn-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:10px 12px; cursor:pointer; flex:1; color:rgba(255,255,255,0.45); font-family:'Inter',sans-serif; text-decoration:none; transition:color 0.15s; }
@@ -337,7 +273,6 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
   .amenities-grid { grid-template-columns:1fr; }
   .biz-tab { padding:10px 12px; font-size:12px; }
   .nav-inner { height:72px; padding:0 16px; }
-  .review-card { padding:16px; }
   .sidebar-card { padding:16px; }
 }
 </style>
@@ -415,17 +350,13 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <div id="h-claimed" style="display:none;margin-top:8px;"><span class="owner-verified-badge">✓ Owner Verified</span></div>
           <div id="h-area-served" style="display:none;margin-top:8px;"><span class="area-served-badge">📍 Serves the 815</span></div>
           <p class="biz-subtitle" id="h-desc">Description</p>
-          <div class="biz-rating-big">
-            <span class="biz-rating-num" id="h-rating">…</span>
-            <span class="biz-stars-big stars" id="h-stars">☆☆☆☆☆</span>
-            <a class="biz-reviews-link" href="#reviews" id="h-review-count">0 reviews</a>
-            <span id="h-rating-sep" style="color:var(--gray-light);">·</span>
-            <span style="font-size:14px;color:var(--gray);" id="h-price">$$</span>
+          <div class="biz-price-row" id="h-price-row">
+            <span class="biz-price" id="h-price">$$</span>
           </div>
           <div class="biz-quick-info" id="h-quick-info"></div>
         </div>
         <div class="biz-header-actions">
-          <a class="btn btn-primary" id="h-reserve-btn" href="#reviews" style="justify-content:center;">📞 Contact Business</a>
+          <a class="btn btn-primary" id="h-reserve-btn" href="#hours" style="justify-content:center;">📞 Contact Business</a>
           <a class="btn btn-primary" id="h-order-btn" href="#" target="_blank" rel="noopener" style="justify-content:center;display:none;background:#2D6A4F;"><span class="order-btn-icon">🛒</span> <span class="order-btn-label">Order Online</span></a>
           <div style="display:flex;gap:8px;">
             <button class="action-btn" id="h-save-btn">♡ Save</button>
@@ -436,7 +367,6 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
       </div>
       <div class="biz-header-tabs">
         <div class="biz-tab active" onclick="scrollToSection('about')">Overview</div>
-        <div class="biz-tab" onclick="scrollToSection('reviews')">Reviews</div>
         <div class="biz-tab" onclick="scrollToSection('hours')">Hours & Info</div>
       </div>
     </div>
@@ -471,30 +401,6 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
           <div id="biz-events-list"></div>
         </div>
 
-        <!-- Reviews -->
-        <div id="reviews">
-          <div class="reviews-header">
-            <div>
-              <div class="section-tag">Community Reviews</div>
-              <h2 class="reviews-title">What locals are saying</h2>
-            </div>
-          </div>
-
-          <!-- Summary -->
-          <div class="review-summary" id="review-summary">
-            <div style="text-align:center;">
-              <div class="review-big-num" id="sum-rating">…</div>
-              <div class="review-stars-lg" id="sum-stars">☆☆☆☆☆</div>
-              <div class="review-total" id="sum-count">0 reviews</div>
-            </div>
-            <div class="rating-bars" id="rating-bars"></div>
-          </div>
-
-          <!-- Review list -->
-          <div id="reviews-list"></div>
-
-        </div>
-
       </div><!-- /left-col -->
 
       <!-- SIDEBAR -->
@@ -520,15 +426,15 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
               <div class="google-badge-text">
-                <span class="google-badge-label">See reviews on</span>
-                <span class="google-badge-cta">Google Maps →</span>
+                <span class="google-badge-label">Read reviews on</span>
+                <span class="google-badge-cta">Google →</span>
               </div>
             </a>
           </div>
         </div>
         <div class="claim-card" id="claim-card">
           <div class="claim-title">Is this your business?</div>
-          <p class="claim-sub">Claim your listing to respond to reviews and update your info.</p>
+          <p class="claim-sub">Claim your listing to update your info, hours, and photos.</p>
           <a class="claim-btn" href="/pages/submit/claim-business.html">Claim this Business →</a>
         </div>
         <div class="claim-card" id="deal-card" style="margin-top:12px;background:var(--orange);">
@@ -600,24 +506,6 @@ footer { background:var(--charcoal); border-top:1px solid rgba(255,255,255,0.06)
   </div>
 </footer>
 
-<!-- FLAG REVIEW MODAL -->
-<div class="flag-modal-overlay" id="flag-modal-overlay" onclick="closeFlagModal(event)">
-  <div class="flag-modal">
-    <div class="flag-modal-title">🚩 Report this review</div>
-    <div class="flag-modal-sub">Help keep 815local trustworthy. What's wrong with this review?</div>
-    <div class="flag-reasons" id="flag-reasons">
-      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Fake or spam')">🤖 Fake or spam</button>
-      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Not about this business')">❓ Not about this business</button>
-      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Inappropriate content')">⚠️ Inappropriate content</button>
-      <button class="flag-reason-btn" onclick="selectFlagReason(this, 'Conflict of interest')">💼 Conflict of interest (competitor or owner)</button>
-    </div>
-    <div class="flag-modal-actions">
-      <button class="flag-cancel" onclick="closeFlagModal()">Cancel</button>
-      <button class="flag-submit" id="flag-submit-btn" onclick="submitFlag()" disabled>Report Review</button>
-    </div>
-  </div>
-</div>
-
 <nav class="mobile-bottom-nav">
   <a href="/" class="mbn-item"><div class="mbn-icon">🏠</div><div class="mbn-label">Home</div></a>
   <a href="/pages/directory.html" class="mbn-item active"><div class="mbn-icon">🔍</div><div class="mbn-label">Browse</div></a>
@@ -636,40 +524,13 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const params = new URLSearchParams(window.location.search);
 const bizId = params.get('id');
-let selectedRating = 0;
 let currentBiz = null;
-let flagTargetReviewId = null;
-let selectedFlagReason = null;
-let currentUser = null;
-let currentProfile = null;
-
-// Session token, persists for this browser tab session, used for rate limiting
-function getSessionToken() {
-  let token = sessionStorage.getItem('815_session');
-  if (!token) {
-    token = crypto.randomUUID();
-    sessionStorage.setItem('815_session', token);
-  }
-  return token;
-}
-
-function starsHtml(r) {
-  const f = Math.round(r);
-  return '★'.repeat(f) + '☆'.repeat(5 - f);
-}
 
 function scrollToSection(id) {
   const el = document.getElementById(id);
   if (el) window.scrollTo({ top: el.offsetTop - 140, behavior: 'smooth' });
   document.querySelectorAll('.biz-tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
-}
-
-function setStar(n) {
-  selectedRating = n;
-  document.querySelectorAll('.star-pick').forEach((s,i) => {
-    s.classList.toggle('lit', i < n);
-  });
 }
 
 function openMap() {
@@ -722,7 +583,6 @@ async function loadBusiness() {
     if (error || !biz) { showNotFound(); return; }
     currentBiz = biz;
     renderBusiness(biz);
-    loadReviews(bizId);
     loadNearby(biz.category, bizId);
   } catch(e) {
     showNotFound();
@@ -794,8 +654,7 @@ function hoursToSpec(hours) {
 }
 
 // Inject (or refresh) the LocalBusiness JSON-LD block built from the loaded record.
-// Only real data: every field is omitted when missing, and aggregateRating appears
-// only when the business actually has reviews.
+// Only real data: every field is omitted when missing.
 function renderJsonLd(b) {
   const canonicalUrl = 'https://815local.com/pages/business.html?id=' + (b.id || '');
   const data = {
@@ -821,13 +680,6 @@ function renderJsonLd(b) {
   if (b.website) data.sameAs = [b.website];
   const spec = hoursToSpec(b.hours);
   if (spec) data.openingHoursSpecification = spec;
-  if ((b.review_count || 0) > 0 && parseFloat(b.avg_rating) > 0) {
-    data.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: parseFloat(b.avg_rating).toFixed(1),
-      reviewCount: b.review_count
-    };
-  }
   let el = document.getElementById('ld-business');
   if (!el) {
     el = document.createElement('script');
@@ -841,7 +693,7 @@ function renderJsonLd(b) {
 function renderBusiness(b) {
   // Page title + OG tags
   document.title = b.name + ', 815local';
-  const desc = b.description ? b.description.slice(0, 160) : (b.category + ' in the 815 area, find hours, reviews, and contact info on 815local.');
+  const desc = b.description ? b.description.slice(0, 160) : (b.category + ' in the 815 area, find hours and contact info on 815local.');
   document.querySelector('meta[property="og:title"]')?.setAttribute('content', b.name + ' | 815local');
   document.querySelector('meta[property="og:description"]')?.setAttribute('content', desc);
   document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
@@ -951,23 +803,11 @@ function renderBusiness(b) {
     document.getElementById('h-area-served').style.display = 'block';
   }
   document.getElementById('h-desc').textContent = b.description || '';
-  const rating = parseFloat(b.avg_rating) || 0;
-  const count = b.review_count || 0;
-  if (rating > 0) {
-    document.getElementById('h-rating').textContent = rating.toFixed(1);
-    document.getElementById('h-stars').textContent = starsHtml(rating);
-    document.getElementById('h-review-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
-  } else {
-    ['h-rating','h-stars','h-review-count','h-rating-sep'].forEach(id => {
-      const el = document.getElementById(id); if (el) el.style.display = 'none';
-    });
-  }
-  const hPrice = document.getElementById('h-price');
+  const priceRow = document.getElementById('h-price-row');
   if (b.category === 'Parks & Outdoor' || !b.price_range) {
-    hPrice.style.display = 'none';
-    if (hPrice.previousElementSibling) hPrice.previousElementSibling.style.display = 'none';
+    priceRow.style.display = 'none';
   } else {
-    hPrice.textContent = b.price_range;
+    document.getElementById('h-price').textContent = b.price_range;
   }
 
   if (b.category === 'Parks & Outdoor') {
@@ -1132,187 +972,6 @@ function renderBusiness(b) {
 
 }
 
-async function loadReviews(id) {
-  const { data: reviews } = await db
-    .from('reviews')
-    .select('*')
-    .eq('business_id', id)
-    .eq('is_flagged', false)
-    .order('created_at', { ascending: false });
-
-  if (!reviews || !reviews.length) {
-    document.getElementById('reviews-list').innerHTML = `<div style="padding:24px 0;color:var(--gray);font-size:14px;">No reviews yet.</div>`;
-    renderRatingSummary([], 0);
-    return;
-  }
-
-  renderRatingSummary(reviews, parseFloat(currentBiz?.avg_rating) || 0);
-
-  document.getElementById('reviews-list').innerHTML = reviews.map(r => {
-    const initials = r.reviewer_name?.charAt(0).toUpperCase() || '?';
-    const date = new Date(r.created_at).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-    return `<div class="review-card">
-      <div class="review-top">
-        <div class="reviewer-avatar">${escapeHtml(initials)}</div>
-        <div>
-          <div class="reviewer-name">${escapeHtml(r.reviewer_name)}</div>
-          <div class="reviewer-meta">815local Community Member</div>
-        </div>
-        <div class="review-stars-row">
-          <div class="review-stars-sm stars">${starsHtml(r.rating)}</div>
-          <div class="review-date-sm">${date}</div>
-        </div>
-      </div>
-      <p class="review-text-full">"${escapeHtml(r.review_text)}"</p>
-      <div class="review-actions">
-        <span class="review-action" onclick="markHelpful(this, '${r.id}')" ${sessionStorage.getItem('815_helpful_' + r.id) ? 'style="opacity:0.5;pointer-events:none;"' : ''}>👍 Helpful (${r.helpful_count || 0})</span>
-        <span class="review-action" onclick="openFlagModal('${r.id}')" style="margin-left:auto;">🚩 Report</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function renderRatingSummary(reviews, avgRating) {
-  const count = reviews.length;
-  document.getElementById('sum-rating').textContent = avgRating > 0 ? avgRating.toFixed(1) : ', ';
-  document.getElementById('sum-stars').textContent = avgRating > 0 ? starsHtml(avgRating) : '☆☆☆☆☆';
-  document.getElementById('sum-count').textContent = count + ' review' + (count !== 1 ? 's' : '');
-
-  // Rating bars
-  const counts = [5,4,3,2,1].map(n => reviews.filter(r => r.rating === n).length);
-  const max = Math.max(...counts, 1);
-  document.getElementById('rating-bars').innerHTML = [5,4,3,2,1].map((n,i) => `
-    <div class="rating-bar-row">
-      <span class="rating-bar-label">${n}★</span>
-      <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${Math.round(counts[i]/max*100)}%"></div></div>
-      <span class="rating-bar-count">${counts[i]}</span>
-    </div>`).join('');
-}
-
-async function submitReview() {
-  if (!currentUser || !currentProfile?.display_name) {
-    updateReviewForm();
-    return;
-  }
-
-  const text = document.getElementById('review-text').value.trim();
-  const btn = document.getElementById('submit-review-btn');
-
-  // Honeypot check, bots fill this hidden field, humans don't
-  if (document.getElementById('hp-website').value) {
-    // Silently appear to succeed so bots don't retry
-    document.getElementById('form-success').style.display = 'block';
-    return;
-  }
-
-  if (!selectedRating) { alert('Please select a star rating.'); return; }
-  if (!text || text.length < 10) { alert('Please write at least a sentence about your experience.'); return; }
-
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
-
-  try {
-    const { error } = await db.from('reviews').insert({
-      business_id: bizId,
-      user_id: currentUser.id,
-      reviewer_name: currentProfile.display_name,
-      rating: selectedRating,
-      review_text: text,
-      session_token: getSessionToken(),
-      review_source: 'web'
-    });
-
-    if (error) {
-      // Rate limit errors come back from the RLS policy check
-      if (error.message && error.message.includes('rate')) {
-        alert('You have submitted several reviews recently. Please wait a bit before submitting another.');
-      } else {
-        throw error;
-      }
-      btn.disabled = false;
-      btn.textContent = 'Submit Review →';
-      return;
-    }
-
-    document.getElementById('form-success').style.display = 'block';
-    document.getElementById('review-text').value = '';
-    setStar(0); selectedRating = 0;
-    btn.textContent = 'Submit Review →';
-    btn.disabled = false;
-
-    // Reload reviews
-    setTimeout(() => loadReviews(bizId), 500);
-  } catch(e) {
-    alert('Error submitting review: ' + e.message);
-    btn.disabled = false;
-    btn.textContent = 'Submit Review →';
-  }
-}
-
-async function markHelpful(el, reviewId) {
-  const storageKey = '815_helpful_' + reviewId;
-  if (sessionStorage.getItem(storageKey)) return;
-  sessionStorage.setItem(storageKey, '1');
-  el.style.opacity = '0.5';
-  el.style.pointerEvents = 'none';
-  const current = parseInt(el.textContent.match(/\d+/)?.[0] || 0);
-  await db.from('reviews').update({ helpful_count: current + 1 }).eq('id', reviewId);
-  loadReviews(bizId);
-}
-
-// --- Flag modal ---
-function openFlagModal(reviewId) {
-  flagTargetReviewId = reviewId;
-  selectedFlagReason = null;
-  document.querySelectorAll('.flag-reason-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('flag-submit-btn').disabled = true;
-  document.getElementById('flag-modal-overlay').classList.add('open');
-}
-
-function closeFlagModal(event) {
-  // If click was on the overlay background itself (not the modal), close
-  if (event && event.target !== document.getElementById('flag-modal-overlay')) return;
-  document.getElementById('flag-modal-overlay').classList.remove('open');
-  flagTargetReviewId = null;
-  selectedFlagReason = null;
-}
-
-function selectFlagReason(btn, reason) {
-  document.querySelectorAll('.flag-reason-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  selectedFlagReason = reason;
-  document.getElementById('flag-submit-btn').disabled = false;
-}
-
-async function submitFlag() {
-  if (!flagTargetReviewId || !selectedFlagReason) return;
-  const btn = document.getElementById('flag-submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Reporting...';
-
-  try {
-    const { error } = await db.from('reviews').update({
-      is_flagged: true,
-      flag_reason: selectedFlagReason,
-      flagged_at: new Date().toISOString()
-    }).eq('id', flagTargetReviewId);
-
-    if (error) throw error;
-
-    document.getElementById('flag-modal-overlay').classList.remove('open');
-    flagTargetReviewId = null;
-    selectedFlagReason = null;
-    btn.textContent = 'Report Review';
-
-    // Reload, flagged review will disappear from the public list
-    loadReviews(bizId);
-  } catch(e) {
-    alert('Error reporting review: ' + e.message);
-    btn.disabled = false;
-    btn.textContent = 'Report Review';
-  }
-}
-
 async function loadNearby(category, excludeId) {
   const { data } = await db
     .from('businesses_with_ratings')
@@ -1333,11 +992,6 @@ async function loadNearby(category, excludeId) {
       <div class="nearby-info">
         <div class="nearby-cat">${escapeHtml(b.category)}</div>
         <div class="nearby-name">${escapeHtml(b.name)}</div>
-        ${(parseFloat(b.avg_rating)||0) > 0 ? `<div class="nearby-rating">
-          <span class="nearby-stars">${starsHtml(parseFloat(b.avg_rating))}</span>
-          <span style="font-weight:700;font-size:13px;">${parseFloat(b.avg_rating).toFixed(1)}</span>
-          <span style="font-size:12px;color:var(--gray);">(${b.review_count||0})</span>
-        </div>` : ''}
       </div>
     </a>`;
   }).join('');
@@ -1356,24 +1010,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('main-nav').style.boxShadow = window.scrollY > 20 ? '0 4px 24px rgba(0,0,0,0.3)' : 'none';
 });
 
-async function initAuth() {
-  const { data: { session } } = await db.auth.getSession();
-  currentUser = session?.user ?? null;
-  if (currentUser) {
-    const { data } = await db.from('profiles').select('display_name').eq('id', currentUser.id).single();
-    currentProfile = data;
-  }
-  updateReviewForm();
-}
-
-function updateReviewForm() {
-  // Review write form removed; function kept as a no-op so initAuth() and
-  // other callers don't have to special-case it. Re-enable by restoring
-  // #review-auth-gate / #review-profile-gate / #review-form-fields markup.
-}
-
 loadBusiness();
-initAuth();
 initSaveShare();
 loadBizEvents();
 

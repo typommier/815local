@@ -48,9 +48,16 @@ test.describe('Business detail page', () => {
     expect(data['@type']).toBe('LocalBusiness');
     expect(data.name).toBe("Rosario's Tavern");
     expect(data.telephone).toBe('8155551234');
-    // biz-001 has reviews, so aggregateRating must be present and accurate
-    expect(data.aggregateRating).toBeTruthy();
-    expect(data.aggregateRating.reviewCount).toBe(12);
-    expect(data.aggregateRating.ratingValue).toBe('4.9');
+    // Reviews were retired sitewide; JSON-LD must not carry aggregateRating.
+    expect(data.aggregateRating).toBeUndefined();
+  });
+
+  test('no review or star UI is rendered', async ({ page }) => {
+    await expect(page.locator('#biz-header-content')).toBeVisible({ timeout: 8000 });
+    await expect(page.locator('#reviews')).toHaveCount(0);
+    await expect(page.locator('#h-rating')).toHaveCount(0);
+    const body = await page.locator('body').innerText();
+    expect(body).not.toContain('★');
+    expect(body).not.toContain('☆');
   });
 });
