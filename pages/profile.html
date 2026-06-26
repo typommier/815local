@@ -6,7 +6,7 @@
   <title>My Profile – 815 Local</title>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My Profile – 815 Local">
-<meta name="twitter:description" content="Your 815local profile. Saved businesses, reviews, and community activity.">
+<meta name="twitter:description" content="Your 815local profile. Saved businesses and community activity.">
 <meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -354,41 +354,6 @@
     .card-header h3 { font-size: 1.05rem; font-weight: 700; }
     .view-all-link { color: var(--orange); font-size: 0.85rem; text-decoration: none; font-weight: 600; cursor: pointer; }
 
-    /* REVIEW ITEMS */
-    .review-item {
-      display: flex;
-      gap: 1rem;
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .review-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .review-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--orange-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-    .review-body { flex: 1; min-width: 0; }
-    .review-body .biz-name { color: var(--orange); font-weight: 600; text-decoration: none; }
-    .review-body .biz-name:hover { text-decoration: underline; }
-    .review-stars { color: #f59e0b; font-size: 0.9rem; }
-    .review-text { font-size: 0.875rem; color: var(--muted); margin-top: 0.25rem; font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 380px; }
-    .review-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; }
-    .review-thumb {
-      width: 52px;
-      height: 52px;
-      border-radius: 8px;
-      background: var(--cream);
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .review-thumb img { width: 100%; height: 100%; object-fit: cover; }
-
     /* SAVED PLACES */
     .saved-grid {
       display: grid;
@@ -610,7 +575,7 @@
   <div style="text-align:center;width:100%;max-width:380px;">
     <div style="font-size:3rem;margin-bottom:1rem">👤</div>
     <h2 id="auth-gate-title">Sign in to your account</h2>
-    <p style="margin-bottom:1.5rem">Track your reviews, saved places, and community activity.</p>
+    <p style="margin-bottom:1.5rem">Save your favorite local spots and manage your profile.</p>
     <div class="auth-form">
       <div class="auth-error" id="auth-error"></div>
       <div class="auth-success" id="auth-success"></div>
@@ -660,14 +625,6 @@
   <div class="stats-bar">
     <div class="stats-bar-inner">
       <div class="stat-item">
-        <div class="stat-num" id="stat-reviews">…</div>
-        <div class="stat-label">Reviews Written</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num" id="stat-helpful">…</div>
-        <div class="stat-label">Helpful Votes</div>
-      </div>
-      <div class="stat-item">
         <div class="stat-num" id="stat-saved">…</div>
         <div class="stat-label">Places Saved</div>
       </div>
@@ -678,7 +635,6 @@
   <div class="tabs-bar">
     <div class="tabs-bar-inner">
       <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
-      <button class="tab-btn" id="tab-reviews-btn" onclick="switchTab('reviews')">Reviews</button>
       <button class="tab-btn" id="tab-saved-btn" onclick="switchTab('saved')">Saved Places</button>
       <button class="tab-btn" onclick="switchTab('settings')">Settings</button>
     </div>
@@ -692,10 +648,6 @@
       <div class="sidebar-card">
         <div class="sidebar-nav-item active" id="side-overview" onclick="switchTab('overview')">
           🏠 <span>Overview</span>
-        </div>
-        <div class="sidebar-nav-item" id="side-reviews" onclick="switchTab('reviews')">
-          ⭐ <span>My Reviews</span>
-          <span class="sidebar-badge" id="side-review-count">0</span>
         </div>
         <div class="sidebar-nav-item" id="side-saved" onclick="switchTab('saved')">
           ❤️ <span>Saved Places</span>
@@ -725,19 +677,9 @@
       <div class="panel active" id="panel-overview">
         <div class="overview-stats">
           <div class="stat-card">
-            <div class="icon">⭐</div>
-            <div class="big-num" id="ov-reviews">0</div>
-            <div class="label">Reviews Written</div>
-          </div>
-          <div class="stat-card">
             <div class="icon">❤️</div>
             <div class="big-num" id="ov-saved">0</div>
             <div class="label">Places Saved</div>
-          </div>
-          <div class="stat-card">
-            <div class="icon">👍</div>
-            <div class="big-num" id="ov-helpful">0</div>
-            <div class="label">Helpful Votes</div>
           </div>
           <div class="stat-card">
             <div class="icon">🗓️</div>
@@ -748,32 +690,10 @@
 
         <div class="card">
           <div class="card-header">
-            <h3>Recent Reviews</h3>
-            <span class="view-all-link" onclick="switchTab('reviews')">View all →</span>
-          </div>
-          <div id="recent-reviews-list">
-            <div class="spinner"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
             <h3>Recently Saved</h3>
             <span class="view-all-link" onclick="switchTab('saved')">View all →</span>
           </div>
           <div id="recent-saved-list">
-            <div class="spinner"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- REVIEWS PANEL -->
-      <div class="panel" id="panel-reviews">
-        <div class="card">
-          <div class="card-header">
-            <h3>My Reviews</h3>
-          </div>
-          <div id="all-reviews-list">
             <div class="spinner"></div>
           </div>
         </div>
@@ -834,7 +754,7 @@
           <div class="settings-section">
             <h4>Danger Zone</h4>
             <div class="danger-zone">
-              <p>Signing out will end your session. Your profile, reviews, and saved places will remain intact.</p>
+              <p>Signing out will end your session. Your profile and saved places will remain intact.</p>
               <button class="btn-primary" style="background:#dc2626" onclick="handleSignOut()">Sign Out</button>
             </div>
           </div>
@@ -879,7 +799,6 @@
 
   let currentUser = null;
   let profileData = null;
-  let reviewsData = [];
   let savedData = [];
   let authMode = 'signin'; // 'signin' | 'signup'
 
@@ -949,7 +868,7 @@
     currentUser = result.data.session.user;
     document.getElementById('signout-btn').style.display = 'inline';
     await loadProfile();
-    await Promise.all([loadReviews(), loadSaved()]);
+    await loadSaved();
     showProfilePage();
   }
 
@@ -963,7 +882,7 @@
     currentUser = session.user;
     document.getElementById('signout-btn').style.display = 'inline';
     await loadProfile();
-    await Promise.all([loadReviews(), loadSaved()]);
+    await loadSaved();
     showProfilePage();
   }
 
@@ -1051,67 +970,6 @@
     document.getElementById('modal-occupation').value = profileData.occupation || '';
   }
 
-  // ─── LOAD REVIEWS ─────────────────────────────────────────────────
-  async function loadReviews() {
-    const { data, error } = await db
-      .from('reviews')
-      .select('*, businesses(id, name, category, image_url, photos)')
-      .eq('user_id', currentUser.id)
-      .order('created_at', { ascending: false });
-
-    reviewsData = data || [];
-
-    const count = reviewsData.length;
-    const helpfulTotal = reviewsData.reduce((sum, r) => sum + (r.helpful_count || 0), 0);
-
-    // Stats
-    document.getElementById('stat-reviews').textContent = count;
-    document.getElementById('stat-helpful').textContent = helpfulTotal.toLocaleString();
-    document.getElementById('ov-reviews').textContent = count;
-    document.getElementById('ov-helpful').textContent = helpfulTotal.toLocaleString();
-    document.getElementById('side-review-count').textContent = count;
-    document.getElementById('tab-reviews-btn').textContent = `Reviews (${count})`;
-
-    renderRecentReviews();
-    renderAllReviews();
-  }
-
-  function reviewItemHTML(r, showBiz = true) {
-    const biz = r.businesses;
-    const stars = '★'.repeat(r.rating || 0) + '☆'.repeat(5 - (r.rating || 0));
-    const date = new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const thumb = biz?.photos?.[0] || biz?.image_url || '';
-    const bizLink = biz ? `<a href="/pages/business.html?id=${biz.id}" class="biz-name">${escapeHtml(biz.name)}</a>` : '<span class="biz-name">Unknown Business</span>';
-
-    return `
-      <div class="review-item">
-        <div class="review-icon">⭐</div>
-        <div class="review-body">
-          <div>${showBiz ? `Reviewed ${bizLink}` : ''} <span class="review-stars">${stars}</span></div>
-          ${r.review_text ? `<div class="review-text">"${escapeHtml(r.review_text)}"</div>` : ''}
-          <div class="review-meta">${date}${r.helpful_count ? ` · ${r.helpful_count} found helpful` : ''}</div>
-        </div>
-        ${thumb ? `<div class="review-thumb"><img src="${escapeHtml(thumb)}" alt="" /></div>` : '<div class="review-thumb"></div>'}
-      </div>`;
-  }
-
-  function renderRecentReviews() {
-    const el = document.getElementById('recent-reviews-list');
-    if (!reviewsData.length) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-icon">⭐</div><h4>No reviews yet</h4><p>Explore local businesses and share your experience!</p><br><a href="/pages/directory.html" class="btn-primary">Browse Businesses</a></div>`;
-      return;
-    }
-    el.innerHTML = reviewsData.slice(0, 3).map(r => reviewItemHTML(r)).join('');
-  }
-
-  function renderAllReviews() {
-    const el = document.getElementById('all-reviews-list');
-    if (!reviewsData.length) {
-      el.innerHTML = `<div class="empty-state"><div class="empty-icon">⭐</div><h4>No reviews yet</h4><p>Your reviews of local businesses will appear here.</p><br><a href="/pages/directory.html" class="btn-primary">Browse Businesses</a></div>`;
-      return;
-    }
-    el.innerHTML = reviewsData.map(r => reviewItemHTML(r)).join('');
-  }
 
   // ─── LOAD SAVED ───────────────────────────────────────────────────
   async function loadSaved() {
@@ -1199,7 +1057,7 @@
     document.getElementById(`side-${tab}`)?.classList.add('active');
 
     const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabMap = { overview: 0, reviews: 1, saved: 2, settings: 3 };
+    const tabMap = { overview: 0, saved: 1, settings: 2 };
     tabButtons[tabMap[tab]]?.classList.add('active');
   }
 
