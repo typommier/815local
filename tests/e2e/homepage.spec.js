@@ -62,12 +62,19 @@ test.describe('Homepage', () => {
     expect(href).toMatch(/\/pages\/business\.html\?id=.+/);
   });
 
-  test('newsletter form is wired but hidden', async ({ page }) => {
-    // Section is hidden until a publishing cadence is committed. The form
-    // markup stays so we can flip it back on quickly; assert it exists in
-    // the DOM but is not visible.
-    await expect(page.locator('#newsletter-email')).toBeAttached();
-    await expect(page.locator('#newsletter-email')).not.toBeVisible();
+  test('newsletter signup is visible and prominent', async ({ page }) => {
+    // The signup band is public. Assert the section, input, and button render.
+    await expect(page.locator('#newsletter')).toBeVisible();
+    await expect(page.locator('#newsletter-email')).toBeVisible();
+    await expect(page.locator('#newsletter-btn')).toBeVisible();
+    // Footer offers a second pointer to the signup.
+    await expect(page.locator('footer a[href="#newsletter"]')).toBeVisible();
+  });
+
+  test('newsletter form submits and shows success', async ({ page }) => {
+    await page.locator('#newsletter-email').fill('test@neighborhood.com');
+    await page.locator('#newsletter-btn').click();
+    await expect(page.locator('#newsletter-msg')).toHaveText(/you're in/i);
   });
 
   test('Organization/WebSite JSON-LD is present in the head', async ({ page }) => {
