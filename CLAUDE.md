@@ -75,36 +75,42 @@ main directory database.
   `console.error` before falling back to a generic reply, so failures show
   up in Logs Explorer instead of failing silently.
 - **Widget script**: `assets/js/815local-widget.js`, vanilla JS, no
-  dependencies, styled in site branding. **Exists in the repo but is NOT
-  currently wired into any page** — the `<script>` tag was pulled from
-  `index.html` and all `pages/*.html` on 2026-07-05 (see Status below).
-  When re-enabling, it previously went before `</body>` on `index.html`
-  and `pages/{about,blog,business,deals,directory,events}.html` and
-  `pages/blog/origin-story.html`. Not on `profile.html`, `advertise.html`,
-  `submit/*.html`, `legal/*.html`, or `404.html`.
-- **Status: OFFLINE — do not re-enable until the data problem below is
-  fixed.** The `listings` table only ever had 3 sample rows (El Jalisco
-  Taqueria, Ridge Street Diner, Minooka Plumbing Co.) seeded by the
-  session that built this system, and **none of the three exist in the
-  real `businesses` table** — confirmed by querying
-  `kyneaettrynagavewefi.businesses` for all three names (zero matches).
-  Their phone numbers are fictional placeholders (`815-555-01xx`). The
-  widget was live for a short time and told a real visitor these were
-  "real, active local businesses" they could call — a direct violation of
-  the "only real data, always" rule (see Operating principles). The
-  `ANTHROPIC_API_KEY` secret itself is set and working, and the edge
-  function's model name has been fixed (was the invalid
-  `claude-sonnet-4-6`, now `claude-sonnet-5`) — the AI plumbing works
-  fine. **The blocker is purely that the sample data is fake.** Do not
-  re-add the widget's `<script>` tag to any page until the `listings`
-  table is replaced with real businesses (see Open Work).
+  dependencies, styled in site branding. Wired in via a `<script>` tag
+  before `</body>` on `index.html` and `pages/{about,blog,business,
+  deals,directory,events}.html` and `pages/blog/origin-story.html`.
+  Not on `profile.html`, `advertise.html`, `submit/*.html`, `legal/*.html`,
+  or `404.html`.
+- **History (2026-07-05):** the `listings` table originally shipped with
+  3 fake placeholder rows (El Jalisco Taqueria, Ridge Street Diner,
+  Minooka Plumbing Co.) seeded by the session that built this system —
+  none of the three existed in the real `businesses` table, and the
+  widget briefly told a real visitor these were "real, active local
+  businesses" they could call. This was a direct violation of the "only
+  real data, always" rule (see Operating principles). The widget was
+  pulled from all pages, the `listings` table was fully replaced with a
+  real import of all 185 active rows from `kyneaettrynagavewefi.businesses`
+  (via `businesses_with_ratings`, with tags from `features`, hours
+  remapped to `mon`/`tue`/etc keys, and a generated fallback description
+  only for the ~55 rows missing one — e.g. "Category business located in
+  City, IL." — derived from real fields, nothing invented), and the
+  widget was re-enabled. The edge function's model name was also fixed
+  in the same pass (was the invalid `claude-sonnet-4-6`, now
+  `claude-sonnet-5`).
+- **Status**: the `ANTHROPIC_API_KEY` secret is set and being read
+  correctly, but AI-generated recommendation replies may still fail if
+  the Anthropic account behind that key has insufficient credit balance
+  (last confirmed via edge function logs: `invalid_request_error` /
+  "Your credit balance is too low") — check console.anthropic.com →
+  Plans & Billing if AI replies keep returning the generic fallback
+  message. Direct hours/phone lookups work regardless since those bypass
+  the Claude call.
 - **CORS**: the `chat` function currently allows
   `Access-Control-Allow-Origin: *`. Recommended to lock this to
   `https://815local.com` before wide public launch.
-- **`listings` data**: only the 3 fake sample rows described above, not
-  synced with the real `businesses` table (117 rows). Replacing this with
-  a real import is now a blocker for re-enabling the widget, not just an
-  open nice-to-have — see Open Work.
+- **`listings` data**: 185 rows, kept in sync manually as of 2026-07-05 —
+  re-run the same import (see Open Work) periodically as the real
+  `businesses` table changes, since nothing currently syncs them
+  automatically.
 
 ---
 
@@ -443,19 +449,20 @@ These are the genuinely outstanding items. Items previously on this list that ha
 - Newsletter export to Mailchimp/Resend (infrastructure exists via `newsletter_subscribers` table)
 - Reintroduce paid advertising tiers once directory density supports it
 
-### Concierge widget (currently OFFLINE — script tag pulled from all pages)
-- **BLOCKER for re-enabling:** replace the 3 fake `listings` sample rows
-  (El Jalisco Taqueria, Ridge Street Diner, Minooka Plumbing Co. — none of
-  which exist in the real `businesses` table) with a real import, ideally
-  sourced from the live `businesses` table so the two don't drift. The
-  widget was briefly live and stated these fake businesses were real,
-  callable places — do not re-add the `<script>` tag until this is fixed
-  and spot-checked.
-- `ANTHROPIC_API_KEY` secret is confirmed set and working; the edge
-  function's model name has been fixed (`claude-sonnet-4-6` didn't exist,
-  now `claude-sonnet-5`) — no further action needed on the AI plumbing.
+### Concierge widget
+- `listings` now holds a real, one-time import of all 185 active
+  businesses from `kyneaettrynagavewefi.businesses` (done 2026-07-05) —
+  nothing keeps the two in sync automatically. Re-run the import
+  periodically (new businesses added, businesses closed/deactivated) so
+  `listings` doesn't drift stale. Never let it fall back to fabricated
+  placeholder rows — see the History note above for why that's a hard
+  rule here.
 - Lock down the `chat` edge function's CORS to `https://815local.com`
   before wide public launch (currently `*`)
+- If AI-generated replies keep returning the generic fallback message,
+  check the Anthropic account's credit balance at console.anthropic.com
+  (confirmed low as of the last check) — the API key and model name are
+  both already correct
 - Periodically review `unmet_requests` on the concierge project for
   business-recruitment leads
 
