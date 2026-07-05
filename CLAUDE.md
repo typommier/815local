@@ -66,23 +66,27 @@ main directory database.
   listing — a running list of unmet demand, useful for business
   recruitment).
 - **Edge Function** `chat`, live at
-  `https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat`. POST
+  `https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat`, source
+  tracked in this repo at `supabase/functions/chat/index.ts`. POST
   `{ "message": "..." }`. Direct lookups (hours/phone) answer straight
   from the DB with no AI call; open-ended questions narrow candidates by
-  keyword/tag match, then call Claude restricted to only recommending
-  matched candidates.
+  keyword/tag match, then call Claude (model `claude-sonnet-5`) restricted
+  to only recommending matched candidates. Logs Anthropic API errors via
+  `console.error` before falling back to a generic reply, so failures show
+  up in Logs Explorer instead of failing silently.
 - **Widget script**: `assets/js/815local-widget.js`, vanilla JS, no
   dependencies, styled in site branding. Wired in via a `<script>` tag
   before `</body>` on `index.html` and `pages/{about,blog,business,
   deals,directory,events}.html` and `pages/blog/origin-story.html`.
   Not on `profile.html`, `advertise.html`, `submit/*.html`, `legal/*.html`,
   or `404.html`.
-- **Status**: the `ANTHROPIC_API_KEY` secret has not been confirmed
-  working on this project yet. Until it's set correctly (Supabase
-  dashboard → `815local-concierge` project → Edge Functions → Manage
-  secrets → exact name `ANTHROPIC_API_KEY`), AI-generated recommendation
-  replies will fail; direct hours/phone lookups still work since those
-  bypass the Claude call.
+- **Status**: the `ANTHROPIC_API_KEY` secret is set and being read
+  correctly. AI-generated recommendation replies are currently failing
+  because the Anthropic account behind that key has insufficient credit
+  balance (confirmed via edge function logs: `invalid_request_error` /
+  "Your credit balance is too low"). Add credits at
+  console.anthropic.com → Plans & Billing to unblock. Direct hours/phone
+  lookups work regardless since those bypass the Claude call.
 - **CORS**: the `chat` function currently allows
   `Access-Control-Allow-Origin: *`. Recommended to lock this to
   `https://815local.com` before wide public launch.
