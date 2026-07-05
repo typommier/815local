@@ -44,7 +44,51 @@ These shape every decision. When in doubt, fall back to these.
   `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk`
 - JS SDK via CDN: `https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2`
 
-When working on Supabase via MCP tools, always use `project_id: kyneaettrynagavewefi`.
+When working on the main directory/site data, use `project_id: kyneaettrynagavewefi`. There is a second, separate Supabase project for the concierge chat widget (see below) — use `project_id: ubcagczbnxfpoligmsqq` only when working on that system specifically. Don't mix the two up.
+
+---
+
+## Concierge chat widget (separate Supabase project)
+
+A chat bubble (bottom-right, on public pages) that lets visitors ask about
+business hours, get recommendations ("best tacos in town"), or find a
+service provider. Answers only from real `listings` rows, never invented.
+Built July 2026, runs on its **own** Supabase project, independent of the
+main directory database.
+
+- **Supabase project**: `815local-concierge` (ref `ubcagczbnxfpoligmsqq`),
+  same org as the main project (`avvujmfsxzrmnuekpjsq`), region us-east-1.
+  This is a **different project ID** than the main site's
+  `kyneaettrynagavewefi` — don't point MCP calls at the wrong one.
+- **Tables**: `listings` (name, category, tags, area, address, phone,
+  website, hours_json, description, price_range, rating, featured) and
+  `unmet_requests` (logs questions the widget couldn't match to a
+  listing — a running list of unmet demand, useful for business
+  recruitment).
+- **Edge Function** `chat`, live at
+  `https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat`. POST
+  `{ "message": "..." }`. Direct lookups (hours/phone) answer straight
+  from the DB with no AI call; open-ended questions narrow candidates by
+  keyword/tag match, then call Claude restricted to only recommending
+  matched candidates.
+- **Widget script**: `assets/js/815local-widget.js`, vanilla JS, no
+  dependencies, styled in site branding. Wired in via a `<script>` tag
+  before `</body>` on `index.html` and `pages/{about,blog,business,
+  deals,directory,events}.html` and `pages/blog/origin-story.html`.
+  Not on `profile.html`, `advertise.html`, `submit/*.html`, `legal/*.html`,
+  or `404.html`.
+- **Status**: the `ANTHROPIC_API_KEY` secret has not been confirmed
+  working on this project yet. Until it's set correctly (Supabase
+  dashboard → `815local-concierge` project → Edge Functions → Manage
+  secrets → exact name `ANTHROPIC_API_KEY`), AI-generated recommendation
+  replies will fail; direct hours/phone lookups still work since those
+  bypass the Claude call.
+- **CORS**: the `chat` function currently allows
+  `Access-Control-Allow-Origin: *`. Recommended to lock this to
+  `https://815local.com` before wide public launch.
+- **`listings` data**: currently only a few sample rows, not synced with
+  the real `businesses` table (117 rows). Needs a real import before this
+  is genuinely useful — see Open Work.
 
 ---
 
@@ -382,6 +426,16 @@ These are the genuinely outstanding items. Items previously on this list that ha
 - Shared nav/footer components to eliminate copy-paste across HTML files
 - Newsletter export to Mailchimp/Resend (infrastructure exists via `newsletter_subscribers` table)
 - Reintroduce paid advertising tiers once directory density supports it
+
+### Concierge widget
+- Confirm the `ANTHROPIC_API_KEY` secret is set correctly (exact name) on
+  the `815local-concierge` Supabase project (ref `ubcagczbnxfpoligmsqq`)
+- Lock down the `chat` edge function's CORS to `https://815local.com`
+  before wide public launch (currently `*`)
+- Replace the sample `listings` rows with a real import, ideally sourced
+  from the live `businesses` table so the two don't drift
+- Periodically review `unmet_requests` on the concierge project for
+  business-recruitment leads
 
 ---
 
