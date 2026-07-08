@@ -76,6 +76,15 @@
   const input = document.getElementById("ol-input");
   const sendBtn = document.getElementById("ol-send");
   let greeted = false;
+  // Page-load scoped conversation memory, resets on refresh just like
+  // `greeted` above. history holds the visible back-and-forth so the
+  // concierge has real continuity; lastCandidates holds the exact real
+  // businesses the server used last turn, echoed back so a bare follow-up
+  // ("any others?", "yes", "contact info") can pick up the same thread
+  // instead of losing all context.
+  let history = [];
+  let lastCandidates = [];
+  const MAX_EXCHANGES = 4;
 
   function addMsg(text, who) {
     const div = document.createElement("div");
@@ -89,7 +98,7 @@
     panel.classList.toggle("open");
     if (panel.classList.contains("open") && !greeted) {
       greeted = true;
-      addMsg("Hey! Ask me about hours, a type of food, or a local service — I'll pull from real 815local listings.", "bot");
+      addMsg("Hey! Ask me about hours, a type of food, or a local service, I'll pull from real 815local listings.", "bot");
     }
   });
   closeBtn.addEventListener("click", () => panel.classList.remove("open"));
@@ -103,12 +112,19 @@
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({
+          message: text,
+          history: history.slice(-2 * MAX_EXCHANGES),
+          lastCandidates,
+        }),
       });
       const data = await res.json();
-      addMsg(data.reply || "Sorry, something went wrong.", "bot");
+      const reply = data.reply || "Sorry, something went wrong.";
+      addMsg(reply, "bot");
+      history.push({ role: "user", content: text }, { role: "assistant", content: reply });
+      lastCandidates = Array.isArray(data.candidates) ? data.candidates : [];
     } catch (e) {
-      addMsg("Couldn't reach the concierge right now — try again in a moment.", "bot");
+      addMsg("Couldn't reach the concierge right now, try again in a moment.", "bot");
     }
   }
 
