@@ -37,6 +37,9 @@
     .ol-msg{max-width:85%;font-size:13px;line-height:1.45;padding:8px 11px;border-radius:8px;}
     .ol-msg.bot{align-self:flex-start;background:${CREAM};border:1px solid #ded6c2;}
     .ol-msg.user{align-self:flex-end;background:${CHARCOAL};color:${CREAM};}
+    .ol-links{align-self:flex-start;max-width:85%;display:flex;flex-direction:column;gap:2px;margin-top:-4px;}
+    .ol-links a{color:${BURNT_ORANGE};font-weight:700;font-size:12.5px;text-decoration:none;}
+    .ol-links a:hover{text-decoration:underline;}
     #ol-input-row{display:flex;gap:6px;padding:10px;border-top:1px solid #ded6c2;background:#fff;}
     #ol-input{flex:1;border:1px solid #ded6c2;border-radius:18px;padding:8px 12px;font-size:13px;outline:none;}
     #ol-input:focus{border-color:${BURNT_ORANGE};}
@@ -94,6 +97,25 @@
     body.scrollTop = body.scrollHeight;
   }
 
+  // Renders real, clickable links to each recommended business's directory
+  // page. Built entirely from the server's structured `candidates` field via
+  // safe DOM construction (never innerHTML), so this never depends on (or
+  // parses) anything Claude writes in its own reply text.
+  function addLinks(candidates) {
+    const withUrl = (candidates || []).filter((c) => c && c.url);
+    if (!withUrl.length) return;
+    const wrap = document.createElement("div");
+    wrap.className = "ol-links";
+    withUrl.forEach((c) => {
+      const a = document.createElement("a");
+      a.textContent = `View ${c.name} on the directory`;
+      a.href = c.url;
+      wrap.appendChild(a);
+    });
+    body.appendChild(wrap);
+    body.scrollTop = body.scrollHeight;
+  }
+
   launcher.addEventListener("click", () => {
     panel.classList.toggle("open");
     if (panel.classList.contains("open") && !greeted) {
@@ -121,8 +143,9 @@
       const data = await res.json();
       const reply = data.reply || "Sorry, something went wrong.";
       addMsg(reply, "bot");
-      history.push({ role: "user", content: text }, { role: "assistant", content: reply });
       lastCandidates = Array.isArray(data.candidates) ? data.candidates : [];
+      addLinks(lastCandidates);
+      history.push({ role: "user", content: text }, { role: "assistant", content: reply });
     } catch (e) {
       addMsg("Couldn't reach the concierge right now, try again in a moment.", "bot");
     }
