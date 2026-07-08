@@ -16,7 +16,14 @@
 //
 // Request body: { "message": "...", "history"?: [{role, content}, ...],
 //                 "lastCandidates"?: [{name}, ...] }
-// Response body: { "reply": "...", "candidates": [{name, area}, ...] }
+// Response body: { "reply": "...", "candidates": [{name, area, url}, ...] }
+//
+// `url` links back to the business's real page on 815local.com's directory
+// (via `listings.business_id`, backfilled against the main site's
+// `businesses` table) so a chatbot recommendation doesn't dead-end the
+// visitor in the chat bubble. It's a structured field the widget renders
+// as a real link itself, never something Claude writes into its own reply
+// text, so there's no dependency on the AI reliably including a link.
 //
 // `history` and `lastCandidates` are optional and page-load scoped (the
 // client resets both on every reload). Both are re-validated here
@@ -113,6 +120,7 @@ interface Listing {
   price_range: string | null;
   rating: number | null;
   featured: boolean | null;
+  business_id: string | null;
 }
 
 interface HistoryTurn {
@@ -240,6 +248,17 @@ function toCandidate(l: Listing): Partial<Listing> {
   };
 }
 
+// The client-facing echo (not fed to Claude): just enough to render a link
+// back to the business's real directory page and to carry forward as
+// `lastCandidates` on the next turn.
+function toCandidateEcho(l: Listing): { name: string; area: string | null; url: string | null } {
+  return {
+    name: l.name,
+    area: l.area,
+    url: l.business_id ? `https://815local.com/pages/business.html?id=${l.business_id}` : null,
+  };
+}
+
 async function askClaude(
   message: string,
   history: HistoryTurn[],
@@ -303,14 +322,14 @@ Deno.serve(async (req: Request) => {
         if (wantsHours) {
           return jsonResponse({
             reply: `${named.name}'s hours:\n${formatHours(named.hours_json)}`,
-            candidates: [{ name: named.name, area: named.area }],
+            candidates: [toCandidateEcho(named)],
           });
         }
         return jsonResponse({
           reply: named.phone
             ? `${named.name}'s phone number is ${named.phone}.`
             : `I don't have a phone number on file for ${named.name}.`,
-          candidates: [{ name: named.name, area: named.area }],
+          candidates: [toCandidateEcho(named)],
         });
       }
     }
@@ -326,7 +345,7 @@ Deno.serve(async (req: Request) => {
     // Direct lookup, bare follow-up ("contact info") inherits a small,
     // already-established set of businesses from earlier in the chat.
     if ((wantsHours || wantsPhone) && directCandidates.length === 0 && carriedCandidates.length > 0 && carriedCandidates.length <= 3) {
-      const cands = carriedCandidates.map((l) => ({ name: l.name, area: l.area }));
+      const cands = carriedCandidates.map(toCandidateEcho);
       if (wantsHours) {
         const lines = carriedCandidates.map((l) => `${l.name}:\n${formatHours(l.hours_json)}`);
         return jsonResponse({ reply: lines.join("\n\n"), candidates: cands });
@@ -349,7 +368,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const candidates = matched.map(toCandidate);
-    const candidateEcho = matched.map((l) => ({ name: l.name, area: l.area }));
+    const candidateEcho = matched.map(toCandidateEcho);
 
     if (!ANTHROPIC_API_KEY) {
       return jsonResponse({ reply: fallbackReply(candidates), candidates: candidateEcho });
