@@ -66,11 +66,22 @@ main directory database.
   listing — a running list of unmet demand, useful for business
   recruitment).
 - **Edge Function** `chat`, live at
-  `https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat`. POST
-  `{ "message": "..." }`. Direct lookups (hours/phone) answer straight
-  from the DB with no AI call; open-ended questions narrow candidates by
-  keyword/tag match, then call Claude restricted to only recommending
-  matched candidates.
+  `https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat`. Source is
+  tracked in this repo at `supabase/functions/chat/index.ts` (as of the
+  v7 rewrite), but committing that file does **not** deploy it, this
+  project has no CI wired to the concierge Supabase project; deploy
+  manually whenever it changes. POST
+  `{ "message": "...", "history"?: [{role, content}, ...], "lastCandidates"?: [{name}, ...] }`,
+  response `{ "reply": "...", "candidates": [{name, area}, ...] }`.
+  Conversation memory is page-load scoped: the widget tracks `history`
+  and echoes back `lastCandidates` (the exact real businesses the server
+  used last turn) so bare follow-ups ("any others?", "yes", "contact
+  info") stay on the established topic instead of losing context or
+  re-guessing from noisy prose. Direct lookups (hours/phone, for a named
+  business or an inherited small candidate set) answer straight from the
+  DB with no AI call; open-ended questions narrow candidates by
+  keyword/tag/synonym match, then call Claude restricted to only
+  recommending matched candidates.
 - **Widget script**: `assets/js/815local-widget.js`, vanilla JS, no
   dependencies, styled in site branding. Wired in via a `<script>` tag
   before `</body>` on `index.html` and `pages/{about,blog,business,
@@ -86,9 +97,10 @@ main directory database.
 - **CORS**: the `chat` function currently allows
   `Access-Control-Allow-Origin: *`. Recommended to lock this to
   `https://815local.com` before wide public launch.
-- **`listings` data**: currently only a few sample rows, not synced with
-  the real `businesses` table (117 rows). Needs a real import before this
-  is genuinely useful — see Open Work.
+- **`listings` data**: 185 rows as of July 2026 (this had drifted stale
+  in project notes, checked directly against the DB), not synced with
+  the real `businesses` table (117 rows). Still worth a real import to
+  keep the two from diverging further, see Open Work.
 
 ---
 
