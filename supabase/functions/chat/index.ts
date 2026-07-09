@@ -61,6 +61,14 @@ const CORS_HEADERS = {
 // and previously caused false-positive matches (e.g. "others" coincidentally
 // matching unrelated listing text), which produced inconsistent answers
 // about how many businesses matched. Filtered out before scoring.
+//
+// "service"/"services"/"professional"/"business"/"located" are here for the
+// same reason: they're generic category-boilerplate words ("Professional
+// Services business located in X, IL.") that appear in the corpus of nearly
+// every listing regardless of what it actually does, so leaving them
+// scoreable turned any query containing "service" or "professional" into a
+// near-directory-wide match (94 and 41 of 185 listings respectively, tested
+// directly against production data).
 const STOPWORDS = new Set([
   "a", "an", "the", "is", "are", "was", "were", "i", "me", "my", "we", "our",
   "you", "your", "have", "has", "had", "do", "does", "did", "for", "of", "to",
@@ -70,11 +78,17 @@ const STOPWORDS = new Set([
   "those", "them", "it", "can", "could", "would", "should", "please", "hi",
   "hello", "hey", "good", "best", "around", "local", "town", "area", "one",
   "get", "know", "yes", "no", "yeah", "yep", "nope", "sure", "okay", "ok",
-  "thanks", "thank",
+  "thanks", "thank", "what", "where", "when", "who", "why", "how",
+  "service", "services", "professional", "business", "businesses", "located",
+  "offer", "offers", "provide", "provides", "providing", "serving",
 ]);
 
 // Curated synonyms so common service intents match listings even when the
 // exact word isn't in a listing's tags (e.g. "leak" -> plumbing listings).
+// Keys must be single words: `tokenize` splits the query into individual
+// words before this map is consulted, so a multi-word key like "tech
+// support" would never be looked up as one unit, only "tech" and "support"
+// separately.
 const SYNONYMS: Record<string, string[]> = {
   leak: ["plumbing", "plumber", "drain", "pipe", "water heater", "faucet"],
   plumber: ["plumbing", "drain", "pipe", "water heater", "faucet"],
@@ -98,6 +112,18 @@ const SYNONYMS: Record<string, string[]> = {
   exterminator: ["pest control", "pest"],
   tow: ["towing"],
   towing: ["tow"],
+  brunch: ["breakfast"],
+  breakfast: ["brunch"],
+  beer: ["taproom", "brewery"],
+  haircut: ["hair", "barber", "barbershop", "stylist"],
+  haircuts: ["hair", "barber", "barbershop", "stylist"],
+  therapist: ["counseling", "counselor"],
+  lawyer: ["law firm", "legal"],
+  attorney: ["law firm", "legal"],
+  mechanic: ["automotive"],
+  handyman: ["home repair"],
+  computer: ["managed it", "helpdesk"],
+  tech: ["managed it", "helpdesk", "computer"],
 };
 
 // "contact"/"info"/"call"/"phone" stay out of STOPWORDS on purpose: they are
@@ -144,26 +170,46 @@ function expandTokens(tokens: string[]): string[] {
   return [...expanded];
 }
 
-// Fuzzy containment: for terms of 5+ letters, match on a shared 5-letter
-// root so "plumber"/"plumbing"/"plumbers" all match a listing tagged with
-// any of those forms, without needing a full stemmer.
-function fuzzyIncludes(corpus: string, term: string): boolean {
-  if (term.length >= 5) return corpus.includes(term.slice(0, 5));
-  return corpus.includes(term);
-}
-
-function corpusFor(listing: Listing): string {
-  return [listing.name, listing.category, listing.tags, listing.description]
+// Whole-word matching, not raw substring: "hair" must never match inside
+// "wheelchair", and "professional" must never bleed across a phrase inside
+// a longer word. Corpus text is tokenized into a set of whole words first,
+// and a query term only matches a whole word in that set (or, for terms of
+// 5+ letters, a whole word sharing that term's 5-letter root, so
+// "plumber"/"plumbing"/"plumbers" match each other without a full stemmer).
+// A multi-word synonym target like "law firm" requires every one of its
+// words to appear somewhere in the corpus (not necessarily adjacent).
+function corpusWordsFor(listing: Listing): Set<string> {
+  const text = [listing.name, listing.category, listing.tags, listing.description]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
+  return new Set(text.split(/[^a-z0-9]+/).filter(Boolean));
+}
+
+function fuzzyWordMatch(corpusWords: Set<string>, term: string): boolean {
+  for (const tw of term.split(/\s+/).filter(Boolean)) {
+    if (tw.length >= 5) {
+      const prefix = tw.slice(0, 5);
+      let found = false;
+      for (const w of corpusWords) {
+        if (w.startsWith(prefix)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) return false;
+    } else if (!corpusWords.has(tw)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function scoreListing(listing: Listing, terms: string[]): number {
-  const corpus = corpusFor(listing);
+  const corpusWords = corpusWordsFor(listing);
   let score = 0;
   for (const term of terms) {
-    if (fuzzyIncludes(corpus, term)) score += 1;
+    if (fuzzyWordMatch(corpusWords, term)) score += 1;
   }
   return score;
 }

@@ -444,10 +444,23 @@ These are the genuinely outstanding items. Items previously on this list that ha
   the `815local-concierge` Supabase project (ref `ubcagczbnxfpoligmsqq`)
 - Lock down the `chat` edge function's CORS to `https://815local.com`
   before wide public launch (currently `*`)
-- Replace the sample `listings` rows with a real import, ideally sourced
-  from the live `businesses` table so the two don't drift
+- `listings` (185 rows) now has a `business_id` column linking every row to
+  its real `businesses.id` (backfilled July 2026, near-100% match via phone
+  number plus name+city fallback), used to render a real link back to the
+  business's directory page in chatbot replies. Still worth a proper import
+  pipeline so the two tables stop being maintained independently.
 - Periodically review `unmet_requests` on the concierge project for
   business-recruitment leads
+- **55 of 185 `listings` rows (30%) have empty `tags` and a generic
+  boilerplate `description`** ("[Category] business located in [City], IL.")
+  with no real, matchable content, found via a full directory audit (July
+  2026). The chatbot can never legitimately recommend these since there's
+  nothing true to say about them. Worst hit: Professional Services (22/35,
+  including nearly every insurance agent, eye doctor, and most law offices
+  and CPAs), Kids & Family (9/10), and four single-listing categories that
+  are 100% boilerplate (Storage, Body Art, Lodging, Car Wash). Needs real
+  tags/descriptions entered, same as the photo backlog above; not something
+  that can be fixed in code.
 
 ---
 
