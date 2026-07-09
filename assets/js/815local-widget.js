@@ -1,5 +1,5 @@
 /**
- * 815local.com concierge chat widget
+ * Scout, the 815local.com concierge chat widget
  * Usage: add before </body> on any page —
  *   <script src="/815local-widget.js"></script>
  * (already points at the live Supabase endpoint by default — no data-api needed
@@ -11,16 +11,17 @@
     scriptTag.getAttribute("data-api") ||
     "https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat";
 
-  const CHARCOAL = "#2b2b28";
-  const CREAM = "#f5f0e6";
-  const BURNT_ORANGE = "#c1531f";
+  const LOGO_URL = "/uploads/scout-icon.svg";
+  const CHARCOAL = "#3A3532";
+  const CREAM = "#F4EDE1";
+  const BURNT_ORANGE = "#C4622D";
   const BURNT_ORANGE_LIGHT = "#e07a45";
 
   const css = `
     #ol-launcher{position:fixed;bottom:22px;right:22px;width:60px;height:60px;border-radius:50%;
-      background:${BURNT_ORANGE};border:none;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);
-      z-index:9999;display:flex;align-items:center;justify-content:center;}
-    #ol-launcher svg{width:26px;height:26px;fill:${CREAM};}
+      border:none;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);padding:0;
+      z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    #ol-launcher img{width:100%;height:100%;display:block;}
     #ol-panel{position:fixed;bottom:22px;right:22px;width:340px;height:480px;max-height:75vh;
       background:${CREAM};border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.3);
       display:flex;flex-direction:column;overflow:hidden;z-index:9999;font-family:system-ui,sans-serif;
@@ -28,8 +29,8 @@
     #ol-panel.open{opacity:1;pointer-events:auto;transform:translateY(0);}
     #ol-head{background:${CHARCOAL};color:${CREAM};padding:12px 14px;display:flex;align-items:center;gap:8px;
       border-bottom:3px solid ${BURNT_ORANGE};}
-    #ol-head .mark{width:28px;height:28px;border-radius:50%;background:${BURNT_ORANGE};display:flex;
-      align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+    #ol-head .mark{width:28px;height:28px;border-radius:50%;overflow:hidden;flex-shrink:0;}
+    #ol-head .mark img{width:100%;height:100%;display:block;}
     #ol-head .title{flex:1;font-size:13.5px;font-weight:600;}
     #ol-head .sub{font-size:10.5px;color:#c9c2b3;}
     #ol-close{background:none;border:none;color:#d9d3c4;cursor:pointer;font-size:16px;}
@@ -54,13 +55,13 @@
   document.body.insertAdjacentHTML(
     "beforeend",
     `
-    <button id="ol-launcher" aria-label="Ask 815local">
-      <svg viewBox="0 0 24 24"><path d="M12 2 2 22l10-4 10 4z"/></svg>
+    <button id="ol-launcher" aria-label="Chat with Scout">
+      <img src="${LOGO_URL}" alt="Scout">
     </button>
     <div id="ol-panel">
       <div id="ol-head">
-        <div class="mark">815</div>
-        <div class="title">815local Concierge<div class="sub">Ask about hours, food, or a service</div></div>
+        <div class="mark"><img src="${LOGO_URL}" alt="Scout"></div>
+        <div class="title">Scout<div class="sub">Ask about hours, food, or a service</div></div>
         <button id="ol-close">✕</button>
       </div>
       <div id="ol-body"></div>
@@ -116,14 +117,40 @@
     body.scrollTop = body.scrollHeight;
   }
 
-  launcher.addEventListener("click", () => {
-    panel.classList.toggle("open");
-    if (panel.classList.contains("open") && !greeted) {
+  function openPanelAndGreet() {
+    panel.classList.add("open");
+    if (!greeted) {
       greeted = true;
-      addMsg("Hey! Ask me about hours, a type of food, or a local service, I'll pull from real 815local listings.", "bot");
+      addMsg("Hey, I'm Scout! Ask me about hours, a type of food, or a local service, I'll pull from real 815local listings.", "bot");
+    }
+  }
+
+  launcher.addEventListener("click", () => {
+    if (panel.classList.contains("open")) {
+      panel.classList.remove("open");
+    } else {
+      openPanelAndGreet();
     }
   });
   closeBtn.addEventListener("click", () => panel.classList.remove("open"));
+
+  // Auto-open once per browsing session, after a short delay so it doesn't
+  // feel jarring the instant a page loads. sessionStorage (not localStorage)
+  // so it resets each new tab/session but doesn't re-pop on every page as a
+  // visitor browses around the site within the same session.
+  const SESSION_AUTO_OPEN_KEY = "ol_scout_auto_opened";
+  try {
+    if (!sessionStorage.getItem(SESSION_AUTO_OPEN_KEY)) {
+      setTimeout(() => {
+        if (!greeted) openPanelAndGreet();
+        try {
+          sessionStorage.setItem(SESSION_AUTO_OPEN_KEY, "1");
+        } catch (e) {}
+      }, 2500);
+    }
+  } catch (e) {
+    // sessionStorage unavailable (private browsing, etc.) - just skip auto-open
+  }
 
   async function send() {
     const text = input.value.trim();
