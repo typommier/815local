@@ -48,13 +48,13 @@ When working on the main directory/site data, use `project_id: kyneaettrynagavew
 
 ---
 
-## Concierge chat widget (separate Supabase project)
+## Concierge chat widget ("Scout", separate Supabase project)
 
-A chat bubble (bottom-right, on public pages) that lets visitors ask about
-business hours, get recommendations ("best tacos in town"), or find a
-service provider. Answers only from real `listings` rows, never invented.
-Built July 2026, runs on its **own** Supabase project, independent of the
-main directory database.
+A chat bubble (bottom-right, on public pages), named **Scout**, that lets
+visitors ask about business hours, get recommendations ("best tacos in
+town"), or find a service provider. Answers only from real `listings` rows,
+never invented. Built July 2026, runs on its **own** Supabase project,
+independent of the main directory database.
 
 - **Supabase project**: `815local-concierge` (ref `ubcagczbnxfpoligmsqq`),
   same org as the main project (`avvujmfsxzrmnuekpjsq`), region us-east-1.
@@ -72,7 +72,10 @@ main directory database.
   project has no CI wired to the concierge Supabase project; deploy
   manually whenever it changes. POST
   `{ "message": "...", "history"?: [{role, content}, ...], "lastCandidates"?: [{name}, ...] }`,
-  response `{ "reply": "...", "candidates": [{name, area}, ...] }`.
+  response `{ "reply": "...", "candidates": [{name, area, url}, ...] }`. `url`
+  (built from `listings.business_id`) links back to the business's real
+  directory page, rendered by the widget as a real `<a>` element, never
+  something Claude writes into its own reply text.
   Conversation memory is page-load scoped: the widget tracks `history`
   and echoes back `lastCandidates` (the exact real businesses the server
   used last turn) so bare follow-ups ("any others?", "yes", "contact
@@ -88,6 +91,14 @@ main directory database.
   deals,directory,events}.html` and `pages/blog/origin-story.html`.
   Not on `profile.html`, `advertise.html`, `submit/*.html`, `legal/*.html`,
   or `404.html`.
+- **Branding**: named Scout as of July 2026. Logo is a compass-motif mark
+  at `uploads/scout-icon.svg`, used for both the launcher button and the
+  panel header mark. Colors (`#C4622D` orange, `#F4EDE1` cream, `#3A3532`
+  charcoal) are set as the widget's `BURNT_ORANGE`/`CREAM`/`CHARCOAL`
+  constants; the orange matches the main site's `--orange` design-system
+  color exactly. Scout auto-opens and greets once per browsing session
+  (`sessionStorage` key `ol_scout_auto_opened`), after a ~2.5s delay, then
+  stays quiet (but still clickable) for the rest of that session.
 - **Status**: the `ANTHROPIC_API_KEY` secret has not been confirmed
   working on this project yet. Until it's set correctly (Supabase
   dashboard → `815local-concierge` project → Edge Functions → Manage
