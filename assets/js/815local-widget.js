@@ -38,9 +38,13 @@
     .ol-msg{max-width:85%;font-size:13px;line-height:1.45;padding:8px 11px;border-radius:8px;}
     .ol-msg.bot{align-self:flex-start;background:${CREAM};border:1px solid #ded6c2;}
     .ol-msg.user{align-self:flex-end;background:${CHARCOAL};color:${CREAM};}
-    .ol-links{align-self:flex-start;max-width:85%;display:flex;flex-direction:column;gap:2px;margin-top:-4px;}
-    .ol-links a{color:${BURNT_ORANGE};font-weight:700;font-size:12.5px;text-decoration:none;}
-    .ol-links a:hover{text-decoration:underline;}
+    .ol-turn{align-self:flex-start;max-width:85%;display:flex;flex-direction:column;gap:4px;}
+    .ol-turn .ol-msg{max-width:none;align-self:auto;}
+    .ol-candidates{display:flex;flex-direction:column;gap:3px;}
+    .ol-candidate{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;font-size:12.5px;}
+    .ol-candidate a,.ol-candidate .ol-candidate-name{color:${BURNT_ORANGE};font-weight:700;text-decoration:none;}
+    .ol-candidate a:hover{text-decoration:underline;}
+    .ol-candidate .ol-phone{color:#8a8175;font-size:11.5px;}
     #ol-input-row{display:flex;gap:6px;padding:10px;border-top:1px solid #ded6c2;background:#fff;}
     #ol-input{flex:1;border:1px solid #ded6c2;border-radius:18px;padding:8px 12px;font-size:13px;outline:none;}
     #ol-input:focus{border-color:${BURNT_ORANGE};}
@@ -88,6 +92,10 @@
   // instead of losing all context.
   let history = [];
   let lastCandidates = [];
+  // Names of businesses already shown a candidate card, page-load scoped
+  // like history/lastCandidates, so a long multi-topic conversation doesn't
+  // re-print the same links/phone every time a business is mentioned again.
+  let shownCandidateNames = new Set();
   const MAX_EXCHANGES = 4;
 
   function addMsg(text, who) {
@@ -98,22 +106,54 @@
     body.scrollTop = body.scrollHeight;
   }
 
-  // Renders real, clickable links to each recommended business's directory
-  // page. Built entirely from the server's structured `candidates` field via
-  // safe DOM construction (never innerHTML), so this never depends on (or
-  // parses) anything Claude writes in its own reply text.
-  function addLinks(candidates) {
-    const withUrl = (candidates || []).filter((c) => c && c.url);
-    if (!withUrl.length) return;
-    const wrap = document.createElement("div");
-    wrap.className = "ol-links";
-    withUrl.forEach((c) => {
-      const a = document.createElement("a");
-      a.textContent = `View ${c.name} on the directory`;
-      a.href = c.url;
-      wrap.appendChild(a);
-    });
-    body.appendChild(wrap);
+  // Renders one bot turn as a single container: the reply text plus any
+  // fresh (not-yet-shown) candidate rows as children of that same wrapper,
+  // so it's always visually unambiguous which links/phone numbers belong to
+  // which reply, even deep into a long, multi-topic conversation. Built
+  // entirely from the server's structured `candidates` field via safe DOM
+  // construction (never innerHTML), so this never depends on (or parses)
+  // anything Claude writes in its own reply text.
+  function addBotTurn(text, candidates) {
+    const turn = document.createElement("div");
+    turn.className = "ol-turn";
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "ol-msg bot";
+    msgDiv.textContent = text;
+    turn.appendChild(msgDiv);
+
+    const fresh = (candidates || []).filter(
+      (c) => c && (c.url || c.phone) && !shownCandidateNames.has(c.name)
+    );
+    if (fresh.length) {
+      const info = document.createElement("div");
+      info.className = "ol-candidates";
+      fresh.forEach((c) => {
+        shownCandidateNames.add(c.name);
+        const row = document.createElement("div");
+        row.className = "ol-candidate";
+        if (c.url) {
+          const a = document.createElement("a");
+          a.textContent = c.name;
+          a.href = c.url;
+          row.appendChild(a);
+        } else {
+          const span = document.createElement("span");
+          span.className = "ol-candidate-name";
+          span.textContent = c.name;
+          row.appendChild(span);
+        }
+        if (c.phone) {
+          const phoneSpan = document.createElement("span");
+          phoneSpan.className = "ol-phone";
+          phoneSpan.textContent = c.phone;
+          row.appendChild(phoneSpan);
+        }
+        info.appendChild(row);
+      });
+      turn.appendChild(info);
+    }
+
+    body.appendChild(turn);
     body.scrollTop = body.scrollHeight;
   }
 
@@ -169,9 +209,8 @@
       });
       const data = await res.json();
       const reply = data.reply || "Sorry, something went wrong.";
-      addMsg(reply, "bot");
       lastCandidates = Array.isArray(data.candidates) ? data.candidates : [];
-      addLinks(lastCandidates);
+      addBotTurn(reply, lastCandidates);
       history.push({ role: "user", content: text }, { role: "assistant", content: reply });
     } catch (e) {
       addMsg("Couldn't reach the concierge right now, try again in a moment.", "bot");

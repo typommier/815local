@@ -16,14 +16,18 @@
 //
 // Request body: { "message": "...", "history"?: [{role, content}, ...],
 //                 "lastCandidates"?: [{name}, ...] }
-// Response body: { "reply": "...", "candidates": [{name, area, url}, ...] }
+// Response body: { "reply": "...", "candidates": [{name, area, url, phone}, ...] }
 //
 // `url` links back to the business's real page on 815local.com's directory
 // (via `listings.business_id`, backfilled against the main site's
 // `businesses` table) so a chatbot recommendation doesn't dead-end the
-// visitor in the chat bubble. It's a structured field the widget renders
-// as a real link itself, never something Claude writes into its own reply
-// text, so there's no dependency on the AI reliably including a link.
+// visitor in the chat bubble. `phone` is the business's real number. Both
+// are structured fields the widget renders itself, never something Claude
+// writes into its own reply text: Claude previously retyped a real phone
+// number incorrectly in a later turn of the same conversation (a genuine
+// hallucination, not a data problem, the source JSON was correct both
+// times), so the system prompt now forbids Claude from stating phone
+// numbers at all, they're rendered client-side from this field instead.
 //
 // `history` and `lastCandidates` are optional and page-load scoped (the
 // client resets both on every reload). Both are re-validated here
@@ -115,8 +119,9 @@ const SYNONYMS: Record<string, string[]> = {
   brunch: ["breakfast"],
   breakfast: ["brunch"],
   beer: ["taproom", "brewery"],
-  haircut: ["hair", "barber", "barbershop", "stylist"],
-  haircuts: ["hair", "barber", "barbershop", "stylist"],
+  hair: ["haircut", "barber", "barbershop", "stylist", "blonding", "blending", "cutting", "coloring", "colorist"],
+  haircut: ["hair", "barber", "barbershop", "stylist", "blonding", "blending", "cutting", "coloring", "colorist"],
+  haircuts: ["hair", "barber", "barbershop", "stylist", "blonding", "blending", "cutting", "coloring", "colorist"],
   therapist: ["counseling", "counselor"],
   lawyer: ["law firm", "legal"],
   attorney: ["law firm", "legal"],
@@ -295,13 +300,16 @@ function toCandidate(l: Listing): Partial<Listing> {
 }
 
 // The client-facing echo (not fed to Claude): just enough to render a link
-// back to the business's real directory page and to carry forward as
-// `lastCandidates` on the next turn.
-function toCandidateEcho(l: Listing): { name: string; area: string | null; url: string | null } {
+// and real phone number back to the business's real directory page, and to
+// carry forward as `lastCandidates` on the next turn. Phone is rendered by
+// the widget directly from this field, never typed by Claude, so a digit
+// can't get garbled in transit through the model's own prose.
+function toCandidateEcho(l: Listing): { name: string; area: string | null; url: string | null; phone: string | null } {
   return {
     name: l.name,
     area: l.area,
     url: l.business_id ? `https://815local.com/pages/business.html?id=${l.business_id}` : null,
+    phone: l.phone,
   };
 }
 
@@ -310,7 +318,13 @@ async function askClaude(
   history: HistoryTurn[],
   candidates: Partial<Listing>[],
 ): Promise<string | null> {
-  const system = `You are Scout, 815local.com's concierge chatbot. You may ONLY recommend businesses from the CANDIDATES list below. Never invent a business, detail, hours, phone number, or rating that isn't in the list. The candidates list below contains exactly ${candidates.length} real matching business(es) for this turn. If asked how many there are, state exactly that number, don't guess or invent a different count. Use the conversation history to interpret follow-ups like pronouns, "yes", "those", or short requests such as "contact info", they refer to the businesses already listed below. If none of the candidates genuinely fit what the person is asking for, say so honestly instead of forcing a recommendation. Keep replies short and conversational. Never use an em-dash character.
+  const system = `You are Scout, 815local.com's concierge chatbot. You may ONLY recommend businesses from the CANDIDATES list below. Never invent a business, detail, hours, phone number, or rating that isn't in the list. The candidates list below contains exactly ${candidates.length} real matching business(es) for this turn. If asked how many there are, state exactly that number, don't guess or invent a different count.
+
+Never state a phone number yourself, not even one copied from the list below, the interface displays each business's real number separately so a digit can never get mistyped in your reply. Refer to it as "their contact info below" instead of typing any digits.
+
+Name all ${candidates.length} candidates in your first reply rather than a curated subset, don't make the visitor ask "any others?" repeatedly to get the full picture. Use the conversation history to tell what you've already mentioned: if a later turn asks for more and you've already named every candidate, say so plainly, never repeat or re-introduce one you already mentioned as if it were new.
+
+Use the conversation history to interpret follow-ups like pronouns, "yes", "those", or short requests such as "contact info", they refer to the businesses already listed below. If none of the candidates genuinely fit what the person is asking for, say so honestly instead of forcing a recommendation. Keep replies short and conversational. Never use an em-dash character.
 
 CANDIDATES:
 ${JSON.stringify(candidates, null, 2)}`;
