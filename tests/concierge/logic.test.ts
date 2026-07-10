@@ -209,6 +209,19 @@ test("synonym 'leak' matches a plumbing listing", () => {
   );
 });
 
+test("generic praise word 'great' does not pull in unrelated listings", () => {
+  // Regression: "great clips" used to match every listing whose description
+  // merely says "great" (coffee, bagel, tree service...). It must return only
+  // the actual Great Clips listings.
+  const r = route("great clips", [], [], LISTINGS);
+  assert.equal(r.branch, "match");
+  assert.ok(r.candidates.length > 0);
+  assert.ok(
+    r.candidates.every((c) => /clips/i.test(c.name)),
+    `expected only Great Clips listings, got: ${r.candidates.map((c) => c.name).join(", ")}`,
+  );
+});
+
 test("synonym 'eat' matches Food & Drink listings", () => {
   const r = route("where can I eat", [], [], LISTINGS);
   assert.equal(r.branch, "match");

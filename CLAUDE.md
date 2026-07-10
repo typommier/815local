@@ -76,7 +76,7 @@ independent of the main directory database.
   deploy them, this project has no CI wired to the concierge Supabase project;
   deploy both manually together (Supabase MCP `deploy_edge_function` or
   `supabase functions deploy chat`) whenever either changes. Deployed function
-  version 14 as of July 2026. POST
+  version 15 as of July 2026. POST
   `{ "message": "...", "history"?: [{role, content}, ...], "lastCandidates"?: [{name}, ...] }`,
   response `{ "reply": "...", "candidates": [{name, area, url}, ...] }`. `url`
   (built from `listings.business_id`) links back to the business's real
