@@ -36,10 +36,21 @@ export const STOPWORDS = new Set<string>([
   "service", "services", "professional", "business", "businesses", "located",
   "offer", "offers", "provide", "provides", "providing", "serving",
   // Common function/filler words that appear across most listing descriptions
-  // ("their customers", "right here") and so carry no topic signal. Left
+  // ("their customers", "right here") and so carry no topic signal.
   "their", "theirs", "they", "his", "her", "hers", "its", "right", "about",
   "just", "really", "very", "also", "still", "into", "than", "then", "from",
   "much", "many", "only", "even", "ever", "own", "such", "will", "been", "being",
+  // Generic praise / marketing boilerplate that appears in many descriptions
+  // ("great coffee", "family owned", "friendly service"), so it must not be
+  // scoreable: a query like "great clips" would otherwise pull in every listing
+  // whose description merely says "great". These are never a business's
+  // distinguishing keyword. NOTE: "family" and "community" are intentionally
+  // NOT here, they carry real intent ("Kids & Family" is a category).
+  "great", "amazing", "awesome", "wonderful", "excellent", "quality",
+  "friendly", "owned", "known", "years", "favorite", "welcoming",
+  // Generic place-nouns: the distinguishing keyword is always the OTHER word
+  // ("coffee shop" -> coffee, "pet store" -> pet), so these only add noise.
+  "shop", "shops", "store", "stores", "place", "places", "spot", "spots",
 ]);
 
 // Curated synonyms so common service intents match listings even when the exact
