@@ -5,7 +5,9 @@
   "main": "815local-analytics-tracker.js",
   "scripts": {
     "test": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test",
-    "test:report": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test --reporter=html"
+    "test:report": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test --reporter=html",
+    "test:concierge": "node --test tests/concierge/logic.test.ts",
+    "test:concierge:live": "SCOUT_LIVE=1 node --test tests/concierge/live.test.js"
   },
   "repository": {
     "type": "git",

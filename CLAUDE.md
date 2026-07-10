@@ -67,10 +67,16 @@ independent of the main directory database.
   recruitment).
 - **Edge Function** `chat`, live at
   `https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat`. Source is
-  tracked in this repo at `supabase/functions/chat/index.ts` (as of the
-  v7 rewrite), but committing that file does **not** deploy it, this
-  project has no CI wired to the concierge Supabase project; deploy
-  manually whenever it changes. POST
+  tracked in this repo across two files: `supabase/functions/chat/index.ts`
+  (the impure shell: serving, `listings` fetch, rate limiting, the Anthropic
+  call) and `supabase/functions/chat/logic.ts` (all pure decision logic:
+  tokenizing, matching, named lookup, hours formatting, the branch tree).
+  `logic.ts` imports nothing from `Deno.*`/`jsr:` so it runs unchanged under
+  the offline test harness (see Testing). Committing these files does **not**
+  deploy them, this project has no CI wired to the concierge Supabase project;
+  deploy both manually together (Supabase MCP `deploy_edge_function` or
+  `supabase functions deploy chat`) whenever either changes. Deployed function
+  version 14 as of July 2026. POST
   `{ "message": "...", "history"?: [{role, content}, ...], "lastCandidates"?: [{name}, ...] }`,
   response `{ "reply": "...", "candidates": [{name, area, url}, ...] }`. `url`
   (built from `listings.business_id`) links back to the business's real
@@ -99,15 +105,27 @@ independent of the main directory database.
   color exactly. Scout auto-opens and greets once per browsing session
   (`sessionStorage` key `ol_scout_auto_opened`), after a ~2.5s delay, then
   stays quiet (but still clickable) for the rest of that session.
-- **Status**: the `ANTHROPIC_API_KEY` secret has not been confirmed
-  working on this project yet. Until it's set correctly (Supabase
-  dashboard → `815local-concierge` project → Edge Functions → Manage
-  secrets → exact name `ANTHROPIC_API_KEY`), AI-generated recommendation
-  replies will fail; direct hours/phone lookups still work since those
-  bypass the Claude call.
-- **CORS**: the `chat` function currently allows
-  `Access-Control-Allow-Origin: *`. Recommended to lock this to
-  `https://815local.com` before wide public launch.
+- **Status**: the `ANTHROPIC_API_KEY` secret is **confirmed working** as of
+  July 2026 (verified live against the deployed function: a multi-candidate
+  query returns a real conversational Claude reply, not the templated
+  fallback). If AI replies ever revert to the plain "Here's what I found in
+  the directory:" list, the key is missing/invalid again, reset it in Supabase
+  dashboard → `815local-concierge` → Edge Functions → Manage secrets → exact
+  name `ANTHROPIC_API_KEY`, then redeploy. Direct hours/phone lookups work
+  regardless since they bypass the Claude call.
+- **Reliability hardening (July 2026)**: the function now has a per-IP
+  rate limit (30 req/min, via the `chat_rate_limits` table +
+  `check_chat_rate_limit` RPC, fails open), a 12s Anthropic timeout with
+  retry on transient errors, a 300-char cap on the incoming message, a
+  column-scoped `select` with a 1000-row cap warning, and strict
+  history-alternation sanitizing. `hours_json` in `listings` uses
+  **abbreviated day keys** (`mon`/`tue`/.../`sun`), so `formatHours` maps
+  both abbreviated and full day names (an earlier bug filtered only full
+  names and returned blank hours for every listing).
+- **CORS**: locked to `https://815local.com` (and `https://www.815local.com`)
+  as of July 2026, echoing the request origin from an allowlist. Add a host
+  to `ALLOWED_ORIGINS` in `index.ts` (and redeploy) if the widget ever runs
+  on another domain.
 - **`listings` data**: 185 rows as of July 2026 (this had drifted stale
   in project notes, checked directly against the DB), not synced with
   the real `businesses` table (117 rows). Still worth a real import to
@@ -408,8 +426,27 @@ Tests mock Supabase via `tests/e2e/fixtures/supabase-mock.js` and serve the stat
 - Homepage (nav, hero, trust stats, community picks)
 - Directory
 - Business detail
+- Scout widget (`tests/e2e/scout-widget.spec.js`: in-flight lock, error/timeout
+  handling, https-only links, follow-up context) via a mocked chat endpoint
 
 Add tests when shipping non-trivial frontend changes.
+
+### Concierge (Scout) tests
+
+The `chat` function's pure logic (`logic.ts`) has a dedicated harness that
+imports the real module and runs a large adversarial query suite against a
+committed snapshot of the real `listings` data (`tests/concierge/`). It needs
+no browser or Supabase, just Node >= 22 (which strips TypeScript types on
+import):
+```bash
+npm run test:concierge        # offline: matching, branching, hours, follow-ups
+SCOUT_LIVE=1 npm run test:concierge:live   # live: hits the deployed endpoint
+```
+The live suite is skipped unless `SCOUT_LIVE=1` and must run from a network
+that can reach the Supabase functions host. To refresh the data snapshot after
+`listings` changes materially, re-pull it into
+`tests/concierge/listings.snapshot.json` (`select * from listings order by id`
+on the concierge project). Run the offline suite after any edit to `logic.ts`.
 
 ---
 
@@ -433,7 +470,8 @@ These are the genuinely outstanding items. Items previously on this list that ha
 - Fill missing photos for the 20 local businesses that lack them (chains less urgent since they're not on the homepage anyway)
 - Fill missing phone numbers (13)
 - Resolve the 3 businesses with `is_locally_owned IS NULL` (should be classified one way or the other)
-- Verify Taco Fixx is actually in the DB (past session notes are inconsistent)
+- (Done July 2026) Verified Taco Fixx is in the DB (both the main `businesses`
+  data and the concierge `listings` table, Minooka, with real hours)
 
 ### Growth
 - Scan Shorewood for missing additions (only 16 businesses vs. Minooka's 74)
@@ -451,10 +489,11 @@ These are the genuinely outstanding items. Items previously on this list that ha
 - Reintroduce paid advertising tiers once directory density supports it
 
 ### Concierge widget
-- Confirm the `ANTHROPIC_API_KEY` secret is set correctly (exact name) on
-  the `815local-concierge` Supabase project (ref `ubcagczbnxfpoligmsqq`)
-- Lock down the `chat` edge function's CORS to `https://815local.com`
-  before wide public launch (currently `*`)
+- (Done July 2026) `ANTHROPIC_API_KEY` confirmed working; CORS locked to
+  `https://815local.com`; a full reliability pass fixed the follow-up
+  topic-hijack bug, the blank-hours bug, missing timeouts/retries, and
+  added rate limiting plus an offline+live test harness (see Testing). The
+  `chat` function was refactored into `index.ts` + `logic.ts`.
 - `listings` (185 rows) now has a `business_id` column linking every row to
   its real `businesses.id` (backfilled July 2026, near-100% match via phone
   number plus name+city fallback), used to render a real link back to the
