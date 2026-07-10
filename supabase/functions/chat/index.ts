@@ -7,320 +7,96 @@
 // deploy_edge_function tool, or `supabase functions deploy chat` with the
 // concierge project linked) whenever this file changes.
 //
-// Answers visitor questions from the real `listings` table only. Direct
-// lookups (hours/phone for a named business, or for a business already
-// established earlier in the conversation) answer straight from the DB
-// with no AI call. Open-ended questions narrow candidates by keyword/tag
-// match, then (if ANTHROPIC_API_KEY is configured) ask Claude to pick from
-// that candidate list only, never inventing a business or detail.
+// This file is the impure shell only: serving, the `listings` fetch, per-IP
+// rate limiting, the unmet_requests insert, and the Anthropic call. All of the
+// decision logic (tokenizing, matching, named lookup, hours formatting, the
+// branch tree) lives in ./logic.ts, which is runtime-agnostic and unit-tested
+// offline (tests/concierge/logic.test.ts). Keep behavior changes in logic.ts so
+// the tests cover them.
+//
+// Answers visitor questions from the real `listings` table only. Direct lookups
+// (hours/phone for a named business, or for a business already established
+// earlier in the conversation) answer straight from the DB with no AI call.
+// Open-ended questions narrow candidates by keyword/tag match, then (if
+// ANTHROPIC_API_KEY is configured) ask Claude to pick from that candidate list
+// only, never inventing a business or detail.
 //
 // Request body: { "message": "...", "history"?: [{role, content}, ...],
 //                 "lastCandidates"?: [{name}, ...] }
 // Response body: { "reply": "...", "candidates": [{name, area, url, phone}, ...] }
 //
-// `url` links back to the business's real page on 815local.com's directory
-// (via `listings.business_id`, backfilled against the main site's
-// `businesses` table) so a chatbot recommendation doesn't dead-end the
-// visitor in the chat bubble. `phone` is the business's real number. Both
-// are structured fields the widget renders itself, never something Claude
-// writes into its own reply text: Claude previously retyped a real phone
-// number incorrectly in a later turn of the same conversation (a genuine
-// hallucination, not a data problem, the source JSON was correct both
-// times), so the system prompt now forbids Claude from stating phone
-// numbers at all, they're rendered client-side from this field instead.
-//
-// `history` and `lastCandidates` are optional and page-load scoped (the
-// client resets both on every reload). Both are re-validated here
-// regardless of what the client sends, since this is a public,
-// unauthenticated endpoint.
-//
-// Follow-up turns ("any others?", "yes", "contact info") carry no topical
-// keywords of their own. Rather than re-guessing the topic by fuzzy-
-// matching raw conversation prose (which is full of generic boilerplate
-// like "family owned" or "professional services" shared across unrelated
-// listings, and produces inconsistent answers), the server returns exactly
-// which real listings it used each turn, and the client echoes that back
-// as `lastCandidates` on the next request. A follow-up with no candidates
-// of its own reuses that exact, already-established set.
+// `url` links back to the business's real page (via `listings.business_id`) and
+// `phone` is the business's real number. Both are structured fields the widget
+// renders itself, never something Claude writes into its own reply text: Claude
+// once retyped a real phone number incorrectly in a later turn, so the system
+// prompt forbids Claude from stating phone numbers at all.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
+
+import {
+  route,
+  sanitizeHistory,
+  fallbackReply,
+  type HistoryTurn,
+  type Listing,
+} from "./logic.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
 const CHAT_MODEL = "claude-haiku-4-5-20251001";
 
-const MAX_HISTORY_MESSAGES = 6; // 3 exchanges
-const MAX_MESSAGE_CHARS = 300;
-const MAX_CANDIDATES = 8;
+const ANTHROPIC_TIMEOUT_MS = 12_000;
+const ANTHROPIC_MAX_RETRIES = 2;
+const RATE_LIMIT_PER_MIN = 30;
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+// The columns logic.ts's Listing uses. Scoped (not select *) to bound payload
+// size and avoid pulling columns we never read.
+const LISTING_COLUMNS =
+  "id,name,category,tags,area,address,phone,hours_json,description,price_range,rating,featured,business_id";
 
-// Generic quantifiers/backchannel words carry no topic signal on their own
-// and previously caused false-positive matches (e.g. "others" coincidentally
-// matching unrelated listing text), which produced inconsistent answers
-// about how many businesses matched. Filtered out before scoring.
-//
-// "service"/"services"/"professional"/"business"/"located" are here for the
-// same reason: they're generic category-boilerplate words ("Professional
-// Services business located in X, IL.") that appear in the corpus of nearly
-// every listing regardless of what it actually does, so leaving them
-// scoreable turned any query containing "service" or "professional" into a
-// near-directory-wide match (94 and 41 of 185 listings respectively, tested
-// directly against production data).
-const STOPWORDS = new Set([
-  "a", "an", "the", "is", "are", "was", "were", "i", "me", "my", "we", "our",
-  "you", "your", "have", "has", "had", "do", "does", "did", "for", "of", "to",
-  "in", "on", "at", "with", "and", "or", "but", "if", "near", "looking",
-  "find", "need", "want", "some", "someone", "any", "anyone", "anything",
-  "other", "others", "else", "more", "there", "here", "this", "that", "these",
-  "those", "them", "it", "can", "could", "would", "should", "please", "hi",
-  "hello", "hey", "good", "best", "around", "local", "town", "area", "one",
-  "get", "know", "yes", "no", "yeah", "yep", "nope", "sure", "okay", "ok",
-  "thanks", "thank", "what", "where", "when", "who", "why", "how",
-  "service", "services", "professional", "business", "businesses", "located",
-  "offer", "offers", "provide", "provides", "providing", "serving",
+// CORS locked to the production origin(s). A browser on any other origin gets a
+// non-matching Allow-Origin and is blocked; non-browser callers (no Origin
+// header) are unaffected. Add a host here if the widget ever runs elsewhere.
+const ALLOWED_ORIGINS = new Set([
+  "https://815local.com",
+  "https://www.815local.com",
 ]);
 
-// Curated synonyms so common service intents match listings even when the
-// exact word isn't in a listing's tags (e.g. "leak" -> plumbing listings).
-// Keys must be single words: `tokenize` splits the query into individual
-// words before this map is consulted, so a multi-word key like "tech
-// support" would never be looked up as one unit, only "tech" and "support"
-// separately.
-const SYNONYMS: Record<string, string[]> = {
-  leak: ["plumbing", "plumber", "drain", "pipe", "water heater", "faucet"],
-  plumber: ["plumbing", "drain", "pipe", "water heater", "faucet"],
-  plumbing: ["plumber", "drain", "pipe", "water heater", "faucet"],
-  drain: ["plumbing", "plumber"],
-  pipe: ["plumbing", "plumber"],
-  clog: ["plumbing", "plumber", "drain"],
-  clogged: ["plumbing", "plumber", "drain"],
-  toilet: ["plumbing", "plumber"],
-  faucet: ["plumbing", "plumber"],
-  electrician: ["electrical", "wiring", "electric"],
-  electrical: ["electrician", "wiring", "electric"],
-  wiring: ["electrician", "electrical"],
-  furnace: ["hvac", "heating", "cooling"],
-  ac: ["hvac", "air conditioning", "cooling"],
-  heater: ["hvac", "heating"],
-  hvac: ["heating", "cooling", "furnace", "air conditioning"],
-  roof: ["roofing"],
-  roofing: ["roof"],
-  pest: ["exterminator", "pest control"],
-  exterminator: ["pest control", "pest"],
-  tow: ["towing"],
-  towing: ["tow"],
-  brunch: ["breakfast"],
-  breakfast: ["brunch"],
-  beer: ["taproom", "brewery"],
-  hair: ["haircut", "barber", "barbershop", "stylist", "blonding", "blending", "cutting", "coloring", "colorist"],
-  haircut: ["hair", "barber", "barbershop", "stylist", "blonding", "blending", "cutting", "coloring", "colorist"],
-  haircuts: ["hair", "barber", "barbershop", "stylist", "blonding", "blending", "cutting", "coloring", "colorist"],
-  therapist: ["counseling", "counselor"],
-  lawyer: ["law firm", "legal"],
-  attorney: ["law firm", "legal"],
-  mechanic: ["automotive"],
-  handyman: ["home repair"],
-  computer: ["managed it", "helpdesk"],
-  tech: ["managed it", "helpdesk", "computer"],
-};
-
-// "contact"/"info"/"call"/"phone" stay out of STOPWORDS on purpose: they are
-// the trigger keywords for the direct-lookup fast path below, not noise.
-const CONTACT_INTENT = /\b(contact|info|information)\b/;
-const HOURS_INTENT = /\b(hours?|open|close[sd]?)\b/;
-const PHONE_INTENT = /\b(phone|number|call)\b/;
-
-interface Listing {
-  id: number;
-  name: string;
-  category: string;
-  tags: string | null;
-  area: string | null;
-  address: string | null;
-  phone: string | null;
-  website: string | null;
-  hours_json: Record<string, string> | null;
-  description: string | null;
-  price_range: string | null;
-  rating: number | null;
-  featured: boolean | null;
-  business_id: string | null;
+function corsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get("origin") || "";
+  const allow = ALLOWED_ORIGINS.has(origin) ? origin : "https://815local.com";
+  return {
+    "Access-Control-Allow-Origin": allow,
+    "Vary": "Origin",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
 }
 
-interface HistoryTurn {
-  role: "user" | "assistant";
-  content: string;
-}
-
-function tokenize(text: string): string[] {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, " ")
-    .split(/\s+/)
-    .filter((w) => w.length > 2 && !STOPWORDS.has(w));
-}
-
-function expandTokens(tokens: string[]): string[] {
-  const expanded = new Set<string>(tokens);
-  for (const t of tokens) {
-    (SYNONYMS[t] || []).forEach((s) => expanded.add(s));
-  }
-  return [...expanded];
-}
-
-// Whole-word matching, not raw substring: "hair" must never match inside
-// "wheelchair", and "professional" must never bleed across a phrase inside
-// a longer word. Corpus text is tokenized into a set of whole words first,
-// and a query term only matches a whole word in that set (or, for terms of
-// 5+ letters, a whole word sharing that term's 5-letter root, so
-// "plumber"/"plumbing"/"plumbers" match each other without a full stemmer).
-// A multi-word synonym target like "law firm" requires every one of its
-// words to appear somewhere in the corpus (not necessarily adjacent).
-function corpusWordsFor(listing: Listing): Set<string> {
-  const text = [listing.name, listing.category, listing.tags, listing.description]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-  return new Set(text.split(/[^a-z0-9]+/).filter(Boolean));
-}
-
-function fuzzyWordMatch(corpusWords: Set<string>, term: string): boolean {
-  for (const tw of term.split(/\s+/).filter(Boolean)) {
-    if (tw.length >= 5) {
-      const prefix = tw.slice(0, 5);
-      let found = false;
-      for (const w of corpusWords) {
-        if (w.startsWith(prefix)) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) return false;
-    } else if (!corpusWords.has(tw)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function scoreListing(listing: Listing, terms: string[]): number {
-  const corpusWords = corpusWordsFor(listing);
-  let score = 0;
-  for (const term of terms) {
-    if (fuzzyWordMatch(corpusWords, term)) score += 1;
-  }
-  return score;
-}
-
-function matchListings(listings: Listing[], text: string): Listing[] {
-  const terms = expandTokens(tokenize(text));
-  return listings
-    .map((l) => ({ listing: l, score: scoreListing(l, terms) }))
-    .filter((s) => s.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, MAX_CANDIDATES)
-    .map((s) => s.listing);
-}
-
-function findNamedListing(listings: Listing[], text: string): Listing | undefined {
-  const lower = text.toLowerCase();
-  return listings.find((l) => {
-    const nameWords = l.name
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, " ")
-      .split(/\s+/)
-      .filter((w) => w.length > 2 && !["llc", "inc", "the", "and"].includes(w));
-    if (nameWords.length === 0) return false;
-    return nameWords.every((w) => lower.includes(w));
-  });
-}
-
-function formatHours(hours: Record<string, string> | null): string {
-  if (!hours) return "I don't have hours on file for that listing.";
-  const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-  return days
-    .filter((d) => hours[d])
-    .map((d) => `${d[0].toUpperCase()}${d.slice(1)}: ${hours[d]}`)
-    .join("\n");
-}
-
-function sanitizeHistory(raw: unknown): HistoryTurn[] {
-  if (!Array.isArray(raw)) return [];
-  let turns: HistoryTurn[] = raw
-    .filter((h): h is HistoryTurn => h && typeof h === "object" && typeof h.content === "string")
-    .map((h) => ({
-      role: h.role === "assistant" ? "assistant" : "user",
-      content: String(h.content).slice(0, MAX_MESSAGE_CHARS),
-    }));
-  // Keep only whole exchanges: history should read user, assistant, user, assistant, ...
-  if (turns.length % 2 !== 0) turns = turns.slice(1);
-  return turns.slice(-MAX_HISTORY_MESSAGES);
-}
-
-function sanitizeLastCandidates(raw: unknown): string[] {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .filter((c): c is { name: string } => c && typeof c === "object" && typeof c.name === "string")
-    .map((c) => c.name.slice(0, 200))
-    .slice(0, MAX_CANDIDATES);
-}
-
-function jsonResponse(body: unknown, status = 200): Response {
+function jsonResponse(body: unknown, cors: Record<string, string>, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+    headers: { ...cors, "Content-Type": "application/json" },
   });
 }
 
-function fallbackReply(candidates: Partial<Listing>[]): string {
-  const lines = candidates
-    .slice(0, 5)
-    .map((c) => `- ${c.name} (${c.area})${c.phone ? `, ${c.phone}` : ""}`);
-  return `Here's what I found in the directory:\n${lines.join("\n")}`;
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function toCandidate(l: Listing): Partial<Listing> {
-  return {
-    name: l.name,
-    category: l.category,
-    area: l.area,
-    tags: l.tags,
-    description: l.description,
-    phone: l.phone,
-    price_range: l.price_range,
-    rating: l.rating,
-  };
-}
-
-// The client-facing echo (not fed to Claude): just enough to render a link
-// and real phone number back to the business's real directory page, and to
-// carry forward as `lastCandidates` on the next turn. Phone is rendered by
-// the widget directly from this field, never typed by Claude, so a digit
-// can't get garbled in transit through the model's own prose.
-function toCandidateEcho(l: Listing): { name: string; area: string | null; url: string | null; phone: string | null } {
-  return {
-    name: l.name,
-    area: l.area,
-    url: l.business_id ? `https://815local.com/pages/business.html?id=${l.business_id}` : null,
-    phone: l.phone,
-  };
-}
-
+// Single Anthropic call with timeout + retry. Returns the reply text, or null on
+// any failure (the caller falls back to a deterministic directory list). Retries
+// transient overloads/network errors; never throws.
 async function askClaude(
   message: string,
   history: HistoryTurn[],
-  candidates: Partial<Listing>[],
+  candidates: unknown[],
 ): Promise<string | null> {
-  const system = `You are Scout, 815local.com's concierge chatbot. You may ONLY recommend businesses from the CANDIDATES list below. Never invent a business, detail, hours, phone number, or rating that isn't in the list. The candidates list below contains exactly ${candidates.length} real matching business(es) for this turn. If asked how many there are, state exactly that number, don't guess or invent a different count.
+  const system = `You are Scout, 815local.com's concierge chatbot. You may ONLY recommend businesses from the CANDIDATES list below. Never invent a business, detail, phone number, or rating that isn't in the list. The candidates list below contains exactly ${candidates.length} real matching business(es) for this turn. If asked how many there are, state exactly that number, don't guess or invent a different count.
 
-Never state a phone number yourself, not even one copied from the list below, the interface displays each business's real number separately so a digit can never get mistyped in your reply. Refer to it as "their contact info below" instead of typing any digits.
+Never state a phone number yourself, not even one copied from the list below, the interface displays each business's real number separately so a digit can never get mistyped in your reply. Refer to it as "their contact info below" instead of typing any digits. You MAY briefly describe a business's opening hours from its hours_json when the person asks, but keep it short and don't recite a full weekly schedule unless asked.
 
 Name all ${candidates.length} candidates in your first reply rather than a curated subset, don't make the visitor ask "any others?" repeatedly to get the full picture. Use the conversation history to tell what you've already mentioned: if a later turn asks for more and you've already named every candidate, say so plainly, never repeat or re-introduce one you already mentioned as if it were new.
 
@@ -329,115 +105,140 @@ Use the conversation history to interpret follow-ups like pronouns, "yes", "thos
 CANDIDATES:
 ${JSON.stringify(candidates, null, 2)}`;
 
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": ANTHROPIC_API_KEY!,
-      "anthropic-version": "2023-06-01",
-    },
-    body: JSON.stringify({
-      model: CHAT_MODEL,
-      max_tokens: 400,
-      system,
-      messages: [...history, { role: "user", content: message }],
-    }),
+  const payload = JSON.stringify({
+    model: CHAT_MODEL,
+    max_tokens: 1024,
+    system,
+    messages: [...history, { role: "user", content: message }],
   });
 
-  if (!res.ok) {
-    console.error("Anthropic API error", res.status, await res.text());
-    return null;
+  for (let attempt = 0; attempt <= ANTHROPIC_MAX_RETRIES; attempt++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ANTHROPIC_TIMEOUT_MS);
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": ANTHROPIC_API_KEY!,
+          "anthropic-version": "2023-06-01",
+        },
+        body: payload,
+        signal: ctrl.signal,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.stop_reason === "max_tokens") {
+          console.warn("Anthropic reply hit max_tokens, may be truncated");
+        }
+        return data?.content?.[0]?.text ?? null;
+      }
+
+      // Retry transient statuses; give up on other 4xx (e.g. 401 bad key).
+      const retriable = res.status === 429 || res.status === 529 || res.status >= 500;
+      console.error("Anthropic API error", res.status, await res.text().catch(() => ""));
+      if (!retriable || attempt === ANTHROPIC_MAX_RETRIES) return null;
+      const retryAfter = Number(res.headers.get("retry-after"));
+      await sleep(Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 500 * (attempt + 1) ** 2);
+    } catch (err) {
+      // AbortError (timeout) or network failure: retry, then give up.
+      console.error("Anthropic fetch failed", (err as Error)?.name ?? err);
+      if (attempt === ANTHROPIC_MAX_RETRIES) return null;
+      await sleep(500 * (attempt + 1) ** 2);
+    } finally {
+      clearTimeout(timer);
+    }
   }
-  const data = await res.json();
-  return data?.content?.[0]?.text ?? null;
+  return null;
+}
+
+// Per-IP sliding-minute rate limit via a Postgres RPC (see the migration that
+// creates chat_rate_limits + check_chat_rate_limit). Fails open: if the check
+// errors, the request is allowed rather than dropped.
+async function withinRateLimit(
+  db: ReturnType<typeof createClient>,
+  ip: string,
+): Promise<boolean> {
+  try {
+    const { data, error } = await db.rpc("check_chat_rate_limit", {
+      p_ip: ip,
+      p_limit: RATE_LIMIT_PER_MIN,
+    });
+    if (error) {
+      console.error("rate limit check failed (allowing)", error.message);
+      return true;
+    }
+    return data !== false;
+  } catch (err) {
+    console.error("rate limit check threw (allowing)", err);
+    return true;
+  }
 }
 
 Deno.serve(async (req: Request) => {
+  const cors = corsHeaders(req);
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: CORS_HEADERS });
+    return new Response(null, { headers: cors });
+  }
+  if (req.method !== "POST") {
+    return jsonResponse({ reply: "Send a POST request.", candidates: [] }, cors, 405);
   }
 
   try {
-    const body = await req.json();
+    const body = await req.json().catch(() => null);
     const message = body?.message;
-    if (!message || typeof message !== "string") {
-      return jsonResponse({ reply: "Ask me something about a business, hours, or a service!", candidates: [] });
-    }
-    const history = sanitizeHistory(body?.history);
-    const lastCandidateNames = sanitizeLastCandidates(body?.lastCandidates);
 
     const db = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
-    const { data: listings, error } = await db.from("listings").select("*");
-    if (error) throw error;
-    const allListings = listings as Listing[];
 
-    const lowerMsg = message.toLowerCase();
-    const wantsHours = HOURS_INTENT.test(lowerMsg);
-    const wantsPhone = PHONE_INTENT.test(lowerMsg) || CONTACT_INTENT.test(lowerMsg);
-
-    // Direct lookup, current message names a business explicitly.
-    if (wantsHours || wantsPhone) {
-      const named = findNamedListing(allListings, message);
-      if (named) {
-        if (wantsHours) {
-          return jsonResponse({
-            reply: `${named.name}'s hours:\n${formatHours(named.hours_json)}`,
-            candidates: [toCandidateEcho(named)],
-          });
-        }
-        return jsonResponse({
-          reply: named.phone
-            ? `${named.name}'s phone number is ${named.phone}.`
-            : `I don't have a phone number on file for ${named.name}.`,
-          candidates: [toCandidateEcho(named)],
-        });
-      }
-    }
-
-    const directCandidates = matchListings(allListings, message);
-    // A bare follow-up ("any others?", "yes", "contact info") carries no
-    // topical keywords of its own. Reuse the EXACT businesses the server
-    // already established last turn, rather than re-guessing from prose.
-    const carriedCandidates = directCandidates.length === 0 && lastCandidateNames.length > 0
-      ? allListings.filter((l) => lastCandidateNames.includes(l.name))
-      : [];
-
-    // Direct lookup, bare follow-up ("contact info") inherits a small,
-    // already-established set of businesses from earlier in the chat.
-    if ((wantsHours || wantsPhone) && directCandidates.length === 0 && carriedCandidates.length > 0 && carriedCandidates.length <= 3) {
-      const cands = carriedCandidates.map(toCandidateEcho);
-      if (wantsHours) {
-        const lines = carriedCandidates.map((l) => `${l.name}:\n${formatHours(l.hours_json)}`);
-        return jsonResponse({ reply: lines.join("\n\n"), candidates: cands });
-      }
-      const lines = carriedCandidates.map((l) =>
-        l.phone ? `${l.name}: ${l.phone}` : `${l.name}: no phone number on file`
+    const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
+    if (!(await withinRateLimit(db, ip))) {
+      return jsonResponse(
+        { reply: "You're sending messages a little fast. Give me a few seconds and try again.", candidates: [] },
+        cors,
+        429,
       );
-      return jsonResponse({ reply: lines.join("\n"), candidates: cands });
     }
 
-    const matched = directCandidates.length > 0 ? directCandidates : carriedCandidates;
-
-    if (matched.length === 0) {
-      await db.from("unmet_requests").insert({ question: message });
-      return jsonResponse({
-        reply:
-          "I checked, but none of the current 815local.com listings match that. I don't want to send you to the wrong business. Please check back as the directory grows.",
-        candidates: [],
-      });
+    const { data: listings, error } = await db
+      .from("listings")
+      .select(LISTING_COLUMNS)
+      .order("id")
+      .limit(1000);
+    if (error) throw error;
+    const allListings = (listings ?? []) as unknown as Listing[];
+    if (allListings.length === 1000) {
+      console.warn("listings hit the 1000-row fetch cap; some rows are not being matched");
     }
 
-    const candidates = matched.map(toCandidate);
-    const candidateEcho = matched.map(toCandidateEcho);
+    const history = sanitizeHistory(body?.history);
+    const result = route(message, body?.history, body?.lastCandidates, allListings);
 
+    // Deterministic branches carry their own reply.
+    if (result.branch !== "match") {
+      if (result.logUnmet && typeof message === "string") {
+        // Logging is a side effect; a failure here must not break the reply.
+        try {
+          await db.from("unmet_requests").insert({ question: message.slice(0, 500) });
+        } catch (e) {
+          console.error("unmet_requests insert failed", e);
+        }
+      }
+      return jsonResponse({ reply: result.reply, candidates: result.candidates }, cors);
+    }
+
+    // Open-ended path: ask Claude, constrained to the matched candidates.
+    const aiCandidates = result.aiCandidates ?? [];
     if (!ANTHROPIC_API_KEY) {
-      return jsonResponse({ reply: fallbackReply(candidates), candidates: candidateEcho });
+      return jsonResponse({ reply: fallbackReply(aiCandidates), candidates: result.candidates }, cors);
     }
-
-    const aiReply = await askClaude(message, history, candidates);
-    return jsonResponse({ reply: aiReply || fallbackReply(candidates), candidates: candidateEcho });
+    const aiReply = await askClaude(String(message), history, aiCandidates);
+    return jsonResponse({
+      reply: aiReply || fallbackReply(aiCandidates),
+      candidates: result.candidates,
+    }, cors);
   } catch (err) {
     console.error(err);
-    return jsonResponse({ reply: "Sorry, something went wrong on my end. Try again in a moment.", candidates: [] }, 500);
+    return jsonResponse({ reply: "Sorry, something went wrong on my end. Try again in a moment.", candidates: [] }, cors, 500);
   }
 });
