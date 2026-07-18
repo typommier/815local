@@ -520,3 +520,4 @@ These are the genuinely outstanding items. Items previously on this list that ha
 - **Memory and Project instructions can drift.** When in doubt about the current state of files or features, check the actual repo before making changes or recommendations.
 - **Cloudflare Pages, not Netlify.** Netlify was the original host but the project moved.
 - **No em-dashes in any written content, ever.**
+- **Banned copy phrase:** never use "actually deserves" (e.g. "a website your local business actually deserves") in any copy. Ty dislikes it.

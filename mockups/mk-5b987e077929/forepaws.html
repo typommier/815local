@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forepaws — Minooka, Illinois</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#F3EEE3;
+    --canvas-dim:#E7DFCE;
+    --ink:#22291F;
+    --pine:#3F5443;
+    --pine-dark:#2B3A2E;
+    --rust:#B5652B;
+    --rust-dark:#8C4A1E;
+    --gold:#D4A64A;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--canvas);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+  h1,h2,h3{font-family:'Zilla Slab',serif;font-weight:600;color:var(--ink);}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--rust);font-weight:700;margin-bottom:0.5rem;
+  }
+  .eyebrow::before{content:"";width:16px;height:2px;background:var(--rust);}
+
+  /* tag shape - the signature element */
+  .tag{
+    position:relative;
+    background:var(--canvas);
+    border:1.5px solid var(--pine);
+    border-radius:6px 14px 14px 6px;
+    padding:16px 18px 16px 26px;
+  }
+  .tag::before{
+    content:"";
+    position:absolute;left:10px;top:50%;transform:translateY(-50%);
+    width:6px;height:6px;border-radius:50%;
+    background:var(--canvas);border:1.5px solid var(--pine);
+  }
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(243,238,227,0.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--canvas-dim);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Zilla Slab',serif;font-weight:700;font-size:1.3rem;color:var(--ink);text-decoration:none;}
+  .brand-mark{
+    width:30px;height:22px;background:var(--pine);border-radius:5px 11px 11px 5px;position:relative;flex-shrink:0;
+  }
+  .brand-mark::before{content:"";position:absolute;left:5px;top:50%;transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:var(--canvas);}
+  .navlinks{display:flex;align-items:center;gap:32px;}
+  .navlinks a{font-size:0.92rem;text-decoration:none;color:var(--ink);font-weight:500;}
+  .navlinks a:hover{color:var(--rust);}
+  .btn{display:inline-block;padding:11px 24px;border-radius:6px 16px 16px 6px;font-weight:600;font-size:0.92rem;text-decoration:none;transition:transform 0.15s ease, background 0.15s ease;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-rust{background:var(--rust);color:var(--canvas);}
+  .btn-rust:hover{background:var(--rust-dark);}
+  .btn-outline{border:1.5px solid var(--ink);color:var(--ink);}
+  .btn-outline:hover{background:var(--ink);color:var(--canvas);}
+
+  /* HERO */
+  .hero{position:relative;min-height:82vh;display:flex;align-items:flex-end;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;}
+  .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(34,41,31,0.1) 0%, rgba(34,41,31,0.55) 60%, rgba(34,41,31,0.9) 100%);}
+  .hero-content{position:relative;color:var(--canvas);padding:64px 0 72px;max-width:620px;}
+  .hero-content .eyebrow{color:var(--gold);}
+  .hero-content .eyebrow::before{background:var(--gold);}
+  .hero-content h1{font-size:clamp(2.1rem, 4.4vw, 3.1rem);line-height:1.15;color:var(--canvas);margin-bottom:1.1rem;}
+  .hero-content p{font-size:1.03rem;color:#E4DCC8;max-width:480px;margin-bottom:1.75rem;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-ctas .btn-outline{border-color:#E4DCC8;color:var(--canvas);}
+  .hero-ctas .btn-outline:hover{background:var(--canvas);color:var(--ink);}
+
+  section{padding:88px 0;}
+  .section-head{max-width:560px;margin-bottom:44px;}
+  .section-head h2{font-size:1.9rem;margin-bottom:0.6rem;}
+  .section-head p{color:var(--pine-dark);font-size:1.02rem;}
+
+  /* ABOUT */
+  .about{display:grid;grid-template-columns:0.95fr 1.05fr;gap:60px;align-items:center;}
+  .about-photo{border-radius:6px 20px 20px 6px;overflow:hidden;aspect-ratio:4/5;background:var(--canvas-dim);}
+  .about-photo img{width:100%;height:100%;object-fit:cover;}
+  .about-text p{color:var(--pine-dark);margin-bottom:1.1rem;font-size:1.03rem;}
+  .about-text p:last-child{margin-bottom:0;}
+  .quote-block{margin-top:1.5rem;padding-left:18px;border-left:3px solid var(--rust);font-style:italic;color:var(--ink);font-size:1.02rem;}
+  .quote-block span{display:block;margin-top:6px;font-style:normal;font-size:0.85rem;color:var(--pine);font-weight:600;}
+
+  /* CARRY */
+  .carry{background:var(--pine);color:var(--canvas);}
+  .carry .section-head h2{color:var(--canvas);}
+  .carry .section-head p{color:#CBDACC;}
+  .carry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:40px;}
+  .carry-tag{background:var(--pine-dark);border:1.5px solid rgba(243,238,227,0.25);border-radius:6px 16px 16px 6px;padding:18px 16px;font-weight:600;font-size:0.95rem;position:relative;padding-left:26px;}
+  .carry-tag::before{content:"";position:absolute;left:10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--pine);border:1.5px solid rgba(243,238,227,0.5);}
+  .pet-types{display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid rgba(243,238,227,0.2);padding-top:28px;}
+  .pet-types span{font-size:0.88rem;color:#CBDACC;background:rgba(243,238,227,0.08);padding:8px 16px;border-radius:20px;}
+
+  /* REWARDS */
+  .rewards-card{
+    background:linear-gradient(135deg, var(--gold) 0%, var(--rust) 100%);
+    border-radius:6px 24px 24px 6px;
+    padding:48px;
+    color:var(--canvas);
+    display:grid;grid-template-columns:1.3fr 0.7fr;gap:32px;align-items:center;
+  }
+  .rewards-card h2{color:var(--canvas);font-size:1.7rem;margin-bottom:12px;}
+  .rewards-card p{color:#FBF3E3;font-size:0.98rem;max-width:420px;}
+  .rewards-card .btn{background:var(--ink);color:var(--canvas);text-align:center;}
+  .rewards-card .btn:hover{background:#141912;}
+
+  /* VISIT */
+  .visit{display:grid;grid-template-columns:1fr 1fr;gap:64px;}
+  .hourstable{width:100%;border-collapse:collapse;margin-bottom:24px;}
+  .hourstable tr{border-bottom:1px solid var(--canvas-dim);}
+  .hourstable tr:last-child{border-bottom:none;}
+  .hourstable td{padding:9px 0;font-size:0.95rem;}
+  .hourstable td:first-child{font-weight:600;color:var(--ink);}
+  .hourstable td:last-child{text-align:right;color:var(--pine-dark);}
+  .contact-list{list-style:none;margin-top:0;}
+  .contact-list li{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:0.95rem;border-bottom:1px solid var(--canvas-dim);}
+  .contact-list li:last-child{border-bottom:none;}
+  .contact-list a{text-decoration:none;color:var(--rust);font-weight:600;}
+  .photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;}
+  .photo-strip img{border-radius:4px 12px 12px 4px;aspect-ratio:4/3;object-fit:cover;}
+  .social-row{display:flex;gap:12px;margin-top:20px;}
+  .social-row a{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--ink);transition:background 0.15s,color 0.15s;}
+  .social-row a:hover{background:var(--ink);color:var(--canvas);}
+
+  footer{background:var(--ink);color:#B9C2B3;padding:44px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .brand{color:var(--canvas);}
+  footer .brand-mark{background:var(--gold);}
+  footer .brand-mark::before{background:var(--ink);}
+  footer p{font-size:0.85rem;}
+
+  @media(max-width:760px){
+    .about{grid-template-columns:1fr;gap:32px;}
+    .rewards-card{grid-template-columns:1fr;text-align:left;}
+    .visit{grid-template-columns:1fr;}
+    .navlinks{display:none;}
+    section{padding:60px 0;}
+  }
+
+  [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity 0.6s ease, transform 0.6s ease;}
+  [data-reveal].in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="brand"><span class="brand-mark"></span>Forepaws</a>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#carry">What We Carry</a>
+      <a href="#rewards">Rewards</a>
+      <a href="tel:7794567899" class="btn btn-rust">Call (779) 456-7899</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg" style="background-image:url('https://static.wixstatic.com/media/f411cb_666e41c0b45a42c387d984e5fd7a9c0b~mv2.jpg/v1/fill/w_1400,h_1000,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/f411cb_666e41c0b45a42c387d984e5fd7a9c0b~mv2.jpg');"></div>
+  <div class="wrap">
+    <div class="hero-content">
+      <span class="eyebrow">453 S Ridge Rd, Minooka, IL</span>
+      <h1>We strive to offer the best brands and choices to give your pet their best life.</h1>
+      <p>We are family-owned, independent, and highly knowledgeable on a multitude of pet situations and issues. We love to help!</p>
+      <div class="hero-ctas">
+        <a href="https://www.google.com/maps/place/Forepaws/@41.4479804,-88.2716811,15z" class="btn btn-rust">Get Directions</a>
+        <a href="tel:7794567899" class="btn btn-outline">Call the Store</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about">
+      <div class="about-photo" data-reveal>
+        <img src="https://static.wixstatic.com/media/f411cb_f1793ba0ffd64e759cb26748191acaa3~mv2.jpg/v1/fill/w_800,h_1000,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/f411cb_f1793ba0ffd64e759cb26748191acaa3~mv2.jpg" alt="Inside Forepaws pet supply store in Minooka">
+      </div>
+      <div class="about-text" data-reveal>
+        <span class="eyebrow">Our Story</span>
+        <h2 style="font-size:1.8rem;margin-bottom:1.1rem;">About Forepaws</h2>
+        <p>Forepaws is locally owned and operated by a family who treasures your pet as much as you do. We specialize in wholesome pet food, treats, chews, and toys for dogs, cats, small animals, and reptiles — all the best for your favorite pet.</p>
+        <p>We carry a vast array of American-made and sourced products ranging from food to treats to supplements to toys and more and more! Stop on by 7 days a week and visit us.</p>
+        <div class="quote-block">
+          "Forepaws is a locally owned and operated by a family who treasures your pet as much as you do."
+          <span>— Megan Kurzweil, Owner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="carry" id="carry">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow" style="color:var(--gold);">In the Store</span>
+      <h2>What we carry</h2>
+      <p>American-made and sourced products, ranging from food to treats to supplements to toys and more — for whatever pet you've got.</p>
+    </div>
+    <div class="carry-grid" data-reveal>
+      <div class="carry-tag">Food</div>
+      <div class="carry-tag">Treats</div>
+      <div class="carry-tag">Toys</div>
+      <div class="carry-tag">Supplements</div>
+      <div class="carry-tag">Supplies</div>
+    </div>
+    <div class="pet-types" data-reveal>
+      <span>Dogs</span>
+      <span>Cats</span>
+      <span>Small Animals</span>
+      <span>Reptiles</span>
+      <span>Birds</span>
+    </div>
+  </div>
+</section>
+
+<section id="rewards">
+  <div class="wrap">
+    <div class="rewards-card" data-reveal>
+      <div>
+        <h2>Forepaws Rewards</h2>
+        <p>Every visit adds up. Earn points on the products your pet already loves, and unlock coupons made just for you and your pet. Ask in-store to get signed up.</p>
+      </div>
+      <a href="https://secure.astroloyalty.com/members.php" class="btn">View My Rewards</a>
+    </div>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="wrap">
+    <div class="visit">
+      <div data-reveal>
+        <span class="eyebrow">Come Say Hi</span>
+        <h2 style="font-size:1.8rem;margin-bottom:1.5rem;">Visit &amp; hours</h2>
+        <table class="hourstable">
+          <tr><td>Monday</td><td>9:00 am – 7:00 pm</td></tr>
+          <tr><td>Tuesday</td><td>9:00 am – 7:00 pm</td></tr>
+          <tr><td>Wednesday</td><td>9:00 am – 7:00 pm</td></tr>
+          <tr><td>Thursday</td><td>9:00 am – 7:00 pm</td></tr>
+          <tr><td>Friday</td><td>9:00 am – 7:00 pm</td></tr>
+          <tr><td>Saturday</td><td>9:00 am – 7:00 pm</td></tr>
+          <tr><td>Sunday</td><td>9:00 am – 7:00 pm</td></tr>
+        </table>
+        <p style="color:var(--pine-dark);font-size:0.92rem;">Open 7 days a week!</p>
+      </div>
+      <div data-reveal>
+        <span class="eyebrow">Get In Touch</span>
+        <h2 style="font-size:1.8rem;margin-bottom:1.5rem;">Questions? Concerns? Comments?</h2>
+        <ul class="contact-list">
+          <li>453 S Ridge Rd, Minooka, IL 60447</li>
+          <li><a href="tel:7794567899">(779) 456-7899</a></li>
+          <li><a href="mailto:Megan@forepawspets.com">Megan@forepawspets.com</a></li>
+        </ul>
+        <div class="social-row">
+          <a href="https://www.facebook.com/ForepawsMinooka/" aria-label="Facebook" title="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 8.5h2V5.5h-2c-2 0-3.5 1.5-3.5 3.5v2H9.5v3H11.5V21h3v-7H16.5l0.5-3H14.5V9c0-.5 0-.5.5-.5Z" fill="currentColor"/></svg>
+          </a>
+        </div>
+        <div class="photo-strip">
+          <img src="https://static.wixstatic.com/media/f411cb_9bc70c40f4534a9ba966e033045999da~mv2.jpg/v1/fill/w_500,h_375,al_c,q_88,usm_0.66_1.00_0.01,enc_avif,quality_auto/f411cb_9bc70c40f4534a9ba966e033045999da~mv2.jpg" alt="Forepaws store shelves">
+          <img src="https://static.wixstatic.com/media/f411cb_18811aa69cd342f6b04d90f4a338e283~mv2.jpg/v1/fill/w_500,h_375,al_c,q_88,usm_0.66_1.00_0.01,enc_avif,quality_auto/f411cb_18811aa69cd342f6b04d90f4a338e283~mv2.jpg" alt="Inside Forepaws pet store">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#" class="brand"><span class="brand-mark"></span>Forepaws</a>
+    <p>453 S Ridge Rd, Minooka, IL 60447 · © 2026 by Kwellpets, LLC.</p>
+  </div>
+</footer>
+
+<script>
+  var els = document.querySelectorAll('[data-reveal]');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.15});
+  els.forEach(function(el){ obs.observe(el); });
+</script>
+
+</body>
+</html>
