@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Design Showcase | 815local</title>
+<meta name="description" content="Sample website designs built for local businesses in Minooka, Channahon, Shorewood and the wider 815.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-light:  #E07A48;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --shadow-sm:     0 2px 8px rgba(30,27,24,0.08);
+  --shadow-md:     0 6px 24px rgba(30,27,24,0.12);
+  --shadow-lg:     0 16px 48px rgba(30,27,24,0.18);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--charcoal); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; line-height: 1.2; letter-spacing: -0.01em; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 100px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; }
+.btn-primary { background: var(--orange); color: #fff; }
+.btn-primary:hover { background: var(--orange-light); transform: translateY(-1px); }
+.eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); }
+.eyebrow::before { content: ''; width: 22px; height: 2px; background: var(--orange); display: inline-block; }
+
+/* NAV */
+.top-bar { position: sticky; top: 0; z-index: 100; background: rgba(30,27,24,0.96); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.top-bar .container { display: flex; align-items: center; justify-content: space-between; height: 74px; }
+.top-brand { display: flex; align-items: center; gap: 11px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.15rem; color: var(--white); }
+.top-brand .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 4px rgba(196,98,45,0.25); }
+.top-bar .btn-primary { padding: 10px 20px; font-size: 14px; }
+
+/* HERO */
+.hero { background: var(--charcoal); color: var(--white); padding: 96px 0 104px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -120px; right: -100px; width: 620px; height: 620px; background: radial-gradient(circle, rgba(196,98,45,0.16) 0%, transparent 65%); pointer-events: none; }
+.hero::after { content: ''; position: absolute; bottom: -80px; left: -80px; width: 440px; height: 440px; background: radial-gradient(circle, rgba(196,98,45,0.08) 0%, transparent 70%); pointer-events: none; }
+.hero-inner { max-width: 760px; position: relative; }
+.hero .eyebrow { color: var(--orange-light); }
+.hero .eyebrow::before { background: var(--orange-light); }
+.hero h1 { font-size: clamp(2.3rem, 5vw, 3.5rem); font-weight: 700; margin: 22px 0 20px; }
+.hero h1 em { font-style: normal; color: var(--orange-light); }
+.hero p { font-size: 1.12rem; color: rgba(255,255,255,0.72); max-width: 560px; margin-bottom: 32px; }
+.hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* GALLERY */
+.gallery { padding: 84px 0 40px; }
+.gallery-head { max-width: 620px; margin-bottom: 48px; }
+.gallery-head h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); margin: 16px 0 12px; }
+.gallery-head p { color: var(--charcoal-light); font-size: 1.05rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 40px; }
+.card { background: var(--white); border: 1px solid var(--cream-dark); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); transition: box-shadow 0.25s, transform 0.25s; }
+.card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.preview { position: relative; display: block; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; background: var(--cream); border-bottom: 1px solid var(--cream-dark); }
+.preview iframe { position: absolute; top: 0; left: 0; width: 1280px; border: 0; transform-origin: top left; pointer-events: none; background: var(--cream); }
+.preview-veil { position: absolute; inset: 0; z-index: 2; }
+.preview-badge { position: absolute; top: 14px; left: 14px; z-index: 3; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; background: rgba(30,27,24,0.72); padding: 6px 11px; border-radius: 100px; backdrop-filter: blur(4px); }
+.card-body { padding: 22px 24px 26px; }
+.card-body h3 { font-size: 1.3rem; margin-bottom: 4px; }
+.card-meta { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--charcoal-light); text-transform: uppercase; margin-bottom: 16px; }
+.card-link { display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: 14px; color: var(--orange); transition: gap 0.18s; }
+.card:hover .card-link { gap: 12px; }
+
+/* CTA BAND */
+.cta { margin: 80px 0 0; }
+.cta-inner { background: var(--charcoal); color: var(--white); border-radius: 20px; padding: 60px 56px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.cta-inner::before { content: ''; position: absolute; top: -100px; right: -60px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(196,98,45,0.18) 0%, transparent 65%); pointer-events: none; }
+.cta-text { position: relative; max-width: 560px; }
+.cta-text h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: 12px; }
+.cta-text p { color: rgba(255,255,255,0.72); font-size: 1.05rem; }
+.cta .btn { position: relative; }
+
+/* FOOTER */
+footer { background: var(--charcoal); color: rgba(255,255,255,0.5); padding: 48px 0; margin-top: 72px; }
+footer .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+.foot-brand { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--white); font-size: 1.05rem; }
+.foot-brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); }
+footer p { font-size: 0.85rem; }
+footer a { color: var(--orange-light); }
+
+@media (max-width: 640px) {
+  .container { padding: 0 20px; }
+  .hero { padding: 68px 0 76px; }
+  .grid { grid-template-columns: 1fr; gap: 28px; }
+  .cta-inner { padding: 40px 28px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="container">
+    <a class="top-brand" href="/"><span class="dot"></span>815local</a>
+    <a class="btn btn-primary" href="mailto:815local@gmail.com?subject=Website%20design%20inquiry">Start a project</a>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <span class="eyebrow">Web design &middot; Minooka &amp; the 815</span>
+      <h1>A website your local business <em>actually deserves</em>.</h1>
+      <p>Real, hand-built site designs for real businesses in the 815. Fast, clean, mobile-ready, and made to look like the place people already love visiting. Here is a look at recent work.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#work">See the work</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="gallery" id="work">
+  <div class="container">
+    <div class="gallery-head">
+      <span class="eyebrow">Selected work</span>
+      <h2>Recent mockups</h2>
+      <p>Each of these is a full, working design built for a local business. Click any one to open the live mockup in a new tab.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <span class="eyebrow" style="color:var(--orange-light);">Let's build yours</span>
+        <h2 style="margin-top:14px;">Want a site like this for your business?</h2>
+        <p>Tell me a little about your business and I will put together a design, no strings attached.</p>
+      </div>
+      <a class="btn btn-primary" href="mailto:815local@gmail.com?subject=Website%20design%20inquiry&amp;body=Hi%2C%20I%27d%20love%20a%20website%20for%20my%20business.">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-brand"><span class="dot"></span>815local</div>
+    <p>Website design for local business in the 815. <a href="https://815local.com">815local.com</a> &middot; &copy; 2026</p>
+  </div>
+</footer>
+
+<script>
+  var MOCKUPS = [
+    { file: "forepaws.html",           name: "Forepaws",          type: "Pet Supply Store", town: "Minooka" },
+    { file: "sourdough-you-know.html", name: "Sourdough You Know", type: "Bakery",           town: "Minooka" }
+  ];
+
+  var DESIGN_WIDTH = 1280;
+  var grid = document.getElementById("grid");
+
+  MOCKUPS.forEach(function(m){
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML =
+      '<a class="preview" href="' + m.file + '" target="_blank" rel="noopener" aria-label="Open the ' + m.name + ' mockup">' +
+        '<span class="preview-badge">Live mockup</span>' +
+        '<iframe loading="lazy" tabindex="-1" scrolling="no" title="' + m.name + ' preview" src="' + m.file + '"></iframe>' +
+        '<span class="preview-veil"></span>' +
+      '</a>' +
+      '<div class="card-body">' +
+        '<h3>' + m.name + '</h3>' +
+        '<div class="card-meta">' + m.type + ' &middot; ' + m.town + ", IL" + '</div>' +
+        '<a class="card-link" href="' + m.file + '" target="_blank" rel="noopener">View live mockup &rarr;</a>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+
+  function scaleFrame(frame){
+    var box = frame.parentElement;
+    var cw = box.clientWidth;
+    var ch = box.clientHeight;
+    if (!cw || !ch) return;
+    var scale = cw / DESIGN_WIDTH;
+    frame.style.height = (ch / scale) + "px";
+    frame.style.transform = "scale(" + scale + ")";
+  }
+
+  function scaleAll(){
+    var frames = document.querySelectorAll(".preview iframe");
+    frames.forEach(function(f){ scaleFrame(f); });
+  }
+
+  window.addEventListener("load", scaleAll);
+  window.addEventListener("resize", scaleAll);
+  // Re-scale once each frame's own document is ready, and observe size changes.
+  document.querySelectorAll(".preview iframe").forEach(function(f){
+    f.addEventListener("load", function(){ scaleFrame(f); });
+    if (typeof ResizeObserver !== "undefined") {
+      new ResizeObserver(function(){ scaleFrame(f); }).observe(f.parentElement);
+    }
+  });
+  scaleAll();
+</script>
+
+</body>
+</html>
