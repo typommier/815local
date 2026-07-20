@@ -504,6 +504,11 @@ function detectSystem(t){
   return 'other';
 }
 function isUrgent(t){return /\bno (heat|cool|air)\b|not working|won'?t (turn on|start|run)|nothing|dead|freezing|no ac/i.test(t);}
+function detectIntent(t){
+  if(/tune-?up|maintenance|seasonal (check|service)|inspection/i.test(t))return 'maintenance';
+  if(/quote|estimate|new (furnace|a\/?c|air condition|system|unit)|replace(ment)?|install(ation)?/i.test(t))return 'quote';
+  return 'repair';
+}
 function grabName(t){
   const m=t.match(/(?:my name'?s?|name is|this is|i'?m)\s+([A-Z][a-z]+)/i);
   if(m)return m[1][0].toUpperCase()+m[1].slice(1);
@@ -518,7 +523,12 @@ function offlineReply(text){
   const s=F.step;
   if(s===0){
     F.system=detectSystem(text);F.issue=text.slice(0,60);F.urgent=isUrgent(text);
+    F.intent=detectIntent(text);
     F.step=1;
+    if(F.intent==='maintenance')
+      return "We can definitely get that on the books. What's your name?";
+    if(F.intent==='quote')
+      return "Happy to help with that — what's your name so I can get some info over to Baker?";
     return F.system==='ac'
       ? "That's no fun in this weather. Is it blowing warm air, or not running at all? And what's your name?"
       : "Sorry you're dealing with that. Is it blowing cold air, or not running at all? And what's your name?";
