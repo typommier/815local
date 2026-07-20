@@ -39,8 +39,7 @@
   nav{position:sticky;top:0;z-index:50;background:rgba(245,239,225,0.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--cream-dark);}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;height:80px;}
   .brand{display:flex;align-items:center;gap:11px;font-family:'Playfair Display',serif;font-weight:700;font-size:1.32rem;color:var(--forest);text-decoration:none;}
-  .brand-mark{width:38px;height:38px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .brand-mark svg{width:20px;height:20px;}
+  .logo-mark{height:42px;width:auto;aspect-ratio:2.3/1;object-fit:cover;object-position:center;}
   .nav-right{display:flex;align-items:center;gap:30px;}
   .navlinks{display:flex;align-items:center;gap:28px;}
   .navlinks a{font-size:0.94rem;text-decoration:none;color:var(--ink);font-weight:600;font-family:'Lora',serif;}
@@ -83,6 +82,9 @@
   .pour-card{background:var(--cream);border:1px solid var(--cream-dark);border-radius:16px;padding:28px 26px;}
   .pour-card h3{font-size:1.2rem;margin-bottom:8px;}
   .pour-card p{font-size:0.94rem;color:var(--ink-soft);}
+  .pour-card.has-photo{padding:0 0 26px;overflow:hidden;}
+  .pour-card.has-photo img{width:100%;aspect-ratio:4/3;object-fit:cover;margin-bottom:18px;}
+  .pour-card.has-photo h3,.pour-card.has-photo p{padding:0 26px;}
 
   /* PULL QUOTE */
   .statement{background:var(--forest);color:var(--paper);}
@@ -113,7 +115,7 @@
   footer{background:var(--forest);color:rgba(251,248,240,0.6);padding:44px 0;}
   footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
   footer .brand{color:var(--paper);}
-  footer .brand-mark{background:var(--clay);}
+  footer .logo-mark{height:32px;aspect-ratio:2.3/1;border-radius:4px;}
   footer p{font-size:0.85rem;}
   .demo-flag{background:var(--clay-soft);color:var(--ink);text-align:center;font-size:0.8rem;font-weight:700;padding:8px 12px;letter-spacing:0.02em;font-family:'Lora',serif;}
 
@@ -137,10 +139,7 @@
 <nav>
   <div class="wrap">
     <a href="#" class="brand">
-      <span class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21c-4-2.5-7-6-7-10a7 7 0 0 1 14 0c0 4-3 7.5-7 10Z" fill="#FBF8F0"/><path d="M12 21c-4-2.5-7-6-7-10a7 7 0 0 1 14 0c0 4-3 7.5-7 10Z" stroke="#1F4A38" stroke-width="1.1"/></svg>
-      </span>
-      Brick &amp; Ivy
+      <img class="logo-mark" src="Brick%20and%20Ivy%20Pictures/logo.png" alt="Brick & Ivy Coffee Co">
     </a>
     <div class="nav-right">
       <div class="navlinks">
@@ -174,7 +173,7 @@
   <div class="wrap">
     <div class="about">
       <div class="about-media" data-reveal>
-        <img src="https://kyneaettrynagavewefi.supabase.co/storage/v1/object/public/business-photos/2279d1a8-0e76-46a4-bdbe-9933503a4737/pastries.jpg" alt="Fresh baked goods at Brick & Ivy Coffee Co">
+        <img src="Brick%20and%20Ivy%20Pictures/coffee-prep.jpg" alt="Espresso grounds, whole beans, and a fresh pour at Brick & Ivy Coffee Co">
       </div>
       <div class="about-text" data-reveal>
         <span class="eyebrow">Independently Owned</span>
@@ -200,9 +199,15 @@
     </div>
     <div class="pour-grid" data-reveal>
       <div class="pour-card"><h3>Coffee &amp; Lattes</h3><p>Handcrafted espresso drinks, made to order.</p></div>
-      <div class="pour-card"><h3>Refreshers &amp; Dirty Sodas</h3><p>Bright, fruity, and built for sipping.</p></div>
+      <div class="pour-card has-photo">
+        <img src="Brick%20and%20Ivy%20Pictures/dirty-soda.jpg" alt="A blue dirty soda in a Brick & Ivy Coffee Co branded cup">
+        <h3>Refreshers &amp; Dirty Sodas</h3><p>Bright, fruity, and built for sipping.</p>
+      </div>
       <div class="pour-card"><h3>Iced &amp; Hot Teas</h3><p>For the coffee break that isn't about coffee.</p></div>
-      <div class="pour-card"><h3>Baked Goods</h3><p>Fresh from the case, best with a warm drink.</p></div>
+      <div class="pour-card has-photo">
+        <img src="Brick%20and%20Ivy%20Pictures/pastries-case.jpg" alt="A case of fresh baked hand pies at Brick & Ivy Coffee Co">
+        <h3>Baked Goods</h3><p>Fresh from the case, best with a warm drink.</p>
+      </div>
       <div class="pour-card"><h3>Breakfast &amp; Lunch</h3><p>Something more than a pastry, if you need it.</p></div>
     </div>
   </div>
@@ -259,10 +264,7 @@
 <footer>
   <div class="wrap">
     <a href="#" class="brand" style="display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:700;">
-      <span class="brand-mark" style="width:28px;height:28px;">
-        <svg viewBox="0 0 24 24" fill="none" style="width:15px;height:15px;"><path d="M12 21c-4-2.5-7-6-7-10a7 7 0 0 1 14 0c0 4-3 7.5-7 10Z" fill="#FBF8F0"/></svg>
-      </span>
-      Brick &amp; Ivy
+      <img class="logo-mark" src="Brick%20and%20Ivy%20Pictures/logo.png" alt="Brick & Ivy Coffee Co">
     </a>
     <p>27754 Bluegrass Dr., Channahon, IL &middot; (815) 255-2020</p>
   </div>
