@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brick & Ivy Coffee Co · Channahon, Illinois</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F5EFE1;
+    --cream-dark:#EAE0C8;
+    --paper:#FBF8F0;
+    --forest:#1F4A38;
+    --forest-soft:#2D6A4F;
+    --forest-pale:#E1EAE2;
+    --ink:#2A2620;
+    --ink-soft:#5C5548;
+    --clay:#B5651D;
+    --clay-soft:#D98C3F;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--cream);color:var(--ink);font-family:'Lora',serif;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;color:var(--forest);line-height:1.15;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Lora',serif;font-weight:600;
+    font-size:0.82rem;letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--clay);margin-bottom:0.7rem;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--clay);}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(245,239,225,0.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--cream-dark);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:80px;}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Playfair Display',serif;font-weight:700;font-size:1.32rem;color:var(--forest);text-decoration:none;}
+  .brand-mark{width:38px;height:38px;border-radius:50%;background:var(--forest);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .brand-mark svg{width:20px;height:20px;}
+  .nav-right{display:flex;align-items:center;gap:30px;}
+  .navlinks{display:flex;align-items:center;gap:28px;}
+  .navlinks a{font-size:0.94rem;text-decoration:none;color:var(--ink);font-weight:600;font-family:'Lora',serif;}
+  .navlinks a:hover{color:var(--clay);}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:100px;font-weight:600;font-size:0.92rem;font-family:'Lora',serif;text-decoration:none;transition:transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;border:none;cursor:pointer;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-forest{background:var(--forest);color:var(--paper);box-shadow:0 3px 0 #123326;}
+  .btn-forest:hover{background:var(--forest-soft);}
+  .btn-outline{border:2px solid var(--forest);color:var(--forest);}
+  .btn-outline:hover{background:var(--forest);color:var(--paper);}
+  .btn-clay{background:var(--clay);color:var(--paper);box-shadow:0 3px 0 #8a4c14;}
+
+  /* HERO */
+  .hero{padding:64px 0 0;overflow:hidden;}
+  .hero-inner{display:grid;grid-template-columns:1fr 0.95fr;gap:56px;align-items:center;padding-bottom:80px;}
+  .hero h1{font-size:clamp(2.3rem, 4.6vw, 3.5rem);margin-bottom:1.2rem;}
+  .hero h1 em{font-style:italic;color:var(--forest-soft);}
+  .hero p{font-size:1.08rem;color:var(--ink-soft);max-width:480px;margin-bottom:2rem;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-media{position:relative;}
+  .hero-media img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:46% 54% 60% 40% / 46% 42% 58% 54%;box-shadow:0 24px 48px rgba(31,74,56,0.22);}
+  .hero-media::after{content:"";position:absolute;top:24px;left:24px;right:-24px;bottom:-24px;border:2px solid var(--clay-soft);border-radius:46% 54% 60% 40% / 46% 42% 58% 54%;z-index:-1;}
+
+  section{padding:84px 0;}
+  .section-head{max-width:600px;margin-bottom:44px;}
+  .section-head h2{font-size:2rem;margin-bottom:0.7rem;}
+  .section-head p{color:var(--ink-soft);font-size:1.03rem;}
+
+  /* ABOUT */
+  .about{display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;align-items:center;}
+  .about-media img{border-radius:18px;box-shadow:0 16px 36px rgba(31,74,56,0.16);}
+  .about-text p{color:var(--ink-soft);margin-bottom:1.1rem;font-size:1.05rem;}
+  .about-text p:last-child{margin-bottom:0;}
+  .tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.6rem;}
+  .pill{font-size:0.85rem;font-weight:600;background:var(--forest-pale);color:var(--forest);border-radius:100px;padding:8px 16px;font-family:'Lora',serif;}
+
+  /* POUR / OFFERINGS */
+  .pour{background:var(--paper);}
+  .pour-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;}
+  .pour-card{background:var(--cream);border:1px solid var(--cream-dark);border-radius:16px;padding:28px 26px;}
+  .pour-card h3{font-size:1.2rem;margin-bottom:8px;}
+  .pour-card p{font-size:0.94rem;color:var(--ink-soft);}
+
+  /* PULL QUOTE */
+  .statement{background:var(--forest);color:var(--paper);}
+  .statement blockquote{font-family:'Playfair Display',serif;font-style:italic;font-weight:500;font-size:clamp(1.5rem,3.4vw,2.2rem);max-width:760px;margin:0 auto;text-align:center;line-height:1.42;}
+  .statement blockquote::before,.statement blockquote::after{content:'"';color:var(--clay-soft);}
+
+  /* TESTIMONIALS */
+  .testimonial-card{max-width:640px;margin:0 auto;background:var(--paper);border:1px dashed var(--cream-dark);border-radius:18px;padding:40px 44px;text-align:center;}
+  .testimonial-card .quote-mark{font-family:'Playfair Display',serif;font-size:2.6rem;color:var(--clay-soft);line-height:1;margin-bottom:6px;}
+  .testimonial-card p{font-style:italic;color:var(--ink-soft);font-size:1.05rem;margin-bottom:14px;}
+  .testimonial-card .placeholder-note{font-family:'Lora',serif;font-style:normal;font-size:0.82rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--clay);font-weight:600;}
+
+  /* VISIT */
+  .visit{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  .hourstable{width:100%;border-collapse:collapse;margin-bottom:22px;}
+  .hourstable tr{border-bottom:1px solid var(--cream-dark);}
+  .hourstable tr:last-child{border-bottom:none;}
+  .hourstable td{padding:10px 0;font-size:0.96rem;}
+  .hourstable td:first-child{font-weight:600;color:var(--forest);}
+  .hourstable td:last-child{text-align:right;color:var(--ink-soft);}
+  .contact-list{list-style:none;margin-bottom:1.4rem;}
+  .contact-list li{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:0.97rem;border-bottom:1px solid var(--cream-dark);}
+  .contact-list li:last-child{border-bottom:none;}
+  .contact-list a{text-decoration:none;color:var(--clay);font-weight:700;}
+  .map-frame{border-radius:18px;overflow:hidden;box-shadow:0 16px 36px rgba(31,74,56,0.16);border:1px solid var(--cream-dark);}
+  .map-frame iframe{width:100%;height:340px;border:0;display:block;}
+
+  footer{background:var(--forest);color:rgba(251,248,240,0.6);padding:44px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .brand{color:var(--paper);}
+  footer .brand-mark{background:var(--clay);}
+  footer p{font-size:0.85rem;}
+  .demo-flag{background:var(--clay-soft);color:var(--ink);text-align:center;font-size:0.8rem;font-weight:700;padding:8px 12px;letter-spacing:0.02em;font-family:'Lora',serif;}
+
+  @media(max-width:760px){
+    .hero-inner{grid-template-columns:1fr;padding-bottom:56px;}
+    .hero-media{order:-1;max-width:320px;margin:0 auto;}
+    .about{grid-template-columns:1fr;gap:32px;}
+    .visit{grid-template-columns:1fr;}
+    .navlinks{display:none;}
+    section{padding:56px 0;}
+  }
+
+  [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity 0.6s ease, transform 0.6s ease;}
+  [data-reveal].in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="demo-flag">Concept demo built for Brick &amp; Ivy Coffee Co (not a live site)</div>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21c-4-2.5-7-6-7-10a7 7 0 0 1 14 0c0 4-3 7.5-7 10Z" fill="#FBF8F0"/><path d="M12 21c-4-2.5-7-6-7-10a7 7 0 0 1 14 0c0 4-3 7.5-7 10Z" stroke="#1F4A38" stroke-width="1.1"/></svg>
+      </span>
+      Brick &amp; Ivy
+    </a>
+    <div class="nav-right">
+      <div class="navlinks">
+        <a href="#about">About</a>
+        <a href="#pour">What We Pour</a>
+        <a href="#visit">Visit</a>
+      </div>
+      <a href="https://brick-ivy-coffee-co.square.site/?location_id=LCGRBTACCZJJ4&fulfillment=PICKUP" target="_blank" rel="noopener" class="btn btn-forest">Order Online</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div data-reveal>
+      <span class="eyebrow">Coffee &amp; Café &middot; Channahon, IL</span>
+      <h1>Handcrafted coffee, <em>poured with care.</em></h1>
+      <p>Nested on the border between Channahon and Minooka, Brick &amp; Ivy is an independent coffee shop built to be a cozy, vibrant place for great people and great coffee.</p>
+      <div class="hero-ctas">
+        <a href="https://brick-ivy-coffee-co.square.site/?location_id=LCGRBTACCZJJ4&fulfillment=PICKUP" target="_blank" rel="noopener" class="btn btn-forest">Order Online</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Brick+%26+Ivy+Coffee+Co%2C+27754+Bluegrass+Dr%2C+Channahon%2C+IL" target="_blank" rel="noopener" class="btn btn-outline">Get Directions</a>
+      </div>
+    </div>
+    <div class="hero-media" data-reveal>
+      <img src="https://kyneaettrynagavewefi.supabase.co/storage/v1/object/public/business-photos/2279d1a8-0e76-46a4-bdbe-9933503a4737/latte.jpg" alt="A handcrafted latte with latte art at Brick & Ivy Coffee Co" loading="eager">
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about">
+      <div class="about-media" data-reveal>
+        <img src="https://kyneaettrynagavewefi.supabase.co/storage/v1/object/public/business-photos/2279d1a8-0e76-46a4-bdbe-9933503a4737/pastries.jpg" alt="Fresh baked goods at Brick & Ivy Coffee Co">
+      </div>
+      <div class="about-text" data-reveal>
+        <span class="eyebrow">Independently Owned</span>
+        <h2 style="font-size:1.9rem;margin-bottom:1.1rem;">A cozy corner for great people and great coffee</h2>
+        <p>Brick &amp; Ivy is an independent coffee shop that aims to provide a cozy, vibrant place for great people and great coffee, right on the border of Channahon and Minooka.</p>
+        <p>We offer coffee, lattes, refreshers, dirty sodas, teas (iced or hot), baked goods, and breakfast and lunch options, made for lingering over as much as grabbing on the go.</p>
+        <div class="tag-row">
+          <span class="pill">Locally Owned</span>
+          <span class="pill">Order Ahead</span>
+          <span class="pill">Breakfast &amp; Lunch</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pour" id="pour">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">On Offer</span>
+      <h2>What we're pouring</h2>
+      <p>A straightforward lineup built around coffee done well, plus a few things to eat alongside it.</p>
+    </div>
+    <div class="pour-grid" data-reveal>
+      <div class="pour-card"><h3>Coffee &amp; Lattes</h3><p>Handcrafted espresso drinks, made to order.</p></div>
+      <div class="pour-card"><h3>Refreshers &amp; Dirty Sodas</h3><p>Bright, fruity, and built for sipping.</p></div>
+      <div class="pour-card"><h3>Iced &amp; Hot Teas</h3><p>For the coffee break that isn't about coffee.</p></div>
+      <div class="pour-card"><h3>Baked Goods</h3><p>Fresh from the case, best with a warm drink.</p></div>
+      <div class="pour-card"><h3>Breakfast &amp; Lunch</h3><p>Something more than a pastry, if you need it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="statement">
+  <div class="wrap">
+    <blockquote data-reveal>a cozy, vibrant place for great people and great coffee</blockquote>
+  </div>
+</section>
+
+<section id="testimonials">
+  <div class="wrap">
+    <div class="section-head" style="margin-left:auto;margin-right:auto;text-align:center;" data-reveal>
+      <span class="eyebrow" style="justify-content:center;">Word Around Channahon</span>
+      <h2>Hear from our regulars</h2>
+    </div>
+    <div class="testimonial-card" data-reveal>
+      <div class="quote-mark">&ldquo;</div>
+      <p>This is where a real customer quote goes. Pull two or three lines from Google or Facebook reviews and drop them right in.</p>
+      <div class="placeholder-note">Placeholder, awaiting real reviews</div>
+    </div>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="wrap">
+    <div class="visit">
+      <div data-reveal>
+        <span class="eyebrow">Come By</span>
+        <h2 style="font-size:1.9rem;margin-bottom:1.5rem;">Visit &amp; hours</h2>
+        <table class="hourstable">
+          <tr><td>Monday</td><td>7:00 AM – 5:00 PM</td></tr>
+          <tr><td>Tuesday</td><td>7:00 AM – 5:00 PM</td></tr>
+          <tr><td>Wednesday</td><td>7:00 AM – 5:00 PM</td></tr>
+          <tr><td>Thursday</td><td>7:00 AM – 5:00 PM</td></tr>
+          <tr><td>Friday</td><td>7:00 AM – 5:00 PM</td></tr>
+          <tr><td>Saturday</td><td>8:00 AM – 3:00 PM</td></tr>
+          <tr><td>Sunday</td><td>8:00 AM – 3:00 PM</td></tr>
+        </table>
+        <ul class="contact-list">
+          <li>27754 Bluegrass Dr., Channahon, IL</li>
+          <li><a href="tel:8152552020">(815) 255-2020</a></li>
+          <li><a href="https://www.google.com/maps/search/?api=1&query=Brick+%26+Ivy+Coffee+Co%2C+27754+Bluegrass+Dr%2C+Channahon%2C+IL" target="_blank" rel="noopener">Get Directions &rarr;</a></li>
+        </ul>
+      </div>
+      <div class="map-frame" data-reveal>
+        <iframe loading="lazy" title="Map to Brick & Ivy Coffee Co" src="https://maps.google.com/maps?q=27754+Bluegrass+Dr,+Channahon,+IL&output=embed" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#" class="brand" style="display:flex;align-items:center;gap:10px;font-family:'Playfair Display',serif;font-weight:700;">
+      <span class="brand-mark" style="width:28px;height:28px;">
+        <svg viewBox="0 0 24 24" fill="none" style="width:15px;height:15px;"><path d="M12 21c-4-2.5-7-6-7-10a7 7 0 0 1 14 0c0 4-3 7.5-7 10Z" fill="#FBF8F0"/></svg>
+      </span>
+      Brick &amp; Ivy
+    </a>
+    <p>27754 Bluegrass Dr., Channahon, IL &middot; (815) 255-2020</p>
+  </div>
+</footer>
+
+<script>
+  var els = document.querySelectorAll('[data-reveal]');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.15});
+  els.forEach(function(el){ obs.observe(el); });
+</script>
+
+</body>
+</html>
