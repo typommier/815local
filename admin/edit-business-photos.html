@@ -68,14 +68,9 @@ a { color: inherit; text-decoration: none; }
 .result-summary.success { background: var(--green-pale); color: var(--green); }
 .result-summary.error { background: var(--red-pale); color: var(--red); }
 
-/* Business search */
-#biz-results { margin-top: 8px; max-height: 320px; overflow-y: auto; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); display: none; background: white; }
-#biz-results.open { display: block; }
-.biz-result { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--cream-dark); display: flex; gap: 10px; align-items: center; }
-.biz-result:last-child { border-bottom: none; }
-.biz-result:hover { background: var(--cream); }
-.biz-result-name { font-weight: 600; font-size: 14px; }
-.biz-result-meta { font-size: 12px; color: var(--gray); margin-left: auto; }
+/* Business picker */
+#biz-select { font: inherit; font-size: 16px; padding: 12px 14px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: white; color: var(--charcoal); width: 100%; }
+#biz-select:focus { outline: none; border-color: var(--orange); }
 
 /* Editor */
 .editor-biz-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
@@ -110,13 +105,20 @@ a { color: inherit; text-decoration: none; }
 .empty { color: var(--gray); font-size: 14px; text-align: center; padding: 32px; }
 .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--gray-light); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 6px; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.convert-status { font-size: 13px; color: var(--charcoal-mid); margin-bottom: 16px; }
 
 @media (max-width: 680px) {
   .dashboard { padding: 16px; }
-  .nav-inner { height: 80px; }
-  .nav-logo img { height: 60px; }
+  .nav-inner { flex-wrap: wrap; height: auto; padding: 12px 16px; gap: 10px; }
+  .nav-logo img { height: 44px; }
+  .nav-title { font-size: 15px; }
+  .nav-subtitle { display: none; }
+  .nav-right { width: 100%; justify-content: flex-end; gap: 8px; }
+  .nav-back { font-size: 12px; padding: 6px 12px; }
+  .card-body { padding: 16px; }
   .photo-row { grid-template-columns: 1fr; }
   .photo-preview { width: 100%; height: 200px; }
+  .position-grid { grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 40px); }
 }
 </style>
 </head>
@@ -147,14 +149,15 @@ a { color: inherit; text-decoration: none; }
     <div class="card-header">
       <div>
         <div class="card-title">Pick a business</div>
-        <div class="card-subtitle">Search by name. Only active listings appear.</div>
+        <div class="card-subtitle">Only active listings appear.</div>
       </div>
     </div>
     <div class="card-body">
       <div class="form-row">
-        <input id="biz-search" type="text" placeholder="Start typing a business name…" autocomplete="off">
-        <div id="biz-results"></div>
-        <div class="hint" id="biz-search-hint">Loading businesses…</div>
+        <select id="biz-select">
+          <option value="">Loading businesses…</option>
+        </select>
+        <div class="hint" id="biz-search-hint"></div>
       </div>
     </div>
   </div>
@@ -172,10 +175,11 @@ a { color: inherit; text-decoration: none; }
     <div class="card-body">
       <label class="drop-zone" id="drop-zone" for="file-input">
         <div style="font-size:32px; margin-bottom:4px;">📸</div>
-        <div><strong>Drop photos here</strong> or click to choose files</div>
-        <div style="font-size:12px; margin-top:4px;">JPG / PNG / WebP / GIF · up to 5 MB each</div>
-        <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+        <div><strong>Drop photos here</strong> or tap to choose from your camera roll</div>
+        <div style="font-size:12px; margin-top:4px;">JPG / PNG / WebP / GIF / HEIC (iPhone photos, converted automatically) · up to 5 MB each</div>
+        <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,.heic,.heif" multiple>
       </label>
+      <div id="convert-status" class="convert-status" style="display:none;"></div>
 
       <div id="photo-list" class="photo-list"></div>
       <div id="photo-list-empty" class="empty" style="display:none;">No photos yet. Drop some above.</div>
@@ -190,6 +194,7 @@ a { color: inherit; text-decoration: none; }
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
@@ -257,8 +262,7 @@ let business = null;
 let items = [];
 let nextKey = 1;
 
-const $search   = document.getElementById('biz-search');
-const $results  = document.getElementById('biz-results');
+const $bizSelect = document.getElementById('biz-select');
 const $searchHint = document.getElementById('biz-search-hint');
 const $editor   = document.getElementById('editor-card');
 const $bizName  = document.getElementById('editor-biz-name');
@@ -276,24 +280,18 @@ async function loadBusinesses() {
   const { data, error } = await db.from('businesses').select('id, name, city, category, image_url, photos, photo_positions').eq('is_active', true).order('name');
   if (error) { $searchHint.textContent = 'Failed to load: ' + error.message; return; }
   allBusinesses = data || [];
+  populateBizSelect();
   $searchHint.textContent = allBusinesses.length + ' active businesses loaded.';
 }
 
-function renderSearchResults() {
-  const q = $search.value.trim().toLowerCase();
-  if (!q) { $results.classList.remove('open'); return; }
-  const matches = allBusinesses.filter(b => b.name.toLowerCase().includes(q)).slice(0, 20);
-  if (matches.length === 0) { $results.innerHTML = '<div class="biz-result"><span style="color:var(--gray);">No matches.</span></div>'; $results.classList.add('open'); return; }
-  $results.innerHTML = matches.map(b => `
-    <div class="biz-result" data-id="${b.id}">
-      <div>
-        <div class="biz-result-name">${escapeHtml(b.name)}</div>
-        <div class="biz-result-meta" style="margin-left:0;">${escapeHtml(b.category || '')} · ${escapeHtml(b.city || '')}</div>
-      </div>
-      <div class="biz-result-meta">${(b.photos || []).length} photo${(b.photos || []).length === 1 ? '' : 's'}</div>
-    </div>
-  `).join('');
-  $results.classList.add('open');
+function populateBizSelect() {
+  const opts = ['<option value="">Choose a business…</option>'];
+  for (const b of allBusinesses) {
+    const photoCount = (b.photos || []).length;
+    const label = `${b.name}${b.city ? ' — ' + b.city : ''} (${photoCount} photo${photoCount === 1 ? '' : 's'})`;
+    opts.push(`<option value="${escapeHtml(b.id)}">${escapeHtml(label)}</option>`);
+  }
+  $bizSelect.innerHTML = opts.join('');
 }
 
 function escapeHtml(s) {
@@ -315,8 +313,7 @@ function selectBusiness(b) {
   $link.href = '/pages/business.html?id=' + encodeURIComponent(b.id);
   $editor.style.display = '';
   $saveSummary.style.display = 'none';
-  $search.value = b.name;
-  $results.classList.remove('open');
+  $bizSelect.value = b.id;
   renderPhotos();
   $editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -368,16 +365,10 @@ $list.addEventListener('click', (e) => {
   renderPhotos();
 });
 
-$search.addEventListener('input', renderSearchResults);
-$search.addEventListener('focus', renderSearchResults);
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('#biz-search') && !e.target.closest('#biz-results')) $results.classList.remove('open');
-});
-$results.addEventListener('click', (e) => {
-  const row = e.target.closest('.biz-result[data-id]');
-  if (!row) return;
-  const b = allBusinesses.find(x => x.id === row.dataset.id);
+$bizSelect.addEventListener('change', () => {
+  const b = allBusinesses.find(x => x.id === $bizSelect.value);
   if (b) selectBusiness(b);
+  else $editor.style.display = 'none';
 });
 
 function fileToDataUrl(file) {
@@ -389,9 +380,41 @@ function fileToDataUrl(file) {
   });
 }
 
+const $convertStatus = document.getElementById('convert-status');
+
+// iPhones save camera roll photos as HEIC/HEIF by default, a format browsers
+// can't preview or that the upload pipeline accepts. Detect by MIME type (most
+// browsers) or file extension (Safari sometimes reports an empty/generic type
+// for HEIC) and convert to JPEG client-side before anything else touches it.
+function isHeic(file) {
+  const type = (file.type || '').toLowerCase();
+  const name = (file.name || '').toLowerCase();
+  return type === 'image/heic' || type === 'image/heif' || name.endsWith('.heic') || name.endsWith('.heif');
+}
+
+async function convertHeicToJpeg(file) {
+  const result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 });
+  const blob = Array.isArray(result) ? result[0] : result;
+  const newName = (file.name || 'photo').replace(/\.[a-z0-9]+$/i, '') + '.jpg';
+  return new File([blob], newName, { type: 'image/jpeg' });
+}
+
 async function addFiles(fileList) {
   const files = Array.from(fileList || []);
-  for (const file of files) {
+  const heicCount = files.filter(isHeic).length;
+  if (heicCount > 0) {
+    $convertStatus.style.display = '';
+    $convertStatus.innerHTML = `<span class="spinner"></span>Converting ${heicCount} iPhone photo${heicCount === 1 ? '' : 's'}…`;
+  }
+  for (let file of files) {
+    if (isHeic(file)) {
+      try {
+        file = await convertHeicToJpeg(file);
+      } catch (e) {
+        alert(`${file.name}: couldn't convert this photo (${e && e.message ? e.message : e}). Try exporting it as JPEG first and uploading that instead.`);
+        continue;
+      }
+    }
     if (!/^image\/(jpe?g|png|webp|gif)$/i.test(file.type)) continue;
     if (file.size > 5 * 1024 * 1024) { alert(`${file.name}: too large (${(file.size/1024/1024).toFixed(1)} MB). Max 5 MB.`); continue; }
     const dataUrl = await fileToDataUrl(file);
@@ -404,6 +427,7 @@ async function addFiles(fileList) {
       isNew: true,
     });
   }
+  $convertStatus.style.display = 'none';
   renderPhotos();
 }
 
@@ -462,6 +486,8 @@ async function saveChanges() {
       business.photo_positions = data.updated.photo_positions || [];
       const localCopy = allBusinesses.find(x => x.id === business.id);
       if (localCopy) Object.assign(localCopy, { image_url: business.image_url, photos: business.photos, photo_positions: business.photo_positions });
+      populateBizSelect();
+      $bizSelect.value = business.id;
       items = business.photos.map((url, i) => ({
         key: nextKey++,
         url,
