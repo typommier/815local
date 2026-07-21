@@ -185,6 +185,11 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 │       ├── deal.html                   ← submit deal
 │       └── claim-business.html         ← business owner claim request
 │
+├── admin/                               ← internal tools, noindex, not linked from the public site
+│   ├── edit-business-photos.html       ← pick a business, upload/reorder/delete photos, set focal points
+│   ├── import-photos.html
+│   └── analytics.html
+│
 ├── legal/
 │   ├── privacy.html
 │   └── terms.html
@@ -213,6 +218,11 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 
 ### Local-only (not in repo)
 - `fetch_photos.py` / `fetch_photos_local.py` - Google Places photo scrapers. Run locally from Ty's machine because the scraper API key cannot be used server-side and the sandboxed environment can't reach `places.googleapis.com`.
+
+### Admin tooling (`/admin/`)
+- `admin/edit-business-photos.html` is the tool for managing a business's photos: search for the business, drag-drop upload, reorder, delete, mark a hero, and set a per-photo focal point via a 3x3 position grid. Posts to the `manage-business-photos` edge function.
+- **Auth gate**: signing in via the on-page login form only proves you're a valid Supabase user, not that you're an admin. The real gate is server-side: `manage-business-photos` checks the caller's email against an `ADMIN_EMAILS` allowlist secret (comma-separated, **fails closed** if unset or misconfigured). If a save fails with `unauthorized` despite a fresh, valid login, check that secret first (Supabase dashboard, project `kyneaettrynagavewefi` → Edge Functions → `manage-business-photos` → Manage secrets) before assuming it's a code bug.
+- Related edge functions sharing the same admin gate/pattern: `import-from-website`, `cleanup-orphan-photos`, `fetch-google-photos`, `backfill-photos-tmp`.
 
 ---
 
@@ -357,6 +367,18 @@ const catEmoji = {
 
 ### Page labels (analytics tracker)
 `index.html`, `business.html`, `directory.html`, `events.html`, `profile.html` are the tracked pages. The tracker writes to `localStorage`, no server logging.
+
+### Business detail photo gallery (`pages/business.html`)
+Hero + a horizontally-scrolling row of square thumbnails, both constrained to the page's normal 1240px content width (not full-bleed). These rules came from three rounds of live regressions, worth reading before touching this again:
+- **Cell shape beats crop tricks.** Real photos here (Google Places imports, phone snapshots) are mostly close to square. A skinny wide thumbnail strip (~2.9:1) and a "never crop" blurred-backdrop-behind-`contain` treatment were both tried and both looked worse in production than a plain `cover` crop, because neither addressed the actual mismatch between a near-square photo and an extreme-aspect cell. Hero is `aspect-ratio:16/9`, thumbnails are `aspect-ratio:1/1`, both `background-size:cover`.
+- **Default crop anchor is `top`, not `center`.** A wide/short cell cover-cropping a square photo trims vertically; `top` keeps the top of the frame intact instead of cutting evenly from both edges.
+- **A stored `photo_positions` value only counts as a deliberate override if it's not `'center'`.** The admin tool's focal-point picker starts on `'center'`, so a saved `'center'` is indistinguishable from nobody ever touching it. Checked directly against the DB: of the handful of listings with any `photo_positions` saved, all but two (Eric McGill-Realtor, Tasty Bite) are all-`'center'`. Only a non-`'center'` value gets the tight, curated `cover` crop; everything else uses the default `top` anchor.
+- **Thumbnails `flex-grow` to fill the row** (capped per-tile width, `justify-content:center`), so a business with only 1-2 photos doesn't leave a lopsided block of bare charcoal next to a small fixed-size thumbnail. Centering a sparse row makes it read as an intentionally small gallery instead of broken layout.
+- **Clicking any photo opens an in-page lightbox** (`#photo-lightbox`, prev/next, keyboard arrows, Escape), never `window.open()` to the raw image URL.
+- **No hard cap on photo count.** The thumbnail row scrolls horizontally instead of dropping photos past a fixed cell count.
+- Below 480px this swaps for `.gallery-swiper`, a touch-swipe carousel (same crop/position rules apply to its slides).
+
+If you touch this again: verify with test photos close to the real source aspect ratio (near-square), not wide banner images, that's specifically what let two rounds of regressions ship before anyone caught them. `admin/edit-business-photos.html` is the tool for deliberately curating a focal point on a specific photo when the default `top` crop doesn't work for it, most photos don't need it.
 
 ---
 
