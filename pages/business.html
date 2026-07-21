@@ -67,11 +67,11 @@ a { color:inherit; text-decoration:none; }
 .gallery-cell { background:var(--charcoal-mid); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:rgba(255,255,255,0.2); font-size:13px; position:relative; overflow:hidden; cursor:pointer; }
 .gallery-cell svg { opacity:0.15; }
 .gallery-main { grid-row:span 2; }
-/* Default (no manually-set photo_positions): a blurred cover backdrop behind a
-   sharp, never-cropped contain layer, so the full photo is always visible. */
-.photo-cell-bg { position:absolute; inset:0; background-size:cover; background-position:center; filter:blur(24px) brightness(0.55) saturate(1.1); transform:scale(1.15); }
-.photo-cell-fg { position:absolute; inset:0; z-index:1; background-size:contain; background-repeat:no-repeat; background-position:center; }
-/* Manually-set photo_positions (via admin/edit-business-photos.html) keeps a tight, curated crop */
+/* Default (no manually-set photo_positions) crops from 'top' rather than 'center':
+   cover-fitting a portrait/square photo into these wide cells crops vertically, and
+   'top' keeps the top of the frame intact instead of cutting evenly from both edges.
+   A manually-set photo_positions value (via admin/edit-business-photos.html) overrides this. */
+.photo-cell-fg { position:absolute; inset:0; z-index:1; background-size:cover; background-repeat:no-repeat; }
 .gallery-cell:not(.gallery-main)::after { content:''; position:absolute; inset:0; z-index:2; background:rgba(0,0,0,0); transition:background 0.15s; pointer-events:none; }
 .gallery-cell:not(.gallery-main):hover::after { background:rgba(0,0,0,0.18); }
 .gallery-more-badge { position:absolute; inset:0; z-index:3; background:rgba(30,27,24,0.62); display:flex; align-items:center; justify-content:center; color:white; font-size:16px; font-weight:700; }
@@ -579,10 +579,7 @@ let lightboxIndex = 0;
 // and render a single tight `cover` layer at that position instead, the curated look.
 function photoLayersHtml(url, pos) {
   const safeUrl = url.replace(/'/g, "\\'");
-  if (pos) {
-    return `<div class="photo-cell-fg" style="background-image:url('${safeUrl}');background-size:cover;background-position:${pos};"></div>`;
-  }
-  return `<div class="photo-cell-bg" style="background-image:url('${safeUrl}')"></div><div class="photo-cell-fg" style="background-image:url('${safeUrl}')"></div>`;
+  return `<div class="photo-cell-fg" style="background-image:url('${safeUrl}');background-position:${pos};"></div>`;
 }
 
 function openLightbox(index) {
@@ -806,14 +803,17 @@ function renderBusiness(b) {
 
   // Gallery, use photos[] array first (from Google Places scraper), fall back to image_url
   const photos = (b.photos && b.photos.length) ? b.photos : (b.image_url ? [b.image_url] : []);
-  // Returns the manually-set focal point for photo i, or null if it's using the
-  // "never crop" default. Excludes 'center': the admin tool's position picker starts
-  // on 'center', so a stored 'center' is indistinguishable from nobody ever touching
-  // it, most of the handful of listings with any photo_positions saved are exactly
-  // that (every photo defaulted to 'center'), not a deliberate framing choice.
+  // Returns the manually-set focal point for photo i, or 'top' as the default.
+  // Excludes 'center': the admin tool's position picker starts on 'center', so a
+  // stored 'center' is indistinguishable from nobody ever touching it, most of the
+  // handful of listings with any photo_positions saved are exactly that (every
+  // photo defaulted to 'center'), not a deliberate framing choice. 'top' rather
+  // than 'center' as the fallback because these cells are much wider than a typical
+  // phone photo, so a cover crop trims vertically, biasing to the top keeps the
+  // full top of the frame instead of cutting evenly from both edges.
   const photoPos = (i) => {
     const v = b.photo_positions && b.photo_positions[i];
-    return (v && v !== 'center' && SAFE_POSITIONS.has(v)) ? v : null;
+    return (v && v !== 'center' && SAFE_POSITIONS.has(v)) ? v : 'top';
   };
   const gallerySection = document.querySelector('.gallery');
   const galleryGrid = document.getElementById('gallery-grid');
