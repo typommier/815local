@@ -50,6 +50,21 @@ When working on the main directory/site data, use `project_id: kyneaettrynagavew
 
 ## Concierge chat widget ("Scout", separate Supabase project)
 
+**Status: pulled from the live site (July 21, 2026).** Ty found it was
+producing incorrect information and didn't want it live until that's
+resolved. The `<script src="/assets/js/815local-widget.js">` tag has been
+removed from every page it was on (`index.html`, `pages/{about,blog,business,
+deals,directory,events}.html`, `pages/blog/origin-story.html`), so the
+launcher no longer renders anywhere. The widget script, the edge function,
+and the `815local-concierge` Supabase project are all untouched, only the
+site-side wiring was removed, so it can be re-enabled by re-adding the
+script tags once the underlying accuracy problem is diagnosed and fixed.
+The offline/live test harness (`npm run test:concierge`) and the dead
+`tests/e2e/scout-widget.spec.js` Playwright spec (removed, since it drove
+`#ol-launcher` which no longer exists on any page) are the relevant test
+notes. Don't re-add the widget without first figuring out what was giving
+bad answers.
+
 A chat bubble (bottom-right, on public pages), named **Scout**, that lets
 visitors ask about business hours, get recommendations ("best tacos in
 town"), or find a service provider. Answers only from real `listings` rows,
