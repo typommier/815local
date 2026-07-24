@@ -15,7 +15,6 @@
     'business.html':  'Business Listing',
     'directory.html': 'Directory',
     'events.html':    'Events Calendar',
-    'profile.html':   'User Profile',
     'analytics.html': 'Analytics Dashboard'
   };
 

@@ -173,7 +173,6 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 │   ├── business.html                   ← business detail (?id=<uuid>)
 │   ├── events.html                     ← events calendar
 │   ├── deals.html                      ← deals listings
-│   ├── profile.html                    ← logged-in user profile
 │   ├── advertise.html                  ← waitlist-only advertise page
 │   ├── about.html
 │   ├── blog.html                       ← blog index
@@ -208,7 +207,7 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 - `/815local-directory.html` → `/pages/directory.html`
 - `/815local-business.html` → `/pages/business.html`
 - `/815local-events.html` → `/pages/events.html`
-- `/815local-profile.html` → `/pages/profile.html`
+- `/815local-profile.html` → `/` (was `/pages/profile.html`, deleted July 2026, see Design system)
 - `/815local-submit-business.html` → `/pages/submit/business.html`
 - `/815local-blog.html` → `/pages/blog.html`
 - `/815local-wireframes.html` → (still exists at root, not in nav)
@@ -366,7 +365,7 @@ const catEmoji = {
 ```
 
 ### Page labels (analytics tracker)
-`index.html`, `business.html`, `directory.html`, `events.html`, `profile.html` are the tracked pages. The tracker writes to `localStorage`, no server logging.
+`index.html`, `business.html`, `directory.html`, `events.html` are the tracked pages (the `profile.html` label was removed from `PAGE_LABELS` when that page was deleted). The tracker writes to `localStorage`, no server logging.
 
 ### Business detail photo gallery (`pages/business.html`)
 Hero + a horizontally-scrolling row of square thumbnails, both constrained to the page's normal 1240px content width (not full-bleed). These rules came from three rounds of live regressions, worth reading before touching this again:
@@ -384,13 +383,26 @@ If you touch this again: verify with test photos close to the real source aspect
 
 ## Design system
 
-- **Primary:** Burnt orange `--orange: #C4622D`
-- **Background:** Cream `--cream: #F7F1E3`, `--cream-dark: #EDE4CF`
-- **Text:** Dark charcoal `--charcoal`
-- **Accent (Around the 815 badge):** Teal `#0E7490`
+**Warm Sage rebrand shipped July 2026** across the entire public site (every file under `pages/`, `pages/blog/`, `pages/submit/`, `legal/`, `404.html`, `index.html` — `/admin/*` intentionally excluded, it's internal/noindex and keeps its own separate look).
+
+- **Primary:** Burnt orange `--orange: #C4622D` (unchanged)
+- **Background:** Cream `--cream: #FBF6EA`, `--cream-dark: #F3ECDB`
+- **Text:** Warm charcoal `--charcoal: #2B2420`
+- **Secondary accent:** Sage green (`--river`/`--river-deep`/`--river-light`, repurposed from the old teal identity), `#5B7A57`
+- **Accent (Around the 815 badge):** Teal `#0E7490` (unchanged, deliberately distinct from the secondary accent above)
 - **Accent (Owner Verified badge):** Forest green `#2D6A4F`
-- **Fonts:** Plus Jakarta Sans (body), Playfair Display (display), Caveat Brush (logo/brand)
-- Mobile bottom nav exists on most pages alongside the desktop top nav
+- **Fonts:** Georgia serif (headings/display/logo), system sans stack (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`) for body text. No Google Fonts loaded on the public site anymore (Space Grotesk/Inter/Space Mono were removed). The admin tools still use their own separate pairing (Playfair Display body copy references + Plus Jakarta Sans), untouched by this rebrand.
+- **Logo:** an inline SVG wordmark (`815` + `LOCAL`, no icon/badge), replacing the old raster PNG/WebP (`/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.*`, which is no longer referenced by any nav/footer/auth-modal logo — it may still be referenced by `og:image`/favicon meta tags, left untouched). Nav/footer/auth-modal backgrounds are dark charcoal, so the logo's "815" text is a light cream fill there (`#FBF6EA`) and orange "LOCAL"; the one light-background instance (the auth modal, which sits on `var(--bone)`) uses a dark charcoal "815" fill (`#2B2420`) instead — don't reuse the wrong variant if you touch this again.
+- Mobile bottom nav exists on most pages alongside the desktop top nav, now **3 items** (Home/Browse/Events) — the Profile item was removed when `profile.html` was deleted (see below).
+- `assets/css/815local.css` is a shared stylesheet linked by every public page *after* each page's own inline `<style>` block, so its `:root` wins the cascade for any variable name a page also declares — keep it in sync with the per-page token values if you touch colors/fonts again, or per-page edits will silently get overridden.
+
+### Save / accounts / profile (removed, July 2026)
+
+Ty decided not to push or require user accounts right now. As part of the Warm Sage rebrand:
+- The **Save/bookmark feature** was removed from `business.html` (`#h-save-btn`, `initSaveShare()`'s save logic, `saved_businesses` queries). It was never present on `directory.html`. The `saved_businesses` table itself was left alone (data layer, not touched).
+- **`pages/profile.html` was deleted entirely**, along with its references: the nav `#nav-user-menu` "My Profile" link (Sign Out is now the dropdown's only item), the mobile bottom nav's Profile item (site-wide), and `doForgotPassword()`'s redirect target (now `/` instead of `/pages/profile.html`). The `/815local-profile.html` redirect stub now points to `/`.
+- Sign-in/sign-up/forgot-password (the `.auth-modal` system on `index.html`) were **kept** — they don't strictly need a profile page destination, and the footer's "Business Owner Sign In" entry point may still be useful. Revisit if it turns out to be fully vestigial.
+- Reviews were **already retired sitewide** before this rebrand (no review UI, `aggregateRating` excluded from JSON-LD) — not a change made during the rebrand, just confirmed still true.
 
 ---
 
@@ -518,7 +530,7 @@ These are the genuinely outstanding items. Items previously on this list that ha
 ### SEO / discoverability
 - Confirm sitemap is submitted to Google Search Console
 - Add `<lastmod>` dates to sitemap URLs
-- Add `/pages/profile.html` exclusion (or leave as not-indexed; it's already absent from sitemap, which is correct)
+- (Done July 2026) `/pages/profile.html` is moot now, the page was deleted entirely as part of the Warm Sage rebrand
 
 ### Code maintenance
 - Shared nav/footer components to eliminate copy-paste across HTML files
