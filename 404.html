@@ -14,23 +14,33 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --orange:       #C4622D;
-  --orange-light: #E07A48;
-  --orange-pale:  #F3DCC7;
-  --cream:        #FBF6EA;
-  --cream-dark:   #F3ECDB;
-  --charcoal:     #2B2420;
-  --gray:         #9B8C82;
-  --gray-light:   #D4C9C0;
-  --white:        #FFFFFF;
+  /* Warm Sage palette (matches assets/css/815local.css) */
+  --bg:#FBF6EA; --paper:#F3ECDB; --surface:#FFFFFF;
+  --ink:#2B2420; --ink-soft:#4A3F37; --muted:#7A6E62;
+  --orange:#C4622D; --orange-deep:#A44C1E; --orange-light:#E07A48; --orange-soft:#F3DCC7; --orange-pale:#F3DCC7;
+  --teal:#5B7A57; --teal-soft:#DCE7D6; --gold:#D7A23E;
+  --line:#EBE1CC;
+  /* legacy aliases kept so existing rules keep resolving */
+  --cream:#FBF6EA; --cream-dark:#F3ECDB;
+  --charcoal:#2B2420; --charcoal-mid:#4A3F37; --charcoal-light:#7A6E62;
+  --gray:#7A6E62; --gray-light:#EBE1CC; --white:#FFFFFF;
+  --shadow-sm:0 6px 18px rgba(43,36,32,.07);
+  --shadow-md:0 18px 44px rgba(43,36,32,.12);
+  --shadow-lg:0 30px 70px rgba(43,36,32,.18);
+  --r-lg:28px; --r-md:20px; --r-sm:14px; --r-pill:999px;
+  --radius:20px; --radius-sm:14px;
+  --maxw:1180px;
+  --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --hw:400; --ht:-0.01em;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: var(--cream);
-  color: var(--charcoal);
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -40,44 +50,70 @@ body {
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+
 /* NAV */
-nav {
-  background: var(--charcoal);
+#main-nav {
   position: sticky;
   top: 0;
   z-index: 100;
+  background: rgba(255,255,255,0.85);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
 
 .nav-inner {
   display: flex;
   align-items: center;
-  height: 80px;
-  padding: 0 32px;
-  max-width: 1240px;
-  margin: 0 auto;
+  height: 84px;
+  gap: 24px;
 }
+
+.nav-logo { flex-shrink: 0; }
 
 .nav-logo svg {
   height: 58px;
   width: auto;
+  display: block;
 }
 
 .nav-links {
   display: flex;
-  gap: 8px;
-  margin-left: 32px;
+  align-items: center;
+  gap: 30px;
+  margin-right: auto;
 }
 
 .nav-link {
-  font-size: 14px;
+  font-size: .95rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.7);
-  padding: 8px 16px;
-  border-radius: 100px;
-  transition: background 0.15s, color 0.15s;
+  color: var(--ink);
+  opacity: .75;
+  padding: 0;
+  border-radius: 0;
+  transition: opacity 0.15s, color 0.15s;
 }
 
-.nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.nav-link:hover { opacity: 1; background: transparent; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: var(--r-pill);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: .92rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary { background: var(--orange); color: #fff; }
+.btn-primary:hover { background: var(--orange-deep); }
 
 /* MAIN */
 main {
@@ -85,52 +121,58 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 32px;
+  padding: 120px 32px 130px;
   text-align: center;
 }
 
 .error-code {
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  font-size: 160px;
+  font-family: var(--serif);
+  font-size: clamp(5rem, 14vw, 9.5rem);
+  font-weight: var(--hw);
+  letter-spacing: var(--ht);
   color: var(--orange);
   line-height: 1;
-  margin-bottom: 8px;
-  text-shadow: 4px 4px 0 rgba(196,98,45,0.15);
+  margin-bottom: 10px;
+  opacity: .9;
 }
 
 .error-title {
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  font-size: 36px;
-  font-weight: 900;
-  color: var(--charcoal);
-  margin-bottom: 16px;
+  font-family: var(--serif);
+  font-size: clamp(2.1rem, 4vw, 3rem);
+  font-weight: var(--hw);
+  letter-spacing: var(--ht);
+  line-height: 1.15;
+  color: var(--ink);
+  max-width: 640px;
+  margin: 0 auto 18px;
 }
 
 .error-sub {
-  font-size: 16px;
-  color: var(--gray);
-  max-width: 420px;
-  margin: 0 auto 40px;
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 460px;
+  margin: 0 auto 36px;
   line-height: 1.7;
 }
 
 .btn-home {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   background: var(--orange);
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #fff;
+  font-family: var(--sans);
   font-weight: 700;
-  font-size: 15px;
-  padding: 14px 32px;
-  border-radius: 100px;
+  font-size: .92rem;
+  padding: 13px 26px;
+  border-radius: var(--r-pill);
   transition: background 0.15s, transform 0.15s;
 }
 
 .btn-home:hover {
-  background: var(--orange-light);
-  transform: translateY(-1px);
+  background: var(--orange-deep);
+  transform: translateY(-2px);
 }
 
 .quick-links {
@@ -142,56 +184,72 @@ main {
 }
 
 .quick-link {
-  font-size: 14px;
+  font-size: .85rem;
   font-weight: 600;
-  color: var(--orange);
-  border: 1.5px solid var(--orange-pale);
-  background: white;
-  padding: 8px 20px;
-  border-radius: 100px;
-  transition: background 0.15s, border-color 0.15s;
+  color: var(--ink-soft);
+  border: none;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  transition: color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
 .quick-link:hover {
-  background: var(--orange-pale);
-  border-color: var(--orange);
+  color: var(--orange);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 /* FOOTER */
-footer {
-  background: var(--charcoal);
-  color: rgba(255,255,255,0.5);
-  text-align: center;
-  padding: 24px 32px;
-  font-size: 13px;
-}
-
-footer a { color: var(--orange); }
+footer { background: var(--paper); border-top: 1px solid var(--line); padding: 64px 0 40px; }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 44px; text-align: left; }
+.footer-logo { height: 48px; width: auto; margin-bottom: 16px; }
+.footer-logo svg { height: 48px; width: auto; display: block; }
+.footer-tagline { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 260px; margin-bottom: 22px; }
+.footer-social { display: flex; gap: 10px; }
+.footer-social-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; box-shadow: var(--shadow-sm); }
+.footer-heading { font-family: var(--sans); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 18px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.footer-links li a { font-size: .9rem; color: var(--ink-soft); transition: color 0.15s; }
+.footer-links li a:hover { color: var(--orange); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 26px; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 12px; }
+.footer-copy { font-size: .82rem; color: var(--muted); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: .82rem; color: var(--muted); }
+.footer-legal a:hover { color: var(--orange); }
 
 @media (max-width: 900px) {
   .nav-logo svg { height: 48px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
 }
 
 @media (max-width: 600px) {
-  .error-code { font-size: 100px; }
-  .error-title { font-size: 26px; }
   .nav-links { display: none; }
+  .nav-inner { height: 72px; }
+  .container { padding: 0 20px; }
+  main { padding: 72px 20px 80px; }
+  .footer-grid { grid-template-columns: 1fr; }
 }
 </style>
   <link rel="stylesheet" href="/assets/css/815local.css">
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a href="/" class="nav-logo">
-      <svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg>
-    </a>
-    <div class="nav-links">
-      <a class="nav-link" href="/">Explore</a>
-      <a class="nav-link" href="/pages/directory.html">Browse</a>
-      <a class="nav-link" href="/pages/events.html">Events</a>
-      <a class="nav-link" href="/pages/submit/business.html">List Your Business</a>
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Explore</a>
+        <a class="nav-link" href="/pages/directory.html">Browse</a>
+        <a class="nav-link" href="/pages/events.html">Events</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="/pages/submit/business.html" class="btn btn-primary" style="font-size:.82rem;padding:10px 20px;">List Your Business</a>
+      </div>
     </div>
   </div>
 </nav>
@@ -212,7 +270,47 @@ footer a { color: var(--orange); }
 </main>
 
 <footer>
-  <p>&copy; 2025 815local. Made with love in the 815. &nbsp;·&nbsp; <a href="mailto:815local@gmail.com">Contact Us</a></p>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg></div>
+        <p class="footer-tagline">A local directory for Minooka, Channahon, Shorewood, and the wider 815.</p>
+        <div class="footer-social">
+          <div class="footer-social-btn">&#120143;</div>
+          <div class="footer-social-btn">&#128216;</div>
+          <div class="footer-social-btn">&#128248;</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Explore</div>
+        <ul class="footer-links">
+          <li><a href="/pages/directory.html?category=Food+%26+Drink">Food &amp; Drink</a></li>
+          <li><a href="/pages/directory.html?category=Home+Services">Home Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Community</div>
+        <ul class="footer-links">
+          <li><a href="/pages/events.html">Events Calendar</a></li>
+          <li><a href="/pages/blog.html">Community Blog</a></li>
+          <li><a href="/pages/deals.html">Local Deals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Business</div>
+        <ul class="footer-links">
+          <li><a href="/pages/submit/business.html">List Your Business</a></li>
+          <li><a href="/pages/advertise.html">Advertise</a></li>
+          <li><a href="/?signin=1">Business Owner Sign In</a></li>
+          <li><a href="mailto:815local@gmail.com">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 815local.com &middot; Proudly serving the 815</span>
+      <div class="footer-legal"><a href="/legal/privacy.html">Privacy</a><a href="/legal/terms.html">Terms</a></div>
+    </div>
+  </div>
 </footer>
 
 </body>
