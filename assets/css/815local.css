@@ -1,9 +1,9 @@
 /* ============================================================
-   815local shared design system — Warm Sage
+   815local shared design system, Warm Sage
    Display: Georgia serif · Text: system sans
    Linked by every page. Page-specific component CSS stays inline.
    This file loads AFTER each page's inline <style>, so its :root
-   wins for any variable name a page also declares — keep it in
+   wins for any variable name a page also declares, so keep it in
    sync with the per-page token values (see CLAUDE.md).
 
    Round 7: this file now carries the STRUCTURE of the Warm Sage
@@ -141,7 +141,7 @@ h1, h2, h3, h4, .display { font-family: var(--font-display); font-weight: var(--
 .tb-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 0 rgba(196,98,45,0.6); animation: pulse 2.2s infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(196,98,45,0.5); } 70% { box-shadow: 0 0 0 8px rgba(196,98,45,0); } 100% { box-shadow: 0 0 0 0 rgba(196,98,45,0); } }
 
-/* ── nav (light, translucent, 84px — the mockup topbar) ── */
+/* ── nav (light, translucent, 84px, the mockup topbar) ── */
 #main-nav, nav#main-nav {
   display: block; position: sticky; top: 0; z-index: 100;
   background: rgba(255,255,255,.85); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
@@ -166,7 +166,7 @@ h1, h2, h3, h4, .display { font-family: var(--font-display); font-weight: var(--
 #nav-user-menu #nav-user-name { color: var(--ink) !important; }
 #nav-user-menu img { border-color: var(--line) !important; }
 
-/* ── footer (paper, light — matches the mockup) ── */
+/* ── footer (paper, light, matches the mockup) ── */
 footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding: 64px 0 40px; border-top: 1px solid var(--line); }
 .foot-grid, .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 44px; }
 .foot-logo, .footer-logo { height: 48px; width: auto; margin-bottom: 14px; filter: none; }

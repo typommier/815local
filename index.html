@@ -141,7 +141,7 @@ button { font-family: inherit; cursor: pointer; }
 .tb-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 0 rgba(196,98,45,0.6); animation: pulse 2.2s infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(196,98,45,0.5); } 70% { box-shadow: 0 0 0 8px rgba(196,98,45,0); } 100% { box-shadow: 0 0 0 0 rgba(196,98,45,0); } }
 
-/* ── nav (light, 84px — mockup topbar) ── */
+/* ── nav (light, 84px, mockup topbar) ── */
 #main-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.85); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); transition: box-shadow var(--med), background var(--med); }
 #main-nav.scrolled { box-shadow: var(--shadow-sm); background: rgba(255,255,255,.94); }
 .nav-inner { display: flex; align-items: center; gap: 24px; height: 84px; }
@@ -413,6 +413,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
 .forgot-link:hover { text-decoration: underline; }
 </style>
 <link rel="stylesheet" href="/assets/css/815local.css">
+<noscript><style>.fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }</style></noscript>
 </head>
 <body>
 
@@ -718,6 +719,33 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
   </div>
 </footer>
 
+<!-- Scroll reveal. Isolated in its own script block on purpose: .fade-in sections
+     start at opacity:0, so if this ever fails to run the page renders blank below
+     the hero. Keeping it separate means a JS error anywhere else cannot take it
+     down, and every failure path here falls back to showing the content. -->
+<script>
+(function () {
+  var revealAll = function () {
+    var els = document.querySelectorAll('.fade-in');
+    for (var i = 0; i < els.length; i++) els[i].classList.add('visible');
+  };
+  try {
+    if (typeof IntersectionObserver !== 'function') { revealAll(); return; }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(function (el) { observer.observe(el); });
+  } catch (e) {
+    revealAll();
+  }
+})();
+</script>
+
 <script>
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "accentColor": "#C4622D",
@@ -770,17 +798,6 @@ window.addEventListener('message', e => {
   if (e.data?.type === '__deactivate_edit_mode') panel.style.display = 'none';
 });
 window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // Sticky nav shadow on scroll
 window.addEventListener('scroll', () => {
