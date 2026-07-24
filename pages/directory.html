@@ -419,6 +419,7 @@ let allBusinesses = [];
 let activeCategory = '';
 let activePrices = [];
 let activeTab = 'local';
+let activeTown = '';
 let viewMode = 'list';
 let lastResults = [];
 let leafletMap = null;
@@ -615,6 +616,7 @@ function applyFilters() {
     if (activeTab === 'chains' && !isChain) return false;
     if (activeTab === 'area'   && (isChain || !isArea)) return false;
     if (activeCategory && b.category !== activeCategory) return false;
+    if (activeTown && (b.city || '').trim().toLowerCase() !== activeTown.toLowerCase()) return false;
     if (activePrices.length && !activePrices.includes(b.price_range)) return false;
     if (openNow && isOpenNow(b.hours) !== true) return false;
     if (search) {
@@ -649,6 +651,7 @@ function renderActiveFilters() {
     chips.push(chipHtml(escapeHtml(activeTab === 'chains' ? 'Chains' : 'Around the 815'), 'clearFilterTab()'));
   }
   if (activeCategory) chips.push(chipHtml(escapeHtml(activeCategory), 'clearFilterCategory()'));
+  if (activeTown) chips.push(chipHtml(escapeHtml(activeTown), 'clearFilterTown()'));
   activePrices.forEach(p => chips.push(chipHtml(escapeHtml(p), `clearFilterPrice('${p}')`)));
   if (document.getElementById('open-now-check').checked) chips.push(chipHtml('Open now', 'clearFilterOpenNow()'));
   const q = document.getElementById('search-input').value.trim();
@@ -670,6 +673,10 @@ function clearFilterCategory() {
   const cd = document.getElementById('cat-display'); if (cd) cd.textContent = 'All Types';
   applyFilters(); syncUrl();
 }
+function clearFilterTown() {
+  activeTown = '';
+  applyFilters(); syncUrl();
+}
 function clearFilterPrice(p) {
   activePrices = activePrices.filter(x => x !== p);
   document.querySelectorAll('.price-btn').forEach(b => { if (b.dataset.price === p) b.classList.remove('active'); });
@@ -688,6 +695,7 @@ function syncUrl() {
   const params = new URLSearchParams();
   if (activeTab && activeTab !== 'local') params.set('tab', activeTab);
   if (activeCategory) params.set('category', activeCategory);
+  if (activeTown) params.set('town', activeTown);
   const q = document.getElementById('search-input').value.trim();
   if (q) params.set('search', q);
   const qs = params.toString();
@@ -721,6 +729,7 @@ function togglePrice(el) {
 
 function clearFilters() {
   activeCategory = '';
+  activeTown = '';
   activePrices = [];
   document.getElementById('open-now-check').checked = false;
   document.getElementById('search-input').value = '';
@@ -764,6 +773,12 @@ window.addEventListener('scroll', () => {
       activeCategory = cat;
       document.getElementById('cat-display').textContent = cat;
     }
+  }
+  // Only accept a town we actually cover, so a stray ?town= cannot silently
+  // filter the whole directory down to nothing.
+  const townParam = (params.get('town') || '').trim().toLowerCase();
+  if (HOME_TOWNS.has(townParam)) {
+    activeTown = townParam.charAt(0).toUpperCase() + townParam.slice(1);
   }
   if (search) {
     document.getElementById('search-input').value = search;
