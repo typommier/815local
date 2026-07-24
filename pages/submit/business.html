@@ -274,8 +274,8 @@ footer { background:var(--paper); border-top:1px solid var(--line); margin-top:6
 
           <div class="form-group" style="margin-top:16px;">
             <label class="form-label">Business Photo URL</label>
-            <input class="form-input" id="biz-image-url" type="url" placeholder="https://yourbusiness.com/photo.jpg or paste a Google/Yelp image link">
-            <div class="form-hint">Paste a direct link to a photo of your business. Use your website, Facebook, or Google Maps photo URL. You can also add this later.</div>
+            <input class="form-input" id="biz-image-url" type="url" placeholder="https://yourbusiness.com/photo.jpg">
+            <div class="form-hint">Needs to be a direct link to the image file itself, ending in .jpg, .png, or .webp. A link to your website, Facebook page, or Google Maps listing will not work. Right-click the photo and choose "Copy image address". You can also leave this blank and add it later.</div>
           </div>
 
           <div class="form-group">
@@ -481,6 +481,18 @@ function toggleClosed(day) {
   input.style.opacity = checked ? '0.4' : '1';
 }
 
+// A direct link to an image file, not a website/Facebook/Google Maps page.
+// Owners routinely paste the latter, which stores a URL that renders as a
+// broken image on their card, so it gets rejected at submit time instead.
+function isDirectImageUrl(url) {
+  try {
+    const path = new URL(url).pathname.toLowerCase();
+    return /\.(jpe?g|png|webp|gif|avif)$/.test(path);
+  } catch(e) {
+    return false;
+  }
+}
+
 function updateProgress() {
   const fields = ['biz-name','biz-category','biz-description','biz-address','biz-city','owner-name','owner-email'];
   const filled = fields.filter(id => document.getElementById(id)?.value?.trim()).length;
@@ -490,6 +502,14 @@ function updateProgress() {
 async function handleSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
+
+  const imageUrl = document.getElementById('biz-image-url').value.trim();
+  if (imageUrl && !isDirectImageUrl(imageUrl)) {
+    alert('That photo link points to a page, not an image file.\n\nIt needs to end in .jpg, .png, or .webp. Right-click your photo and choose "Copy image address", or leave the field blank and add a photo later.');
+    document.getElementById('biz-image-url').focus();
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = 'Submitting...';
 
@@ -517,7 +537,7 @@ async function handleSubmit(e) {
     phone:       document.getElementById('biz-phone').value.trim() || null,
     website:     document.getElementById('biz-website').value.trim().replace(/^https?:\/\//,'') || null,
     order_url:   document.getElementById('biz-order-url').value.trim() || null,
-    image_url:   document.getElementById('biz-image-url').value.trim() || null,
+    image_url:   imageUrl || null,
     hours,
     features,
     is_active:   false,
