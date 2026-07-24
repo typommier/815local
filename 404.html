@@ -10,28 +10,25 @@
 <meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta name="description" content="Oops! We couldn't find that page. Head back to the 815local directory to find local businesses, events, and deals.">
 <link rel="icon" type="image/png" href="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --orange:       #C4622D;
   --orange-light: #E07A48;
-  --orange-pale:  #F5E6DC;
-  --cream:        #F7F1E3;
-  --cream-dark:   #EDE4CF;
-  --charcoal:     #1E1B18;
+  --orange-pale:  #F3DCC7;
+  --cream:        #FBF6EA;
+  --cream-dark:   #F3ECDB;
+  --charcoal:     #2B2420;
   --gray:         #9B8C82;
   --gray-light:   #D4C9C0;
-  --white:        #FDFAF5;
+  --white:        #FFFFFF;
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background: var(--cream);
   color: var(--charcoal);
   min-height: 100vh;
@@ -60,10 +57,9 @@ nav {
   margin: 0 auto;
 }
 
-.nav-logo img {
-  height: 64px;
+.nav-logo svg {
+  height: 58px;
   width: auto;
-  filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35));
 }
 
 .nav-links {
@@ -94,7 +90,7 @@ main {
 }
 
 .error-code {
-  font-family: 'Space Grotesk', cursive;
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
   font-size: 160px;
   color: var(--orange);
   line-height: 1;
@@ -103,7 +99,7 @@ main {
 }
 
 .error-title {
-  font-family: 'Space Grotesk', serif;
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
   font-size: 36px;
   font-weight: 900;
   color: var(--charcoal);
@@ -124,7 +120,7 @@ main {
   gap: 8px;
   background: var(--orange);
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-size: 15px;
   padding: 14px 32px;
@@ -172,6 +168,10 @@ footer {
 
 footer a { color: var(--orange); }
 
+@media (max-width: 900px) {
+  .nav-logo svg { height: 48px; }
+}
+
 @media (max-width: 600px) {
   .error-code { font-size: 100px; }
   .error-title { font-size: 26px; }
@@ -185,7 +185,7 @@ footer a { color: var(--orange); }
 <nav>
   <div class="nav-inner">
     <a href="/" class="nav-logo">
-      <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+      <svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#FBF6EA">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg>
     </a>
     <div class="nav-links">
       <a class="nav-link" href="/">Explore</a>
