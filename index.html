@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>815local | Your Local Everything</title>
+<title>815local | Find what's good, right around here</title>
 <meta name="description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
-<meta property="og:title" content="815local | Your Local Everything">
+<meta property="og:title" content="815local | Find what's good, right around here">
 <meta property="og:description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://815local.com/">
 <meta property="og:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="815local | Your Local Everything">
+<meta name="twitter:title" content="815local | Find what's good, right around here">
 <meta name="twitter:description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
 <meta name="twitter:image" content="https://815local.com/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png">
 <meta property="og:site_name" content="815local">
@@ -176,6 +176,10 @@ button { font-family: inherit; cursor: pointer; }
 .search-seg svg { color: var(--orange); flex-shrink: 0; }
 .search-seg .s-lab { font-family: var(--sans); font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); display: block; }
 .search-seg .s-val { font-size: .95rem; font-weight: 600; color: var(--ink); }
+.search-seg input.s-val, .search-seg select.s-val { display: block; width: 100%; padding: 0; margin: 0; border: none; background: transparent; outline: none; font-family: var(--sans); }
+.search-seg input.s-val::placeholder { color: var(--ink-faint); font-weight: 500; }
+.search-seg select.s-val { -webkit-appearance: none; appearance: none; cursor: pointer; }
+.search-seg .s-lab { cursor: inherit; }
 .search-seg.grow { flex: 1; min-width: 0; }
 .search-go { padding: 0 24px; height: 46px; background: var(--orange); color: #fff; border: none; border-radius: var(--r-pill); font-weight: 700; font-size: .9rem; display: flex; align-items: center; gap: 8px; flex-shrink: 0; transition: transform var(--fast), box-shadow var(--fast); }
 .search-go:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -477,30 +481,35 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
       <div class="hero-left">
         <span class="eyebrow hero-eyebrow">Est. 2026 · The 815</span>
         <h1 class="hero-title">
-          Your local
-          <span class="line2"><span class="under"><em>everything.</em><svg viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M2 8 C 60 2, 120 2, 180 6 S 260 10, 298 4" fill="none" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/></svg></span></span>
+          Find what's good,
+          <span class="line2"><span class="under"><em>right around here.</em><svg viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M2 8 C 60 2, 120 2, 180 6 S 260 10, 298 4" fill="none" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/></svg></span></span>
         </h1>
         <p class="hero-sub">
-          Restaurants, services, shops, and events across Minooka, Channahon, and Shorewood. The whole 815, in one local directory.
+          A real, hyperlocal directory of businesses, events, and parks across Minooka, Channahon, &amp; Shorewood.
         </p>
 
-        <div class="searchbar">
-          <div class="search-seg grow" onclick="location.href='/pages/directory.html'">
+        <form class="searchbar" onsubmit="doHeroSearch(event)">
+          <div class="search-seg grow">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             <div>
-              <span class="s-lab">Find</span>
-              <span class="s-val">Pizza, plumbers, a new salon…</span>
+              <label class="s-lab" for="hero-q">Find</label>
+              <input class="s-val" id="hero-q" type="text" placeholder="Pizza, plumbers, salons…">
             </div>
           </div>
-          <div class="search-seg" style="min-width:150px;" onclick="location.href='/pages/directory.html'">
+          <div class="search-seg" style="min-width:150px;">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
             <div>
-              <span class="s-lab">Town</span>
-              <span class="s-val">All 3 towns</span>
+              <label class="s-lab" for="hero-town">Town</label>
+              <select class="s-val" id="hero-town">
+                <option value="">All 3 towns</option>
+                <option value="Minooka">Minooka</option>
+                <option value="Channahon">Channahon</option>
+                <option value="Shorewood">Shorewood</option>
+              </select>
             </div>
           </div>
-          <button class="search-go" type="button" onclick="location.href='/pages/directory.html'">Search <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        </div>
+          <button class="search-go" type="submit">Search <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </form>
 
         <div class="hero-actions">
           <a class="btn btn-primary" href="/pages/directory.html">Browse Businesses</a>
@@ -649,13 +658,13 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
   <div class="container">
     <div class="news-inner">
       <div>
-        <span class="eyebrow on-dark" style="color:var(--ink);">📬 The weekly</span>
-        <h2 class="news-title">Don't be the last to know.</h2>
-        <p class="news-sub">Local deals, weekend events, and neighborhood happenings, straight to your inbox. No spam, just your neighborhood.</p>
+        <span class="eyebrow on-dark">📬 Newsletter signup</span>
+        <h2 class="news-title">Subscribe to the weekly 815local email.</h2>
+        <p class="news-sub">Every week: weekend events, new business openings, and neighborhood happenings across Minooka, Channahon, and Shorewood. Free, no spam, unsubscribe anytime.</p>
       </div>
       <form class="news-form" onsubmit="doNewsletterSubscribe(event)">
         <label for="newsletter-email" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;">Email address</label>
-        <input class="news-input" id="newsletter-email" type="email" placeholder="you@neighborhood.com" aria-label="Email address">
+        <input class="news-input" id="newsletter-email" type="email" placeholder="Enter your email to subscribe" aria-label="Email address">
         <button class="news-btn" id="newsletter-btn" type="submit">Subscribe →</button>
         <div id="newsletter-msg" style="font-size:13px;margin-top:6px;min-height:18px;flex-basis:100%;color:var(--bone);"></div>
       </form>
@@ -788,6 +797,18 @@ function filterCat(el) {
 
 function heroTagSearch(term) {
   window.location.href = '/pages/directory.html?q=' + encodeURIComponent(term);
+}
+
+// Hero search bar. Hands both fields off to the directory, which reads ?q= and ?town=.
+function doHeroSearch(e) {
+  e.preventDefault();
+  const q = document.getElementById('hero-q').value.trim();
+  const town = document.getElementById('hero-town').value;
+  const params = new URLSearchParams();
+  if (q) params.set('q', q);
+  if (town) params.set('town', town);
+  const qs = params.toString();
+  window.location.href = '/pages/directory.html' + (qs ? '?' + qs : '');
 }
 
 // Edit-mode bridge (no-op if panel absent)
