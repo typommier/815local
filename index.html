@@ -293,7 +293,10 @@ button { font-family: inherit; cursor: pointer; }
 .ev-dow { font-family: var(--sans); font-size: .68rem; color: var(--ink-faint); margin-left: auto; }
 
 /* ── newsletter (kept prominent, restyled to the mockup) ── */
-.news { background: var(--bg); color: var(--ink); position: relative; overflow: hidden; }
+/* scroll-margin keeps the sticky nav from covering the block when someone
+   arrives on the /newsletter deep link. */
+.news { background: var(--bg); color: var(--ink); position: relative; overflow: hidden; scroll-margin-top: 88px; }
+.news-input.news-input-cue { box-shadow: 0 0 0 3px var(--orange), var(--shadow-sm); }
 .news::before { content: none; }
 .news-inner { display: flex; align-items: center; justify-content: space-between; gap: 48px; position: relative; background: var(--ink); color: var(--bg); border-radius: var(--r-lg); padding: 52px 48px; box-shadow: var(--shadow-md); }
 .news-title { font-family: var(--serif); font-weight: var(--hw); font-size: clamp(1.7rem, 3.2vw, 2.2rem); line-height: 1.15; letter-spacing: var(--ht); margin-bottom: 12px; color: var(--bg); }
@@ -1433,6 +1436,26 @@ async function doNewsletterSubscribe(e) {
     msg.textContent = "You're in! We'll keep you posted.";
   }
 }
+
+// ── NEWSLETTER DEEP LINK (/newsletter or /#newsletter) ──
+// The section starts at opacity:0 until the scroll-reveal observer fires, so
+// reveal it directly, then scroll and put the cursor in the email field.
+(function () {
+  function focusNewsletter() {
+    const section = document.getElementById('newsletter');
+    const input   = document.getElementById('newsletter-email');
+    if (!section || !input) return;
+    section.classList.add('visible');
+    section.scrollIntoView({ block: 'center' });
+    input.focus({ preventScroll: true });
+    input.classList.add('news-input-cue');
+    setTimeout(function () { input.classList.remove('news-input-cue'); }, 2000);
+  }
+  if (window.location.hash === '#newsletter') setTimeout(focusNewsletter, 60);
+  window.addEventListener('hashchange', function () {
+    if (window.location.hash === '#newsletter') focusNewsletter();
+  });
+})();
 
 // ── CHECK SESSION ON LOAD ──
 (async function() {
