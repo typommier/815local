@@ -20,66 +20,108 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --orange: #C4622D;
-  --orange-pale: #F3DCC7;
-  --cream: #FBF6EA;
-  --cream-dark: #F3ECDB;
-  --charcoal: #2B2420;
-  --charcoal-mid: #4A3F37;
-  --gray: #9B8C82;
-  --gray-light: #D4C9C0;
-  --white: #FFFFFF;
+  /* Warm Sage palette (matches assets/css/815local.css) */
+  --bg:#FBF6EA; --paper:#F3ECDB; --surface:#FFFFFF;
+  --ink:#2B2420; --ink-soft:#4A3F37; --muted:#7A6E62;
+  --orange:#C4622D; --orange-deep:#A44C1E; --orange-light:#E07A48; --orange-soft:#F3DCC7; --orange-pale:#F3DCC7;
+  --teal:#5B7A57; --teal-soft:#DCE7D6; --gold:#D7A23E;
+  --line:#EBE1CC;
+  /* legacy aliases kept so existing rules keep resolving */
+  --cream:#FBF6EA; --cream-dark:#F3ECDB;
+  --charcoal:#2B2420; --charcoal-mid:#4A3F37; --charcoal-light:#7A6E62;
+  --gray:#7A6E62; --gray-light:#EBE1CC; --white:#FFFFFF;
+  --shadow-sm:0 6px 18px rgba(43,36,32,.07);
+  --shadow-md:0 18px 44px rgba(43,36,32,.12);
+  --shadow-lg:0 30px 70px rgba(43,36,32,.18);
+  --r-lg:28px; --r-md:20px; --r-sm:14px; --r-pill:999px;
+  --radius:20px; --radius-sm:14px;
+  --maxw:1180px;
+  --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --hw:400; --ht:-0.01em;
 }
 html { scroll-behavior: smooth; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--cream); color: var(--charcoal); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
 a { color: var(--orange); text-decoration: none; }
 a:hover { text-decoration: underline; }
 img { display: block; max-width: 100%; }
 
-nav { background: var(--charcoal); position: sticky; top: 0; z-index: 100; }
-.nav-inner { display: flex; align-items: center; height: 80px; padding: 0 32px; max-width: 1240px; margin: 0 auto; }
-.nav-logo svg { height: 58px; width: auto; }
-.nav-links { display: flex; gap: 4px; margin-left: 32px; }
-.nav-link { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.7); padding: 8px 16px; border-radius: 100px; transition: background 0.15s, color 0.15s; }
-.nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; text-decoration: none; }
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; border-radius: var(--r-pill); font-family: var(--sans); font-weight: 700; font-size: .92rem; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; }
+.btn:hover { text-decoration: none; }
+.btn-primary { background: var(--orange); color: #fff; }
+.btn-primary:hover { background: var(--orange-deep); }
 
-.page-hero { background: var(--charcoal); padding: 56px 32px 48px; text-align: center; }
-.page-hero h1 { font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif; font-size: 42px; font-weight: 700; color: white; margin-bottom: 8px; }
-.page-hero p { color: rgba(255,255,255,0.5); font-size: 14px; }
+#main-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.85); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.nav-inner { display: flex; align-items: center; height: 84px; gap: 24px; }
+.nav-logo { flex-shrink: 0; }
+.nav-logo svg { height: 58px; width: auto; display: block; }
+.nav-links { display: flex; align-items: center; gap: 30px; margin-right: auto; }
+.nav-link { padding: 0; font-size: .95rem; font-weight: 600; color: var(--ink); opacity: .75; border-radius: 0; transition: opacity 0.15s, color 0.15s; }
+.nav-link:hover { opacity: 1; background: transparent; text-decoration: none; }
+.nav-link.active { opacity: 1; color: var(--orange); background: transparent; }
 
-.content-wrap { max-width: 720px; margin: 0 auto; padding: 56px 32px 80px; }
-h2 { font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif; font-size: 22px; font-weight: 700; color: var(--charcoal); margin: 40px 0 12px; }
+.page-hero { background: transparent; padding: 56px 32px 8px; text-align: center; }
+.page-hero h1 { font-family: var(--serif); font-size: clamp(2.1rem, 4vw, 3rem); font-weight: var(--hw); letter-spacing: var(--ht); color: var(--ink); margin-bottom: 10px; line-height: 1.15; }
+.page-hero p { color: var(--muted); font-size: .85rem; }
+
+.content-wrap { max-width: 720px; margin: 0 auto; padding: 40px 32px 80px; }
+h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: var(--hw); letter-spacing: var(--ht); color: var(--ink); margin: 42px 0 12px; }
 h2:first-child { margin-top: 0; }
-p { margin-bottom: 16px; color: var(--charcoal-mid); font-size: 15px; }
+p { margin-bottom: 16px; color: var(--muted); font-size: .98rem; line-height: 1.7; }
 ul { margin: 0 0 16px 20px; }
-ul li { color: var(--charcoal-mid); font-size: 15px; margin-bottom: 6px; }
+ul li { color: var(--muted); font-size: .98rem; line-height: 1.7; margin-bottom: 8px; }
+strong { color: var(--ink-soft); font-weight: 700; }
 
-footer { background: var(--charcoal); color: rgba(255,255,255,0.5); text-align: center; padding: 24px 32px; font-size: 13px; }
-footer a { color: var(--orange); }
+footer { background: var(--paper); border-top: 1px solid var(--line); margin-top: 60px; padding: 64px 0 40px; }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 44px; }
+.footer-logo { height: 48px; width: auto; margin-bottom: 16px; }
+.footer-logo svg { height: 48px; width: auto; display: block; }
+.footer-tagline { font-size: .88rem; color: var(--muted); line-height: 1.7; max-width: 260px; margin-bottom: 22px; }
+.footer-social { display: flex; gap: 10px; }
+.footer-social-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; box-shadow: var(--shadow-sm); }
+.footer-heading { font-family: var(--sans); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 18px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.footer-links li { color: var(--muted); font-size: .9rem; margin-bottom: 0; }
+.footer-links li a { font-size: .9rem; color: var(--ink-soft); transition: color 0.15s; }
+.footer-links li a:hover { color: var(--orange); text-decoration: none; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 26px; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 12px; }
+.footer-copy { font-size: .82rem; color: var(--muted); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: .82rem; color: var(--muted); }
+.footer-legal a:hover { color: var(--orange); text-decoration: none; }
 
 @media (max-width: 900px) {
   .nav-logo svg { height: 48px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
 }
 
 @media (max-width: 600px) {
   .nav-links { display: none; }
-  .page-hero h1 { font-size: 28px; }
+  .nav-inner { height: 72px; }
+  .container { padding: 0 20px; }
+  .content-wrap { padding: 32px 20px 60px; }
+  .footer-grid { grid-template-columns: 1fr; }
 }
 </style>
   <link rel="stylesheet" href="/assets/css/815local.css">
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a href="/" class="nav-logo">
-      <svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#FBF6EA">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg>
-    </a>
-    <div class="nav-links">
-      <a class="nav-link" href="/">Explore</a>
-      <a class="nav-link" href="/pages/directory.html">Browse</a>
-      <a class="nav-link" href="/pages/events.html">Events</a>
-      <a class="nav-link" href="/pages/submit/business.html">List Your Business</a>
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Explore</a>
+        <a class="nav-link" href="/pages/directory.html">Browse</a>
+        <a class="nav-link" href="/pages/events.html">Events</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="/pages/submit/business.html" class="btn btn-primary" style="font-size:.82rem;padding:10px 20px;">List Your Business</a>
+      </div>
     </div>
   </div>
 </nav>
@@ -132,7 +174,47 @@ footer a { color: var(--orange); }
 </div>
 
 <footer>
-  <p>&copy; 2025 815local &nbsp;·&nbsp; <a href="/legal/privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="/legal/terms.html">Terms</a> &nbsp;·&nbsp; <a href="mailto:815local@gmail.com">Contact Us</a></p>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg></div>
+        <p class="footer-tagline">A local directory for Minooka, Channahon, Shorewood, and the wider 815.</p>
+        <div class="footer-social">
+          <div class="footer-social-btn">&#120143;</div>
+          <div class="footer-social-btn">&#128216;</div>
+          <div class="footer-social-btn">&#128248;</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-heading">Explore</div>
+        <ul class="footer-links">
+          <li><a href="/pages/directory.html?category=Food+%26+Drink">Food &amp; Drink</a></li>
+          <li><a href="/pages/directory.html?category=Home+Services">Home Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Community</div>
+        <ul class="footer-links">
+          <li><a href="/pages/events.html">Events Calendar</a></li>
+          <li><a href="/pages/blog.html">Community Blog</a></li>
+          <li><a href="/pages/deals.html">Local Deals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Business</div>
+        <ul class="footer-links">
+          <li><a href="/pages/submit/business.html">List Your Business</a></li>
+          <li><a href="/pages/advertise.html">Advertise</a></li>
+          <li><a href="/?signin=1">Business Owner Sign In</a></li>
+          <li><a href="mailto:815local@gmail.com">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 815local.com &middot; Proudly serving the 815</span>
+      <div class="footer-legal"><a href="/legal/privacy.html">Privacy</a><a href="/legal/terms.html">Terms</a></div>
+    </div>
+  </div>
 </footer>
 
 </body>
