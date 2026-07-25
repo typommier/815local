@@ -499,14 +499,66 @@ on the concierge project). Run the offline suite after any edit to `logic.ts`.
 
 ---
 
-## Current state snapshot (May 25, 2026)
+## Weekly submission queue routine
 
-- **117 active businesses** (74 Minooka, 22 Channahon, 16 Shorewood, 5 around the 815)
-- **86 locally owned, 28 chains, 3 unclassified**
-- **6 organic reviews** (none flagged)
-- **6 newsletter subscribers**, 1 approved business claim
-- **8 upcoming events**, no pending events
-- **23 businesses missing photos**, 13 missing phones, 27 missing websites
+Runs automatically once a week (Monday 8am Central). Owner-submitted
+businesses land in `businesses` with `is_active = false` via
+`pages/submit/business.html`. The job triages and **preps** that queue, then
+reports. It does **not** publish on its own, because judging whether a
+submission is a real local business is a call Ty makes. In the first run,
+2 of 11 submissions were out-of-area SEO spam that would have gone live
+under an auto-publish rule.
+
+What the routine does each week:
+
+1. Pull every `is_active IS NOT TRUE` row and separate genuine form
+   submissions from import batches. Rows sharing one exact `created_at`
+   timestamp with a `google_place_id` and no description are an import, not
+   submissions. Don't treat them as a review queue.
+2. Check each submission against the inclusion rules (core towns, or an 815
+   town serving the core area). Flag out-of-area entries rather than
+   publishing them. Nationwide firms with a token local address and generic
+   marketing copy are the common spam shape.
+3. Check for duplicates against active listings by normalized phone and by
+   name, and for the same business submitted twice. Merge the useful fields
+   into the surviving row and delete the redundant one. Owner-voice copy
+   belongs in `story`, not on top of a factual `description`.
+4. Normalize before publishing:
+   - **Hours** must match `H:MM AM/PM` exactly (`9:00 AM - 5:00 PM`), with
+     spaces around the hyphen. `to24h`/`parseHoursRange` in
+     `pages/business.html` are strict, and owner-typed values like `8-5`,
+     `10am-6pm`, or tab separators silently break the open/closed badge and
+     the schema.org markup. Never invent hours: all-blank days already fall
+     back to "By appointment, contact directly for hours".
+   - **`image_url` must be a direct image file.** Owners paste website,
+     Facebook, and Google Maps links, which render as a broken image. Null
+     them. If the field holds the business's actual website and `website` is
+     empty, move it over. The form now validates this at submit time.
+   - City casing and stray text (`SHOREWOOD`, `Wilmington Illinois`, a
+     comma-separated list of towns), phone to `(815) 555-1234`, websites bare
+     and lowercase, and no `Other` category (pick a real one).
+5. Check the other queues too: `events`, `deals`, `claim_requests`. Verify
+   event dates are still in the future before suggesting anything go live.
+6. Refresh the snapshot below from the DB and report what needs a decision.
+
+## Current state snapshot (July 25, 2026)
+
+Refreshed weekly by the submission-queue routine (see below). Numbers come
+straight from the DB, don't hand-edit them.
+
+- **199 active businesses** (113 Minooka, 57 Channahon, 18 Shorewood, 11 around the 815)
+- **163 locally owned, 36 chains, 0 unclassified**
+- **13 inactive rows** in the queue: 11 are a paused Google Places import of
+  gas stations and auto shops (all created in one batch June 15, no
+  descriptions, and they use a `Gas & Convenience` category that has no pill
+  in `pages/directory.html`, so they'd be unreachable by category filter if
+  published as-is). The other 2 are out-of-area submissions held deliberately.
+- **11 organic reviews** (none flagged)
+- **19 newsletter subscribers**, 1 approved business claim
+- **5 upcoming events**. 5 inactive events are a stale May 1 import that has
+  already expired, not a pending-review queue.
+- **65 businesses missing photos** (63 of them locally owned), 19 missing
+  phones, 70 missing websites
 - **No active deals**
 
 ---
@@ -516,14 +568,17 @@ on the concierge project). Run the offline suite after any edit to `logic.ts`.
 These are the genuinely outstanding items. Items previously on this list that have been quietly completed (Submit Business form, meta/OG tags, 404 page, "Serves the 815" badge) are off.
 
 ### Data quality
-- Fill missing photos for the 20 local businesses that lack them (chains less urgent since they're not on the homepage anyway)
-- Fill missing phone numbers (13)
-- Resolve the 3 businesses with `is_locally_owned IS NULL` (should be classified one way or the other)
+- Fill missing photos for the 63 local businesses that lack them (chains less urgent since they're not on the homepage anyway)
+- Fill missing phone numbers (19)
+- Decide what to do with the 11-row paused `Gas & Convenience` import (see
+  the snapshot above): either finish it (descriptions + a category pill) or
+  drop it
+- (Done July 2026) `is_locally_owned IS NULL` is resolved, 0 rows remain
 - (Done July 2026) Verified Taco Fixx is in the DB (both the main `businesses`
   data and the concierge `listings` table, Minooka, with real hours)
 
 ### Growth
-- Scan Shorewood for missing additions (only 16 businesses vs. Minooka's 74)
+- Scan Shorewood for missing additions (only 18 businesses vs. Minooka's 113)
 - Seed reviews from friends/family to push above 10
 - Build up event and deal listings
 
