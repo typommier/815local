@@ -156,7 +156,7 @@ h1, h2, h3, h4, .display { font-family: var(--font-display); font-weight: var(--
 .nav-link { font-family: var(--font-text); font-size: .95rem; font-weight: 600; letter-spacing: 0; color: var(--ink); opacity: .75; padding: 0; border-radius: 0; background: none; transition: opacity var(--fast), color var(--fast); position: relative; }
 .nav-link:hover { opacity: 1; color: var(--orange); background: none; }
 .nav-link.active { opacity: 1; color: var(--orange); background: transparent; }
-.nav-search { display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 10px 18px; min-width: 200px; cursor: pointer; box-shadow: var(--shadow-sm); transition: box-shadow var(--fast), border-color var(--fast); }
+.nav-search { display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 10px 18px; min-width: 200px; cursor: text; box-shadow: var(--shadow-sm); transition: box-shadow var(--fast), border-color var(--fast); }
 .nav-search:hover { border-color: var(--line); box-shadow: var(--shadow-md); }
 .nav-search svg { opacity: 0.55; flex-shrink: 0; color: var(--ink); }
 .nav-search span { font-family: var(--font-text); font-size: .85rem; color: var(--ink-faint); }
@@ -225,7 +225,10 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
 
 /* ── shared chrome responsive ── */
 @media (max-width: 1024px) {
-  #main-nav .nav-search, .nav-search { display: none; }
+  /* Hide the wrapper, not the field: the homepage nav search is a live form
+     inside .nav-search-wrap, and hiding only the field would leave its
+     suggestion dropdown active on tablet/mobile. */
+  #main-nav .nav-search-wrap, .nav-search-wrap { display: none; }
   #main-nav .nav-inner, .nav-inner { gap: 18px; }
   .nav-links { gap: 20px; }
   .foot-grid, .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
