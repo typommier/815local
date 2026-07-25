@@ -151,16 +151,44 @@ button { font-family: inherit; cursor: pointer; }
 .nav-link { font-family: var(--sans); font-size: .95rem; font-weight: 600; color: var(--ink); opacity: .75; transition: opacity var(--fast), color var(--fast); position: relative; }
 .nav-link:hover { opacity: 1; color: var(--orange); }
 .nav-link.active { opacity: 1; color: var(--orange); }
-.nav-search { display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 10px 18px; min-width: 200px; cursor: pointer; box-shadow: var(--shadow-sm); transition: box-shadow var(--fast); }
+.nav-search { display: flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 10px 18px; min-width: 200px; cursor: text; box-shadow: var(--shadow-sm); transition: box-shadow var(--fast); }
 .nav-search:hover { box-shadow: var(--shadow-md); }
 .nav-search svg { opacity: 0.55; flex-shrink: 0; }
 .nav-search span { font-family: var(--sans); font-size: .85rem; color: var(--ink-faint); }
+.nav-search input { flex: 1; width: 100%; min-width: 0; padding: 0; margin: 0; border: none; background: transparent; outline: none; font-family: var(--sans); font-size: .85rem; color: var(--ink); }
+.nav-search input::placeholder { color: var(--ink-faint); }
+.nav-clear { flex-shrink: 0; padding: 0; width: 18px; height: 18px; line-height: 1; border: none; background: none; cursor: pointer; font-size: 17px; color: var(--ink-faint); transition: color var(--fast); }
+.nav-clear:hover { color: var(--ink); }
+.nav-clear[hidden] { display: none; }
 .nav-actions { display: flex; align-items: center; gap: 14px; }
+
+/* ── search suggestions (nav + hero share one engine) ── */
+.nav-search-wrap, .sg-wrap { position: relative; }
+.hero-sg-wrap { max-width: 520px; }
+.sg-panel { display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow-lg); overflow-x: hidden; overflow-y: auto; z-index: 60; }
+.sg-panel.open { display: block; }
+/* Wider than the pill it hangs off, anchored to the pill's right edge so it
+   cannot run off the viewport. */
+#nav-sg { max-height: 70vh; left: auto; right: 0; min-width: 340px; }
+#hero-sg { max-height: 60vh; z-index: 30; }
+.sg-row { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; border-bottom: 1px solid var(--line-soft); text-align: left; }
+.sg-row:last-child { border-bottom: none; }
+.sg-row:hover, .sg-row.hl { background: var(--paper); }
+.sg-ico { flex-shrink: 0; font-size: 1.05rem; width: 22px; text-align: center; }
+.sg-body { min-width: 0; flex: 1; display: block; }
+.sg-name { display: block; font-family: var(--sans); font-size: .88rem; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sg-name mark { background: var(--orange-soft); color: var(--ink); padding: 0 1px; border-radius: 3px; }
+.sg-meta { display: block; font-family: var(--sans); font-size: .74rem; color: var(--ink-faint); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sg-open { color: var(--river); font-weight: 700; }
+.sg-note { font-family: var(--sans); font-size: .82rem; color: var(--ink-faint); padding: 14px 16px; }
+.sg-foot { background: var(--paper-3); font-family: var(--sans); font-size: .8rem; font-weight: 700; color: var(--orange); border-bottom: none; }
 .nav-signin { font-family: var(--sans); font-size: .9rem; font-weight: 700; color: var(--ink); opacity: .8; transition: opacity var(--fast); cursor: pointer; }
 .nav-signin:hover { opacity: 1; color: var(--orange); }
 
 /* ── hero ── */
-.hero { position: relative; padding: 76px 0 40px; overflow: hidden; background: var(--bg); }
+/* overflow-x only: a plain `overflow: hidden` clipped the hero search dropdown.
+   Nothing in the hero bleeds horizontally, so `clip` here is belt-and-braces. */
+.hero { position: relative; padding: 76px 0 40px; overflow-x: clip; background: var(--bg); }
 .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding-bottom: 0; }
 .hero-eyebrow { margin-bottom: 12px; }
 .hero-title { font-family: var(--serif); font-weight: var(--hw); font-size: clamp(2.4rem, 4.4vw, 3.6rem); line-height: 1.08; letter-spacing: var(--ht); margin-bottom: 1.1rem; }
@@ -345,7 +373,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1fr; gap: 36px; }
   .hero-visual { order: -1; }
-  .nav-search { display: none; }
+  .nav-search-wrap { display: none; }
   .nav-inner { gap: 18px; }
   .nav-links { gap: 20px; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -363,7 +391,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
   .container { padding: 0 22px; }
   .section { padding: 44px 0; }
   .topbar-right .tb-time, .topbar-left .tb-badge { display: none; }
-  .nav-links, .nav-search { display: none; }
+  .nav-links, .nav-search-wrap { display: none; }
   .nav-inner { height: 72px; gap: 14px; }
   .hero { padding: 40px 0 24px; }
   .searchbar { flex-direction: column; border-radius: var(--r-md); align-items: stretch; padding: 10px; }
@@ -454,10 +482,14 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
         <a class="nav-link" href="/pages/blog.html">Blog</a>
         <a class="nav-link" href="/pages/about.html">About</a>
       </div>
-      <a class="nav-search" href="/pages/directory.html" aria-label="Search the directory">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <span>Search the 815…</span>
-      </a>
+      <div class="nav-search-wrap sg-wrap">
+        <form class="nav-search" role="search" onsubmit="doNavSearch(event)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="nav-q" type="text" autocomplete="off" placeholder="Search the 815…" aria-label="Search the directory" role="combobox" aria-expanded="false" aria-controls="nav-sg" aria-autocomplete="list" oninput="sgInput('nav')" onfocus="sgInput('nav')" onclick="sgInput('nav')" onkeydown="sgKey(event,'nav')">
+          <button type="button" class="nav-clear" aria-label="Clear search" onclick="sgClear('nav')" hidden>&times;</button>
+        </form>
+        <div class="sg-panel" id="nav-sg" role="listbox" aria-label="Search suggestions"></div>
+      </div>
       <div class="nav-actions">
         <div id="nav-user-menu" style="display:none;position:relative;">
           <div onclick="toggleUserDropdown()" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
@@ -491,12 +523,13 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
           A real, hyperlocal directory of businesses, events, and parks across Minooka, Channahon, &amp; Shorewood.
         </p>
 
+        <div class="sg-wrap hero-sg-wrap">
         <form class="searchbar" onsubmit="doHeroSearch(event)">
           <div class="search-seg grow">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             <div>
               <label class="s-lab" for="hero-q">Find</label>
-              <input class="s-val" id="hero-q" type="text" placeholder="Pizza, plumbers, salons…">
+              <input class="s-val" id="hero-q" type="text" autocomplete="off" placeholder="Pizza, plumbers, salons…" role="combobox" aria-expanded="false" aria-controls="hero-sg" aria-autocomplete="list" oninput="sgInput('hero')" onfocus="sgInput('hero')" onclick="sgInput('hero')" onkeydown="sgKey(event,'hero')">
             </div>
           </div>
           <div class="search-seg" style="min-width:150px;">
@@ -513,6 +546,8 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
           </div>
           <button class="search-go" type="submit">Search <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         </form>
+        <div class="sg-panel" id="hero-sg" role="listbox" aria-label="Search suggestions"></div>
+        </div>
 
         <div class="hero-actions">
           <a class="btn btn-primary" href="/pages/directory.html">Browse Businesses</a>
@@ -581,10 +616,13 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
     </div>
     <div class="cat-grid">
       <div class="cat" data-cat="Food & Drink" onclick="filterCat(this)"><div class="cat-ico" style="background:#FBEDDF;">🍔</div><div><div class="cat-name">Food &amp; Drink</div><div class="cat-count" data-category="Food & Drink">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Professional Services" onclick="filterCat(this)"><div class="cat-ico" style="background:#E7EDF3;">💼</div><div><div class="cat-name">Professional Services</div><div class="cat-count" data-category="Professional Services">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Home Services" onclick="filterCat(this)"><div class="cat-ico" style="background:#EAE6F0;">🔧</div><div><div class="cat-name">Home Services</div><div class="cat-count" data-category="Home Services">… places</div></div><span class="cat-arrow">→</span></div>
       <div class="cat" data-cat="Health & Wellness" onclick="filterCat(this)"><div class="cat-ico" style="background:#E4EFE9;">💆</div><div><div class="cat-name">Health &amp; Wellness</div><div class="cat-count" data-category="Health & Wellness">… places</div></div><span class="cat-arrow">→</span></div>
       <div class="cat" data-cat="Retail & Shops" onclick="filterCat(this)"><div class="cat-ico" style="background:#F4E9DA;">🛍️</div><div><div class="cat-name">Retail &amp; Shops</div><div class="cat-count" data-category="Retail & Shops">… places</div></div><span class="cat-arrow">→</span></div>
-      <div class="cat" data-cat="Home Services" onclick="filterCat(this)"><div class="cat-ico" style="background:#EAE6F0;">🔧</div><div><div class="cat-name">Home Services</div><div class="cat-count" data-category="Home Services">… places</div></div><span class="cat-arrow">→</span></div>
-      <div class="cat" data-cat="Arts & Events" onclick="filterCat(this)"><div class="cat-ico" style="background:#FBEFDC;">🎭</div><div><div class="cat-name">Arts &amp; Events</div><div class="cat-count" data-category="Arts & Events">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Beauty & Salons" onclick="filterCat(this)"><div class="cat-ico" style="background:#F7E6EA;">💇</div><div><div class="cat-name">Beauty &amp; Salons</div><div class="cat-count" data-category="Beauty & Salons">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Kids & Family" onclick="filterCat(this)"><div class="cat-ico" style="background:#FBEFDC;">🧸</div><div><div class="cat-name">Kids &amp; Family</div><div class="cat-count" data-category="Kids & Family">… places</div></div><span class="cat-arrow">→</span></div>
+      <div class="cat" data-cat="Parks & Outdoor" onclick="filterCat(this)"><div class="cat-ico" style="background:#E3EEE2;">🌳</div><div><div class="cat-name">Parks &amp; Outdoor</div><div class="cat-count" data-category="Parks & Outdoor">… places</div></div><span class="cat-arrow">→</span></div>
     </div>
   </div>
 </section>
@@ -882,6 +920,282 @@ if (window.location.hash) {
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/js/util.js"></script>
+
+<!-- ══════════ NAV + HERO SEARCH SUGGESTIONS ══════════ -->
+<script id="search-suggest">
+// One engine, two mounts (the nav pill and the hero searchbar). It filters the
+// business rows initHomepage() already fetched, so there are no extra queries.
+// null means "not fetched yet"; [] would mean "fetched, and empty".
+window.__allBiz = null;
+
+const catEmoji = { 'Food & Drink':'🍔','Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️','Home Services':'🔧','Arts & Events':'🎭','Professional Services':'💼','Kids & Family':'🧸','Parks & Outdoor':'🌳','Storage':'📦','Real Estate':'🏠','Body Art':'🎨','Lodging':'🛏️','Car Wash':'🚗' };
+
+// ── open-now from real hours JSONB (also used by the homepage open-now stat) ──
+function parseClock(s) {
+  const m = (s||'').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!m) return null;
+  let h = parseInt(m[1],10) % 12;
+  if (/PM/i.test(m[3])) h += 12;
+  return h * 60 + parseInt(m[2],10);
+}
+function isOpenNow(hours) {
+  if (!hours || typeof hours !== 'object') return false;
+  const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  const now = new Date();
+  const v = hours[days[now.getDay()]];
+  if (!v || /closed|appointment/i.test(v)) return false;
+  const parts = String(v).split(/\s*[-–—]\s*/);
+  if (parts.length < 2) return false;
+  const open = parseClock(parts[0]); const close = parseClock(parts[1]);
+  if (open === null || close === null) return false;
+  const cur = now.getHours() * 60 + now.getMinutes();
+  return close <= open ? (cur >= open || cur < close) : (cur >= open && cur < close);
+}
+
+const SG_MIN = 2;      // characters before we bother suggesting
+const SG_MAX_BIZ = 6;
+const SG_MAX_CATS = 2;
+
+const SG = {
+  nav:  { input: 'nav-q',  panel: 'nav-sg',  hl: -1, waiting: false },
+  hero: { input: 'hero-q', panel: 'hero-sg', hl: -1, waiting: false }
+};
+
+function sgEls(key) {
+  const c = SG[key];
+  if (!c) return null;
+  const input = document.getElementById(c.input);
+  const panel = document.getElementById(c.panel);
+  return (input && panel) ? { c, input, panel } : null;
+}
+
+function sgClose(key) {
+  const els = sgEls(key);
+  if (!els) return;
+  els.panel.classList.remove('open');
+  els.panel.innerHTML = '';
+  els.c.hl = -1;
+  els.input.setAttribute('aria-expanded', 'false');
+  els.input.removeAttribute('aria-activedescendant');
+}
+
+function sgClear(key) {
+  const els = sgEls(key);
+  if (!els) return;
+  els.input.value = '';
+  sgClose(key);
+  sgToggleClearBtn(els.input);
+  els.input.focus();
+}
+
+function sgToggleClearBtn(input) {
+  const btn = input.parentElement && input.parentElement.querySelector('.nav-clear');
+  if (btn) btn.hidden = input.value.length === 0;
+}
+
+function sgIsChain(b) {
+  return (b.features || []).some(f => String(f).trim().toLowerCase() === 'chain');
+}
+
+// Word-prefix match, the same convention the directory's own search uses. A
+// plain substring test would match "dent" against "resi(dent)ial".
+function sgWordStarts(text, q) {
+  return String(text || '').toLowerCase().split(/[^\p{L}\p{N}]+/u).some(w => w && w.startsWith(q));
+}
+
+// Best (lowest) tier a business qualifies for, or null if it does not match.
+function sgTier(b, q) {
+  const name = String(b.name || '').toLowerCase();
+  if (name.startsWith(q)) return 0;
+  if (sgWordStarts(name, q)) return 1;
+  if (name.includes(q)) return 2;
+  if (sgWordStarts(b.subcategory, q)) return 3;
+  if (sgWordStarts(b.category, q)) return 4;
+  if (String(b.city || '').trim().toLowerCase().startsWith(q)) return 5;
+  if ((b.features || []).some(f => sgWordStarts(f, q))) return 5;
+  return null;
+}
+
+function sgRank(all, q) {
+  return all
+    .map(b => ({ b, tier: sgTier(b, q) }))
+    .filter(x => x.tier !== null)
+    .sort((x, y) =>
+      x.tier - y.tier ||
+      (sgIsChain(x.b) ? 1 : 0) - (sgIsChain(y.b) ? 1 : 0) ||
+      (parseFloat(y.b.avg_rating) || 0) - (parseFloat(x.b.avg_rating) || 0) ||
+      String(x.b.name || '').localeCompare(String(y.b.name || ''))
+    )
+    .slice(0, SG_MAX_BIZ)
+    .map(x => x.b);
+}
+
+function sgCats(all, q) {
+  const counts = {};
+  all.forEach(b => { if (b.category) counts[b.category] = (counts[b.category] || 0) + 1; });
+  return Object.keys(counts)
+    .filter(c => sgWordStarts(c, q))
+    .sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
+    .slice(0, SG_MAX_CATS)
+    .map(c => ({ name: c, count: counts[c] }));
+}
+
+// Wrap the matched run in <mark>, escaping each piece separately so we never
+// string-replace into already-escaped HTML.
+function sgMark(text, q) {
+  const s = String(text || '');
+  const i = s.toLowerCase().indexOf(q);
+  if (i === -1) return escapeHtml(s);
+  return escapeHtml(s.slice(0, i)) + '<mark>' + escapeHtml(s.slice(i, i + q.length)) + '</mark>' + escapeHtml(s.slice(i + q.length));
+}
+
+function sgRow(href, id, ico, nameHtml, metaHtml, cls) {
+  return `<div class="sg-row${cls ? ' ' + cls : ''}" id="${id}" role="option" aria-selected="false" data-href="${escapeHtml(href)}" onclick="window.location.href=this.dataset.href">
+    <span class="sg-ico" aria-hidden="true">${ico}</span>
+    <span class="sg-body"><span class="sg-name">${nameHtml}</span>${metaHtml ? `<span class="sg-meta">${metaHtml}</span>` : ''}</span>
+  </div>`;
+}
+
+function sgRender(key) {
+  const els = sgEls(key);
+  if (!els) return;
+  const { c, input, panel } = els;
+  const raw = input.value.trim();
+  const q = raw.toLowerCase();
+
+  if (q.length < SG_MIN) { sgClose(key); return; }
+
+  const footHref = '/pages/directory.html?q=' + encodeURIComponent(raw);
+  const foot = sgRow(footHref, key + '-sg-foot', '→', `See all results for &ldquo;${escapeHtml(raw)}&rdquo;`, '', 'sg-foot');
+
+  // Fetch has not landed yet. Say so, and re-render when it does.
+  if (window.__allBiz === null) {
+    panel.innerHTML = '<div class="sg-note">Loading the directory…</div>' + foot;
+    if (!c.waiting) {
+      c.waiting = true;
+      window.addEventListener('biz-ready', () => {
+        c.waiting = false;
+        const again = sgEls(key);
+        if (again && again.input.value.trim().length >= SG_MIN) sgRender(key);
+      }, { once: true });
+    }
+  } else {
+    const all = window.__allBiz;
+    const cats = sgCats(all, q);
+    const biz = sgRank(all, q);
+    let html = '';
+    cats.forEach((cat, i) => {
+      html += sgRow(
+        '/pages/directory.html?category=' + encodeURIComponent(cat.name),
+        `${key}-sg-c${i}`,
+        catEmoji[cat.name] || '🏪',
+        sgMark(cat.name, q),
+        `${cat.count} ${cat.count === 1 ? 'place' : 'places'} · Browse category`
+      );
+    });
+    biz.forEach((b, i) => {
+      const meta = [b.category, b.city].filter(Boolean).map(escapeHtml);
+      if (isOpenNow(b.hours)) meta.push('<span class="sg-open">Open now</span>');
+      html += sgRow(
+        '/pages/business.html?id=' + encodeURIComponent(b.id),
+        `${key}-sg-b${i}`,
+        catEmoji[b.category] || '🏪',
+        sgMark(b.name, q),
+        meta.join(' · ')
+      );
+    });
+    if (!html) html = `<div class="sg-note">No matches for &ldquo;${escapeHtml(raw)}&rdquo;</div>`;
+    panel.innerHTML = html + foot;
+  }
+
+  c.hl = -1;
+  panel.classList.add('open');
+  input.setAttribute('aria-expanded', 'true');
+  input.removeAttribute('aria-activedescendant');
+}
+
+function sgInput(key) {
+  const els = sgEls(key);
+  if (!els) return;
+  sgToggleClearBtn(els.input);
+  sgRender(key);
+}
+
+function sgRows(key) {
+  const els = sgEls(key);
+  return els ? [...els.panel.querySelectorAll('.sg-row[data-href]')] : [];
+}
+
+function sgHighlight(key, next) {
+  const els = sgEls(key);
+  if (!els) return;
+  const rows = sgRows(key);
+  if (!rows.length) return;
+  rows.forEach(r => { r.classList.remove('hl'); r.setAttribute('aria-selected', 'false'); });
+  els.c.hl = (next + rows.length) % rows.length;
+  const row = rows[els.c.hl];
+  row.classList.add('hl');
+  row.setAttribute('aria-selected', 'true');
+  els.input.setAttribute('aria-activedescendant', row.id);
+  if (row.scrollIntoView) row.scrollIntoView({ block: 'nearest' });
+}
+
+function sgKey(e, key) {
+  const els = sgEls(key);
+  if (!els) return;
+  const open = els.panel.classList.contains('open');
+  if (e.key === 'Escape') {
+    if (open) { e.preventDefault(); sgClose(key); }
+    return;
+  }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    if (!open) { sgRender(key); return; }
+    e.preventDefault();
+    sgHighlight(key, e.key === 'ArrowDown' ? els.c.hl + 1 : els.c.hl - 1);
+    return;
+  }
+  if (e.key === 'Enter') {
+    const rows = sgRows(key);
+    if (open && els.c.hl >= 0 && rows[els.c.hl]) {
+      // Beat the form submit so a highlighted row wins.
+      e.preventDefault();
+      window.location.href = rows[els.c.hl].dataset.href;
+    }
+    // Otherwise fall through to the form's own submit handler.
+  }
+}
+
+// Nav form submit with nothing highlighted: hand the query to the directory.
+function doNavSearch(e) {
+  e.preventDefault();
+  const q = document.getElementById('nav-q').value.trim();
+  window.location.href = '/pages/directory.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+}
+
+// Click outside any suggestion panel closes it.
+document.addEventListener('click', e => {
+  Object.keys(SG).forEach(key => {
+    const els = sgEls(key);
+    if (!els || !els.panel.classList.contains('open')) return;
+    const wrap = els.panel.closest('.sg-wrap');
+    if (wrap && !wrap.contains(e.target)) sgClose(key);
+  });
+});
+
+// "/" anywhere focuses search. Skips fields so it never eats a typed slash.
+document.addEventListener('keydown', e => {
+  if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+  const t = e.target;
+  const tag = t && t.tagName ? t.tagName.toLowerCase() : '';
+  if (tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable)) return;
+  const nav = document.getElementById('nav-q');
+  // offsetParent is null when the nav field is hidden (tablet/mobile), so "/"
+  // falls through to the hero field there.
+  const target = (nav && nav.offsetParent !== null) ? nav : document.getElementById('hero-q');
+  if (target) { e.preventDefault(); target.focus(); }
+});
+</script>
+
 <script>
 (async function initHomepage() {
   const { createClient } = supabase;
@@ -890,34 +1204,14 @@ if (window.location.hash) {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
   );
 
-  const catEmoji = { 'Food & Drink':'🍔','Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️','Home Services':'🔧','Arts & Events':'🎭','Professional Services':'💼','Kids & Family':'👶','Parks & Outdoor':'🌳','Storage':'📦','Real Estate':'🏠','Body Art':'🎨','Lodging':'🛏️','Car Wash':'🚗' };
+  // catEmoji, parseClock and isOpenNow live at top level (see the search script
+  // above) so the nav/hero suggestion dropdown can share them.
   const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
   function photoPos(positions, i) {
     const v = positions && positions[i];
     return PHOTO_POS_SAFE.has(v) ? v : 'center';
   }
   function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
-  // ── open-now from real hours JSONB ──
-  function parseClock(s) {
-    const m = (s||'').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-    if (!m) return null;
-    let h = parseInt(m[1],10) % 12;
-    if (/PM/i.test(m[3])) h += 12;
-    return h * 60 + parseInt(m[2],10);
-  }
-  function isOpenNow(hours) {
-    if (!hours || typeof hours !== 'object') return false;
-    const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-    const now = new Date();
-    const v = hours[days[now.getDay()]];
-    if (!v || /closed|appointment/i.test(v)) return false;
-    const parts = String(v).split(/\s*[-–—]\s*/);
-    if (parts.length < 2) return false;
-    const open = parseClock(parts[0]); const close = parseClock(parts[1]);
-    if (open === null || close === null) return false;
-    const cur = now.getHours() * 60 + now.getMinutes();
-    return close <= open ? (cur >= open || cur < close) : (cur >= open && cur < close);
-  }
 
   try {
     const [bizRes, statsRes] = await Promise.all([
@@ -927,6 +1221,11 @@ if (window.location.hash) {
 
     const businesses = bizRes.data || [];
     const stats = statsRes.data || {};
+
+    // Hand the fetched rows to the nav/hero search engine so it can filter in
+    // memory instead of issuing its own queries.
+    window.__allBiz = businesses;
+    window.dispatchEvent(new CustomEvent('biz-ready'));
 
     // ── STATS ──
     const totalBiz = businesses.length;
@@ -953,6 +1252,10 @@ if (window.location.hash) {
     document.querySelectorAll('.cat-count[data-category]').forEach(el => {
       const n = counts[el.dataset.category] || 0;
       el.textContent = n + (n === 1 ? ' place' : ' places');
+      // Never advertise an empty category. Set it both ways so a re-run can
+      // never leave a card stuck hidden.
+      const card = el.closest('.cat');
+      if (card) card.style.display = n === 0 ? 'none' : '';
     });
 
     // ── HERO PHOTOS (Minooka/Channahon/Shorewood only, no chains) ──
