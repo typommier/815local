@@ -1,6 +1,6 @@
 # 815local.com: Project Instructions for Claude
 
-Last updated: May 25, 2026
+Last updated: July 27, 2026
 
 ---
 
@@ -44,7 +44,7 @@ These shape every decision. When in doubt, fall back to these.
   `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk`
 - JS SDK via CDN: `https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2`
 
-When working on the main directory/site data, use `project_id: kyneaettrynagavewefi`. There is a second, separate Supabase project for the concierge chat widget (see below) — use `project_id: ubcagczbnxfpoligmsqq` only when working on that system specifically. Don't mix the two up.
+When working on the main directory/site data, use `project_id: kyneaettrynagavewefi`. There is a second, separate Supabase project for the concierge chat widget (see below). Use `project_id: ubcagczbnxfpoligmsqq` only when working on that system specifically. Don't mix the two up.
 
 ---
 
@@ -74,12 +74,12 @@ independent of the main directory database.
 - **Supabase project**: `815local-concierge` (ref `ubcagczbnxfpoligmsqq`),
   same org as the main project (`avvujmfsxzrmnuekpjsq`), region us-east-1.
   This is a **different project ID** than the main site's
-  `kyneaettrynagavewefi` — don't point MCP calls at the wrong one.
+  `kyneaettrynagavewefi`, so don't point MCP calls at the wrong one.
 - **Tables**: `listings` (name, category, tags, area, address, phone,
   website, hours_json, description, price_range, rating, featured) and
   `unmet_requests` (logs questions the widget couldn't match to a
-  listing — a running list of unmet demand, useful for business
-  recruitment).
+  listing), a running list of unmet demand, useful for business
+  recruitment.
 - **Edge Function** `chat`, live at
   `https://ubcagczbnxfpoligmsqq.supabase.co/functions/v1/chat`. Source is
   tracked in this repo across two files: `supabase/functions/chat/index.ts`
@@ -163,8 +163,12 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 ├── .gitignore
 │
 ├── assets/
+│   ├── css/
+│   │   └── 815local.css                ← shared stylesheet, linked by every public page
 │   └── js/
-│       └── analytics-tracker.js        ← client-side localStorage analytics
+│       ├── analytics-tracker.js        ← client-side localStorage analytics
+│       ├── photo-crop.js               ← THE photo focal-point rule, shared by public pages + admin
+│       └── 815local-widget.js          ← Scout chat widget (not currently loaded, see above)
 │
 ├── uploads/                            ← logo + brand assets
 │
@@ -193,13 +197,31 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 │   ├── privacy.html
 │   └── terms.html
 │
+├── supabase/
+│   ├── functions/                      ← edge function source (committing does NOT deploy)
+│   │   ├── manage-business-photos/     ← admin photo writes
+│   │   ├── import-from-website/
+│   │   ├── fetch-google-photos/
+│   │   ├── mirror-photos/
+│   │   ├── cleanup-orphan-photos/
+│   │   └── chat/                       ← Scout (separate Supabase project)
+│   └── updates/                        ← hand-run SQL, no migrations/ dir
+│
 └── tests/
-    └── e2e/
-        ├── homepage.spec.js
-        ├── directory.spec.js
-        ├── business-detail.spec.js
-        └── fixtures/
-            └── supabase-mock.js
+    ├── e2e/
+    │   ├── homepage.spec.js
+    │   ├── directory.spec.js
+    │   ├── business-detail.spec.js
+    │   ├── business-swiper.spec.js
+    │   ├── events.spec.js
+    │   ├── hero-search.spec.js
+    │   ├── nav-search.spec.js
+    │   ├── newsletter-link.spec.js
+    │   ├── photo-crop.spec.js          ← focal-point rule across every surface
+    │   ├── admin-photo-tool.spec.js    ← the only admin coverage
+    │   └── fixtures/
+    │       └── supabase-mock.js
+    └── concierge/                      ← Scout logic harness (offline + live)
 ```
 
 ### Redirect stubs (do not edit content, only update if `/pages/` path changes)
@@ -219,7 +241,11 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 - `fetch_photos.py` / `fetch_photos_local.py` - Google Places photo scrapers. Run locally from Ty's machine because the scraper API key cannot be used server-side and the sandboxed environment can't reach `places.googleapis.com`.
 
 ### Admin tooling (`/admin/`)
-- `admin/edit-business-photos.html` is the tool for managing a business's photos: search for the business, drag-drop upload, reorder, delete, mark a hero, and set a per-photo focal point via a 3x3 position grid. Posts to the `manage-business-photos` edge function.
+- `admin/edit-business-photos.html` is the tool for managing a business's photos: pick the business from a dropdown, drag-drop or camera-roll upload (HEIC converted client-side), reorder, delete, star a hero, and set a per-photo focal point via a 3x3 grid plus an **Auto** chip. Posts to the `manage-business-photos` edge function. Ty uses it on his phone, so mobile rendering is the priority, not desktop.
+  - **Hero means photo 1.** The star moves a photo to index 0 and sets `image_url` to match. `pages/business.html` builds its hero from `photos[0]` and only falls back to `image_url` when `photos` is empty, so a star that only set `image_url` did nothing visible (fixed July 2026).
+  - **Previews are the real cells**, labeled and sized with `aspect-ratio`, rendered through the same `PhotoCrop` module the public pages use. Photo 1 shows Listing hero 16:9 + Directory card 5:4; photos 2+ show Listing thumb 1:1 + Listing on a phone 5:4. On Auto the two can legitimately differ (see the per-surface fallback above); picking a focal point collapses them.
+  - **An `image_url` that isn't in `photos`** shows up as a real row labeled as such, instead of being silently overwritten on save. 56 listings were in that state as of July 2026.
+  - **`.drop-zone` needs `display: block`.** It's a `<label>`, which is inline by default, and an inline box wrapping block children gets split into fragments: the dashed border painted slivers down the left instead of a box. Shipped broken for months because the tool had no tests. Don't remove that declaration.
 - **Auth gate**: signing in via the on-page login form only proves you're a valid Supabase user, not that you're an admin. The real gate is server-side: `manage-business-photos` checks the caller's email against an `ADMIN_EMAILS` allowlist secret (comma-separated, **fails closed** if unset or misconfigured). If a save fails with `unauthorized` despite a fresh, valid login, check that secret first (Supabase dashboard, project `kyneaettrynagavewefi` → Edge Functions → `manage-business-photos` → Manage secrets) before assuming it's a code bug.
 - Related edge functions sharing the same admin gate/pattern: `import-from-website`, `cleanup-orphan-photos`, `fetch-google-photos`, `backfill-photos-tmp`.
 
@@ -239,7 +265,7 @@ Key columns:
 - `price_range` ('$', '$$', etc.)
 - `hours` (JSONB, see format below)
 - `features` (text[] - tags including the `"Chain"` flag)
-- `image_url` (single hero/card image), `photos` (text[] up to 5 Google Places URLs), `photo_positions` (text[] CSS object-position values)
+- `image_url` (card/OG image, kept equal to `photos[0]` by the admin tool), `photos` (text[] of Supabase Storage URLs), `photo_positions` (text[] CSS background-position values, **same length as `photos`**, `''` = auto)
 - `google_place_id`
 - `is_featured`, `is_active`, `is_locally_owned`, `is_claimed`
 - `story` (long-form owner story)
@@ -279,6 +305,10 @@ Key columns:
 - `no_chain_locally_owned` chains can never be `is_locally_owned = true`
 
 These two constraints exist specifically because both have been violated in past data work. Trust them; don't try to bypass.
+
+### `photo_positions` invariants (not DB-enforced, keep them by hand)
+- **Same length as `photos`, always.** Index `i` describes `photos[i]`. `manage-business-photos` pads/truncates on every write. A drifted array silently applies the wrong focal point to the wrong photo (Eric McGill-Realtor had 5 photos and 1 position until July 2026).
+- **`''` = auto.** Never write `'center'` to mean "unset", that's the exact ambiguity the July 2026 migration removed. Unknown values are coerced to `''` by the edge function, not to a real position.
 
 ### Hours format (JSONB)
 ```json
@@ -370,20 +400,33 @@ const catEmoji = {
 ### Business detail photo gallery (`pages/business.html`)
 Hero + a horizontally-scrolling row of square thumbnails, both constrained to the page's normal 1240px content width (not full-bleed). These rules came from three rounds of live regressions, worth reading before touching this again:
 - **Cell shape beats crop tricks.** Real photos here (Google Places imports, phone snapshots) are mostly close to square. A skinny wide thumbnail strip (~2.9:1) and a "never crop" blurred-backdrop-behind-`contain` treatment were both tried and both looked worse in production than a plain `cover` crop, because neither addressed the actual mismatch between a near-square photo and an extreme-aspect cell. Hero is `aspect-ratio:16/9`, thumbnails are `aspect-ratio:1/1`, both `background-size:cover`.
-- **Default crop anchor is `top`, not `center`.** A wide/short cell cover-cropping a square photo trims vertically; `top` keeps the top of the frame intact instead of cutting evenly from both edges.
-- **A stored `photo_positions` value only counts as a deliberate override if it's not `'center'`.** The admin tool's focal-point picker starts on `'center'`, so a saved `'center'` is indistinguishable from nobody ever touching it. Checked directly against the DB: of the handful of listings with any `photo_positions` saved, all but two (Eric McGill-Realtor, Tasty Bite) are all-`'center'`. Only a non-`'center'` value gets the tight, curated `cover` crop; everything else uses the default `top` anchor.
+- **One crop rule, in `assets/js/photo-crop.js`.** Every surface that cover-crops a business photo resolves through `PhotoCrop.positionFor(positions, i, surface)`: the listing hero/thumbs/swiper, directory cards, homepage cards and banner, the spotlight, the nearby tiles, and the admin tool's preview. Do **not** reintroduce a local copy of this rule. It used to be copy-pasted into four pages that quietly drifted apart, so one stored value framed a photo three different ways and the admin preview matched none of them (fixed July 2026).
+- **`''` means auto; a stored value is honored literally.** An empty entry in `photo_positions` means nobody picked a focal point. Any real value, **`'center'` included**, is applied exactly as saved. Before July 2026 the picker defaulted to `'center'` and the listing page discarded it, which made center the one focal point that could never be applied. A migration retired every stored `'center'` to `''`.
+- **Auto falls back per surface, on purpose.** `'hero'` (listing gallery, homepage banner) anchors `top`: those cells are far wider or taller than a phone photo, so a cover crop trims hard on one axis and biasing to the top keeps heads and sign tops in frame. `'card'` (directory/homepage cards at 5:4, spotlight, nearby) stays `center`: barely wider than a 4:3 source, so there is little to trim. Picking a real focal point overrides both, which is what makes a card and its listing agree.
 - **Thumbnails `flex-grow` to fill the row** (capped per-tile width, `justify-content:center`), so a business with only 1-2 photos doesn't leave a lopsided block of bare charcoal next to a small fixed-size thumbnail. Centering a sparse row makes it read as an intentionally small gallery instead of broken layout.
 - **Clicking any photo opens an in-page lightbox** (`#photo-lightbox`, prev/next, keyboard arrows, Escape), never `window.open()` to the raw image URL.
 - **No hard cap on photo count.** The thumbnail row scrolls horizontally instead of dropping photos past a fixed cell count.
 - Below 480px this swaps for `.gallery-swiper`, a touch-swipe carousel (same crop/position rules apply to its slides).
 
-If you touch this again: verify with test photos close to the real source aspect ratio (near-square), not wide banner images, that's specifically what let two rounds of regressions ship before anyone caught them. `admin/edit-business-photos.html` is the tool for deliberately curating a focal point on a specific photo when the default `top` crop doesn't work for it, most photos don't need it.
+If you touch this again: verify with test photos close to the real source aspect ratio (near-square), not wide banner images, that's specifically what let two rounds of regressions ship before anyone caught them. `admin/edit-business-photos.html` is the tool for deliberately curating a focal point on a specific photo when the auto crop doesn't work for it, most photos don't need it. `tests/e2e/photo-crop.spec.js` pins both auto fallbacks and checks the hero, thumbnails, phone swiper and directory cards all agree, so run it after any change here.
+
+### The cell shapes, for reference
+
+One focal point has to serve all of these, which is why the admin tool previews more than one:
+
+| Cell | Where | Aspect |
+|---|---|---|
+| `.gallery-hero` | listing hero | 16:9 |
+| `.gallery-thumb` | listing thumbnails | 1:1 |
+| `.swipe-slide` | listing on a phone (below 480px) | ~5:4 |
+| `.blc-photo` / `.biz-photo` / `.fresh-photo` | directory + homepage cards | 5:4 |
+| `.spot-photo` | homepage spotlight | tall, `min-height:380px` |
 
 ---
 
 ## Design system
 
-**Warm Sage rebrand shipped July 2026** across the entire public site (every file under `pages/`, `pages/blog/`, `pages/submit/`, `legal/`, `404.html`, `index.html` — `/admin/*` intentionally excluded, it's internal/noindex and keeps its own separate look).
+**Warm Sage rebrand shipped July 2026** across the entire public site (every file under `pages/`, `pages/blog/`, `pages/submit/`, `legal/`, `404.html`, `index.html`). `/admin/*` is intentionally excluded, it's internal/noindex and keeps its own separate look.
 
 - **Primary:** Burnt orange `--orange: #C4622D` (unchanged)
 - **Background:** Cream `--cream: #FBF6EA`, `--cream-dark: #F3ECDB`
@@ -392,17 +435,17 @@ If you touch this again: verify with test photos close to the real source aspect
 - **Accent (Around the 815 badge):** Teal `#0E7490` (unchanged, deliberately distinct from the secondary accent above)
 - **Accent (Owner Verified badge):** Forest green `#2D6A4F`
 - **Fonts:** Georgia serif (headings/display/logo), system sans stack (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`) for body text. No Google Fonts loaded on the public site anymore (Space Grotesk/Inter/Space Mono were removed). The admin tools still use their own separate pairing (Playfair Display body copy references + Plus Jakarta Sans), untouched by this rebrand.
-- **Logo:** an inline SVG wordmark (`815` + `LOCAL`, no icon/badge), replacing the old raster PNG/WebP (`/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.*`, which is no longer referenced by any nav/footer/auth-modal logo — it may still be referenced by `og:image`/favicon meta tags, left untouched). Nav/footer/auth-modal backgrounds are dark charcoal, so the logo's "815" text is a light cream fill there (`#FBF6EA`) and orange "LOCAL"; the one light-background instance (the auth modal, which sits on `var(--bone)`) uses a dark charcoal "815" fill (`#2B2420`) instead — don't reuse the wrong variant if you touch this again.
-- Mobile bottom nav exists on most pages alongside the desktop top nav, now **3 items** (Home/Browse/Events) — the Profile item was removed when `profile.html` was deleted (see below).
-- `assets/css/815local.css` is a shared stylesheet linked by every public page *after* each page's own inline `<style>` block, so its `:root` wins the cascade for any variable name a page also declares — keep it in sync with the per-page token values if you touch colors/fonts again, or per-page edits will silently get overridden.
+- **Logo:** an inline SVG wordmark (`815` + `LOCAL`, no icon/badge), replacing the old raster PNG/WebP (`/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.*`, which is no longer referenced by any nav/footer/auth-modal logo, though it may still be referenced by `og:image`/favicon meta tags, left untouched). Nav/footer/auth-modal backgrounds are dark charcoal, so the logo's "815" text is a light cream fill there (`#FBF6EA`) and orange "LOCAL"; the one light-background instance (the auth modal, which sits on `var(--bone)`) uses a dark charcoal "815" fill (`#2B2420`) instead. Don't reuse the wrong variant if you touch this again.
+- Mobile bottom nav exists on most pages alongside the desktop top nav, now **3 items** (Home/Browse/Events), since the Profile item was removed when `profile.html` was deleted (see below).
+- `assets/css/815local.css` is a shared stylesheet linked by every public page *after* each page's own inline `<style>` block, so its `:root` wins the cascade for any variable name a page also declares. Keep it in sync with the per-page token values if you touch colors/fonts again, or per-page edits will silently get overridden.
 
 ### Save / accounts / profile (removed, July 2026)
 
 Ty decided not to push or require user accounts right now. As part of the Warm Sage rebrand:
 - The **Save/bookmark feature** was removed from `business.html` (`#h-save-btn`, `initSaveShare()`'s save logic, `saved_businesses` queries). It was never present on `directory.html`. The `saved_businesses` table itself was left alone (data layer, not touched).
 - **`pages/profile.html` was deleted entirely**, along with its references: the nav `#nav-user-menu` "My Profile" link (Sign Out is now the dropdown's only item), the mobile bottom nav's Profile item (site-wide), and `doForgotPassword()`'s redirect target (now `/` instead of `/pages/profile.html`). The `/815local-profile.html` redirect stub now points to `/`.
-- Sign-in/sign-up/forgot-password (the `.auth-modal` system on `index.html`) were **kept** — they don't strictly need a profile page destination, and the footer's "Business Owner Sign In" entry point may still be useful. Revisit if it turns out to be fully vestigial.
-- Reviews were **already retired sitewide** before this rebrand (no review UI, `aggregateRating` excluded from JSON-LD) — not a change made during the rebrand, just confirmed still true.
+- Sign-in/sign-up/forgot-password (the `.auth-modal` system on `index.html`) were **kept**, since they don't strictly need a profile page destination, and the footer's "Business Owner Sign In" entry point may still be useful. Revisit if it turns out to be fully vestigial.
+- Reviews were **already retired sitewide** before this rebrand (no review UI, `aggregateRating` excluded from JSON-LD), not a change made during the rebrand, just confirmed still true.
 
 ---
 
@@ -455,6 +498,8 @@ A dead/non-resolving website is a strong signal a business has closed.
 
 ### Hard-won gotchas
 - **Empty array check:** `array_length(photos, 1) IS NULL OR array_length(photos, 1) = 0`. A simple `photos IS NULL` misses empty arrays.
+- **A sentinel that collides with a real value is a bug.** `photo_positions` used `'center'` to mean both "deliberately centered" and "never touched", so the site had to discard it and center became unreachable. If a field needs an "unset" state, give it its own representation.
+- **`<label>` is `display: inline`.** Putting block children inside one splits the box into fragments and the border paints as slivers. Any `<label>` styled as a container needs an explicit `display`.
 - **Boolean nullability:** `is_flagged = false` excludes NULL rows; use `IS NOT TRUE` or handle NULLs explicitly.
 - **No em-dashes anywhere.** Not in stored data, not in copy, not in messages, not in commits. Use periods, commas, parentheses, or rephrase.
 - **JS string safety:** Apostrophes/smart quotes inside single-quoted JS literals cause silent syntax errors. Use double quotes or escape carefully.
@@ -471,14 +516,21 @@ npm test              # CI / list reporter
 npm run test:report   # HTML report
 ```
 
-Tests mock Supabase via `tests/e2e/fixtures/supabase-mock.js` and serve the static site on `localhost:3000` via `npx serve`. Coverage as of now:
-- Homepage (nav, hero, trust stats, community picks)
-- Directory
-- Business detail
-- Scout widget (`tests/e2e/scout-widget.spec.js`: in-flight lock, error/timeout
-  handling, https-only links, follow-up context) via a mocked chat endpoint
+CI runs the suite on every PR to `main` and every push to `main` (`.github/workflows/e2e.yml`).
 
-Add tests when shipping non-trivial frontend changes.
+Tests mock Supabase via `tests/e2e/fixtures/supabase-mock.js` and serve the static site on `localhost:3000` via `npx serve`. **75 tests as of July 2026.** Coverage:
+- Homepage (nav, hero, trust stats, community picks), nav/hero search, category grid
+- Directory (tabs, filters, town deep links), newsletter deep link, events
+- Business detail, mobile photo swiper
+- Photo focal points (`photo-crop.spec.js`) across hero, thumbs, swiper and cards
+- Admin photo tool (`admin-photo-tool.spec.js`)
+
+Two gotchas that have cost time:
+- **`serve` strips `.html`** (cleanUrls). Use `/pages/business?id=...`, not `/pages/business.html?id=...`, or the page 404s and the test fails confusingly.
+- **The directory doesn't sort by the fixture order.** Target a card by `hasText`, not `.first()`.
+
+Add tests when shipping non-trivial frontend changes. The admin tool shipped a
+plainly broken drop zone for months precisely because it had none.
 
 ### Concierge (Scout) tests
 
@@ -499,14 +551,16 @@ on the concierge project). Run the offline suite after any edit to `logic.ts`.
 
 ---
 
-## Current state snapshot (May 25, 2026)
+## Current state snapshot (July 27, 2026)
 
-- **117 active businesses** (74 Minooka, 22 Channahon, 16 Shorewood, 5 around the 815)
-- **86 locally owned, 28 chains, 3 unclassified**
-- **6 organic reviews** (none flagged)
-- **6 newsletter subscribers**, 1 approved business claim
-- **8 upcoming events**, no pending events
-- **23 businesses missing photos**, 13 missing phones, 27 missing websites
+Checked directly against the DB. The previous snapshot (117 businesses, May 2026) had drifted badly; the directory has nearly doubled since.
+
+- **206 active businesses** (117 Minooka, 59 Channahon, 18 Shorewood, 12 around the 815)
+- **169 locally owned, 34 chains, 0 unclassified** (the 3 `is_locally_owned IS NULL` rows are resolved)
+- **11 reviews** (none flagged)
+- **21 newsletter subscribers**, 2 approved business claims
+- **4 upcoming events**, **5 pending events awaiting review** (`is_active = false`)
+- **61 businesses missing photos** (59 of them locally owned), 20 missing phones, 93 missing websites
 - **No active deals**
 
 ---
@@ -516,16 +570,26 @@ on the concierge project). Run the offline suite after any edit to `logic.ts`.
 These are the genuinely outstanding items. Items previously on this list that have been quietly completed (Submit Business form, meta/OG tags, 404 page, "Serves the 815" badge) are off.
 
 ### Data quality
-- Fill missing photos for the 20 local businesses that lack them (chains less urgent since they're not on the homepage anyway)
-- Fill missing phone numbers (13)
-- Resolve the 3 businesses with `is_locally_owned IS NULL` (should be classified one way or the other)
+- Fill missing photos for the 59 local businesses that lack them (chains less urgent since they're not on the homepage anyway, and only 2 chains are missing photos)
+- Fill missing phone numbers (20) and websites (93)
+- Clear the 5 pending events sitting in the review queue (`is_active = false`)
+- (Done July 2026) All `is_locally_owned IS NULL` rows are resolved, 0 remain
 - (Done July 2026) Verified Taco Fixx is in the DB (both the main `businesses`
   data and the concierge `listings` table, Minooka, with real hours)
 
 ### Growth
-- Scan Shorewood for missing additions (only 16 businesses vs. Minooka's 74)
-- Seed reviews from friends/family to push above 10
-- Build up event and deal listings
+- Scan Shorewood for missing additions (still the thinnest core town: 18 vs. Minooka's 117 and Channahon's 59)
+- Build up event and deal listings (4 upcoming events, 0 active deals)
+- (Done July 2026) Reviews are past 10 (11 now, none flagged)
+
+### Admin photo tool (deferred from the July 2026 pass)
+Scoped out deliberately, in rough priority order for phone use:
+- **Downscale photos client-side before upload.** A 12MP iPhone shot blows the 5 MB cap and gets rejected with an `alert()`. Resizing to ~1600px would fix the rejections and the payload size at once.
+- **Upload per file with progress.** Everything currently goes in one base64 JSON body, so five photos is a ~30 MB POST with no progress and total loss on failure.
+- Touch drag-to-reorder (the ↑/↓ buttons are slow on a phone)
+- A type-to-filter box over the 206-entry `<select>`; the option label also clips mid-word at phone width
+- Unsaved-changes guard when switching businesses
+- Partial-failure path: the edge function commits the DB write, then returns `ok:false`, so the UI reports "Save failed" over data that did change
 
 ### SEO / discoverability
 - Confirm sitemap is submitted to Google Search Console
