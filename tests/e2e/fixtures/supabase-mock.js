@@ -19,7 +19,14 @@ const BUSINESSES = [
     city: 'Minooka',
     is_active: true,
     is_claimed: true,
-    photos: ['https://example.com/photos/rosarios.jpg'],
+    photos: [
+      'https://example.com/photos/rosarios.jpg',
+      'https://example.com/photos/rosarios-2.jpg',
+      'https://example.com/photos/rosarios-3.jpg',
+    ],
+    // '' is auto (renders 'top'); 'center' is a deliberate pick and must be
+    // honored literally. See assets/js/photo-crop.js.
+    photo_positions: ['', 'bottom right', 'center'],
     image_url: null,
     avg_rating: 4.9,
     review_count: 12,
@@ -38,6 +45,7 @@ const BUSINESSES = [
     is_active: true,
     is_claimed: false,
     photos: ['https://example.com/photos/oak-street.jpg'],
+    photo_positions: [''],
     image_url: null,
     avg_rating: 4.8,
     review_count: 8,
@@ -56,6 +64,7 @@ const BUSINESSES = [
     is_active: true,
     is_claimed: true,
     photos: ['https://example.com/photos/elm-city.jpg'],
+    photo_positions: ['top left'],
     image_url: null,
     avg_rating: 4.7,
     review_count: 5,

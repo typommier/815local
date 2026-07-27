@@ -82,11 +82,21 @@ a { color: inherit; text-decoration: none; }
 .drop-zone input { display: none; }
 
 .photo-list { display: flex; flex-direction: column; gap: 16px; }
-.photo-row { display: grid; grid-template-columns: 260px 1fr; gap: 20px; padding: 16px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: white; align-items: start; }
+.photo-row { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 16px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: white; align-items: start; }
 .photo-row.is-hero { border-color: var(--orange); background: linear-gradient(0deg, var(--orange-pale), white); }
 .photo-row.is-new { border-color: var(--green); }
-.photo-preview { width: 260px; height: 195px; background: var(--charcoal-mid); border-radius: var(--radius-sm); background-size: cover; background-repeat: no-repeat; position: relative; overflow: hidden; }
+/* Previews reproduce the exact cells the photo lands in on the live site, so
+   the crop shown here is the crop that ships. Shapes come from
+   pages/business.html (.gallery-hero 16/9, .gallery-thumb 1/1) and
+   pages/directory.html .blc-photo / index.html .biz-photo (both 5/4). */
+.preview-stack { display: flex; flex-direction: column; gap: 8px; }
+.photo-preview { background: var(--charcoal-mid); border-radius: var(--radius-sm); position: relative; overflow: hidden; }
+.photo-preview.shape-hero  { aspect-ratio: 16/9; }
+.photo-preview.shape-card  { aspect-ratio: 5/4; }
+.photo-preview.shape-thumb { aspect-ratio: 1/1; }
+.photo-preview-shape { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.62); color: white; font-size: 9px; padding: 3px 7px; border-radius: 100px; letter-spacing: 0.06em; font-weight: 700; text-transform: uppercase; }
 .photo-preview-label { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.7); color: white; font-size: 10px; padding: 3px 8px; border-radius: 100px; letter-spacing: 0.04em; font-weight: 600; }
+.orphan-note { font-size: 12px; color: var(--charcoal-light); background: var(--cream); border-radius: 6px; padding: 8px 10px; }
 .photo-controls { display: flex; flex-direction: column; gap: 12px; }
 .photo-controls-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .photo-controls-label { font-size: 11px; font-weight: 700; color: var(--charcoal-light); letter-spacing: 0.06em; text-transform: uppercase; }
@@ -95,6 +105,10 @@ a { color: inherit; text-decoration: none; }
 .position-cell { background: white; border: none; padding: 0; cursor: pointer; border-radius: 3px; transition: background 0.1s; }
 .position-cell:hover { background: var(--orange-pale); }
 .position-cell.active { background: var(--orange); }
+.auto-btn { background: white; border: 1.5px solid var(--gray-light); color: var(--charcoal-mid); padding: 8px 14px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; transition: all 0.1s; }
+.auto-btn:hover { border-color: var(--orange); color: var(--orange); }
+.auto-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+.position-readout { font-size: 12px; color: var(--gray); }
 
 .icon-btn { background: white; border: 1.5px solid var(--gray-light); color: var(--charcoal-mid); padding: 6px 10px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; transition: all 0.1s; }
 .icon-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
@@ -117,10 +131,12 @@ a { color: inherit; text-decoration: none; }
   .nav-back { font-size: 12px; padding: 6px 12px; }
   .card-body { padding: 16px; }
   .photo-row { grid-template-columns: 1fr; }
-  .photo-preview { width: 100%; height: 200px; }
+  /* Side by side on a phone: two shapes still readable, half the scrolling. */
+  .preview-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
   .position-grid { grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 40px); }
 }
 </style>
+<script src="/assets/js/photo-crop.js"></script>
 </head>
 <body>
 
@@ -143,7 +159,7 @@ a { color: inherit; text-decoration: none; }
 
 <div class="dashboard">
   <h1 class="page-title">Edit Business Photos</h1>
-  <div class="page-sub">Pick a business, then drag photos to upload, click a position cell to control the crop focal point, and mark one as the hero. Previews match the size of the actual gallery thumbnails so you can see the crop before you save.</div>
+  <div class="page-sub">Pick a business, then drag photos to upload, tap a position cell to control the crop focal point, and star one to make it the hero. Every preview is the real shape that photo gets on the live site, so what you see here is what ships. Leave a photo on Auto and the site crops from the top.</div>
 
   <div class="card">
     <div class="card-header">
@@ -257,6 +273,27 @@ const POSITION_LABELS = {
   'left bottom': '↙', 'bottom': '↓', 'right bottom': '↘',
 };
 
+// '' means auto, nobody picked a focal point for this photo. It has to be a
+// distinct value from 'center': the picker used to default to 'center' and the
+// site then had no way to tell a deliberate center from an untouched default,
+// so it discarded 'center' and cropped from the top instead. Center was the one
+// value you could never make stick. Auto is now explicit, and every grid cell
+// (center included) saves and renders exactly as picked.
+const AUTO = '';
+
+// The live cells this photo lands in, so the preview can't lie about the crop.
+// Photo 1 is the listing hero and the card image everywhere else; photos 2+
+// show as square thumbnails on desktop and in the phone swiper.
+function previewShapes(idx) {
+  return idx === 0
+    ? [{ cls: 'shape-hero',  label: 'Hero 16:9' }, { cls: 'shape-card',  label: 'Card 5:4' }]
+    : [{ cls: 'shape-thumb', label: 'Thumb 1:1' }, { cls: 'shape-card',  label: 'Phone 5:4' }];
+}
+
+function positionLabel(position) {
+  return position ? position : 'Auto (' + PhotoCrop.AUTO_FALLBACK + ')';
+}
+
 let allBusinesses = [];
 let business = null;
 let items = [];
@@ -300,14 +337,27 @@ function escapeHtml(s) {
 
 function selectBusiness(b) {
   business = b;
-  items = (b.photos || []).map((url, i) => ({
+  const photos = b.photos || [];
+  items = photos.map((url, i) => ({
     key: nextKey++,
     url,
-    position: (b.photo_positions || [])[i] || 'center',
-    isHero: url === b.image_url,
+    position: PhotoCrop.isAuto(b.photo_positions, i) ? AUTO : (b.photo_positions || [])[i],
+    isHero: false,
     isNew: false,
+    isOrphan: false,
   }));
-  if (items.length > 0 && !items.some(i => i.isHero)) items[0].isHero = true;
+  // 56 listings have an image_url that isn't in photos[] at all. It's the image
+  // the directory and homepage cards show, but it never appeared as a row here,
+  // so opening one of those listings and saving used to silently repoint
+  // image_url at photos[0]. Surface it as a real row instead: it becomes photo
+  // 1 (the hero everywhere), nothing is lost, and it can be removed on purpose.
+  if (b.image_url && !photos.includes(b.image_url)) {
+    items.unshift({ key: nextKey++, url: b.image_url, position: AUTO, isHero: false, isNew: false, isOrphan: true });
+  }
+  // The hero is photo 1. pages/business.html builds its hero from photos[0] and
+  // only falls back to image_url when photos is empty, so anything else here
+  // would be a promise the site doesn't keep.
+  if (items.length > 0) items[0].isHero = true;
   $bizName.textContent = b.name;
   $bizMeta.textContent = (b.category || '') + (b.city ? ' · ' + b.city : '') + ' · ID: ' + b.id;
   $link.href = '/pages/business.html?id=' + encodeURIComponent(b.id);
@@ -323,23 +373,29 @@ function renderPhotos() {
   $listEmpty.style.display = 'none';
   $list.innerHTML = items.map((item, idx) => {
     const previewUrl = item.dataUrl || item.url;
+    const resolved = PhotoCrop.positionFor([item.position], 0);
     const grid = POSITION_GRID.map(row => row.map(pos =>
       `<button type="button" class="position-cell${pos === item.position ? ' active' : ''}" data-action="position" data-idx="${idx}" data-pos="${pos}" title="${pos}">${POSITION_LABELS[pos]}</button>`
     ).join('')).join('');
+    const previews = previewShapes(idx).map((shape, n) => `
+      <div class="photo-preview ${shape.cls}" data-preview-idx="${idx}" style="${PhotoCrop.cellStyle(previewUrl, resolved)}">
+        <div class="photo-preview-shape">${shape.label}</div>
+        ${n === 0 && item.isHero ? '<div class="photo-preview-label">★ HERO</div>' : ''}
+        ${n === 0 && item.isNew ? '<div class="photo-preview-label" style="background:var(--green); right:6px; left:auto;">NEW</div>' : ''}
+      </div>`).join('');
     return `
       <div class="photo-row${item.isHero ? ' is-hero' : ''}${item.isNew ? ' is-new' : ''}">
-        <div class="photo-preview" style="background-image:url('${escapeHtml(previewUrl)}'); background-position:${item.position};">
-          ${item.isHero ? '<div class="photo-preview-label">★ HERO</div>' : ''}
-          ${item.isNew ? '<div class="photo-preview-label" style="background:var(--green); right:6px; left:auto;">NEW</div>' : ''}
-        </div>
+        <div class="preview-stack">${previews}</div>
         <div class="photo-controls">
+          ${item.isOrphan ? '<div class="orphan-note">This was the listing\'s card image but wasn\'t in the photo gallery. Saving keeps it as photo 1. Remove it if you don\'t want it.</div>' : ''}
           <div class="photo-controls-row">
             <span class="photo-controls-label">Focal point</span>
             <div class="position-grid">${grid}</div>
-            <span style="font-size:12px;color:var(--gray);">${item.position}</span>
+            <button type="button" class="auto-btn${item.position === AUTO ? ' active' : ''}" data-action="position" data-idx="${idx}" data-pos="" title="Let the site pick">Auto</button>
+            <span class="position-readout" data-readout-idx="${idx}">${positionLabel(item.position)}</span>
           </div>
           <div class="photo-controls-row">
-            <button type="button" class="icon-btn hero-btn${item.isHero ? ' active' : ''}" data-action="hero" data-idx="${idx}" title="Set as hero">★ Hero</button>
+            <button type="button" class="icon-btn hero-btn${item.isHero ? ' active' : ''}" data-action="hero" data-idx="${idx}" title="Make this photo 1, the hero everywhere">★ Hero</button>
             <button type="button" class="icon-btn" data-action="up" data-idx="${idx}" ${idx === 0 ? 'disabled' : ''} title="Move up">↑</button>
             <button type="button" class="icon-btn" data-action="down" data-idx="${idx}" ${idx === items.length - 1 ? 'disabled' : ''} title="Move down">↓</button>
             <button type="button" class="icon-btn danger" data-action="remove" data-idx="${idx}" title="Remove from listing">Remove</button>
@@ -350,18 +406,43 @@ function renderPhotos() {
   }).join('');
 }
 
+// Focal-point taps patch the row in place. Re-rendering the whole list on every
+// tap threw away scroll position, which is unusable on a phone now that rows
+// carry two preview cells.
+function updatePhotoRow(idx) {
+  const item = items[idx];
+  if (!item) return;
+  const resolved = PhotoCrop.positionFor([item.position], 0);
+  $list.querySelectorAll(`[data-preview-idx="${idx}"]`).forEach(el => {
+    el.style.backgroundPosition = resolved;
+  });
+  const readout = $list.querySelector(`[data-readout-idx="${idx}"]`);
+  if (readout) readout.textContent = positionLabel(item.position);
+  $list.querySelectorAll(`.position-cell[data-idx="${idx}"]`).forEach(el => {
+    el.classList.toggle('active', el.dataset.pos === item.position);
+  });
+  const autoBtn = $list.querySelector(`.auto-btn[data-idx="${idx}"]`);
+  if (autoBtn) autoBtn.classList.toggle('active', item.position === AUTO);
+}
+
 $list.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
   const idx = parseInt(btn.dataset.idx, 10);
   if (Number.isNaN(idx) || !items[idx]) return;
-  if (action === 'position') items[idx].position = btn.dataset.pos;
-  else if (action === 'hero') { items.forEach(it => it.isHero = false); items[idx].isHero = true; }
+  if (action === 'position') {
+    items[idx].position = btn.dataset.pos;
+    updatePhotoRow(idx);
+    return;
+  }
+  // Hero means photo 1, so the star moves the photo rather than just flagging
+  // it. Anything else and the site would keep showing photos[0] as the hero.
+  if (action === 'hero' && idx > 0) items.unshift(items.splice(idx, 1)[0]);
   else if (action === 'up' && idx > 0) [items[idx - 1], items[idx]] = [items[idx], items[idx - 1]];
   else if (action === 'down' && idx < items.length - 1) [items[idx + 1], items[idx]] = [items[idx], items[idx + 1]];
   else if (action === 'remove') items.splice(idx, 1);
-  if (action === 'remove' && items.length > 0 && !items.some(i => i.isHero)) items[0].isHero = true;
+  items.forEach((it, i) => { it.isHero = i === 0; });
   renderPhotos();
 });
 
@@ -422,9 +503,10 @@ async function addFiles(fileList) {
       key: nextKey++,
       file,
       dataUrl,
-      position: 'center',
+      position: AUTO,
       isHero: items.length === 0,
       isNew: true,
+      isOrphan: false,
     });
   }
   $convertStatus.style.display = 'none';
@@ -449,8 +531,10 @@ async function saveChanges() {
   })));
   let uploadIdx = 0;
   const setPhotos = items.map(it => it.file ? `__upload_${uploadIdx++}__` : it.url);
-  const setPhotoPositions = items.map(it => it.position);
-  const heroItem = items.find(it => it.isHero) || items[0] || null;
+  const setPhotoPositions = items.map(it => it.position || '');
+  // image_url tracks photos[0] so the card image and the listing hero are the
+  // same photo. The listing page builds its hero from photos[0] regardless.
+  const heroItem = items[0] || null;
   let setImageUrl = null;
   if (heroItem) {
     if (heroItem.file) setImageUrl = `__upload_${uploadItems.indexOf(heroItem)}__`;
@@ -491,9 +575,10 @@ async function saveChanges() {
       items = business.photos.map((url, i) => ({
         key: nextKey++,
         url,
-        position: business.photo_positions[i] || 'center',
-        isHero: url === business.image_url,
+        position: PhotoCrop.isAuto(business.photo_positions, i) ? AUTO : business.photo_positions[i],
+        isHero: i === 0,
         isNew: false,
+        isOrphan: false,
       }));
       renderPhotos();
     }

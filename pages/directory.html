@@ -231,6 +231,7 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="/assets/css/815local.css">
+  <script src="/assets/js/photo-crop.js"></script>
 </head>
 <body>
 
@@ -436,12 +437,6 @@ function isAroundThe815(b) {
   return c.length > 0 && !HOME_TOWNS.has(c);
 }
 
-const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
-function photoPos(positions, i) {
-  const v = positions && positions[i];
-  return PHOTO_POS_SAFE.has(v) ? v : 'center';
-}
-
 // "9:00 AM" -> minutes since midnight, or null.
 function timeToMin(s) {
   const m = (s || '').trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
@@ -491,7 +486,7 @@ function renderCard(b) {
     : (open === false ? '<span class="blc-meta-item closed-pill">Closed</span>' : '');
   const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
   const photoHtml = photoSrc
-    ? `<div style="position:absolute;inset:0;background:url('${photoSrc}') ${photoPos(b.photo_positions, 0)}/cover no-repeat;"></div>`
+    ? `<div style="position:absolute;inset:0;${PhotoCrop.cellStyle(photoSrc, PhotoCrop.positionFor(b.photo_positions, 0))}"></div>`
     : '';
   return `
     <a href="/pages/business.html?id=${b.id}" class="biz-list-card">

@@ -318,6 +318,7 @@ footer { background:var(--paper); border-top:1px solid var(--line); margin-top:6
 }
 </style>
   <link rel="stylesheet" href="/assets/css/815local.css">
+  <script src="/assets/js/photo-crop.js"></script>
 </head>
 <body>
 
@@ -574,17 +575,14 @@ const bizId = params.get('id');
 let currentBiz = null;
 
 // Photo gallery / lightbox
-const SAFE_POSITIONS = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
 let galleryPhotos = [];
 let lightboxIndex = 0;
 
-// Renders a photo as two stacked layers so it's never cropped: a blurred cover
-// backdrop behind a sharp, full-photo contain layer. If `pos` is a manually-set
-// photo_positions value (from admin/edit-business-photos.html), skip the backdrop
-// and render a single tight `cover` layer at that position instead, the curated look.
+// Cover-crops the photo to fill its cell at the given focal point. `pos` comes
+// from PhotoCrop.positionFor, so the crop here, on the directory and homepage
+// cards, and in the admin tool's preview are all the same rule.
 function photoLayersHtml(url, pos) {
-  const safeUrl = url.replace(/'/g, "\\'");
-  return `<div class="photo-cell-fg" style="background-image:url('${safeUrl}');background-position:${pos};"></div>`;
+  return `<div class="photo-cell-fg" style="${PhotoCrop.cellStyle(url, pos)}"></div>`;
 }
 
 function openLightbox(index) {
@@ -784,18 +782,9 @@ function renderBusiness(b) {
 
   // Gallery, use photos[] array first (from Google Places scraper), fall back to image_url
   const photos = (b.photos && b.photos.length) ? b.photos : (b.image_url ? [b.image_url] : []);
-  // Returns the manually-set focal point for photo i, or 'top' as the default.
-  // Excludes 'center': the admin tool's position picker starts on 'center', so a
-  // stored 'center' is indistinguishable from nobody ever touching it, most of the
-  // handful of listings with any photo_positions saved are exactly that (every
-  // photo defaulted to 'center'), not a deliberate framing choice. 'top' rather
-  // than 'center' as the fallback because these cells are much wider than a typical
-  // phone photo, so a cover crop trims vertically, biasing to the top keeps the
-  // full top of the frame instead of cutting evenly from both edges.
-  const photoPos = (i) => {
-    const v = b.photo_positions && b.photo_positions[i];
-    return (v && v !== 'center' && SAFE_POSITIONS.has(v)) ? v : 'top';
-  };
+  // The focal point picked in admin/edit-business-photos.html for photo i, or
+  // 'top' when it's left on Auto. See assets/js/photo-crop.js for the rule.
+  const photoPos = (i) => PhotoCrop.positionFor(b.photo_positions, i);
   const gallerySection = document.querySelector('.gallery');
   const mainCell = document.getElementById('gallery-main');
   galleryPhotos = photos;
@@ -1057,9 +1046,10 @@ async function loadNearby(category, excludeId) {
 
   grid.innerHTML = data.map(b => {
     const imgSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+    const imgPos = PhotoCrop.positionFor(b.photo_positions, 0);
     return `
     <a href="/pages/business.html?id=${b.id}" class="nearby-card">
-      ${imgSrc ? `<div class="nearby-photo"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(b.name)}" style="width:100%;height:100%;object-fit:cover;display:block;"></div>` : ''}
+      ${imgSrc ? `<div class="nearby-photo"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(b.name)}" style="width:100%;height:100%;object-fit:cover;object-position:${imgPos};display:block;"></div>` : ''}
       <div class="nearby-info">
         <div class="nearby-cat">${escapeHtml(b.category)}</div>
         <div class="nearby-name">${escapeHtml(b.name)}</div>
