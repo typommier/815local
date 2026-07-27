@@ -783,8 +783,9 @@ function renderBusiness(b) {
   // Gallery, use photos[] array first (from Google Places scraper), fall back to image_url
   const photos = (b.photos && b.photos.length) ? b.photos : (b.image_url ? [b.image_url] : []);
   // The focal point picked in admin/edit-business-photos.html for photo i, or
-  // 'top' when it's left on Auto. See assets/js/photo-crop.js for the rule.
-  const photoPos = (i) => PhotoCrop.positionFor(b.photo_positions, i);
+  // the gallery's auto anchor ('top') when it's left on Auto. See
+  // assets/js/photo-crop.js for the rule.
+  const photoPos = (i) => PhotoCrop.positionFor(b.photo_positions, i, 'hero');
   const gallerySection = document.querySelector('.gallery');
   const mainCell = document.getElementById('gallery-main');
   galleryPhotos = photos;
@@ -1046,7 +1047,7 @@ async function loadNearby(category, excludeId) {
 
   grid.innerHTML = data.map(b => {
     const imgSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
-    const imgPos = PhotoCrop.positionFor(b.photo_positions, 0);
+    const imgPos = PhotoCrop.positionFor(b.photo_positions, 0, 'card');
     return `
     <a href="/pages/business.html?id=${b.id}" class="nearby-card">
       ${imgSrc ? `<div class="nearby-photo"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(b.name)}" style="width:100%;height:100%;object-fit:cover;object-position:${imgPos};display:block;"></div>` : ''}

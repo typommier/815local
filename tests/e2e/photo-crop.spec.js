@@ -10,9 +10,14 @@ const SUPABASE_MOCK = path.join(__dirname, 'fixtures/supabase-mock.js');
 // the admin tool's preview matched none of them. assets/js/photo-crop.js is now
 // the single source of that rule; these tests pin it.
 //
+// A stored value is honored literally on every surface. Only the auto fallback
+// differs by surface, deliberately: 'hero' (listing gallery, homepage banner)
+// anchors to the top, 'card' (directory/homepage cards, spotlight, nearby)
+// centers.
+//
 // Fixture (biz-001): photo_positions ['', 'bottom right', 'center']
-//   index 0 -> '' is auto        -> 'top'
-//   index 1 -> deliberate        -> 'bottom right'
+//   index 0 -> '' is auto        -> 'top' on the gallery, 'center' on cards
+//   index 1 -> deliberate        -> 'bottom right' everywhere
 //   index 2 -> deliberate center -> 'center' (used to be unreachable)
 
 function mock(page) {
@@ -29,27 +34,38 @@ test.describe('PhotoCrop module', () => {
     await page.goto('/pages/directory.html');
   });
 
-  test('auto resolves to top, saved values are honored literally', async ({ page }) => {
+  test('auto falls back per surface, saved values are honored literally', async ({ page }) => {
     const resolved = await page.evaluate(() => {
       const p = ['', 'bottom right', 'center'];
       return {
-        auto: PhotoCrop.positionFor(p, 0),
-        explicit: PhotoCrop.positionFor(p, 1),
-        center: PhotoCrop.positionFor(p, 2),
-        missingIndex: PhotoCrop.positionFor(p, 9),
-        noArray: PhotoCrop.positionFor(undefined, 0),
-        junk: PhotoCrop.positionFor(['url(javascript:alert(1))'], 0),
-        fallback: PhotoCrop.AUTO_FALLBACK,
+        autoHero: PhotoCrop.positionFor(p, 0, 'hero'),
+        autoCard: PhotoCrop.positionFor(p, 0, 'card'),
+        explicitHero: PhotoCrop.positionFor(p, 1, 'hero'),
+        explicitCard: PhotoCrop.positionFor(p, 1, 'card'),
+        centerHero: PhotoCrop.positionFor(p, 2, 'hero'),
+        centerCard: PhotoCrop.positionFor(p, 2, 'card'),
+        missingIndex: PhotoCrop.positionFor(p, 9, 'card'),
+        noArray: PhotoCrop.positionFor(undefined, 0, 'card'),
+        junk: PhotoCrop.positionFor(['url(javascript:alert(1))'], 0, 'hero'),
+        unknownSurface: PhotoCrop.positionFor(p, 0, 'nonsense'),
+        fallback: PhotoCrop.FALLBACK,
       };
     });
-    expect(resolved.auto).toBe('top');
-    expect(resolved.explicit).toBe('bottom right');
-    expect(resolved.center).toBe('center');
-    expect(resolved.missingIndex).toBe('top');
-    expect(resolved.noArray).toBe('top');
+    // Auto differs by surface, on purpose.
+    expect(resolved.autoHero).toBe('top');
+    expect(resolved.autoCard).toBe('center');
+    expect(resolved.missingIndex).toBe('center');
+    expect(resolved.noArray).toBe('center');
+    // A stored value wins everywhere, so picking a focal point makes the
+    // surfaces agree.
+    expect(resolved.explicitHero).toBe('bottom right');
+    expect(resolved.explicitCard).toBe('bottom right');
+    expect(resolved.centerHero).toBe('center');
+    expect(resolved.centerCard).toBe('center');
     // Anything off the safelist falls back rather than reaching the stylesheet.
     expect(resolved.junk).toBe('top');
-    expect(resolved.fallback).toBe('top');
+    expect(resolved.unknownSurface).toBe('top');
+    expect(resolved.fallback).toEqual({ hero: 'top', card: 'center' });
   });
 
   test('isAuto distinguishes untouched from a deliberate center', async ({ page }) => {
@@ -99,17 +115,17 @@ test.describe('Crop rule is the same on every surface', () => {
     await expect(slides.nth(2)).toHaveCSS('background-position', '50% 50%');
   });
 
-  test('directory cards frame photo 1 the same way the listing hero does', async ({ page }) => {
+  test('directory cards center on auto and honor a saved focal point', async ({ page }) => {
     await mock(page);
     await page.goto('/pages/directory.html');
     await expect(page.locator('#biz-list .biz-list-card').first()).toBeVisible({ timeout: 8000 });
 
-    // Cards used to default to 'center' while the listing page defaulted to
-    // 'top', so the same photo was framed two ways. Both are 'top' now.
+    // biz-001 photo 1 is on Auto: the card centers where the listing hero
+    // anchors to the top. That difference is the intended per-surface default.
     const auto = page.locator('#biz-list .biz-list-card', { hasText: "Rosario's Tavern" });
-    await expect(auto.locator('.blc-photo > div')).toHaveCSS('background-position', '50% 0%');
+    await expect(auto.locator('.blc-photo > div')).toHaveCSS('background-position', '50% 50%');
 
-    // And a card with a real saved focal point still honors it.
+    // A real saved focal point overrides the surface default.
     const explicit = page.locator('#biz-list .biz-list-card', { hasText: 'Elm City Barbershop' });
     await expect(explicit.locator('.blc-photo > div')).toHaveCSS('background-position', '0% 0%');
   });

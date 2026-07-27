@@ -10,10 +10,20 @@
  *
  * Stored values live in businesses.photo_positions, indexed to match
  * businesses.photos. An empty string means "auto", nobody picked a focal
- * point. Auto resolves to 'top' rather than 'center' because these cells are
- * wider than a typical phone photo, so a cover crop trims vertically, and
- * biasing to the top keeps the full top of the frame (heads, sign tops)
- * instead of cutting evenly from both edges.
+ * point. A value that IS stored, 'center' included, is honored literally on
+ * every surface. Only the auto fallback varies, and it varies by surface
+ * because the cells genuinely differ:
+ *
+ *   'hero'  the listing's 16:9 hero, its square thumbnails, its phone swiper,
+ *           and the homepage hero banner. Much wider or much taller than a
+ *           typical phone photo, so a cover crop trims hard on one axis.
+ *           Anchoring to the top keeps heads and sign tops in frame instead
+ *           of cutting evenly from both edges.
+ *   'card'  directory and homepage cards (5:4), the spotlight, nearby cards.
+ *           Barely wider than a 4:3 source, so there is little to trim and
+ *           centering reads better than biasing.
+ *
+ * Picking a real focal point in the admin tool overrides both.
  *
  * No build step here: this is a plain global, loaded with a <script> tag in
  * <head> before the inline page scripts that call it.
@@ -27,8 +37,8 @@
     'left top', 'right top', 'left bottom', 'right bottom'
   ]);
 
-  // What an unset (auto) photo_positions entry renders as.
-  var AUTO_FALLBACK = 'top';
+  // What an unset (auto) photo_positions entry renders as, per surface.
+  var FALLBACK = { hero: 'top', card: 'center' };
 
   function storedAt(positions, i) {
     var v = positions && positions[i];
@@ -41,10 +51,12 @@
     return !SAFE_POSITIONS.has(storedAt(positions, i));
   }
 
-  // The CSS background-position / object-position value for photo i.
-  function positionFor(positions, i) {
+  // The CSS background-position / object-position value for photo i on the
+  // given surface ('hero' or 'card'). Unknown surface falls back to 'hero'.
+  function positionFor(positions, i, surface) {
     var v = storedAt(positions, i);
-    return SAFE_POSITIONS.has(v) ? v : AUTO_FALLBACK;
+    if (SAFE_POSITIONS.has(v)) return v;
+    return FALLBACK[surface] || FALLBACK.hero;
   }
 
   // Inline style for a cover-cropped photo cell. The caller owns the box
@@ -57,7 +69,7 @@
 
   global.PhotoCrop = {
     SAFE_POSITIONS: SAFE_POSITIONS,
-    AUTO_FALLBACK: AUTO_FALLBACK,
+    FALLBACK: FALLBACK,
     isAuto: isAuto,
     positionFor: positionFor,
     cellStyle: cellStyle

@@ -1208,8 +1208,10 @@ document.addEventListener('keydown', e => {
   // catEmoji, parseClock and isOpenNow live at top level (see the search script
   // above) so the nav/hero suggestion dropdown can share them.
   // Photo focal points come from assets/js/photo-crop.js, shared with the
-  // directory, the listing page and the admin tool.
-  const photoPos = (positions, i) => PhotoCrop.positionFor(positions, i);
+  // directory, the listing page and the admin tool. Cards and the spotlight
+  // are the 'card' surface; the big hero banner crops like a listing hero.
+  const photoPos = (positions, i) => PhotoCrop.positionFor(positions, i, 'card');
+  const heroPos = (positions) => PhotoCrop.positionFor(positions, 0, 'hero');
   function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
 
   try {
@@ -1294,7 +1296,7 @@ document.addEventListener('keydown', e => {
         if (!layer) return;
         const src = b.image_url || (b.photos && b.photos[0]);
         layer.style.backgroundImage = `url('${src}')`;
-        layer.style.backgroundPosition = photoPos(b.photo_positions, 0);
+        layer.style.backgroundPosition = heroPos(b.photo_positions);
         layers.forEach((l, n) => { if (l) l.classList.toggle('show', n === cur); });
         if (link) link.href = `/pages/business.html?id=${b.id}`;
         if (cap) { cap.textContent = b.name; cap.style.display = ''; }

@@ -15,9 +15,11 @@
 --    disagree silently applies the wrong focal point to the wrong photo (or
 --    none at all). Pad with '' / truncate so index i always describes photos[i].
 --
--- Auto resolving to 'top' rather than 'center' is deliberate: these cells are
--- wider than a typical phone photo, so a cover crop trims vertically, and
--- biasing to the top keeps heads and sign tops in frame. See
+-- Auto resolves per surface, which keeps this migration visually invisible:
+-- the listing gallery and homepage banner anchor to 'top' (exactly what a
+-- stored 'center' already resolved to there), and cards, the spotlight and
+-- nearby tiles stay on 'center' (exactly what they already showed). A stored
+-- value, 'center' included, is honored literally everywhere. See
 -- assets/js/photo-crop.js, which is now the single source of that rule.
 
 
