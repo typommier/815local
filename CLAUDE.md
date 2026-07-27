@@ -65,6 +65,12 @@ The offline/live test harness (`npm run test:concierge`) and the dead
 notes. Don't re-add the widget without first figuring out what was giving
 bad answers.
 
+**The concierge Supabase project is idle and stopped responding to SQL over
+MCP as of July 27, 2026** (connection timeout, expected for an unused project,
+not a fault to debug). Every `listings` figure below is therefore last-verified
+July 2026 and should be re-checked against the DB before being relied on, not
+quoted as current.
+
 A chat bubble (bottom-right, on public pages), named **Scout**, that lets
 visitors ask about business hours, get recommendations ("best tacos in
 town"), or find a service provider. Answers only from real `listings` rows,
