@@ -449,6 +449,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
 </style>
 <link rel="stylesheet" href="/assets/css/815local.css">
 <noscript><style>.fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }</style></noscript>
+<script src="/assets/js/photo-crop.js"></script>
 </head>
 <body>
 
@@ -1206,11 +1207,11 @@ document.addEventListener('keydown', e => {
 
   // catEmoji, parseClock and isOpenNow live at top level (see the search script
   // above) so the nav/hero suggestion dropdown can share them.
-  const PHOTO_POS_SAFE = new Set(['center','top','bottom','left','right','top left','top right','bottom left','bottom right','left top','right top','left bottom','right bottom']);
-  function photoPos(positions, i) {
-    const v = positions && positions[i];
-    return PHOTO_POS_SAFE.has(v) ? v : 'center';
-  }
+  // Photo focal points come from assets/js/photo-crop.js, shared with the
+  // directory, the listing page and the admin tool. Cards and the spotlight
+  // are the 'card' surface; the big hero banner crops like a listing hero.
+  const photoPos = (positions, i) => PhotoCrop.positionFor(positions, i, 'card');
+  const heroPos = (positions) => PhotoCrop.positionFor(positions, 0, 'hero');
   function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
 
   try {
@@ -1280,7 +1281,6 @@ document.addEventListener('keydown', e => {
       const j = Math.floor(Math.random() * (i + 1));
       [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
     }
-    const heroPos = p => (p && PHOTO_POS_SAFE.has(p[0])) ? p[0] : 'top';
     // Single hero photo that cycles through real business images like a slideshow.
     const slidePhotos = withPhotos;
     if (slidePhotos.length) {

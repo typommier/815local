@@ -10,7 +10,7 @@
 //     "delete_paths": ["business-id/abc123.jpg"],                       // optional
 //     "set_image_url": "https://..." | "__upload_0__" | null,           // optional
 //     "set_photos": ["https://...", "__upload_0__", ...],               // optional
-//     "set_photo_positions": ["center", "top", ...]                     // optional
+//     "set_photo_positions": ["", "top", ...]                           // optional
 //   }
 //
 // "__upload_N__" tokens in set_image_url / set_photos are replaced with the
@@ -19,8 +19,12 @@
 // them into image_url / photos in the correct order, instead of doing it in
 // two sequential calls.
 //
-// photo_positions are validated against a CSS background-position safelist;
-// unknown values fall back to "center".
+// photo_positions are validated against a CSS background-position safelist and
+// indexed to match photos. "" means auto (nobody picked a focal point), which
+// assets/js/photo-crop.js renders as "top"; anything not on the safelist is
+// coerced to "" rather than to a real position, so a junk value lands on auto
+// instead of silently framing the photo somewhere nobody chose. The stored
+// array is always reconciled to photos.length so the two can't drift apart.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -165,8 +169,19 @@ Deno.serve(async (req: Request) => {
     if (hasSetPhotoPositions) {
       const v = body.set_photo_positions;
       patch.photo_positions = Array.isArray(v)
-        ? v.map((p: unknown) => (typeof p === "string" && SAFE_POSITIONS.has(p)) ? p : "center")
+        ? v.map((p: unknown) => (typeof p === "string" && SAFE_POSITIONS.has(p)) ? p : "")
         : [];
+    }
+    // Keep photo_positions indexed to photos. Without this, a failed upload
+    // (its __upload_N__ token resolves to null and gets filtered out of photos
+    // above) shrinks photos while positions keeps its length, shifting every
+    // later focal point by one. Only reconcile when the caller sent both keys,
+    // otherwise we'd be padding or truncating against an array we never saw.
+    if (hasSetPhotos && hasSetPhotoPositions && Array.isArray(patch.photos)) {
+      const n = (patch.photos as string[]).length;
+      const pos = Array.isArray(patch.photo_positions) ? (patch.photo_positions as string[]).slice(0, n) : [];
+      while (pos.length < n) pos.push("");
+      patch.photo_positions = pos;
     }
     const { data, error: updErr } = await supabase
       .from("businesses")
