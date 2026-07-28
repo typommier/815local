@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knead More Dough &middot; Channahon, Illinois</title>
+<meta name="description" content="Sourdough bread, coffee cakes, cookies and sweets from old family recipes. Baked at Hive Kitchen in Channahon and sold in the storefront.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Palette lifted from the quilt in her own hero photo. */
+    --plum:#4A2340;
+    --plum-deep:#331728;
+    --berry:#A32639;
+    --berry-dark:#7E1B2A;
+    --sage:#93A183;
+    --gold:#D9A441;
+    --linen:#FAF4E8;
+    --linen-dim:#F0E7D5;
+    --ink:#2A211E;
+    --ink-soft:#5B4E48;
+    --radius:14px;
+    color-scheme:light;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--linen);
+    color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;
+    font-size:1.06rem;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* height:auto matters: without it the width/height attributes win and any
+     CSS aspect-ratio on the image is ignored. */
+  img{max-width:100%;display:block;height:auto;}
+  a{color:inherit;}
+  h1,h2,h3{
+    font-family:'Bricolage Grotesque','Segoe UI',sans-serif;
+    font-weight:600;
+    line-height:1.12;
+    letter-spacing:-0.015em;
+    color:var(--plum);
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:600;
+    font-size:0.76rem;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--berry);margin-bottom:0.85rem;
+  }
+  .eyebrow::before{content:"";width:24px;height:2px;background:var(--berry);}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:13px 26px;border-radius:100px;white-space:nowrap;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:0.95rem;
+    text-decoration:none;border:2px solid transparent;cursor:pointer;
+    transition:background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+  }
+  .btn-berry{background:var(--berry);color:#FFF6EF;}
+  .btn-berry:hover{background:var(--berry-dark);}
+  .btn-outline{border-color:var(--plum);color:var(--plum);}
+  .btn-outline:hover{background:var(--plum);color:var(--linen);}
+  .btn:active{transform:translateY(1px);}
+
+  /* Demo flag, same convention as the other mockups in this folder */
+  .demo-flag{
+    background:var(--gold);color:var(--plum-deep);text-align:center;
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:600;
+    font-size:0.8rem;padding:9px 16px;
+  }
+
+  /* NAV */
+  nav{background:var(--plum);position:sticky;top:0;z-index:50;}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:72px;}
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:700;
+    font-size:1.28rem;letter-spacing:-0.02em;color:var(--linen);
+    text-decoration:none;white-space:nowrap;
+  }
+  .wordmark span{color:var(--gold);}
+  .navlinks{display:flex;align-items:center;gap:30px;}
+  .navlinks a{
+    font-family:'Bricolage Grotesque',sans-serif;font-weight:500;font-size:0.94rem;
+    color:rgba(250,244,232,0.82);text-decoration:none;white-space:nowrap;
+    padding-bottom:2px;border-bottom:2px solid transparent;transition:color 0.18s, border-color 0.18s;
+  }
+  .navlinks a:hover{color:var(--linen);border-bottom-color:var(--gold);}
+
+  /* HERO: asymmetric split, copy left, the quilt photo right */
+  .hero{padding:68px 0 84px;}
+  .hero-inner{display:grid;grid-template-columns:1.15fr 0.85fr;gap:60px;align-items:center;}
+  .hero h1{font-size:clamp(2.1rem,3.9vw,3rem);margin-bottom:1.15rem;}
+  .hero h1 .warm{color:var(--berry);}
+  .hero p{font-size:1.14rem;color:var(--ink-soft);max-width:34rem;margin-bottom:2rem;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+
+  /* Quilt stitching around the hero photo */
+  .stitched{position:relative;}
+  .stitched img{
+    width:100%;aspect-ratio:1/1;object-fit:cover;
+    border-radius:var(--radius);
+    box-shadow:0 22px 46px rgba(51,23,40,0.24);
+  }
+  .stitched::after{
+    content:"";position:absolute;inset:14px -14px -14px 14px;
+    border:2px dashed var(--sage);border-radius:var(--radius);
+    z-index:-1;pointer-events:none;
+  }
+
+  section{padding:88px 0;}
+  .section-head{max-width:36rem;margin-bottom:44px;}
+  .section-head h2{font-size:clamp(1.8rem,3.2vw,2.4rem);margin-bottom:0.7rem;}
+  .section-head p{color:var(--ink-soft);}
+
+  /* THE QUILT BLOCK: every patch is one real thing she bakes */
+  .quilt{
+    display:grid;grid-template-columns:repeat(12,1fr);
+    gap:18px;
+  }
+  .patch{
+    border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;
+    transition:transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  .patch:hover{transform:translateY(-4px);box-shadow:0 18px 34px rgba(51,23,40,0.18);}
+  .patch img{width:100%;object-fit:cover;}
+  .patch-body{padding:22px 24px 26px;}
+  .patch h3{font-size:1.24rem;margin-bottom:6px;}
+  .patch p{font-size:0.97rem;line-height:1.55;}
+
+  .patch-loaves{grid-column:span 7;background:var(--plum);}
+  .patch-loaves img{aspect-ratio:16/11;}
+  /* Square crop here so the narrower coffee cake patch ends up about as tall as
+     the wide loaves patch beside it, instead of trailing a slab of bare gold. */
+  .patch-coffee{grid-column:span 5;background:var(--gold);}
+  .patch-coffee img{aspect-ratio:1/1;}
+  /* Both source photos are 4:3, so a 4:3 cell crops nothing. Tightening to 3:2
+     and anchoring the crop puts the named item in frame: down onto the cookies
+     (the krispie treat sits at the top of that shot, and has its own patch),
+     up onto the push-up cups (bare counter fills the bottom of that shot). */
+  .patch-cookies{grid-column:span 5;background:var(--plum-deep);}
+  .patch-cookies img{aspect-ratio:3/2;object-position:50% 100%;}
+  .patch-pushups{grid-column:span 4;background:var(--sage);}
+  .patch-pushups img{aspect-ratio:3/2;object-position:50% 22%;}
+
+  /* The one patch with no photo of its own reads as plain quilt fabric */
+  .patch-krispie{
+    grid-column:span 3;background:var(--plum);
+    justify-content:center;padding:34px 28px;
+    background-image:repeating-linear-gradient(135deg,rgba(250,244,232,0.05) 0 12px,transparent 12px 24px);
+  }
+  .patch-krispie h3{font-size:1.5rem;}
+
+  .on-dark h3{color:var(--linen);}
+  .on-dark p{color:rgba(250,244,232,0.76);}
+  .on-light h3{color:var(--plum-deep);}
+  .on-light p{color:rgba(42,33,30,0.82);}
+
+  /* STATEMENT BAND, her own words */
+  .statement{background:var(--plum-deep);text-align:center;}
+  .statement blockquote{
+    font-family:'Newsreader',Georgia,serif;font-style:italic;font-weight:400;
+    font-size:clamp(1.45rem,3vw,2.05rem);line-height:1.45;
+    color:var(--linen);max-width:44rem;margin:0 auto;padding-bottom:0.25rem;
+  }
+  .statement .attrib{
+    display:block;margin-top:1.4rem;
+    font-family:'Bricolage Grotesque',sans-serif;font-style:normal;font-weight:600;
+    font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);
+  }
+
+  /* VISIT */
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  .visit-grid h2{font-size:clamp(1.8rem,3.2vw,2.3rem);margin-bottom:1rem;}
+  .visit-grid .lede{color:var(--ink-soft);margin-bottom:1.9rem;}
+  .hours{width:100%;border-collapse:collapse;margin-bottom:1.9rem;}
+  .hours caption{
+    text-align:left;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;
+    font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--plum);padding-bottom:12px;
+  }
+  .hours tr+tr{border-top:1px solid var(--linen-dim);}
+  .hours td{padding:11px 0;font-size:0.99rem;vertical-align:top;}
+  .hours td:first-child{font-weight:500;color:var(--plum);}
+  .hours td:last-child{text-align:right;color:var(--ink-soft);}
+  .hours .shut td:last-child{color:#9C8F88;}
+  .contact{list-style:none;}
+  .contact li{padding:9px 0;font-size:1rem;}
+  .contact a{color:var(--berry);font-weight:500;text-decoration:none;border-bottom:1px solid rgba(163,38,57,0.35);}
+  .contact a:hover{border-bottom-color:var(--berry);}
+  .map{border-radius:var(--radius);overflow:hidden;box-shadow:0 16px 34px rgba(51,23,40,0.16);}
+  .map iframe{width:100%;height:420px;border:0;display:block;}
+
+  /* TESTIMONIAL PLACEHOLDER, she has no reviews yet */
+  .words{background:var(--linen-dim);}
+  .quote-card{
+    max-width:38rem;margin:0 auto;text-align:center;
+    background:var(--linen);border:2px dashed var(--sage);border-radius:var(--radius);
+    padding:42px 44px;
+  }
+  .quote-card p{font-style:italic;color:var(--ink-soft);margin-bottom:1.1rem;}
+  .quote-card .note{
+    font-family:'Bricolage Grotesque',sans-serif;font-style:normal;font-weight:600;
+    font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--berry);
+  }
+
+  /* FOOTER */
+  .stripe{display:flex;height:10px;}
+  .stripe span{flex:1;}
+  footer{background:var(--plum-deep);color:rgba(250,244,232,0.66);padding:42px 0;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;}
+  footer p{font-size:0.92rem;}
+
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;gap:44px;}
+    .hero-media{max-width:26rem;}
+    .visit-grid{grid-template-columns:1fr;gap:44px;}
+    .patch-loaves,.patch-coffee,.patch-cookies{grid-column:span 12;}
+    .patch-pushups{grid-column:span 7;}
+    .patch-krispie{grid-column:span 5;}
+  }
+  @media(max-width:640px){
+    .wrap{padding:0 20px;}
+    .navlinks{display:none;}
+    .hero{padding:52px 0 60px;}
+    section{padding:60px 0;}
+    .quilt{gap:14px;}
+    .patch-pushups,.patch-krispie{grid-column:span 12;}
+    .patch-krispie{padding:28px 24px;}
+    .quote-card{padding:32px 26px;}
+    .map iframe{height:320px;}
+  }
+
+  [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity 0.65s ease,transform 0.65s ease;}
+  [data-reveal].in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
+    [data-reveal]{opacity:1;transform:none;}
+    .patch:hover{transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-flag">Concept demo built for Knead More Dough. Not a live site.</div>
+
+<nav>
+  <div class="wrap">
+    <a class="wordmark" href="#">Knead More <span>Dough</span></a>
+    <div class="navlinks">
+      <a href="#bakes">What She Bakes</a>
+      <a href="#recipes">Her Recipes</a>
+      <a href="#visit">Visit</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div data-reveal>
+      <span class="eyebrow">Bakery &middot; Channahon, IL</span>
+      <h1>Old family recipes, <span class="warm">baked fresh</span> in Channahon.</h1>
+      <p>Sourdough loaves, coffee cakes, cookies and sweets. Baked at Hive Kitchen and sold right in the storefront.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-berry" href="#visit">Hours and location</a>
+        <a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&amp;query=25520+Pheasant+Ln,+Channahon,+IL" target="_blank" rel="noopener">Get directions</a>
+      </div>
+    </div>
+    <div class="hero-media stitched" data-reveal>
+      <img src="Knead%20More%20Dough%20Pictures/sourdough-boule-quilt.jpg" width="992" height="1002" loading="eager" alt="A round hand scored sourdough loaf resting on a patchwork quilt">
+    </div>
+  </div>
+</header>
+
+<section id="bakes">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <h2>What she bakes</h2>
+      <p>Bread on one side, sweets on the other, all out of the same kitchen.</p>
+    </div>
+
+    <div class="quilt">
+      <article class="patch patch-loaves on-dark" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/loaves-batch.jpg" loading="lazy" alt="A batch of sourdough loaves cooling on racks and bagged for the storefront">
+        <div class="patch-body">
+          <h3>Sourdough loaves</h3>
+          <p>Round loaves, scored by hand and baked in batches.</p>
+        </div>
+      </article>
+
+      <article class="patch patch-coffee on-light" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/coffee-cake.jpg" loading="lazy" alt="A square coffee cake with crumb topping and a white glaze drizzle">
+        <div class="patch-body">
+          <h3>Coffee cakes</h3>
+          <p>Crumb topped and finished with a glaze.</p>
+        </div>
+      </article>
+
+      <article class="patch patch-cookies on-dark" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/cookies-and-treats.jpg" loading="lazy" alt="Large peanut butter and chocolate chip cookies wrapped individually">
+        <div class="patch-body">
+          <h3>Cookies</h3>
+          <p>Big and soft. Peanut butter and chocolate chip.</p>
+        </div>
+      </article>
+
+      <article class="patch patch-pushups on-light" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/cake-push-ups.jpg" loading="lazy" alt="Trays of layered cake push-up cups with frosting and sprinkles">
+        <div class="patch-body">
+          <h3>Cake push-ups</h3>
+          <p>Layered cake and frosting, decorated for the season.</p>
+        </div>
+      </article>
+
+      <article class="patch patch-krispie on-dark" data-reveal>
+        <h3>Rice krispie treats</h3>
+        <p>Thick cut and wrapped by the piece.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="statement" id="recipes">
+  <div class="wrap">
+    <blockquote data-reveal>
+      Most recipes are old family recipes that have been passed down.
+      <span class="attrib">Knead More Dough</span>
+    </blockquote>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="wrap">
+    <div class="visit-grid">
+      <div data-reveal>
+        <span class="eyebrow">Come by</span>
+        <h2>Baked at Hive Kitchen, sold in the storefront</h2>
+        <p class="lede">Everything is made and baked at Hive Kitchen in Channahon, then sold up front Tuesday through Saturday.</p>
+
+        <table class="hours">
+          <caption>Storefront hours</caption>
+          <tbody>
+            <tr class="shut"><td>Monday</td><td>Closed</td></tr>
+            <tr><td>Tuesday</td><td>12:00 PM to 6:00 PM</td></tr>
+            <tr><td>Wednesday</td><td>12:00 PM to 9:00 PM</td></tr>
+            <tr><td>Thursday</td><td>12:00 PM to 9:00 PM</td></tr>
+            <tr><td>Friday</td><td>12:00 PM to 9:00 PM</td></tr>
+            <tr><td>Saturday</td><td>8:00 AM to 12:00 PM<br>4:00 PM to 9:00 PM</td></tr>
+            <tr class="shut"><td>Sunday</td><td>Closed</td></tr>
+          </tbody>
+        </table>
+
+        <ul class="contact">
+          <li>25520 Pheasant Ln, Unit D, Channahon, IL</li>
+          <li><a href="tel:7085146123">(708) 514-6123</a></li>
+          <li><a href="https://www.google.com/maps/search/?api=1&amp;query=25520+Pheasant+Ln,+Channahon,+IL" target="_blank" rel="noopener">Open in Google Maps</a></li>
+        </ul>
+      </div>
+
+      <div class="map" data-reveal>
+        <iframe loading="lazy" title="Map to Knead More Dough at Hive Kitchen in Channahon" src="https://maps.google.com/maps?q=25520+Pheasant+Ln,+Channahon,+IL&amp;output=embed" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="words">
+  <div class="wrap">
+    <div class="quote-card" data-reveal>
+      <p>This is where a real customer review goes. Pull a couple of lines from Google or Facebook and drop them straight in.</p>
+      <span class="note">Placeholder, awaiting real reviews</span>
+    </div>
+  </div>
+</section>
+
+<div class="stripe" aria-hidden="true">
+  <span style="background:var(--plum)"></span>
+  <span style="background:var(--gold)"></span>
+  <span style="background:var(--sage)"></span>
+  <span style="background:var(--berry)"></span>
+  <span style="background:var(--plum)"></span>
+  <span style="background:var(--gold)"></span>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="wordmark" href="#">Knead More <span>Dough</span></a>
+    <p>25520 Pheasant Ln, Unit D, Channahon, IL &middot; (708) 514-6123</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = document.querySelectorAll('[data-reveal]');
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+      });
+    }, {threshold:0.12});
+    els.forEach(function(el){ obs.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
