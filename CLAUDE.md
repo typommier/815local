@@ -486,6 +486,8 @@ A dead/non-resolving website is a strong signal a business has closed.
 - Direct edits, no excessive permission-asking
 - Verify assumptions before changing things, especially around files (the "is `index.html` the homepage or is it `815local-homepage.html`" lesson cost real time)
 - Push back when the request would create work that's already been done
+- **Match the effort to the task. Don't turn a five minute job into a twenty minute one.** Answer the question that was asked, at the size it was asked. A one-line question gets a one-line answer, not a survey of options, a pile of caveats, or adjacent problems Ty didn't raise.
+- **Don't hedge on things Ty already knows work.** The sandbox can't reach `815local.com`, `*.pages.dev`, `places.googleapis.com`, or Supabase Storage. That is a limitation of this environment, not evidence the live site is broken. Say the plain answer; only flag a limitation when it actually changes what Ty should do.
 
 ### Supabase changes
 - Use MCP tools directly (`apply_migration`, `execute_sql`). Don't generate SQL files for manual execution unless the MCP tools fail.
