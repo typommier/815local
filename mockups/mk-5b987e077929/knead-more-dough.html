@@ -185,7 +185,9 @@
 
   .patch-loaves{grid-column:span 7;background:var(--plum);}
   .patch-photos{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;}
-  .patch-photos img{aspect-ratio:1/1;}
+  /* 4/5 makes the pair fill the patch, so it aligns with the coffee patch
+     beside it with no empty band below the caption. */
+  .patch-photos img{aspect-ratio:4/5;}
   /* Square crop here so the narrower coffee cake patch ends up about as tall as
      the wide loaves patch beside it, instead of trailing a slab of bare gold. */
   .patch-coffee{grid-column:span 5;background:var(--gold);}
@@ -194,23 +196,14 @@
      and anchoring the crop puts the named item in frame: down onto the cookies
      (the krispie treat sits at the top of that shot, and has its own patch),
      up onto the push-up cups (bare counter fills the bottom of that shot). */
-  .patch-cookies{grid-column:span 4;background:var(--plum-deep);}
-  .patch-cookies img{aspect-ratio:5/4;}
-  .patch-redvelvet{grid-column:span 4;background:var(--gold);}
-  .patch-redvelvet img{aspect-ratio:5/4;object-position:50% 40%;}
+  /* Cookies and treats carries two photos, so it takes the wider slot and
+     the pair sits in the shared .patch-photos grid. Push-ups and the narrow
+     portrait red velvet cell fill out the row. */
+  .patch-cookies{grid-column:span 5;background:var(--plum-deep);}
   .patch-pushups{grid-column:span 4;background:var(--sage);}
   .patch-pushups img{aspect-ratio:5/4;object-position:50% 22%;}
-
-  /* Rice krispie has no photo of its own, so it reads as a full-width
-     strip of quilt fabric, a sashing band across the bottom of the block */
-  .patch-krispie{
-    grid-column:span 12;background:var(--plum);
-    flex-direction:row;align-items:center;justify-content:center;gap:8px 16px;
-    flex-wrap:wrap;text-align:center;padding:26px 28px;
-    background-image:repeating-linear-gradient(135deg,rgba(250,244,232,0.05) 0 12px,transparent 12px 24px);
-  }
-  .patch-krispie h3{font-size:1.35rem;margin:0;}
-  .patch-krispie p{margin:0;}
+  .patch-redvelvet{grid-column:span 3;background:var(--gold);}
+  .patch-redvelvet img{aspect-ratio:1/1;object-position:50% 40%;}
 
   .on-dark h3{color:var(--linen);}
   .on-dark p{color:rgba(250,244,232,0.76);}
@@ -320,7 +313,6 @@
     section{padding:60px 0;}
     .quilt{gap:14px;}
     .patch-cookies,.patch-redvelvet,.patch-pushups{grid-column:span 12;}
-    .patch-krispie{padding:24px 22px;}
     .quote-card{padding:32px 26px;}
     .map iframe{height:320px;}
   }
@@ -401,18 +393,13 @@
       </article>
 
       <article class="patch patch-cookies on-dark" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/small-cookies.jpg" loading="lazy" alt="A tray of golden chocolate chip cookies fresh from the oven">
-        <div class="patch-body">
-          <h3>Cookies</h3>
-          <p>Big and soft. Chocolate chip, peanut butter, monster and more.</p>
+        <div class="patch-photos">
+          <img src="Knead%20More%20Dough%20Pictures/small-cookies.jpg" loading="lazy" alt="A tray of golden chocolate chip cookies fresh from the oven">
+          <img src="Knead%20More%20Dough%20Pictures/cookies-and-treats.jpg" loading="lazy" alt="Wrapped peanut butter and chocolate chip cookies beside a rice krispie treat">
         </div>
-      </article>
-
-      <article class="patch patch-redvelvet on-light" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/red-velvet.jpg" loading="lazy" alt="Red velvet cookies with white chocolate chips, wrapped by the piece">
         <div class="patch-body">
-          <h3>Red velvet cookies</h3>
-          <p>Deep red and chewy, studded with white chocolate chips.</p>
+          <h3>Cookies and treats</h3>
+          <p>Chocolate chip, peanut butter, monster and more, plus thick cut rice krispie treats.</p>
         </div>
       </article>
 
@@ -424,9 +411,12 @@
         </div>
       </article>
 
-      <article class="patch patch-krispie on-dark" data-reveal>
-        <h3>Rice krispie treats</h3>
-        <p>Thick cut and wrapped by the piece.</p>
+      <article class="patch patch-redvelvet on-light" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/red-velvet.jpg" loading="lazy" alt="Red velvet cookies with white chocolate chips, wrapped by the piece">
+        <div class="patch-body">
+          <h3>Red velvet cookies</h3>
+          <p>Deep red and chewy, studded with white chocolate chips.</p>
+        </div>
       </article>
     </div>
   </div>
