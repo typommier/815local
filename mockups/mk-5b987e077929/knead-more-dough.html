@@ -184,8 +184,10 @@
   .patch p{font-size:0.97rem;line-height:1.55;}
 
   .patch-loaves{grid-column:span 7;background:var(--plum);}
-  .patch-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
-  .patch-photos img{aspect-ratio:3/4;}
+  .patch-photos{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;}
+  /* 4/5 makes the pair fill the patch, so it aligns with the coffee patch
+     beside it with no empty band below the caption. */
+  .patch-photos img{aspect-ratio:4/5;}
   /* Square crop here so the narrower coffee cake patch ends up about as tall as
      the wide loaves patch beside it, instead of trailing a slab of bare gold. */
   .patch-coffee{grid-column:span 5;background:var(--gold);}
@@ -194,23 +196,14 @@
      and anchoring the crop puts the named item in frame: down onto the cookies
      (the krispie treat sits at the top of that shot, and has its own patch),
      up onto the push-up cups (bare counter fills the bottom of that shot). */
-  .patch-cookies{grid-column:span 4;background:var(--plum-deep);}
-  .patch-cookies img{aspect-ratio:5/4;}
-  .patch-redvelvet{grid-column:span 4;background:var(--gold);}
-  .patch-redvelvet img{aspect-ratio:5/4;object-position:50% 40%;}
+  /* Cookies and treats carries two photos, so it takes the wider slot and
+     the pair sits in the shared .patch-photos grid. Push-ups and the narrow
+     portrait red velvet cell fill out the row. */
+  .patch-cookies{grid-column:span 5;background:var(--plum-deep);}
   .patch-pushups{grid-column:span 4;background:var(--sage);}
   .patch-pushups img{aspect-ratio:5/4;object-position:50% 22%;}
-
-  /* Rice krispie has no photo of its own, so it reads as a full-width
-     strip of quilt fabric, a sashing band across the bottom of the block */
-  .patch-krispie{
-    grid-column:span 12;background:var(--plum);
-    flex-direction:row;align-items:center;justify-content:center;gap:8px 16px;
-    flex-wrap:wrap;text-align:center;padding:26px 28px;
-    background-image:repeating-linear-gradient(135deg,rgba(250,244,232,0.05) 0 12px,transparent 12px 24px);
-  }
-  .patch-krispie h3{font-size:1.35rem;margin:0;}
-  .patch-krispie p{margin:0;}
+  .patch-redvelvet{grid-column:span 3;background:var(--gold);}
+  .patch-redvelvet img{aspect-ratio:1/1;object-position:50% 40%;}
 
   .on-dark h3{color:var(--linen);}
   .on-dark p{color:rgba(250,244,232,0.76);}
@@ -301,8 +294,13 @@
   .foot-note a:hover{border-bottom-color:var(--gold);}
 
   @media(max-width:900px){
-    .hero-inner{grid-template-columns:1fr;gap:44px;}
-    .hero-media{max-width:26rem;}
+    .hero-inner,.hero-banner .hero-inner{grid-template-columns:1fr;gap:44px;}
+    .hero-media{max-width:26rem;margin-inline:auto;}
+    /* Banner variant stacks like the logo variant below 900px. The wide sign
+       gets more room than the square logo, and the desktop scallop/pad go. */
+    .hero-banner .hero-media{max-width:32rem;}
+    .hero-banner .hero{padding-bottom:60px;}
+    .hero-banner .hero::after{display:none;}
     .visit-grid{grid-template-columns:1fr;gap:44px;}
     .patch-loaves,.patch-coffee{grid-column:span 12;}
     .events-grid{grid-template-columns:1fr;gap:36px;}
@@ -315,7 +313,6 @@
     section{padding:60px 0;}
     .quilt{gap:14px;}
     .patch-cookies,.patch-redvelvet,.patch-pushups{grid-column:span 12;}
-    .patch-krispie{padding:24px 22px;}
     .quote-card{padding:32px 26px;}
     .map iframe{height:320px;}
   }
@@ -379,12 +376,11 @@
       <article class="patch patch-loaves on-dark" data-reveal>
         <div class="patch-photos">
           <img src="Knead%20More%20Dough%20Pictures/sourdough-boule-quilt.jpg" loading="lazy" alt="A round hand scored sourdough loaf resting on a patchwork quilt">
-          <img src="Knead%20More%20Dough%20Pictures/loaves-batch.jpg" loading="lazy" alt="A batch of sourdough loaves cooling on racks and bagged for the storefront">
           <img src="Knead%20More%20Dough%20Pictures/sliced-sourdough.jpg" loading="lazy" alt="A sourdough loaf sliced on a red plate, showing an open airy crumb">
         </div>
         <div class="patch-body">
           <h3>Sourdough loaves</h3>
-          <p>Scored by hand and baked in batches. Full and half sizes.</p>
+          <p>Freshly baked. Available in full and half sizes.</p>
         </div>
       </article>
 
@@ -392,23 +388,18 @@
         <img src="Knead%20More%20Dough%20Pictures/coffee-cake-crumb.jpg" loading="lazy" alt="A tray of coffee cake with a thick crumb topping over fruit filling">
         <div class="patch-body">
           <h3>Coffee cakes</h3>
-          <p>Crumb topped and glazed. Cherry, raspberry, blueberry and apple.</p>
+          <p>A wide variety of coffee cakes: cherry, raspberry, blueberry and apple.</p>
         </div>
       </article>
 
       <article class="patch patch-cookies on-dark" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/small-cookies.jpg" loading="lazy" alt="A tray of golden chocolate chip cookies fresh from the oven">
-        <div class="patch-body">
-          <h3>Cookies</h3>
-          <p>Big and soft. Chocolate chip, peanut butter, monster and more.</p>
+        <div class="patch-photos">
+          <img src="Knead%20More%20Dough%20Pictures/small-cookies.jpg" loading="lazy" alt="A tray of golden chocolate chip cookies fresh from the oven">
+          <img src="Knead%20More%20Dough%20Pictures/cookies-and-treats.jpg" loading="lazy" alt="Wrapped peanut butter and chocolate chip cookies beside a rice krispie treat">
         </div>
-      </article>
-
-      <article class="patch patch-redvelvet on-light" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/red-velvet.jpg" loading="lazy" alt="Red velvet cookies with white chocolate chips, wrapped by the piece">
         <div class="patch-body">
-          <h3>Red velvet cookies</h3>
-          <p>Deep red and chewy, studded with white chocolate chips.</p>
+          <h3>Cookies and treats</h3>
+          <p>Chocolate chip, peanut butter, monster and more, plus thick cut rice krispie treats.</p>
         </div>
       </article>
 
@@ -420,9 +411,12 @@
         </div>
       </article>
 
-      <article class="patch patch-krispie on-dark" data-reveal>
-        <h3>Rice krispie treats</h3>
-        <p>Thick cut and wrapped by the piece.</p>
+      <article class="patch patch-redvelvet on-light" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/red-velvet.jpg" loading="lazy" alt="Red velvet cookies with white chocolate chips, wrapped by the piece">
+        <div class="patch-body">
+          <h3>Red velvet cookies</h3>
+          <p>Deep red and chewy, studded with white chocolate chips.</p>
+        </div>
       </article>
     </div>
   </div>
@@ -444,9 +438,8 @@
         <img src="Knead%20More%20Dough%20Pictures/market-stall.jpg" loading="lazy" alt="The Knead More Dough market booth with the painted banner, racks of bagged sourdough and a table of sweets">
       </div>
       <div class="events-text" data-reveal>
-        <span class="eyebrow">Catering &amp; events</span>
         <h2>Fully licensed and insured</h2>
-        <p>Catch Knead More Dough at local markets, and get in touch for special events, large orders and custom bakes.</p>
+        <p>Get in touch for special events, large orders and custom bakes.</p>
         <a class="btn btn-berry" href="tel:7085146123">Contact for special events</a>
       </div>
     </div>
