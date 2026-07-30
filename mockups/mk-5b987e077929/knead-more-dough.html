@@ -196,32 +196,20 @@
      and anchoring the crop puts the named item in frame: down onto the cookies
      (the krispie treat sits at the top of that shot, and has its own patch),
      up onto the push-up cups (bare counter fills the bottom of that shot). */
-  /* Cookies and treats carries two photos, so it takes the wider slot and
-     the pair sits in the shared .patch-photos grid. Push-ups and the narrow
-     portrait red velvet cell fill out the row. */
-  .patch-cookies{grid-column:span 5;background:var(--plum-deep);}
-  .patch-pushups{grid-column:span 4;background:var(--sage);}
+  /* Cookies and treats carries three photos (cookies, wrapped treats, red
+     velvet), so it takes the wider slot with its own 3-up photo grid. Push-ups
+     fills out the row. */
+  .patch-cookies{grid-column:span 7;background:var(--plum-deep);}
+  .patch-cookies .patch-photos{grid-template-columns:repeat(3,1fr);}
+  .patch-cookies .patch-photos img{aspect-ratio:3/5;}
+  .patch-cookies .patch-photos img:last-child{object-position:50% 40%;}
+  .patch-pushups{grid-column:span 5;background:var(--sage);}
   .patch-pushups img{aspect-ratio:5/4;object-position:50% 22%;}
-  .patch-redvelvet{grid-column:span 3;background:var(--gold);}
-  .patch-redvelvet img{aspect-ratio:1/1;object-position:50% 40%;}
 
   .on-dark h3{color:var(--linen);}
   .on-dark p{color:rgba(250,244,232,0.76);}
   .on-light h3{color:var(--plum-deep);}
   .on-light p{color:rgba(42,33,30,0.82);}
-
-  /* STATEMENT BAND, straight from the directory description */
-  .statement{background:var(--plum-deep);text-align:center;}
-  .statement blockquote{
-    font-family:'Newsreader',Georgia,serif;font-style:italic;font-weight:400;
-    font-size:clamp(1.45rem,3vw,2.05rem);line-height:1.45;
-    color:var(--linen);max-width:44rem;margin:0 auto;padding-bottom:0.25rem;
-  }
-  .statement .attrib{
-    display:block;margin-top:1.4rem;
-    font-family:'Bricolage Grotesque',sans-serif;font-style:normal;font-weight:600;
-    font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);
-  }
 
   /* EVENTS + LICENSED band */
   .events{background:var(--plum);color:var(--linen);}
@@ -312,7 +300,7 @@
     .hero{padding:52px 0 60px;}
     section{padding:60px 0;}
     .quilt{gap:14px;}
-    .patch-cookies,.patch-redvelvet,.patch-pushups{grid-column:span 12;}
+    .patch-cookies,.patch-pushups{grid-column:span 12;}
     .quote-card{padding:32px 26px;}
     .map iframe{height:320px;}
   }
@@ -369,7 +357,7 @@
   <div class="wrap">
     <div class="section-head" data-reveal>
       <h2>What we bake</h2>
-      <p>Bread on one side, sweets on the other, all out of the same kitchen.</p>
+      <p>Sourdough, coffee cakes, cookies and sweets, all made and baked in Channahon.</p>
     </div>
 
     <div class="quilt">
@@ -395,11 +383,12 @@
       <article class="patch patch-cookies on-dark" data-reveal>
         <div class="patch-photos">
           <img src="Knead%20More%20Dough%20Pictures/small-cookies.jpg" loading="lazy" alt="A tray of golden chocolate chip cookies fresh from the oven">
-          <img src="Knead%20More%20Dough%20Pictures/cookies-and-treats.jpg" loading="lazy" alt="Wrapped peanut butter and chocolate chip cookies beside a rice krispie treat">
+          <img src="Knead%20More%20Dough%20Pictures/cookies-and-treats.jpg" loading="lazy" alt="Wrapped peanut butter and chocolate chip cookies">
+          <img src="Knead%20More%20Dough%20Pictures/red-velvet.jpg" loading="lazy" alt="Red velvet cookies with white chocolate chips, wrapped by the piece">
         </div>
         <div class="patch-body">
           <h3>Cookies and treats</h3>
-          <p>Chocolate chip, peanut butter, monster and more, plus thick cut rice krispie treats.</p>
+          <p>Chocolate chip, peanut butter, monster, red velvet and more.</p>
         </div>
       </article>
 
@@ -410,24 +399,7 @@
           <p>Layered cake and frosting, decorated for the season.</p>
         </div>
       </article>
-
-      <article class="patch patch-redvelvet on-light" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/red-velvet.jpg" loading="lazy" alt="Red velvet cookies with white chocolate chips, wrapped by the piece">
-        <div class="patch-body">
-          <h3>Red velvet cookies</h3>
-          <p>Deep red and chewy, studded with white chocolate chips.</p>
-        </div>
-      </article>
     </div>
-  </div>
-</section>
-
-<section class="statement" id="kitchen">
-  <div class="wrap">
-    <blockquote data-reveal>
-      Scored by hand, baked in batches, wrapped one at a time.
-      <span class="attrib">Knead More Dough</span>
-    </blockquote>
   </div>
 </section>
 
@@ -439,8 +411,8 @@
       </div>
       <div class="events-text" data-reveal>
         <h2>Fully licensed and insured</h2>
-        <p>Get in touch for special events, large orders and custom bakes.</p>
-        <a class="btn btn-berry" href="tel:7085146123">Contact for special events</a>
+        <p>Get in touch for special events, large orders, and more!</p>
+        <a class="btn btn-berry" href="tel:7085146123">Contact Us!</a>
       </div>
     </div>
   </div>
