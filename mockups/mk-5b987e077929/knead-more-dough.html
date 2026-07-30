@@ -27,6 +27,7 @@
     --linen:#FAF4E8;
     --linen-dim:#F0E7D5;
     --logo-paper:#F4E9D6;
+    --kraft:#D8C097; --kraft-ink:#3A2717; --kraft-rust:#9E3F22;
     --ink:#2A211E;
     --ink-soft:#5B4E48;
     --radius:14px;
@@ -126,11 +127,41 @@
   .hero-banner .hero-banner-img{display:block;}
   .hero-banner .hero-inner{grid-template-columns:1fr 1fr;}
   .hero-banner .hero h1{font-size:clamp(2rem,3.2vw,2.5rem);}
-  .stitched::after{
-    content:"";position:absolute;inset:14px -14px -14px 14px;
-    border:2px dashed var(--sage);border-radius:var(--radius);
-    z-index:-1;pointer-events:none;
+
+  /* Banner variant recolours ONLY the hero to the banner's own palette:
+     kraft paper, espresso ink, a rust accent, and the banner's scalloped
+     dot border along the bottom edge. The rest of the page keeps its theme. */
+  .hero-banner .hero{
+    background:var(--kraft);color:var(--kraft-ink);
+    position:relative;padding-bottom:104px;
   }
+  .hero-banner .hero .eyebrow,.hero-banner .hero h1 .warm{color:var(--kraft-rust);}
+  .hero-banner .hero .eyebrow::before{background:var(--kraft-rust);}
+  .hero-banner .hero h1{color:var(--kraft-ink);}
+  .hero-banner .hero p{color:#5A4326;}
+  .hero-banner .hero .btn-berry{background:var(--kraft-ink);color:#F1E7D3;}
+  .hero-banner .hero .btn-berry:hover{background:#241809;}
+  .hero-banner .hero .btn-outline{border-color:var(--kraft-ink);color:var(--kraft-ink);}
+  .hero-banner .hero .btn-outline:hover{background:var(--kraft-ink);color:#F1E7D3;}
+  .hero-banner .stitched img{background:#CDB187;}
+  /* scalloped dot strip, the banner's signature border motif */
+  .hero-banner .hero::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:30px;
+    background:radial-gradient(circle at 24px 30px, #7C3B36 15px, transparent 16px) 0 0 / 48px 30px repeat-x;
+    opacity:0.9;
+  }
+
+  /* Preview control: flip the mockup between the two hero treatments */
+  .hero-switch{
+    position:fixed;left:16px;bottom:16px;z-index:200;display:flex;align-items:center;gap:5px;
+    background:rgba(51,23,40,0.94);padding:6px 6px 6px 13px;border-radius:100px;
+    font-family:'Bricolage Grotesque',sans-serif;font-size:0.78rem;
+    box-shadow:0 8px 24px rgba(30,16,26,0.34);
+  }
+  .hero-switch span{color:rgba(250,244,232,0.72);font-weight:600;margin-right:3px;}
+  .hero-switch a{padding:5px 13px;border-radius:100px;color:rgba(250,244,232,0.85);font-weight:600;text-decoration:none;transition:background 0.15s;}
+  :root:not(.hero-banner) .hero-switch .to-logo{background:var(--gold);color:var(--plum-deep);}
+  :root.hero-banner .hero-switch .to-banner{background:var(--gold);color:var(--plum-deep);}
 
   section{padding:88px 0;}
   .section-head{max-width:36rem;margin-bottom:44px;}
@@ -153,28 +184,33 @@
   .patch p{font-size:0.97rem;line-height:1.55;}
 
   .patch-loaves{grid-column:span 7;background:var(--plum);}
-  .patch-photos{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
-  .patch-photos img{aspect-ratio:7/10;}
+  .patch-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
+  .patch-photos img{aspect-ratio:3/4;}
   /* Square crop here so the narrower coffee cake patch ends up about as tall as
      the wide loaves patch beside it, instead of trailing a slab of bare gold. */
   .patch-coffee{grid-column:span 5;background:var(--gold);}
-  .patch-coffee img{aspect-ratio:1/1;}
+  .patch-coffee img{aspect-ratio:5/4;}
   /* Both source photos are 4:3, so a 4:3 cell crops nothing. Tightening to 3:2
      and anchoring the crop puts the named item in frame: down onto the cookies
      (the krispie treat sits at the top of that shot, and has its own patch),
      up onto the push-up cups (bare counter fills the bottom of that shot). */
-  .patch-cookies{grid-column:span 5;background:var(--plum-deep);}
-  .patch-cookies img{aspect-ratio:3/2;object-position:50% 100%;}
+  .patch-cookies{grid-column:span 4;background:var(--plum-deep);}
+  .patch-cookies img{aspect-ratio:5/4;}
+  .patch-redvelvet{grid-column:span 4;background:var(--gold);}
+  .patch-redvelvet img{aspect-ratio:5/4;object-position:50% 40%;}
   .patch-pushups{grid-column:span 4;background:var(--sage);}
-  .patch-pushups img{aspect-ratio:3/2;object-position:50% 22%;}
+  .patch-pushups img{aspect-ratio:5/4;object-position:50% 22%;}
 
-  /* The one patch with no photo of its own reads as plain quilt fabric */
+  /* Rice krispie has no photo of its own, so it reads as a full-width
+     strip of quilt fabric, a sashing band across the bottom of the block */
   .patch-krispie{
-    grid-column:span 3;background:var(--plum);
-    justify-content:center;padding:34px 28px;
+    grid-column:span 12;background:var(--plum);
+    flex-direction:row;align-items:center;justify-content:center;gap:8px 16px;
+    flex-wrap:wrap;text-align:center;padding:26px 28px;
     background-image:repeating-linear-gradient(135deg,rgba(250,244,232,0.05) 0 12px,transparent 12px 24px);
   }
-  .patch-krispie h3{font-size:1.5rem;}
+  .patch-krispie h3{font-size:1.35rem;margin:0;}
+  .patch-krispie p{margin:0;}
 
   .on-dark h3{color:var(--linen);}
   .on-dark p{color:rgba(250,244,232,0.76);}
@@ -193,6 +229,17 @@
     font-family:'Bricolage Grotesque',sans-serif;font-style:normal;font-weight:600;
     font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);
   }
+
+  /* EVENTS + LICENSED band */
+  .events{background:var(--plum);color:var(--linen);}
+  .events-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  .events-media img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius);box-shadow:0 18px 40px rgba(30,16,26,0.4);}
+  .events-text .eyebrow{color:var(--gold);}
+  .events-text .eyebrow::before{background:var(--gold);}
+  .events-text h2{color:var(--linen);font-size:clamp(1.9rem,3.4vw,2.5rem);margin-bottom:1rem;}
+  .events-text p{color:rgba(250,244,232,0.82);margin-bottom:1.7rem;max-width:30rem;}
+  .events-text .btn-berry{background:var(--gold);color:var(--plum-deep);}
+  .events-text .btn-berry:hover{background:#E7B857;}
 
   /* VISIT */
   .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
@@ -257,9 +304,9 @@
     .hero-inner{grid-template-columns:1fr;gap:44px;}
     .hero-media{max-width:26rem;}
     .visit-grid{grid-template-columns:1fr;gap:44px;}
-    .patch-loaves,.patch-coffee,.patch-cookies{grid-column:span 12;}
-    .patch-pushups{grid-column:span 7;}
-    .patch-krispie{grid-column:span 5;}
+    .patch-loaves,.patch-coffee{grid-column:span 12;}
+    .events-grid{grid-template-columns:1fr;gap:36px;}
+    .events-media{max-width:34rem;}
   }
   @media(max-width:640px){
     .wrap{padding:0 20px;}
@@ -267,8 +314,8 @@
     .hero{padding:52px 0 60px;}
     section{padding:60px 0;}
     .quilt{gap:14px;}
-    .patch-pushups,.patch-krispie{grid-column:span 12;}
-    .patch-krispie{padding:28px 24px;}
+    .patch-cookies,.patch-redvelvet,.patch-pushups{grid-column:span 12;}
+    .patch-krispie{padding:24px 22px;}
     .quote-card{padding:32px 26px;}
     .map iframe{height:320px;}
   }
@@ -286,12 +333,18 @@
 
 <div class="demo-flag">Concept demo built for Knead More Dough. Not a live site.</div>
 
+<div class="hero-switch" aria-label="Preview control: choose a hero style">
+  <span>Hero preview</span>
+  <a class="to-logo" href="?hero=logo">Logo</a>
+  <a class="to-banner" href="?hero=banner">Banner</a>
+</div>
+
 <nav>
   <div class="wrap">
     <a class="wordmark" href="#">Knead More <span>Dough</span></a>
     <div class="navlinks">
       <a href="#bakes">What We Bake</a>
-      <a href="#kitchen">The Kitchen</a>
+      <a href="#events">Events</a>
       <a href="#visit">Visit</a>
     </div>
   </div>
@@ -327,6 +380,7 @@
         <div class="patch-photos">
           <img src="Knead%20More%20Dough%20Pictures/sourdough-boule-quilt.jpg" loading="lazy" alt="A round hand scored sourdough loaf resting on a patchwork quilt">
           <img src="Knead%20More%20Dough%20Pictures/loaves-batch.jpg" loading="lazy" alt="A batch of sourdough loaves cooling on racks and bagged for the storefront">
+          <img src="Knead%20More%20Dough%20Pictures/sliced-sourdough.jpg" loading="lazy" alt="A sourdough loaf sliced on a red plate, showing an open airy crumb">
         </div>
         <div class="patch-body">
           <h3>Sourdough loaves</h3>
@@ -335,7 +389,7 @@
       </article>
 
       <article class="patch patch-coffee on-light" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/coffee-cake.jpg" loading="lazy" alt="A square coffee cake with crumb topping and a white glaze drizzle">
+        <img src="Knead%20More%20Dough%20Pictures/coffee-cake-crumb.jpg" loading="lazy" alt="A tray of coffee cake with a thick crumb topping over fruit filling">
         <div class="patch-body">
           <h3>Coffee cakes</h3>
           <p>Crumb topped and glazed. Cherry, raspberry, blueberry and apple.</p>
@@ -343,10 +397,18 @@
       </article>
 
       <article class="patch patch-cookies on-dark" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/cookies-and-treats.jpg" loading="lazy" alt="Large peanut butter and chocolate chip cookies wrapped individually">
+        <img src="Knead%20More%20Dough%20Pictures/small-cookies.jpg" loading="lazy" alt="A tray of golden chocolate chip cookies fresh from the oven">
         <div class="patch-body">
           <h3>Cookies</h3>
-          <p>Big and soft. Chocolate chip, peanut butter, monster, red velvet and more.</p>
+          <p>Big and soft. Chocolate chip, peanut butter, monster and more.</p>
+        </div>
+      </article>
+
+      <article class="patch patch-redvelvet on-light" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/red-velvet.jpg" loading="lazy" alt="Red velvet cookies with white chocolate chips, wrapped by the piece">
+        <div class="patch-body">
+          <h3>Red velvet cookies</h3>
+          <p>Deep red and chewy, studded with white chocolate chips.</p>
         </div>
       </article>
 
@@ -372,6 +434,22 @@
       Scored by hand, baked in batches, wrapped one at a time.
       <span class="attrib">Knead More Dough</span>
     </blockquote>
+  </div>
+</section>
+
+<section class="events" id="events">
+  <div class="wrap">
+    <div class="events-grid">
+      <div class="events-media" data-reveal>
+        <img src="Knead%20More%20Dough%20Pictures/market-stall.jpg" loading="lazy" alt="The Knead More Dough market booth with the painted banner, racks of bagged sourdough and a table of sweets">
+      </div>
+      <div class="events-text" data-reveal>
+        <span class="eyebrow">Catering &amp; events</span>
+        <h2>Fully licensed and insured</h2>
+        <p>Catch Knead More Dough at local markets, and get in touch for special events, large orders and custom bakes.</p>
+        <a class="btn btn-berry" href="tel:7085146123">Contact for special events</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -438,7 +516,6 @@
       <a href="https://www.instagram.com/kneadmoredough60410/" target="_blank" rel="noopener">Instagram</a>
     </div>
     <p>25520 Pheasant Ln, Unit D, Channahon, IL &middot; (708) 514-6123</p>
-    <p class="foot-note">Fully licensed and insured. <a href="tel:7085146123">Contact us</a> for special events.</p>
   </div>
 </footer>
 
