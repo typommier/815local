@@ -9,6 +9,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<script>
+  // ?hero=banner swaps the hero art. Runs before paint, so nothing flashes.
+  if (new URLSearchParams(location.search).get("hero") === "banner") {
+    document.documentElement.className = "hero-banner";
+  }
+</script>
 <style>
   :root{
     /* Palette lifted from the quilt in the hero photo. */
@@ -20,6 +26,7 @@
     --gold:#D9A441;
     --linen:#FAF4E8;
     --linen-dim:#F0E7D5;
+    --logo-paper:#F4E9D6;
     --ink:#2A211E;
     --ink-soft:#5B4E48;
     --radius:14px;
@@ -101,13 +108,24 @@
   .hero p{font-size:1.14rem;color:var(--ink-soft);max-width:34rem;margin-bottom:2rem;}
   .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
 
-  /* Quilt stitching around the hero photo */
+  /* Quilt stitching around the hero art */
   .stitched{position:relative;}
   .stitched img{
-    width:100%;aspect-ratio:1/1;object-fit:cover;
+    width:100%;object-fit:contain;
+    background:var(--logo-paper);
     border-radius:var(--radius);
     box-shadow:0 22px 46px rgba(51,23,40,0.24);
   }
+  .hero-logo-img{aspect-ratio:3/2;}
+  .hero-banner-img{aspect-ratio:1800/912;display:none;}
+
+  /* Banner variant: the sign is nearly 2:1, so its column gets the wider
+     share and the headline steps down a size to stay on two lines. Stacking
+     it full width was tried first and pushed the hero past the fold. */
+  .hero-banner .hero-logo-img{display:none;}
+  .hero-banner .hero-banner-img{display:block;}
+  .hero-banner .hero-inner{grid-template-columns:1fr 1fr;}
+  .hero-banner .hero h1{font-size:clamp(2rem,3.2vw,2.5rem);}
   .stitched::after{
     content:"";position:absolute;inset:14px -14px -14px 14px;
     border:2px dashed var(--sage);border-radius:var(--radius);
@@ -135,7 +153,8 @@
   .patch p{font-size:0.97rem;line-height:1.55;}
 
   .patch-loaves{grid-column:span 7;background:var(--plum);}
-  .patch-loaves img{aspect-ratio:16/11;}
+  .patch-photos{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
+  .patch-photos img{aspect-ratio:7/10;}
   /* Square crop here so the narrower coffee cake patch ends up about as tall as
      the wide loaves patch beside it, instead of trailing a slab of bare gold. */
   .patch-coffee{grid-column:span 5;background:var(--gold);}
@@ -227,6 +246,12 @@
   footer{background:var(--plum-deep);color:rgba(250,244,232,0.66);padding:42px 0;}
   footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;}
   footer p{font-size:0.92rem;}
+  .foot-note{
+    flex-basis:100%;text-align:center;font-size:0.9rem;
+    border-top:1px solid rgba(250,244,232,0.14);padding-top:22px;margin-top:8px;
+  }
+  .foot-note a{color:var(--gold);font-weight:500;text-decoration:none;border-bottom:1px solid rgba(217,164,65,0.4);}
+  .foot-note a:hover{border-bottom-color:var(--gold);}
 
   @media(max-width:900px){
     .hero-inner{grid-template-columns:1fr;gap:44px;}
@@ -284,7 +309,8 @@
       </div>
     </div>
     <div class="hero-media stitched" data-reveal>
-      <img src="Knead%20More%20Dough%20Pictures/sourdough-boule-quilt.jpg" width="992" height="1002" loading="eager" alt="A round hand scored sourdough loaf resting on a patchwork quilt">
+      <img class="hero-logo-img" src="Knead%20More%20Dough%20Pictures/logo.jpg" loading="eager" alt="Knead More Dough logo, a loaf, a mixing bowl and a cupcake above the name in script">
+      <img class="hero-banner-img" src="Knead%20More%20Dough%20Pictures/banner.jpg" loading="eager" alt="The hand painted Knead More Dough market banner reading Sourdough Bread and Sweets">
     </div>
   </div>
 </header>
@@ -298,10 +324,13 @@
 
     <div class="quilt">
       <article class="patch patch-loaves on-dark" data-reveal>
-        <img src="Knead%20More%20Dough%20Pictures/loaves-batch.jpg" loading="lazy" alt="A batch of sourdough loaves cooling on racks and bagged for the storefront">
+        <div class="patch-photos">
+          <img src="Knead%20More%20Dough%20Pictures/sourdough-boule-quilt.jpg" loading="lazy" alt="A round hand scored sourdough loaf resting on a patchwork quilt">
+          <img src="Knead%20More%20Dough%20Pictures/loaves-batch.jpg" loading="lazy" alt="A batch of sourdough loaves cooling on racks and bagged for the storefront">
+        </div>
         <div class="patch-body">
           <h3>Sourdough loaves</h3>
-          <p>Round loaves, scored by hand and baked in batches.</p>
+          <p>Scored by hand and baked in batches. Full and half sizes.</p>
         </div>
       </article>
 
@@ -309,7 +338,7 @@
         <img src="Knead%20More%20Dough%20Pictures/coffee-cake.jpg" loading="lazy" alt="A square coffee cake with crumb topping and a white glaze drizzle">
         <div class="patch-body">
           <h3>Coffee cakes</h3>
-          <p>Crumb topped and finished with a glaze.</p>
+          <p>Crumb topped and glazed. Cherry, raspberry, blueberry and apple.</p>
         </div>
       </article>
 
@@ -317,7 +346,7 @@
         <img src="Knead%20More%20Dough%20Pictures/cookies-and-treats.jpg" loading="lazy" alt="Large peanut butter and chocolate chip cookies wrapped individually">
         <div class="patch-body">
           <h3>Cookies</h3>
-          <p>Big and soft. Peanut butter and chocolate chip.</p>
+          <p>Big and soft. Chocolate chip, peanut butter, monster, red velvet and more.</p>
         </div>
       </article>
 
@@ -409,6 +438,7 @@
       <a href="https://www.instagram.com/kneadmoredough60410/" target="_blank" rel="noopener">Instagram</a>
     </div>
     <p>25520 Pheasant Ln, Unit D, Channahon, IL &middot; (708) 514-6123</p>
+    <p class="foot-note">Fully licensed and insured. <a href="tel:7085146123">Contact us</a> for special events.</p>
   </div>
 </footer>
 
