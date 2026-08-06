@@ -455,6 +455,37 @@ Ty decided not to push or require user accounts right now. As part of the Warm S
 
 ---
 
+## Newsletter (815 Weekly)
+
+The email newsletter, "815 Weekly", sent Fridays via **Resend**. It is an email,
+not a website page: not linked from the site, not served by Cloudflare. Only the
+images it references are hosted on the site.
+
+- **Standing design lives in `newsletters/`.** `newsletters/template.html` is the
+  locked layout (masthead + optional lead image + "From the front porch" intro +
+  optional weather / day-by-day / good-to-know / sponsor + "New on 815local"
+  business cards + CTA + subscribe strip + footer). Every editable spot is a
+  `[SLOT]` with an HTML comment. `newsletters/archive/815-weekly-issue-05.html`
+  is a filled-in worked example (Crossroads Fest, July 31, 2026).
+  `newsletters/README.md` is the full weekly process. **Do not redesign this per
+  issue.** This is the remembered design for every future newsletter.
+- **Assets:** all under `uploads/newsletter/`.
+  `uploads/newsletter/815local-logo.png` is the **one permanent asset** (masthead
+  logo, never changes). Every other image is per-issue and lives in a dated
+  folder `uploads/newsletter/YYYY-MM-DD/` with fixed slot names `lead.png`,
+  `biz-1.png`, `biz-2.png`, `biz-3.png`. New images are uploaded fresh each week;
+  the template's paths only need the `__ISSUE_DATE__` token changed.
+- **Email palette is its own thing**, deliberately not the site's Warm Sage
+  tokens: near-black `#1B1B1F`, burnt orange `#D95A22`, cream `#FAF5EA`, page
+  bg `#E8E4DA`, body `#2E2E33`. Georgia headlines, Arial/Helvetica body. Don't
+  "correct" it to match the site.
+- Table-based layout with inline styles on purpose (Outlook/Gmail safe). Keep
+  the `role="presentation"` tables, don't refactor to modern CSS.
+- Same rules as everywhere: real content only, and no em-dashes in copy
+  (en-dashes in time ranges are fine).
+
+---
+
 ## Data sourcing
 
 ### Google Places API (New, v1)
