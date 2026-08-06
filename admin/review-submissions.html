@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Review Submissions | 815local Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:#C4622D; --orange-pale:#F5E6DC; --cream:#F7F1E3; --cream-dark:#EDE4CF;
+  --charcoal:#1E1B18; --charcoal-mid:#3D3530; --charcoal-light:#6B5E55;
+  --gray:#9B8C82; --gray-light:#D4C9C0; --white:#FDFAF5;
+  --green:#2D6A4F; --green-pale:rgba(45,106,79,0.1); --red:#c53030; --red-pale:rgba(197,48,48,0.08);
+  --radius:12px; --radius-sm:8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--charcoal); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
+a { color: inherit; text-decoration: none; }
+
+#main-nav { background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; align-items: center; height: 110px; padding: 0 32px; gap: 24px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); }
+.nav-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: white; }
+.nav-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.nav-back { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.15s; }
+.nav-back:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+.dashboard { padding: 32px; max-width: 900px; margin: 0 auto; }
+.page-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.page-sub { font-size: 14px; color: var(--gray); margin-bottom: 24px; max-width: 620px; line-height: 1.6; }
+
+.tab-bar { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1.5px solid var(--gray-light); }
+.tab-btn { font: inherit; font-weight: 700; font-size: 15px; color: var(--gray); background: none; border: none; border-bottom: 3px solid transparent; padding: 10px 16px; margin-bottom: -1.5px; cursor: pointer; transition: color 0.12s, border-color 0.12s; }
+.tab-btn:hover { color: var(--charcoal-mid); }
+.tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+.tab-badge { display: inline-block; min-width: 18px; padding: 0 6px; margin-left: 6px; font-size: 11px; line-height: 18px; border-radius: 100px; background: var(--orange-pale); color: var(--orange); vertical-align: 1px; }
+
+.sub-list { display: flex; flex-direction: column; gap: 16px; }
+.sub-card { border: 1.5px solid var(--gray-light); border-radius: var(--radius); background: var(--white); padding: 20px 22px; }
+.sub-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.sub-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; line-height: 1.2; }
+.sub-biz { font-size: 13px; font-weight: 700; color: var(--orange); margin-top: 2px; }
+.sub-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--charcoal-light); background: var(--cream-dark); padding: 4px 10px; border-radius: 100px; white-space: nowrap; }
+.sub-discount { display: inline-block; background: var(--orange); color: white; font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 100px; margin-top: 10px; }
+.sub-desc { font-size: 14px; color: var(--charcoal-mid); line-height: 1.6; margin-top: 12px; white-space: pre-wrap; }
+.sub-facts { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 14px; }
+.sub-fact { font-size: 13px; color: var(--charcoal-mid); }
+.sub-fact b { color: var(--charcoal); font-weight: 700; }
+.sub-fact.muted { color: var(--gray); }
+.sub-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--cream-dark); flex-wrap: wrap; }
+.sub-submitted { font-size: 12px; color: var(--gray); }
+.sub-actions { display: flex; gap: 10px; }
+.btn { font: inherit; font-weight: 700; padding: 10px 20px; border-radius: 100px; border: none; cursor: pointer; transition: all 0.15s; font-size: 14px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-approve { background: var(--green); color: white; }
+.btn-approve:hover:not(:disabled) { background: #235640; }
+.btn-reject { background: white; color: var(--red); border: 1.5px solid var(--gray-light); }
+.btn-reject:hover:not(:disabled) { border-color: var(--red); background: var(--red-pale); }
+
+.stale-flag { font-size: 12px; font-weight: 700; color: var(--red); background: var(--red-pale); padding: 3px 9px; border-radius: 100px; margin-top: 8px; display: inline-block; }
+.empty { color: var(--gray); font-size: 14px; text-align: center; padding: 48px 32px; border: 1.5px dashed var(--gray-light); border-radius: var(--radius); background: var(--white); }
+.loading { color: var(--gray); font-size: 14px; text-align: center; padding: 40px; }
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--gray-light); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.banner { padding: 12px 16px; border-radius: var(--radius-sm); font-size: 14px; margin-bottom: 16px; display: none; }
+.banner.error { background: var(--red-pale); color: var(--red); display: block; }
+
+@media (max-width: 680px) {
+  .dashboard { padding: 16px; }
+  .nav-inner { flex-wrap: wrap; height: auto; padding: 12px 16px; gap: 10px; }
+  .nav-logo img { height: 44px; }
+  .nav-title { font-size: 15px; }
+  .nav-subtitle { display: none; }
+  .nav-right { width: 100%; justify-content: flex-end; gap: 8px; }
+  .nav-back { font-size: 12px; padding: 6px 12px; }
+  .sub-foot { flex-direction: column; align-items: stretch; }
+  .sub-actions { justify-content: stretch; }
+  .sub-actions .btn { flex: 1; }
+}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+    </a>
+    <div>
+      <div class="nav-title">Review Submissions</div>
+      <div class="nav-subtitle">Approve or reject deals and events people submit</div>
+    </div>
+    <div class="nav-right">
+      <a href="/admin/edit-business-photos.html" class="nav-back">🖼️ Photos &amp; Media</a>
+      <a href="/admin/analytics.html" class="nav-back">← Analytics</a>
+      <a href="/" class="nav-back">Back to Site</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard">
+  <h1 class="page-title">Review Submissions</h1>
+  <div class="page-sub">Deals and events come in hidden (pending). Approve one to make it live on the site, or reject to remove it. Approving flips <code>is_active</code> to true; rejecting deletes the submission.</div>
+
+  <div class="tab-bar">
+    <button type="button" class="tab-btn active" data-tab="deals">🏷️ Deals<span class="tab-badge" id="deals-count" style="display:none;">0</span></button>
+    <button type="button" class="tab-btn" data-tab="events">📅 Events<span class="tab-badge" id="events-count" style="display:none;">0</span></button>
+  </div>
+
+  <div id="banner" class="banner"></div>
+
+  <div id="panel-deals">
+    <div id="deals-loading" class="loading"><span class="spinner"></span>Loading…</div>
+    <div id="deals-list" class="sub-list"></div>
+    <div id="deals-empty" class="empty" style="display:none;">No deals waiting for review. 🎉</div>
+  </div>
+
+  <div id="panel-events" style="display:none;">
+    <div id="events-loading" class="loading"><span class="spinner"></span>Loading…</div>
+    <div id="events-list" class="sub-list"></div>
+    <div id="events-empty" class="empty" style="display:none;">No events waiting for review. 🎉</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const db = supabase.createClient(SUPABASE_URL, ANON_KEY);
+const FN_URL = `${SUPABASE_URL}/functions/v1/manage-submissions`;
+
+// --- Admin auth gate (Supabase login + server-side email allowlist) ---
+function adminAuthHeaders(token) {
+  return { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + token };
+}
+async function getAccessToken() {
+  const { data } = await db.auth.getSession();
+  return data && data.session ? data.session.access_token : null;
+}
+function renderLoginGate(onSuccess) {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:system-ui,sans-serif;';
+  ov.innerHTML = '<form id="admin-login-form" style="background:#fff;padding:28px 26px;border-radius:12px;max-width:340px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3);">'
+    + '<h2 style="margin:0 0 4px;font-size:18px;">Admin sign in</h2>'
+    + '<p style="margin:0 0 16px;font-size:13px;color:#666;">Restricted to 815local admins.</p>'
+    + '<input id="admin-email" type="email" placeholder="Email" autocomplete="username" required style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<input id="admin-pass" type="password" placeholder="Password" autocomplete="current-password" required style="width:100%;padding:10px;margin-bottom:14px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<button type="submit" style="width:100%;padding:10px;border:0;border-radius:8px;background:#C4622D;color:#fff;font-weight:600;cursor:pointer;">Sign in</button>'
+    + '<div id="admin-login-err" style="color:#b00;font-size:13px;margin-top:10px;min-height:16px;"></div>'
+    + '</form>';
+  document.body.appendChild(ov);
+  const form = ov.querySelector('#admin-login-form');
+  const err = ov.querySelector('#admin-login-err');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.textContent = '';
+    const email = ov.querySelector('#admin-email').value.trim();
+    const password = ov.querySelector('#admin-pass').value;
+    const btn = form.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    const { error } = await db.auth.signInWithPassword({ email, password });
+    btn.disabled = false; btn.textContent = 'Sign in';
+    if (error) { err.textContent = error.message; return; }
+    ov.remove();
+    onSuccess();
+  });
+}
+function requireAdminLogin() {
+  return new Promise(async (resolve) => {
+    const token = await getAccessToken();
+    if (token) { resolve(); return; }
+    renderLoginGate(resolve);
+  });
+}
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtDate(iso) {
+  if (!iso) return '';
+  const parts = String(iso).slice(0, 10).split('-');
+  if (parts.length !== 3) return '';
+  const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+  if (isNaN(d.getTime())) return '';
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+
+let deals = [];
+let events = [];
+
+const $banner = document.getElementById('banner');
+
+async function callFn(payload) {
+  const token = await getAccessToken();
+  const res = await fetch(FN_URL, { method: 'POST', headers: adminAuthHeaders(token), body: JSON.stringify(payload) });
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  if (!res.ok || !data.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const tab = btn.dataset.tab;
+  document.getElementById('panel-deals').style.display = tab === 'deals' ? '' : 'none';
+  document.getElementById('panel-events').style.display = tab === 'events' ? '' : 'none';
+}));
+
+function updateCount(kind, n) {
+  const el = document.getElementById(kind + '-count');
+  if (n) { el.style.display = ''; el.textContent = n; } else el.style.display = 'none';
+}
+
+function dealCardHtml(d) {
+  const facts = [];
+  if (d.expiry_date) {
+    const stale = d.expiry_date < todayStr();
+    facts.push(`<span class="sub-fact${stale ? ' muted' : ''}"><b>Expires:</b> ${esc(fmtDate(d.expiry_date))}${stale ? ' (already passed)' : ''}</span>`);
+  }
+  if (d.terms) facts.push(`<span class="sub-fact"><b>Terms:</b> ${esc(d.terms)}</span>`);
+  const contact = [d.contact_name, d.contact_email, d.contact_phone].filter(Boolean).map(esc).join(' · ');
+  if (contact) facts.push(`<span class="sub-fact muted">${contact}</span>`);
+  return `<div class="sub-card" data-type="deal" data-id="${esc(d.id)}">
+    <div class="sub-head">
+      <div>
+        <div class="sub-title">${esc(d.title)}</div>
+        <div class="sub-biz">${esc(d.business_name)}</div>
+      </div>
+      <span class="sub-cat">${esc(d.category || 'Deal')}</span>
+    </div>
+    ${d.discount ? `<div class="sub-discount">${esc(d.discount)}</div>` : ''}
+    ${d.description ? `<div class="sub-desc">${esc(d.description)}</div>` : ''}
+    ${facts.length ? `<div class="sub-facts">${facts.join('')}</div>` : ''}
+    <div class="sub-foot">
+      <span class="sub-submitted">Submitted ${esc(fmtDate(d.created_at))}</span>
+      <div class="sub-actions">
+        <button type="button" class="btn btn-reject" data-act="reject">Reject</button>
+        <button type="button" class="btn btn-approve" data-act="approve">Approve</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function eventCardHtml(e) {
+  const stale = e.event_date && e.event_date < todayStr();
+  const facts = [];
+  if (e.location_name) facts.push(`<span class="sub-fact"><b>Where:</b> ${esc(e.location_name)}${e.city ? ', ' + esc(e.city) : ''}</span>`);
+  if (e.organizer) facts.push(`<span class="sub-fact"><b>Organizer:</b> ${esc(e.organizer)}</span>`);
+  if (e.price) facts.push(`<span class="sub-fact"><b>Price:</b> ${esc(e.price)}</span>`);
+  if (e.url) facts.push(`<span class="sub-fact muted">${esc(e.url)}</span>`);
+  return `<div class="sub-card" data-type="event" data-id="${esc(e.id)}">
+    <div class="sub-head">
+      <div>
+        <div class="sub-title">${esc(e.title)}</div>
+        <div class="sub-biz">${esc(fmtDate(e.event_date))}</div>
+      </div>
+      <span class="sub-cat">${esc(e.event_type || 'Event')}</span>
+    </div>
+    ${stale ? '<div class="stale-flag">⚠ Date already passed</div>' : ''}
+    ${e.description ? `<div class="sub-desc">${esc(e.description)}</div>` : ''}
+    ${facts.length ? `<div class="sub-facts">${facts.join('')}</div>` : ''}
+    <div class="sub-foot">
+      <span class="sub-submitted">Submitted ${esc(fmtDate(e.created_at))}</span>
+      <div class="sub-actions">
+        <button type="button" class="btn btn-reject" data-act="reject">Reject</button>
+        <button type="button" class="btn btn-approve" data-act="approve">Approve</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function render() {
+  document.getElementById('deals-loading').style.display = 'none';
+  document.getElementById('events-loading').style.display = 'none';
+
+  const $dl = document.getElementById('deals-list');
+  $dl.innerHTML = deals.map(dealCardHtml).join('');
+  document.getElementById('deals-empty').style.display = deals.length ? 'none' : 'block';
+  updateCount('deals', deals.length);
+
+  const $el = document.getElementById('events-list');
+  $el.innerHTML = events.map(eventCardHtml).join('');
+  document.getElementById('events-empty').style.display = events.length ? 'none' : 'block';
+  updateCount('events', events.length);
+
+  document.querySelectorAll('.sub-card .btn').forEach(b => b.addEventListener('click', onAction));
+}
+
+async function onAction(e) {
+  const btn = e.currentTarget;
+  const card = btn.closest('.sub-card');
+  const type = card.dataset.type;
+  const id = card.dataset.id;
+  const act = btn.dataset.act;
+  if (act === 'reject' && !confirm('Reject and permanently delete this submission?')) return;
+
+  card.querySelectorAll('.btn').forEach(x => x.disabled = true);
+  btn.innerHTML = '<span class="spinner"></span>' + (act === 'approve' ? 'Approving…' : 'Rejecting…');
+  try {
+    await callFn({ action: act, type, id });
+    if (type === 'deal') deals = deals.filter(d => d.id !== id);
+    else events = events.filter(ev => ev.id !== id);
+    render();
+  } catch (err) {
+    $banner.className = 'banner error';
+    $banner.textContent = (act === 'approve' ? 'Approve' : 'Reject') + ' failed: ' + err.message;
+    card.querySelectorAll('.btn').forEach(x => x.disabled = false);
+    btn.textContent = act === 'approve' ? 'Approve' : 'Reject';
+  }
+}
+
+async function load() {
+  try {
+    const data = await callFn({ action: 'list' });
+    deals = data.deals || [];
+    events = data.events || [];
+    render();
+  } catch (err) {
+    document.getElementById('deals-loading').innerHTML = 'Failed to load: ' + esc(err.message);
+    document.getElementById('events-loading').innerHTML = 'Failed to load: ' + esc(err.message);
+  }
+}
+
+requireAdminLogin().then(load);
+</script>
+</body>
+</html>
