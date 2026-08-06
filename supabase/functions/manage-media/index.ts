@@ -26,6 +26,10 @@
 //
 //   { "action": "delete", "id": "uuid" }
 //     -> { ok, deleted: "uuid" }
+//
+//   { "action": "attach_deal", "id": "uuid", "deal_id": "uuid" }
+//     -> { ok, media: row }   // sets deals.image_url to the media's public_url
+//                             // and marks the media row assigned to that deal
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -214,6 +218,29 @@ async function handleDelete(body: any): Promise<Response> {
   return json({ ok: true, deleted: id });
 }
 
+// Point a deal's image at an inbox image. The deals table can't be updated with
+// the anon key, so this runs through the service role here.
+async function handleAttachDeal(body: any): Promise<Response> {
+  const id: string | undefined = body.id;
+  const dealId: string | undefined = body.deal_id;
+  if (!id) return json({ ok: false, error: "id required" }, { status: 400 });
+  if (!dealId) return json({ ok: false, error: "deal_id required" }, { status: 400 });
+
+  const { data: media, error: selErr } = await supabase
+    .from("media").select("id, public_url").eq("id", id).single();
+  if (selErr) return json({ ok: false, error: selErr.message }, { status: 404 });
+
+  const { error: dealErr } = await supabase
+    .from("deals").update({ image_url: media.public_url }).eq("id", dealId);
+  if (dealErr) return json({ ok: false, error: dealErr.message }, { status: 500 });
+
+  const { data: row, error: updErr } = await supabase
+    .from("media").update({ deal_id: dealId, status: "assigned" }).eq("id", id).select(MEDIA_COLS).single();
+  if (updErr) return json({ ok: false, error: updErr.message }, { status: 500 });
+
+  return json({ ok: true, media: row });
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (req.method !== "POST") return json({ ok: false, error: "method not allowed" }, { status: 405 });
@@ -229,6 +256,7 @@ Deno.serve(async (req: Request) => {
     case "upload": return await handleUpload(body);
     case "update": return await handleUpdate(body);
     case "delete": return await handleDelete(body);
+    case "attach_deal": return await handleAttachDeal(body);
     default: return json({ ok: false, error: "unknown action" }, { status: 400 });
   }
 });
