@@ -21,15 +21,20 @@ const MEDIA = [
 
 const PNG_1x1 = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 
+const DEALS = [
+  { id: 'deal-1', business_name: 'Shear Brilliance', title: 'End of summer sale' },
+];
+
 async function gotoTool(page, media) {
   await page.route('**/supabase-js**', r => r.fulfill({ status: 200, contentType: 'text/javascript', body: '/* stub */' }));
   await page.route('**/heic2any**', r => r.fulfill({ status: 200, contentType: 'text/javascript', body: '/* stub */' }));
   await page.route('**/fonts.googleapis.com/**', r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
-  await page.addInitScript((buses) => {
+  await page.addInitScript((data) => {
     window.supabase = {
       createClient: () => ({
-        from: () => {
-          const q = { select: () => q, eq: () => q, order: () => q, then: (f) => Promise.resolve({ data: buses, error: null }).then(f) };
+        from: (table) => {
+          const rows = table === 'deals' ? data.deals : data.buses;
+          const q = { select: () => q, eq: () => q, or: () => q, order: () => q, limit: () => q, then: (f) => Promise.resolve({ data: rows, error: null }).then(f) };
           return q;
         },
         auth: {
@@ -38,13 +43,14 @@ async function gotoTool(page, media) {
         },
       }),
     };
-  }, BUSES);
+  }, { buses: BUSES, deals: DEALS });
 
   await page.route('**/functions/v1/manage-media', async (route) => {
     const body = JSON.parse(route.request().postData() || '{}');
     if (body.action === 'list') return route.fulfill({ json: { ok: true, media } });
     if (body.action === 'delete') return route.fulfill({ json: { ok: true, deleted: body.id } });
     if (body.action === 'update') return route.fulfill({ json: { ok: true, media: { id: body.id } } });
+    if (body.action === 'attach_deal') return route.fulfill({ json: { ok: true, media: { id: body.id, deal_id: body.deal_id } } });
     if (body.action === 'upload') {
       const added = (body.files || []).map((f, i) => ({
         id: 'new' + i, public_url: 'https://example.com/new' + i + '.jpg',
@@ -145,9 +151,20 @@ test.describe('Photos & Media — inbox tab', () => {
     let attachedTo = null;
     page.on('request', r => { if (r.url().includes('manage-business-photos')) attachedTo = JSON.parse(r.postData() || '{}').business_id; });
     const card = page.locator('.media-card').filter({ hasText: 'Rosario summer flyer' });
-    await card.locator('.attach-select').selectOption('biz-1');
+    await card.locator('[data-attach]').selectOption('biz-1');
     await expect(card.locator('.link-badge')).toBeVisible();
     expect(attachedTo).toBe('biz-1');
+  });
+
+  test('attaching an inbox image to a deal marks it linked to a deal', async ({ page }) => {
+    await gotoTool(page, MEDIA);
+    await openInbox(page);
+    let sent = null;
+    page.on('request', r => { if (r.url().includes('manage-media')) { const b = JSON.parse(r.postData() || '{}'); if (b.action === 'attach_deal') sent = b; } });
+    const card = page.locator('.media-card').filter({ hasText: 'Rosario summer flyer' });
+    await card.locator('[data-attach-deal]').selectOption('deal-1');
+    await expect(card.locator('.link-badge')).toContainText('On a deal');
+    expect(sent).toEqual({ action: 'attach_deal', id: 'm1', deal_id: 'deal-1' });
   });
 
   test('shows the empty state when nothing has been received', async ({ page }) => {

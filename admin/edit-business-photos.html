@@ -752,6 +752,7 @@ const FN_PHOTOS = `${SUPABASE_URL}/functions/v1/manage-business-photos`;
 const SOURCE_LABELS = { email: '✉️ Email', text: '💬 Text', facebook: '📘 Facebook', instagram: '📷 Instagram', site: '🌐 Site', other: '📎 Other' };
 
 let mediaItems = [];
+let activeDeals = [];
 let activeMediaFilter = '';
 
 const $miSrc = document.getElementById('mi-src-select');
@@ -798,6 +799,19 @@ function bizOptionsHtml() {
     .join('');
 }
 
+function dealOptionsHtml() {
+  return ['<option value="">Set as a deal image…</option>']
+    .concat(activeDeals.map(d => `<option value="${escapeHtml(d.id)}">${escapeHtml(d.business_name || 'Deal')}: ${escapeHtml(d.title || '')}</option>`))
+    .join('');
+}
+
+function linkBadge(m) {
+  if (m.business_id) return '<span class="link-badge">🔗 On a listing</span>';
+  if (m.deal_id) return '<span class="link-badge">🔗 On a deal</span>';
+  if (m.event_id) return '<span class="link-badge">🔗 On an event</span>';
+  return '';
+}
+
 function updateInboxCount() {
   if (mediaItems.length) { $inboxTabCount.style.display = ''; $inboxTabCount.textContent = mediaItems.length; }
   else $inboxTabCount.style.display = 'none';
@@ -826,13 +840,16 @@ function renderMediaGallery() {
   $miGallery.style.display = shown.length ? 'grid' : 'none';
   $miGallery.innerHTML = shown.map(m => {
     const cap = m.caption ? `<div class="media-caption">${escapeHtml(m.caption)}</div>` : `<div class="media-caption empty">No note</div>`;
-    const linked = isLinked(m) ? `<span class="link-badge">🔗 On a listing</span>` : '';
+    const linked = linkBadge(m);
     return `<div class="media-card" data-id="${escapeHtml(m.id)}">
       <div class="media-thumb" data-full="${escapeHtml(m.public_url)}" data-cap="${escapeHtml(m.caption || '')}" style="background-image:url('${escapeHtml(m.public_url)}')"></div>
       <div class="media-meta">
         <div class="media-badges"><span class="src-badge">${SOURCE_LABELS[m.source] || m.source}</span>${linked}</div>
         ${cap}
-        <div class="attach-wrap"><select class="attach-select" data-attach="${escapeHtml(m.id)}">${bizOptionsHtml()}</select></div>
+        <div class="attach-wrap">
+          <select class="attach-select" data-attach="${escapeHtml(m.id)}">${bizOptionsHtml()}</select>
+          ${activeDeals.length ? `<select class="attach-select" data-attach-deal="${escapeHtml(m.id)}">${dealOptionsHtml()}</select>` : ''}
+        </div>
         <div class="media-actions">
           <span class="media-date">${fmtDate(m.created_at)}</span>
           <button type="button" class="icon-btn danger" data-del="${escapeHtml(m.id)}">Delete</button>
@@ -843,6 +860,20 @@ function renderMediaGallery() {
   $miGallery.querySelectorAll('.media-thumb').forEach(t => t.addEventListener('click', () => openLightbox(t.dataset.full, t.dataset.cap)));
   $miGallery.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteMedia(b.dataset.del, b)));
   $miGallery.querySelectorAll('[data-attach]').forEach(s => s.addEventListener('change', () => attachFromInbox(s.dataset.attach, s.value, s)));
+  $miGallery.querySelectorAll('[data-attach-deal]').forEach(s => s.addEventListener('change', () => attachDealFromInbox(s.dataset.attachDeal, s.value, s)));
+}
+
+async function loadActiveDeals() {
+  // Anon read is allowed for active deals (RLS), so the picker loads directly.
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const { data } = await db.from('deals')
+      .select('id,business_name,title')
+      .eq('is_active', true)
+      .or(`expiry_date.is.null,expiry_date.gte.${today}`)
+      .order('created_at', { ascending: false });
+    activeDeals = data || [];
+  } catch (e) { activeDeals = []; }
 }
 
 async function loadMedia() {
@@ -857,6 +888,24 @@ async function loadMedia() {
   renderMediaGallery();
   updateInboxCount();
   renderPullStrip();
+}
+
+// Point an active deal's image at this inbox graphic (service-role write via the
+// function, since the deals table can't be updated with the anon key).
+async function attachDealFromInbox(mediaId, dealId, selectEl) {
+  if (!dealId) return;
+  const media = mediaItems.find(m => m.id === mediaId);
+  if (!media) return;
+  selectEl.disabled = true;
+  try {
+    await callMediaFn({ action: 'attach_deal', id: mediaId, deal_id: dealId });
+    media.deal_id = dealId; media.status = 'assigned';
+    renderMediaGallery();
+  } catch (e) {
+    selectEl.disabled = false;
+    selectEl.value = '';
+    alert('Attach failed: ' + e.message);
+  }
 }
 
 // Add media.public_url to a business's photos through the same edge function
@@ -1034,6 +1083,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLight
 
 requireAdminLogin().then(async () => {
   await loadBusinesses();
+  await loadActiveDeals();
   await loadMedia();
 });
 </script>

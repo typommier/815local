@@ -59,6 +59,21 @@ test.describe('Deals page', () => {
     await expect(page.locator('.deal-link')).toHaveCount(2);
   });
 
+  test('a deal with an image renders it, deals without one stay text-only', async ({ page }) => {
+    const withImage = [
+      { ...SAMPLE_DEALS[0], image_url: 'https://example.com/flyer.jpg' },
+      SAMPLE_DEALS[1],
+    ];
+    await page.addInitScript(deals => { window.__TEST_DEALS = deals; }, withImage);
+    await page.goto('/pages/deals');
+
+    await expect(page.locator('.deal-card')).toHaveCount(2);
+    const imgs = page.locator('.deal-card-img');
+    await expect(imgs).toHaveCount(1);
+    await expect(imgs).toHaveAttribute('src', 'https://example.com/flyer.jpg');
+    await expect(page.locator('.deal-card').filter({ hasText: '$5 off any haircut' }).locator('.deal-card-img')).toHaveCount(0);
+  });
+
   test('a deal with no business renders as a non-linked card', async ({ page }) => {
     await page.addInitScript(deals => { window.__TEST_DEALS = deals; }, SAMPLE_DEALS);
     await page.goto('/pages/deals');

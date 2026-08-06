@@ -98,6 +98,7 @@ a { color: inherit; text-decoration: none; }
 .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 .deal-card { display: flex; flex-direction: column; gap: 10px; background: var(--surface); border-radius: var(--r-md); box-shadow: var(--shadow-sm); padding: 24px 24px 22px; border: 1px solid var(--line); transition: transform 0.15s, box-shadow 0.15s; }
 a.deal-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.deal-card-img { width: calc(100% + 48px); margin: -24px -24px 4px; aspect-ratio: 4/3; object-fit: cover; background: var(--paper); border-bottom: 1px solid var(--line); display: block; }
 .deal-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .deal-cat { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--orange); }
 .deal-badge { flex-shrink: 0; background: var(--orange); color: #fff; font-size: .8rem; font-weight: 700; padding: 5px 12px; border-radius: var(--r-pill); line-height: 1.2; }
@@ -377,6 +378,7 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
     const href = link ? ' href="' + esc(link) + '"' : '';
     const expiry = fmtExpiry(dl.expiry_date);
     return '<' + tag + ' class="deal-card"' + href + '>' +
+      (dl.image_url ? '<img class="deal-card-img" src="' + esc(dl.image_url) + '" alt="' + esc(dl.title || 'Deal') + '" loading="lazy">' : '') +
       '<div class="deal-card-top">' +
         '<span class="deal-cat">' + esc(emoji + ' ' + (dl.category || '')) + '</span>' +
         (dl.discount ? '<span class="deal-badge">' + esc(dl.discount) + '</span>' : '') +
@@ -419,7 +421,7 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
     let data = [];
     try {
       const res = await db.from('deals')
-        .select('id,business_id,business_name,category,title,description,discount,expiry_date,terms,created_at')
+        .select('id,business_id,business_name,category,title,description,discount,expiry_date,terms,image_url,created_at')
         .eq('is_active', true)
         .or('expiry_date.is.null,expiry_date.gte.' + today)
         .order('created_at', { ascending: false });
