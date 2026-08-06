@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Media Inbox | 815local Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:        #C4622D;
+  --orange-pale:   #F5E6DC;
+  --cream:         #F7F1E3;
+  --cream-dark:    #EDE4CF;
+  --charcoal:      #1E1B18;
+  --charcoal-mid:  #3D3530;
+  --charcoal-light:#6B5E55;
+  --gray:          #9B8C82;
+  --gray-light:    #D4C9C0;
+  --white:         #FDFAF5;
+  --green:         #2D6A4F;
+  --green-pale:    rgba(45,106,79,0.1);
+  --red:           #c53030;
+  --red-pale:      rgba(197,48,48,0.08);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--charcoal); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+h1,h2,h3 { font-family: 'Playfair Display', serif; }
+a { color: inherit; text-decoration: none; }
+
+#main-nav { background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 100; }
+.nav-inner { display: flex; align-items: center; height: 110px; padding: 0 32px; gap: 24px; }
+.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); }
+.nav-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: white; }
+.nav-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.nav-back { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.12); cursor: pointer; transition: all 0.15s; }
+.nav-back:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+.dashboard { padding: 32px; max-width: 1100px; margin: 0 auto; }
+.page-title { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.page-sub { font-size: 14px; color: var(--gray); margin-bottom: 24px; max-width: 640px; line-height: 1.6; }
+
+.card { background: var(--white); border: 1.5px solid var(--gray-light); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+.card-header { padding: 18px 24px; border-bottom: 1px solid var(--cream-dark); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.card-title { font-size: 16px; font-weight: 700; }
+.card-subtitle { font-size: 12px; color: var(--gray); margin-top: 2px; }
+.card-body { padding: 24px; }
+
+.form-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-row label { font-size: 13px; font-weight: 600; color: var(--charcoal-mid); }
+.form-row input, .form-row select { font: inherit; padding: 10px 12px; border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: white; color: var(--charcoal); }
+.form-row input:focus, .form-row select:focus { outline: none; border-color: var(--orange); }
+.form-grid { display: grid; grid-template-columns: 180px 1fr; gap: 16px; }
+
+.btn { font: inherit; font-weight: 700; padding: 12px 24px; border-radius: 100px; border: none; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--charcoal); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.result-summary { padding: 14px 16px; background: var(--cream); border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 14px; }
+.result-summary.success { background: var(--green-pale); color: var(--green); }
+.result-summary.error { background: var(--red-pale); color: var(--red); }
+
+/* display:block is load-bearing. A <label> is inline by default, and an inline
+   box holding block children gets split into fragments, so the dashed border
+   painted slivers down the left instead of a box around the content. */
+.drop-zone { display: block; border: 2px dashed var(--gray-light); border-radius: var(--radius-sm); padding: 28px; text-align: center; color: var(--gray); font-size: 14px; cursor: pointer; transition: all 0.15s; background: var(--cream); }
+.drop-zone:hover, .drop-zone.dragover { border-color: var(--orange); color: var(--orange); background: var(--orange-pale); }
+.drop-zone input { display: none; }
+.convert-status { font-size: 13px; color: var(--charcoal-mid); margin-top: 14px; }
+
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--gray-light); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Source filter chips */
+.filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font: inherit; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 100px; border: 1.5px solid var(--gray-light); background: white; color: var(--charcoal-mid); cursor: pointer; transition: all 0.12s; }
+.chip:hover { border-color: var(--orange); color: var(--orange); }
+.chip.active { background: var(--charcoal); border-color: var(--charcoal); color: white; }
+
+/* Gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.media-card { border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); overflow: hidden; background: white; display: flex; flex-direction: column; }
+.media-thumb { aspect-ratio: 1/1; background: var(--charcoal-mid); background-size: cover; background-position: center; cursor: zoom-in; }
+.media-meta { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.media-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.src-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--orange-pale); color: var(--orange); letter-spacing: 0.02em; }
+.link-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--green-pale); color: var(--green); }
+.media-caption { font-size: 13px; color: var(--charcoal-mid); line-height: 1.45; word-break: break-word; }
+.media-caption.empty { color: var(--gray); font-style: italic; }
+.media-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
+.media-date { font-size: 11px; color: var(--gray); }
+.icon-btn { background: white; border: 1.5px solid var(--gray-light); color: var(--charcoal-mid); padding: 5px 10px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 12px; font-weight: 600; transition: all 0.1s; }
+.icon-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+.icon-btn.danger:hover { border-color: var(--red); color: var(--red); background: var(--red-pale); }
+
+.empty { color: var(--gray); font-size: 14px; text-align: center; padding: 48px 32px; }
+
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.86); display: none; align-items: center; justify-content: center; z-index: 500; padding: 24px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 82vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.lightbox-cap { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: rgba(255,255,255,0.85); font-size: 14px; padding: 0 24px; }
+.lightbox-close { position: absolute; top: 18px; right: 22px; color: white; font-size: 30px; cursor: pointer; line-height: 1; opacity: 0.8; }
+.lightbox-close:hover { opacity: 1; }
+
+@media (max-width: 680px) {
+  .dashboard { padding: 16px; }
+  .nav-inner { flex-wrap: wrap; height: auto; padding: 12px 16px; gap: 10px; }
+  .nav-logo img { height: 44px; }
+  .nav-title { font-size: 15px; }
+  .nav-subtitle { display: none; }
+  .nav-right { width: 100%; justify-content: flex-end; gap: 8px; }
+  .nav-back { font-size: 12px; padding: 6px 12px; }
+  .card-body { padding: 16px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+    </a>
+    <div>
+      <div class="nav-title">Media Inbox</div>
+      <div class="nav-subtitle">Every graphic sent to you or uploaded to the site, in one place</div>
+    </div>
+    <div class="nav-right">
+      <a href="/admin/edit-business-photos.html" class="nav-back">🖼️ Business Photos</a>
+      <a href="/admin/analytics.html" class="nav-back">← Analytics</a>
+      <a href="/" class="nav-back">Back to Site</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard">
+  <h1 class="page-title">Media Inbox</h1>
+  <div class="page-sub">Drop in any graphic a business emailed, texted, or sent you, or that came in through the site. Everything lands here so you can see it in one place. Big photos are shrunk automatically before upload, so an iPhone shot won't get rejected.</div>
+
+  <!-- UPLOAD -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Add graphics</div>
+        <div class="card-subtitle">Tag where it came from, add a note if you want, then drop the files.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div class="form-row" style="margin-bottom:0;">
+          <label for="src-select">Where from?</label>
+          <select id="src-select">
+            <option value="email">✉️ Email</option>
+            <option value="text">💬 Text</option>
+            <option value="facebook">📘 Facebook</option>
+            <option value="instagram">📷 Instagram</option>
+            <option value="site">🌐 Site upload</option>
+            <option value="other">📎 Other</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin-bottom:0;">
+          <label for="cap-input">Note (optional)</label>
+          <input id="cap-input" type="text" maxlength="160" placeholder="e.g. Rosario's summer flyer, or who sent it">
+        </div>
+      </div>
+      <label class="drop-zone" id="drop-zone" for="file-input" style="margin-top:16px;">
+        <div style="font-size:32px; margin-bottom:4px;">🖼️</div>
+        <div><strong>Drop graphics here</strong> or tap to choose from your camera roll</div>
+        <div style="font-size:12px; margin-top:4px;">JPG / PNG / WebP / GIF / HEIC (iPhone photos, converted automatically)</div>
+        <input id="file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,.heic,.heif" multiple>
+      </label>
+      <div id="convert-status" class="convert-status" style="display:none;"></div>
+      <div id="upload-summary" class="result-summary" style="display:none; margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Everything received</div>
+        <div class="card-subtitle" id="gallery-count">Loading…</div>
+      </div>
+      <div class="filter-chips" id="filter-chips"></div>
+    </div>
+    <div class="card-body">
+      <div id="gallery" class="gallery"></div>
+      <div id="gallery-empty" class="empty" style="display:none;">Nothing here yet. Drop a graphic above and it'll show up.</div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightbox-close">&times;</span>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-cap" id="lightbox-cap"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const db = supabase.createClient(SUPABASE_URL, ANON_KEY);
+const FN_URL = `${SUPABASE_URL}/functions/v1/manage-media`;
+
+// --- Admin auth gate (Supabase login + server-side email allowlist) ---
+// The edge function verifies the caller's email against ADMIN_EMAILS, so this
+// login is what delivers a usable token. It is not the security boundary.
+function adminAuthHeaders(token) {
+  return { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + token };
+}
+async function getAccessToken() {
+  const { data } = await db.auth.getSession();
+  return data && data.session ? data.session.access_token : null;
+}
+function renderLoginGate(onSuccess) {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:system-ui,sans-serif;';
+  ov.innerHTML = '<form id="admin-login-form" style="background:#fff;padding:28px 26px;border-radius:12px;max-width:340px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3);">'
+    + '<h2 style="margin:0 0 4px;font-size:18px;">Admin sign in</h2>'
+    + '<p style="margin:0 0 16px;font-size:13px;color:#666;">Restricted to 815local admins.</p>'
+    + '<input id="admin-email" type="email" placeholder="Email" autocomplete="username" required style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<input id="admin-pass" type="password" placeholder="Password" autocomplete="current-password" required style="width:100%;padding:10px;margin-bottom:14px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<button type="submit" style="width:100%;padding:10px;border:0;border-radius:8px;background:#C4622D;color:#fff;font-weight:600;cursor:pointer;">Sign in</button>'
+    + '<div id="admin-login-err" style="color:#b00;font-size:13px;margin-top:10px;min-height:16px;"></div>'
+    + '</form>';
+  document.body.appendChild(ov);
+  const form = ov.querySelector('#admin-login-form');
+  const err = ov.querySelector('#admin-login-err');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.textContent = '';
+    const email = ov.querySelector('#admin-email').value.trim();
+    const password = ov.querySelector('#admin-pass').value;
+    const btn = form.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    const { error } = await db.auth.signInWithPassword({ email, password });
+    btn.disabled = false; btn.textContent = 'Sign in';
+    if (error) { err.textContent = error.message; return; }
+    ov.remove();
+    onSuccess();
+  });
+}
+function requireAdminLogin() {
+  return new Promise(async (resolve) => {
+    const token = await getAccessToken();
+    if (token) { resolve(); return; }
+    renderLoginGate(resolve);
+  });
+}
+
+const SOURCE_LABELS = {
+  email: '✉️ Email', text: '💬 Text', facebook: '📘 Facebook',
+  instagram: '📷 Instagram', site: '🌐 Site', other: '📎 Other',
+};
+
+const $srcSelect = document.getElementById('src-select');
+const $capInput = document.getElementById('cap-input');
+const $dropZone = document.getElementById('drop-zone');
+const $fileInput = document.getElementById('file-input');
+const $convertStatus = document.getElementById('convert-status');
+const $uploadSummary = document.getElementById('upload-summary');
+const $gallery = document.getElementById('gallery');
+const $galleryEmpty = document.getElementById('gallery-empty');
+const $galleryCount = document.getElementById('gallery-count');
+const $filterChips = document.getElementById('filter-chips');
+
+let mediaItems = [];
+let activeFilter = '';
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+function isLinked(m) {
+  return !!(m.business_id || m.event_id || m.deal_id);
+}
+
+async function callFn(payload) {
+  const token = await getAccessToken();
+  const res = await fetch(FN_URL, { method: 'POST', headers: adminAuthHeaders(token), body: JSON.stringify(payload) });
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  if (!res.ok || !data.ok) {
+    const msg = (data.errors && data.errors.join('; ')) || data.error || ('HTTP ' + res.status);
+    throw new Error(msg);
+  }
+  return data;
+}
+
+function renderChips() {
+  const counts = {};
+  for (const m of mediaItems) counts[m.source] = (counts[m.source] || 0) + 1;
+  const chips = [`<button class="chip ${activeFilter === '' ? 'active' : ''}" data-src="">All (${mediaItems.length})</button>`];
+  for (const src of Object.keys(SOURCE_LABELS)) {
+    if (!counts[src]) continue;
+    chips.push(`<button class="chip ${activeFilter === src ? 'active' : ''}" data-src="${src}">${SOURCE_LABELS[src]} (${counts[src]})</button>`);
+  }
+  $filterChips.innerHTML = chips.join('');
+  $filterChips.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    activeFilter = c.getAttribute('data-src');
+    renderChips();
+    renderGallery();
+  }));
+}
+
+function renderGallery() {
+  const shown = activeFilter ? mediaItems.filter(m => m.source === activeFilter) : mediaItems;
+  $galleryCount.textContent = mediaItems.length === 1 ? '1 image' : `${mediaItems.length} images`;
+  $galleryEmpty.style.display = shown.length ? 'none' : 'block';
+  $gallery.style.display = shown.length ? 'grid' : 'none';
+  $gallery.innerHTML = shown.map(m => {
+    const cap = m.caption ? `<div class="media-caption">${esc(m.caption)}</div>` : `<div class="media-caption empty">No note</div>`;
+    const linked = isLinked(m) ? `<span class="link-badge">🔗 Linked</span>` : '';
+    return `<div class="media-card" data-id="${esc(m.id)}">
+      <div class="media-thumb" data-full="${esc(m.public_url)}" data-cap="${esc(m.caption || '')}" style="background-image:url('${esc(m.public_url)}')"></div>
+      <div class="media-meta">
+        <div class="media-badges"><span class="src-badge">${SOURCE_LABELS[m.source] || m.source}</span>${linked}</div>
+        ${cap}
+        <div class="media-foot">
+          <span class="media-date">${fmtDate(m.created_at)}</span>
+          <button class="icon-btn danger" data-del="${esc(m.id)}">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  $gallery.querySelectorAll('.media-thumb').forEach(t => t.addEventListener('click', () => {
+    openLightbox(t.getAttribute('data-full'), t.getAttribute('data-cap'));
+  }));
+  $gallery.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteItem(b.getAttribute('data-del'), b)));
+}
+
+async function loadMedia() {
+  try {
+    const data = await callFn({ action: 'list' });
+    mediaItems = data.media || [];
+    renderChips();
+    renderGallery();
+  } catch (e) {
+    $galleryCount.textContent = 'Failed to load: ' + e.message;
+  }
+}
+
+// --- File handling: HEIC convert, then downscale, then base64 ---
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+function isHeic(file) {
+  const type = (file.type || '').toLowerCase();
+  const name = (file.name || '').toLowerCase();
+  return type === 'image/heic' || type === 'image/heif' || name.endsWith('.heic') || name.endsWith('.heif');
+}
+async function convertHeicToJpeg(file) {
+  const result = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 });
+  const blob = Array.isArray(result) ? result[0] : result;
+  const newName = (file.name || 'photo').replace(/\.[a-z0-9]+$/i, '') + '.jpg';
+  return new File([blob], newName, { type: 'image/jpeg' });
+}
+// Shrink to a max edge of 1600px so a 12MP phone shot doesn't blow the size cap
+// or bloat storage. GIFs pass through untouched so animation survives.
+const MAX_EDGE = 1600;
+async function toPayload(file) {
+  const dataUrl = await fileToDataUrl(file);
+  if ((file.type || '').toLowerCase() === 'image/gif') {
+    return { content_type: 'image/gif', base64: (dataUrl.split(',')[1] || ''), preview: dataUrl };
+  }
+  const img = await loadImage(dataUrl);
+  const big = Math.max(img.width, img.height);
+  if (big <= MAX_EDGE && file.size <= 1.5 * 1024 * 1024) {
+    return { content_type: file.type || 'image/jpeg', base64: (dataUrl.split(',')[1] || ''), preview: dataUrl };
+  }
+  const scale = Math.min(1, MAX_EDGE / big);
+  const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+  const outUrl = canvas.toDataURL('image/jpeg', 0.85);
+  return { content_type: 'image/jpeg', base64: (outUrl.split(',')[1] || ''), preview: outUrl };
+}
+
+async function addFiles(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  $uploadSummary.style.display = 'none';
+  const heicCount = files.filter(isHeic).length;
+
+  const payloads = [];
+  $convertStatus.style.display = '';
+  for (let i = 0; i < files.length; i++) {
+    let file = files[i];
+    $convertStatus.innerHTML = `<span class="spinner"></span>Preparing ${i + 1} of ${files.length}${heicCount ? ' (converting iPhone photos)' : ''}…`;
+    if (isHeic(file)) {
+      try { file = await convertHeicToJpeg(file); }
+      catch (e) { alert(`${file.name}: couldn't convert (${e && e.message ? e.message : e}). Export it as JPEG and try again.`); continue; }
+    }
+    if (!/^image\/(jpe?g|png|webp|gif)$/i.test(file.type)) continue;
+    try { payloads.push(await toPayload(file)); }
+    catch (e) { alert(`${file.name}: couldn't read this image.`); }
+  }
+
+  if (!payloads.length) { $convertStatus.style.display = 'none'; return; }
+
+  $convertStatus.innerHTML = `<span class="spinner"></span>Uploading ${payloads.length} image${payloads.length === 1 ? '' : 's'}…`;
+  try {
+    const data = await callFn({
+      action: 'upload',
+      source: $srcSelect.value,
+      caption: $capInput.value.trim() || null,
+      files: payloads.map(p => ({ content_type: p.content_type, base64: p.base64 })),
+    });
+    const added = data.media || [];
+    mediaItems = added.concat(mediaItems);
+    $capInput.value = '';
+    renderChips();
+    renderGallery();
+    $uploadSummary.className = 'result-summary success';
+    $uploadSummary.textContent = `Added ${added.length} image${added.length === 1 ? '' : 's'}.` + (data.errors && data.errors.length ? ` (${data.errors.length} skipped)` : '');
+    $uploadSummary.style.display = '';
+  } catch (e) {
+    $uploadSummary.className = 'result-summary error';
+    $uploadSummary.textContent = 'Upload failed: ' + e.message;
+    $uploadSummary.style.display = '';
+  } finally {
+    $convertStatus.style.display = 'none';
+  }
+}
+
+async function deleteItem(id, btn) {
+  if (!confirm('Delete this image? This removes it from the inbox.')) return;
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    await callFn({ action: 'delete', id });
+    mediaItems = mediaItems.filter(m => m.id !== id);
+    renderChips();
+    renderGallery();
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Delete';
+    alert('Delete failed: ' + e.message);
+  }
+}
+
+$fileInput.addEventListener('change', (e) => { addFiles(e.target.files); e.target.value = ''; });
+['dragenter', 'dragover'].forEach(ev => $dropZone.addEventListener(ev, (e) => { e.preventDefault(); $dropZone.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(ev => $dropZone.addEventListener(ev, (e) => { e.preventDefault(); $dropZone.classList.remove('dragover'); }));
+$dropZone.addEventListener('drop', (e) => { addFiles(e.dataTransfer.files); });
+
+// Lightbox
+const $lightbox = document.getElementById('lightbox');
+const $lightboxImg = document.getElementById('lightbox-img');
+const $lightboxCap = document.getElementById('lightbox-cap');
+function openLightbox(url, cap) {
+  $lightboxImg.src = url;
+  $lightboxCap.textContent = cap || '';
+  $lightbox.classList.add('open');
+}
+function closeLightbox() { $lightbox.classList.remove('open'); $lightboxImg.src = ''; }
+document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+$lightbox.addEventListener('click', (e) => { if (e.target === $lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+(async function init() {
+  await requireAdminLogin();
+  await loadMedia();
+})();
+</script>
+</body>
+</html>
