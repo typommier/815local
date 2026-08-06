@@ -202,6 +202,10 @@ function makeQuery(table) {
         });
       case 'events':
         return EVENTS;
+      case 'deals':
+        // Per-test deals: specs set window.__TEST_DEALS. Default empty so the
+        // homepage "Coming Up" section behaves as it does with no active deals.
+        return (typeof window !== 'undefined' && Array.isArray(window.__TEST_DEALS)) ? window.__TEST_DEALS : [];
       case 'newsletter_subscribers':
         return NEWSLETTER;
       default:
