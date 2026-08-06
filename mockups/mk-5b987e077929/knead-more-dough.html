@@ -9,12 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
-<script>
-  // ?hero=banner swaps the hero art. Runs before paint, so nothing flashes.
-  if (new URLSearchParams(location.search).get("hero") === "banner") {
-    document.documentElement.className = "hero-banner";
-  }
-</script>
 <style>
   :root{
     /* Palette lifted from the quilt in the hero photo. */
@@ -27,7 +21,6 @@
     --linen:#FAF4E8;
     --linen-dim:#F0E7D5;
     --logo-paper:#F4E9D6;
-    --kraft:#D8C097; --kraft-ink:#3A2717; --kraft-rust:#9E3F22;
     --ink:#2A211E;
     --ink-soft:#5B4E48;
     --radius:14px;
@@ -118,50 +111,6 @@
     box-shadow:0 22px 46px rgba(51,23,40,0.24);
   }
   .hero-logo-img{aspect-ratio:3/2;}
-  .hero-banner-img{aspect-ratio:1800/912;display:none;}
-
-  /* Banner variant: the sign is nearly 2:1, so its column gets the wider
-     share and the headline steps down a size to stay on two lines. Stacking
-     it full width was tried first and pushed the hero past the fold. */
-  .hero-banner .hero-logo-img{display:none;}
-  .hero-banner .hero-banner-img{display:block;}
-  .hero-banner .hero-inner{grid-template-columns:1fr 1fr;}
-  .hero-banner .hero h1{font-size:clamp(2rem,3.2vw,2.5rem);}
-
-  /* Banner variant recolours ONLY the hero to the banner's own palette:
-     kraft paper, espresso ink, a rust accent, and the banner's scalloped
-     dot border along the bottom edge. The rest of the page keeps its theme. */
-  .hero-banner .hero{
-    background:var(--kraft);color:var(--kraft-ink);
-    position:relative;padding-bottom:104px;
-  }
-  .hero-banner .hero .eyebrow,.hero-banner .hero h1 .warm{color:var(--kraft-rust);}
-  .hero-banner .hero .eyebrow::before{background:var(--kraft-rust);}
-  .hero-banner .hero h1{color:var(--kraft-ink);}
-  .hero-banner .hero p{color:#5A4326;}
-  .hero-banner .hero .btn-berry{background:var(--kraft-ink);color:#F1E7D3;}
-  .hero-banner .hero .btn-berry:hover{background:#241809;}
-  .hero-banner .hero .btn-outline{border-color:var(--kraft-ink);color:var(--kraft-ink);}
-  .hero-banner .hero .btn-outline:hover{background:var(--kraft-ink);color:#F1E7D3;}
-  .hero-banner .stitched img{background:#CDB187;}
-  /* scalloped dot strip, the banner's signature border motif */
-  .hero-banner .hero::after{
-    content:"";position:absolute;left:0;right:0;bottom:0;height:30px;
-    background:radial-gradient(circle at 24px 30px, #7C3B36 15px, transparent 16px) 0 0 / 48px 30px repeat-x;
-    opacity:0.9;
-  }
-
-  /* Preview control: flip the mockup between the two hero treatments */
-  .hero-switch{
-    position:fixed;left:16px;bottom:16px;z-index:200;display:flex;align-items:center;gap:5px;
-    background:rgba(51,23,40,0.94);padding:6px 6px 6px 13px;border-radius:100px;
-    font-family:'Bricolage Grotesque',sans-serif;font-size:0.78rem;
-    box-shadow:0 8px 24px rgba(30,16,26,0.34);
-  }
-  .hero-switch span{color:rgba(250,244,232,0.72);font-weight:600;margin-right:3px;}
-  .hero-switch a{padding:5px 13px;border-radius:100px;color:rgba(250,244,232,0.85);font-weight:600;text-decoration:none;transition:background 0.15s;}
-  :root:not(.hero-banner) .hero-switch .to-logo{background:var(--gold);color:var(--plum-deep);}
-  :root.hero-banner .hero-switch .to-banner{background:var(--gold);color:var(--plum-deep);}
 
   section{padding:88px 0;}
   .section-head{max-width:36rem;margin-bottom:44px;}
@@ -294,13 +243,8 @@
   .foot-note a:hover{border-bottom-color:var(--gold);}
 
   @media(max-width:900px){
-    .hero-inner,.hero-banner .hero-inner{grid-template-columns:1fr;gap:44px;}
+    .hero-inner{grid-template-columns:1fr;gap:44px;}
     .hero-media{max-width:26rem;margin-inline:auto;}
-    /* Banner variant stacks like the logo variant below 900px. The wide sign
-       gets more room than the square logo, and the desktop scallop/pad go. */
-    .hero-banner .hero-media{max-width:32rem;}
-    .hero-banner .hero{padding-bottom:60px;}
-    .hero-banner .hero::after{display:none;}
     .visit-grid{grid-template-columns:1fr;gap:44px;}
     .patch-loaves,.patch-coffee{grid-column:span 12;}
     .events-grid{grid-template-columns:1fr;gap:36px;}
@@ -330,12 +274,6 @@
 
 <div class="demo-flag">Concept demo built for Knead More Dough. Not a live site.</div>
 
-<div class="hero-switch" aria-label="Preview control: choose a hero style">
-  <span>Hero preview</span>
-  <a class="to-logo" href="?hero=logo">Logo</a>
-  <a class="to-banner" href="?hero=banner">Banner</a>
-</div>
-
 <nav>
   <div class="wrap">
     <a class="wordmark" href="#">Knead More <span>Dough</span></a>
@@ -352,7 +290,7 @@
     <div data-reveal>
       <span class="eyebrow">Bakery &middot; Channahon, IL</span>
       <h1>Sourdough and sweets, <span class="warm">baked fresh</span> in Channahon.</h1>
-      <p>Loaves, coffee cakes, cookies and treats. Made at Hive Kitchen and sold right in the storefront.</p>
+      <p>Sourdough loaves, coffee cakes, cookies and treats. Made at Hive Kitchen and sold right in the storefront.</p>
       <div class="hero-ctas">
         <a class="btn btn-berry" href="#visit">Hours and location</a>
         <a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&amp;query=25520+Pheasant+Ln,+Channahon,+IL" target="_blank" rel="noopener">Get directions</a>
@@ -360,7 +298,6 @@
     </div>
     <div class="hero-media stitched" data-reveal>
       <img class="hero-logo-img" src="Knead%20More%20Dough%20Pictures/logo.jpg" loading="eager" alt="Knead More Dough logo, a loaf, a mixing bowl and a cupcake above the name in script">
-      <img class="hero-banner-img" src="Knead%20More%20Dough%20Pictures/banner.jpg" loading="eager" alt="The hand painted Knead More Dough market banner reading Sourdough Bread and Sweets">
     </div>
   </div>
 </header>
@@ -380,7 +317,7 @@
         </div>
         <div class="patch-body">
           <h3>Sourdough loaves</h3>
-          <p>Freshly baked. Available in full and half sizes.</p>
+          <p>Freshly baked. Available in full and half sizes, plus flavored breads.</p>
         </div>
       </article>
 
@@ -426,6 +363,9 @@
         <p>Get in touch for special events, large orders, and more!</p>
         <div class="events-actions">
           <a class="btn btn-berry" href="tel:7085146123">Contact Us!</a>
+          <a class="icon-btn" href="mailto:kneadmoredough60410@gmail.com" aria-label="Email Knead More Dough">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>
+          </a>
           <a class="icon-btn" href="https://www.facebook.com/profile.php?id=61576746550180" target="_blank" rel="noopener" aria-label="Knead More Dough on Facebook">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.78-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.44 2.91h-2.34V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>
           </a>
@@ -460,8 +400,9 @@
         </table>
 
         <ul class="contact">
-          <li>25520 Pheasant Ln, Unit D, Channahon, IL</li>
+          <li>25520 Pheasant Ln, Unit J, Channahon, IL</li>
           <li><a href="tel:7085146123">(708) 514-6123</a></li>
+          <li><a href="mailto:kneadmoredough60410@gmail.com">kneadmoredough60410@gmail.com</a></li>
           <li><a href="https://www.google.com/maps/search/?api=1&amp;query=25520+Pheasant+Ln,+Channahon,+IL" target="_blank" rel="noopener">Open in Google Maps</a></li>
           <li><a href="https://www.facebook.com/profile.php?id=61576746550180" target="_blank" rel="noopener">Facebook</a></li>
           <li><a href="https://www.instagram.com/kneadmoredough60410/" target="_blank" rel="noopener">Instagram</a></li>
@@ -500,7 +441,7 @@
       <a href="https://www.facebook.com/profile.php?id=61576746550180" target="_blank" rel="noopener">Facebook</a>
       <a href="https://www.instagram.com/kneadmoredough60410/" target="_blank" rel="noopener">Instagram</a>
     </div>
-    <p>25520 Pheasant Ln, Unit D, Channahon, IL &middot; (708) 514-6123</p>
+    <p>25520 Pheasant Ln, Unit J, Channahon, IL &middot; (708) 514-6123</p>
   </div>
 </footer>
 
