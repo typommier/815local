@@ -193,17 +193,22 @@
   .map{border-radius:var(--radius);overflow:hidden;box-shadow:0 16px 34px rgba(51,23,40,0.16);}
   .map iframe{width:100%;height:420px;border:0;display:block;}
 
-  /* TESTIMONIAL PLACEHOLDER, no reviews on file yet */
+  /* TESTIMONIAL, a real Facebook recommendation */
   .words{background:var(--linen-dim);}
   .quote-card{
-    max-width:38rem;margin:0 auto;text-align:center;
-    background:var(--linen);border:2px dashed var(--sage);border-radius:var(--radius);
-    padding:42px 44px;
+    max-width:40rem;margin:0 auto;text-align:center;
+    background:var(--linen);border:1px solid var(--linen-dim);border-radius:var(--radius);
+    padding:44px 46px;box-shadow:0 14px 30px rgba(51,23,40,0.08);
   }
-  .quote-card p{font-style:italic;color:var(--ink-soft);margin-bottom:1.1rem;}
+  .quote-card p{font-style:italic;font-size:1.14rem;color:var(--ink);margin-bottom:1.3rem;}
+  .quote-card .cite{
+    display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;
+    font-size:1.02rem;color:var(--plum);
+  }
   .quote-card .note{
+    display:block;margin-top:5px;
     font-family:'Bricolage Grotesque',sans-serif;font-style:normal;font-weight:600;
-    font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--berry);
+    font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--berry);
   }
 
   /* SOCIAL */
@@ -419,8 +424,9 @@
 <section class="words">
   <div class="wrap">
     <div class="quote-card" data-reveal>
-      <p>This is where a real customer review goes. Pull a couple of lines from Google or Facebook and drop them straight in.</p>
-      <span class="note">Placeholder, awaiting real reviews</span>
+      <p>"Hands down, absolutely one of the best sourdough loaves I have had. I am a huge fan of the jalapeno and cheddar. I love the fact that I can visit The Hive in Channahon and pick up a few loaves. Also, the single pack chocolate cookies are freaking amazing."</p>
+      <span class="cite">Vice Apostolovski</span>
+      <span class="note">Recommended on Facebook</span>
     </div>
   </div>
 </section>
