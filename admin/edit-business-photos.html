@@ -124,6 +124,54 @@ a { color: inherit; text-decoration: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .convert-status { font-size: 13px; color: var(--charcoal-mid); margin-bottom: 16px; }
 
+/* ── Tabs (Listing photos / Media inbox) ── */
+.tab-bar { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1.5px solid var(--gray-light); }
+.tab-btn { font: inherit; font-weight: 700; font-size: 15px; color: var(--gray); background: none; border: none; border-bottom: 3px solid transparent; padding: 10px 16px; margin-bottom: -1.5px; cursor: pointer; transition: color 0.12s, border-color 0.12s; }
+.tab-btn:hover { color: var(--charcoal-mid); }
+.tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+.tab-btn .tab-badge { display: inline-block; min-width: 18px; padding: 0 6px; margin-left: 6px; font-size: 11px; line-height: 18px; border-radius: 100px; background: var(--orange-pale); color: var(--orange); vertical-align: 1px; }
+
+/* ── Pull-from-inbox strip inside the editor ── */
+.pull-strip { border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); background: var(--cream); padding: 14px 16px; margin-bottom: 20px; }
+.pull-strip-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pull-strip-title { font-size: 13px; font-weight: 700; color: var(--charcoal-mid); }
+.pull-strip-sub { font-size: 12px; color: var(--gray); }
+.pull-row { display: flex; gap: 10px; overflow-x: auto; padding: 12px 2px 4px; }
+.pull-thumb { flex: 0 0 auto; width: 84px; }
+.pull-thumb button { width: 84px; height: 84px; border-radius: 8px; border: 1.5px solid var(--gray-light); background-size: cover; background-position: center; cursor: pointer; padding: 0; transition: border-color 0.12s, transform 0.1s; position: relative; }
+.pull-thumb button:hover { border-color: var(--orange); transform: translateY(-2px); }
+.pull-thumb button.added { border-color: var(--green); opacity: 0.55; cursor: default; }
+.pull-thumb-cap { font-size: 10px; color: var(--gray); margin-top: 4px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ── Media inbox: source chips ── */
+.filter-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font: inherit; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 100px; border: 1.5px solid var(--gray-light); background: white; color: var(--charcoal-mid); cursor: pointer; transition: all 0.12s; }
+.chip:hover { border-color: var(--orange); color: var(--orange); }
+.chip.active { background: var(--charcoal); border-color: var(--charcoal); color: white; }
+
+/* ── Media inbox: gallery ── */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.media-card { border: 1.5px solid var(--gray-light); border-radius: var(--radius-sm); overflow: hidden; background: white; display: flex; flex-direction: column; }
+.media-thumb { aspect-ratio: 1/1; background: var(--charcoal-mid); background-size: cover; background-position: center; cursor: zoom-in; }
+.media-meta { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.media-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.src-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--orange-pale); color: var(--orange); letter-spacing: 0.02em; }
+.link-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--green-pale); color: var(--green); }
+.media-caption { font-size: 13px; color: var(--charcoal-mid); line-height: 1.45; word-break: break-word; }
+.media-caption.empty { color: var(--gray); font-style: italic; }
+.media-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 2px; }
+.media-date { font-size: 11px; color: var(--gray); }
+.attach-wrap { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.attach-select { font: inherit; font-size: 12px; padding: 5px 8px; border: 1.5px solid var(--gray-light); border-radius: 6px; background: white; color: var(--charcoal); max-width: 150px; }
+
+/* ── Shared lightbox ── */
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.86); display: none; align-items: center; justify-content: center; z-index: 500; padding: 24px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 82vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.lightbox-cap { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: rgba(255,255,255,0.85); font-size: 14px; padding: 0 24px; }
+.lightbox-close { position: absolute; top: 18px; right: 22px; color: white; font-size: 30px; cursor: pointer; line-height: 1; opacity: 0.8; }
+.lightbox-close:hover { opacity: 1; }
+
 @media (max-width: 680px) {
   .dashboard { padding: 16px; }
   .nav-inner { flex-wrap: wrap; height: auto; padding: 12px 16px; gap: 10px; }
@@ -137,6 +185,7 @@ a { color: inherit; text-decoration: none; }
   /* Side by side on a phone: two shapes still readable, half the scrolling. */
   .preview-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
   .position-grid { grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 40px); }
+  .gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
 }
 </style>
 <script src="/assets/js/photo-crop.js"></script>
@@ -149,10 +198,11 @@ a { color: inherit; text-decoration: none; }
       <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
     </a>
     <div>
-      <div class="nav-title">Edit Business Photos</div>
-      <div class="nav-subtitle">Upload, reorder, and reposition the photos on a listing</div>
+      <div class="nav-title">Photos &amp; Media</div>
+      <div class="nav-subtitle">Manage listing photos and the media people send you, in one place</div>
     </div>
     <div class="nav-right">
+      <a href="/admin/review-submissions.html" class="nav-back">✅ Review Submissions</a>
       <a href="/admin/analytics.html" class="nav-back">← Analytics</a>
       <a href="/admin/import-photos.html" class="nav-back">📷 Photo Importer</a>
       <a href="/" class="nav-back">Back to Site</a>
@@ -161,9 +211,15 @@ a { color: inherit; text-decoration: none; }
 </nav>
 
 <div class="dashboard">
-  <h1 class="page-title">Edit Business Photos</h1>
-  <div class="page-sub">Pick a business, then drag photos to upload, tap a position cell to control the crop focal point, and star one to make it the hero. Every preview is the real cell that photo gets on the live site, so what you see here is what ships. On Auto the site picks for you (the listing crops from the top, cards center), which is why the two previews can differ until you pick a focal point.</div>
+  <h1 class="page-title">Photos &amp; Media</h1>
+  <div class="page-sub">Two jobs in one tool. <strong>Listing photos</strong> curates the photos on a specific business. <strong>Media inbox</strong> collects graphics people send you or upload, so you can see them and drop them onto a listing.</div>
 
+  <div class="tab-bar">
+    <button type="button" class="tab-btn active" data-tab="photos">🖼️ Listing photos</button>
+    <button type="button" class="tab-btn" data-tab="inbox">🗂️ Media inbox<span class="tab-badge" id="inbox-tab-count" style="display:none;">0</span></button>
+  </div>
+
+  <div id="panel-photos">
   <div class="card">
     <div class="card-header">
       <div>
@@ -200,6 +256,16 @@ a { color: inherit; text-decoration: none; }
       </label>
       <div id="convert-status" class="convert-status" style="display:none;"></div>
 
+      <div class="pull-strip" id="pull-strip" style="display:none;">
+        <div class="pull-strip-head">
+          <div>
+            <div class="pull-strip-title">🗂️ Pull from your Media Inbox</div>
+            <div class="pull-strip-sub" id="pull-strip-sub">Tap a graphic to add it to this listing, then Save.</div>
+          </div>
+        </div>
+        <div class="pull-row" id="pull-row"></div>
+      </div>
+
       <div id="photo-list" class="photo-list"></div>
       <div id="photo-list-empty" class="empty" style="display:none;">No photos yet. Drop some above.</div>
 
@@ -210,6 +276,65 @@ a { color: inherit; text-decoration: none; }
       <div id="save-summary" class="result-summary" style="display:none; margin-top:16px;"></div>
     </div>
   </div>
+  </div><!-- /#panel-photos -->
+
+  <div id="panel-inbox" style="display:none;">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Add graphics</div>
+          <div class="card-subtitle">Tag where it came from, add a note if you want, then drop the files.</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:180px 1fr; gap:16px;" class="mi-form-grid">
+          <div class="form-row" style="margin-bottom:0;">
+            <label for="mi-src-select">Where from?</label>
+            <select id="mi-src-select">
+              <option value="email">✉️ Email</option>
+              <option value="text">💬 Text</option>
+              <option value="facebook">📘 Facebook</option>
+              <option value="instagram">📷 Instagram</option>
+              <option value="site">🌐 Site upload</option>
+              <option value="other">📎 Other</option>
+            </select>
+          </div>
+          <div class="form-row" style="margin-bottom:0;">
+            <label for="mi-cap-input">Note (optional)</label>
+            <input id="mi-cap-input" type="text" maxlength="160" placeholder="e.g. Rosario's summer flyer, or who sent it">
+          </div>
+        </div>
+        <label class="drop-zone" id="mi-drop-zone" for="mi-file-input" style="margin-top:16px;">
+          <div style="font-size:32px; margin-bottom:4px;">🖼️</div>
+          <div><strong>Drop graphics here</strong> or tap to choose from your camera roll</div>
+          <div style="font-size:12px; margin-top:4px;">JPG / PNG / WebP / GIF / HEIC (iPhone photos, converted automatically). Big photos are shrunk automatically.</div>
+          <input id="mi-file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,.heic,.heif" multiple>
+        </label>
+        <div id="mi-convert-status" class="convert-status" style="display:none; margin-top:14px; margin-bottom:0;"></div>
+        <div id="mi-upload-summary" class="result-summary" style="display:none; margin-top:16px;"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Everything received</div>
+          <div class="card-subtitle" id="mi-gallery-count">Loading…</div>
+        </div>
+        <div class="filter-chips" id="mi-filter-chips"></div>
+      </div>
+      <div class="card-body">
+        <div id="mi-gallery" class="gallery"></div>
+        <div id="mi-gallery-empty" class="empty" style="display:none;">Nothing here yet. Drop a graphic above and it'll show up.</div>
+      </div>
+    </div>
+  </div><!-- /#panel-inbox -->
+</div>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightbox-close">&times;</span>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-cap" id="lightbox-cap"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -373,6 +498,7 @@ function selectBusiness(b) {
   $saveSummary.style.display = 'none';
   $bizSelect.value = b.id;
   renderPhotos();
+  renderPullStrip();
   $editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -530,6 +656,12 @@ async function saveChanges() {
   $saveStatus.innerHTML = '<span class="spinner"></span>Saving…';
   $saveSummary.style.display = 'none';
 
+  // Inbox images pulled into this listing. Captured before the save re-derives
+  // items from business.photos (which drops the mediaId tags), so they can be
+  // marked assigned in the media table once the save succeeds.
+  const savedBizId = business.id;
+  const pulledMediaIds = items.filter(it => it.mediaId).map(it => it.mediaId);
+
   const uploadItems = items.filter(it => it.file);
   const filesPayload = await Promise.all(uploadItems.map(async (it) => ({
     content_type: it.file.type,
@@ -591,6 +723,13 @@ async function saveChanges() {
     $saveSummary.className = 'result-summary success';
     $saveSummary.textContent = `Saved. ${data.uploaded.length} new photo${data.uploaded.length === 1 ? '' : 's'} uploaded, ${business.photos.length} total on listing.`;
     $saveSummary.style.display = '';
+    if (pulledMediaIds.length) {
+      for (const mid of pulledMediaIds) {
+        try { await callMediaFn({ action: 'update', id: mid, patch: { business_id: savedBizId, status: 'assigned' } }); } catch (e) {}
+      }
+      mediaItems.forEach(m => { if (pulledMediaIds.includes(m.id)) { m.business_id = savedBizId; m.status = 'assigned'; } });
+      renderMediaChips(); renderMediaGallery();
+    }
   } catch (err) {
     $saveSummary.className = 'result-summary error';
     $saveSummary.textContent = 'Network error: ' + (err && err.message ? err.message : String(err));
@@ -603,7 +742,300 @@ async function saveChanges() {
 
 $saveBtn.addEventListener('click', saveChanges);
 
-requireAdminLogin().then(loadBusinesses);
+/* ═══════════════ Media Inbox (integrated tab) ═══════════════
+   Reuses the shared admin auth (getAccessToken/adminAuthHeaders), the loaded
+   allBusinesses list, escapeHtml, fileToDataUrl, isHeic and convertHeicToJpeg.
+   Talks to the manage-media edge function; attaching writes through the same
+   manage-business-photos function the photo editor uses. */
+const FN_MEDIA = `${SUPABASE_URL}/functions/v1/manage-media`;
+const FN_PHOTOS = `${SUPABASE_URL}/functions/v1/manage-business-photos`;
+const SOURCE_LABELS = { email: '✉️ Email', text: '💬 Text', facebook: '📘 Facebook', instagram: '📷 Instagram', site: '🌐 Site', other: '📎 Other' };
+
+let mediaItems = [];
+let activeMediaFilter = '';
+
+const $miSrc = document.getElementById('mi-src-select');
+const $miCap = document.getElementById('mi-cap-input');
+const $miDrop = document.getElementById('mi-drop-zone');
+const $miFile = document.getElementById('mi-file-input');
+const $miConvert = document.getElementById('mi-convert-status');
+const $miSummary = document.getElementById('mi-upload-summary');
+const $miGallery = document.getElementById('mi-gallery');
+const $miGalleryEmpty = document.getElementById('mi-gallery-empty');
+const $miGalleryCount = document.getElementById('mi-gallery-count');
+const $miChips = document.getElementById('mi-filter-chips');
+const $inboxTabCount = document.getElementById('inbox-tab-count');
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const tab = btn.dataset.tab;
+  document.getElementById('panel-photos').style.display = tab === 'photos' ? '' : 'none';
+  document.getElementById('panel-inbox').style.display = tab === 'inbox' ? '' : 'none';
+}));
+
+function fmtDate(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+function isLinked(m) { return !!(m.business_id || m.event_id || m.deal_id); }
+
+async function callMediaFn(payload) {
+  const token = await getAccessToken();
+  const res = await fetch(FN_MEDIA, { method: 'POST', headers: adminAuthHeaders(token), body: JSON.stringify(payload) });
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  if (!res.ok || !data.ok) throw new Error((data.errors && data.errors.join('; ')) || data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+function bizOptionsHtml() {
+  return ['<option value="">Attach to a listing…</option>']
+    .concat(allBusinesses.map(b => `<option value="${escapeHtml(b.id)}">${escapeHtml(b.name)}</option>`))
+    .join('');
+}
+
+function updateInboxCount() {
+  if (mediaItems.length) { $inboxTabCount.style.display = ''; $inboxTabCount.textContent = mediaItems.length; }
+  else $inboxTabCount.style.display = 'none';
+}
+
+function renderMediaChips() {
+  const counts = {};
+  for (const m of mediaItems) counts[m.source] = (counts[m.source] || 0) + 1;
+  const chips = [`<button type="button" class="chip ${activeMediaFilter === '' ? 'active' : ''}" data-src="">All (${mediaItems.length})</button>`];
+  for (const src of Object.keys(SOURCE_LABELS)) {
+    if (!counts[src]) continue;
+    chips.push(`<button type="button" class="chip ${activeMediaFilter === src ? 'active' : ''}" data-src="${src}">${SOURCE_LABELS[src]} (${counts[src]})</button>`);
+  }
+  $miChips.innerHTML = chips.join('');
+  $miChips.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    activeMediaFilter = c.getAttribute('data-src');
+    renderMediaChips();
+    renderMediaGallery();
+  }));
+}
+
+function renderMediaGallery() {
+  const shown = activeMediaFilter ? mediaItems.filter(m => m.source === activeMediaFilter) : mediaItems;
+  $miGalleryCount.textContent = mediaItems.length === 1 ? '1 image' : `${mediaItems.length} images`;
+  $miGalleryEmpty.style.display = shown.length ? 'none' : 'block';
+  $miGallery.style.display = shown.length ? 'grid' : 'none';
+  $miGallery.innerHTML = shown.map(m => {
+    const cap = m.caption ? `<div class="media-caption">${escapeHtml(m.caption)}</div>` : `<div class="media-caption empty">No note</div>`;
+    const linked = isLinked(m) ? `<span class="link-badge">🔗 On a listing</span>` : '';
+    return `<div class="media-card" data-id="${escapeHtml(m.id)}">
+      <div class="media-thumb" data-full="${escapeHtml(m.public_url)}" data-cap="${escapeHtml(m.caption || '')}" style="background-image:url('${escapeHtml(m.public_url)}')"></div>
+      <div class="media-meta">
+        <div class="media-badges"><span class="src-badge">${SOURCE_LABELS[m.source] || m.source}</span>${linked}</div>
+        ${cap}
+        <div class="attach-wrap"><select class="attach-select" data-attach="${escapeHtml(m.id)}">${bizOptionsHtml()}</select></div>
+        <div class="media-actions">
+          <span class="media-date">${fmtDate(m.created_at)}</span>
+          <button type="button" class="icon-btn danger" data-del="${escapeHtml(m.id)}">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  $miGallery.querySelectorAll('.media-thumb').forEach(t => t.addEventListener('click', () => openLightbox(t.dataset.full, t.dataset.cap)));
+  $miGallery.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteMedia(b.dataset.del, b)));
+  $miGallery.querySelectorAll('[data-attach]').forEach(s => s.addEventListener('change', () => attachFromInbox(s.dataset.attach, s.value, s)));
+}
+
+async function loadMedia() {
+  try {
+    const data = await callMediaFn({ action: 'list' });
+    mediaItems = data.media || [];
+  } catch (e) {
+    $miGalleryCount.textContent = 'Failed to load: ' + e.message;
+    return;
+  }
+  renderMediaChips();
+  renderMediaGallery();
+  updateInboxCount();
+  renderPullStrip();
+}
+
+// Add media.public_url to a business's photos through the same edge function
+// the photo editor uses, then mark the media row assigned. The bucket is
+// public, so the URL is stored directly, no re-upload.
+async function attachMediaToBusiness(media, biz) {
+  const photos = Array.isArray(biz.photos) ? biz.photos.slice() : [];
+  if (!photos.includes(media.public_url)) photos.push(media.public_url);
+  const positions = Array.isArray(biz.photo_positions) ? biz.photo_positions.slice() : [];
+  while (positions.length < photos.length) positions.push('');
+  const body = { business_id: biz.id, set_photos: photos, set_photo_positions: positions };
+  if (!biz.image_url) body.set_image_url = photos[0];
+  const token = await getAccessToken();
+  const res = await fetch(FN_PHOTOS, { method: 'POST', headers: adminAuthHeaders(token), body: JSON.stringify(body) });
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  if (!res.ok || !data.ok) throw new Error((data.errors && data.errors.join('; ')) || data.error || ('HTTP ' + res.status));
+  if (data.updated) { biz.photos = data.updated.photos || photos; biz.photo_positions = data.updated.photo_positions || positions; biz.image_url = data.updated.image_url; }
+  else { biz.photos = photos; biz.photo_positions = positions; }
+  await callMediaFn({ action: 'update', id: media.id, patch: { business_id: biz.id, status: 'assigned' } });
+  media.business_id = biz.id; media.status = 'assigned';
+  populateBizSelect();
+  // populateBizSelect rewrites the options and resets the picker; keep the
+  // business the editor is on selected.
+  if (business) $bizSelect.value = business.id;
+}
+
+async function attachFromInbox(mediaId, bizId, selectEl) {
+  if (!bizId) return;
+  const media = mediaItems.find(m => m.id === mediaId);
+  const biz = allBusinesses.find(b => b.id === bizId);
+  if (!media || !biz) return;
+  selectEl.disabled = true;
+  try {
+    await attachMediaToBusiness(media, biz);
+    renderMediaGallery();
+    renderPullStrip();
+    // If that business is open in the editor, reflect the new photo there too.
+    if (business && business.id === biz.id) selectBusiness(biz);
+  } catch (e) {
+    selectEl.disabled = false;
+    selectEl.value = '';
+    alert('Attach failed: ' + e.message);
+  }
+}
+
+async function deleteMedia(id, btn) {
+  if (!confirm('Delete this image? This removes it from the inbox.')) return;
+  btn.disabled = true; btn.textContent = 'Deleting…';
+  try {
+    await callMediaFn({ action: 'delete', id });
+    mediaItems = mediaItems.filter(m => m.id !== id);
+    renderMediaChips();
+    renderMediaGallery();
+    updateInboxCount();
+    renderPullStrip();
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Delete';
+    alert('Delete failed: ' + e.message);
+  }
+}
+
+// ── Pull-from-inbox strip in the editor ──
+function renderPullStrip() {
+  const strip = document.getElementById('pull-strip');
+  const row = document.getElementById('pull-row');
+  if (!business || !mediaItems.length) { strip.style.display = 'none'; return; }
+  strip.style.display = '';
+  const inItems = new Set(items.filter(it => it.mediaId).map(it => it.mediaId));
+  const inUrls = new Set(items.map(it => it.url).filter(Boolean));
+  row.innerHTML = mediaItems.map(m => {
+    const added = inItems.has(m.id) || inUrls.has(m.public_url);
+    return `<div class="pull-thumb">
+      <button type="button" class="${added ? 'added' : ''}" data-pull="${escapeHtml(m.id)}" ${added ? 'disabled' : ''} style="background-image:url('${escapeHtml(m.public_url)}')" title="${escapeHtml(m.caption || '')}"></button>
+      <div class="pull-thumb-cap">${added ? '✓ added' : escapeHtml(SOURCE_LABELS[m.source] || m.source)}</div>
+    </div>`;
+  }).join('');
+  row.querySelectorAll('[data-pull]').forEach(b => b.addEventListener('click', () => pullMedia(b.dataset.pull)));
+}
+
+function pullMedia(mediaId) {
+  const m = mediaItems.find(x => x.id === mediaId);
+  if (!m || !business) return;
+  if (items.some(it => it.mediaId === mediaId || it.url === m.public_url)) return;
+  items.push({ key: nextKey++, url: m.public_url, position: AUTO, isHero: items.length === 0, isNew: true, isOrphan: false, mediaId: m.id });
+  items.forEach((it, i) => { it.isHero = i === 0; });
+  renderPhotos();
+  renderPullStrip();
+}
+
+// ── Media inbox upload: HEIC convert, downscale to a 1600px max edge, base64 ──
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+const MI_MAX_EDGE = 1600;
+async function toMediaPayload(file) {
+  const dataUrl = await fileToDataUrl(file);
+  if ((file.type || '').toLowerCase() === 'image/gif') {
+    return { content_type: 'image/gif', base64: (dataUrl.split(',')[1] || '') };
+  }
+  const img = await loadImage(dataUrl);
+  const big = Math.max(img.width, img.height);
+  if (big <= MI_MAX_EDGE && file.size <= 1.5 * 1024 * 1024) {
+    return { content_type: file.type || 'image/jpeg', base64: (dataUrl.split(',')[1] || '') };
+  }
+  const scale = Math.min(1, MI_MAX_EDGE / big);
+  const w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+  const outUrl = canvas.toDataURL('image/jpeg', 0.85);
+  return { content_type: 'image/jpeg', base64: (outUrl.split(',')[1] || '') };
+}
+
+async function miAddFiles(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  $miSummary.style.display = 'none';
+  const heicCount = files.filter(isHeic).length;
+  const payloads = [];
+  $miConvert.style.display = '';
+  for (let i = 0; i < files.length; i++) {
+    let file = files[i];
+    $miConvert.innerHTML = `<span class="spinner"></span>Preparing ${i + 1} of ${files.length}${heicCount ? ' (converting iPhone photos)' : ''}…`;
+    if (isHeic(file)) {
+      try { file = await convertHeicToJpeg(file); }
+      catch (e) { alert(`${file.name}: couldn't convert (${e && e.message ? e.message : e}). Export it as JPEG and try again.`); continue; }
+    }
+    if (!/^image\/(jpe?g|png|webp|gif)$/i.test(file.type)) continue;
+    try { payloads.push(await toMediaPayload(file)); }
+    catch (e) { alert(`${file.name}: couldn't read this image.`); }
+  }
+  if (!payloads.length) { $miConvert.style.display = 'none'; return; }
+  $miConvert.innerHTML = `<span class="spinner"></span>Uploading ${payloads.length} image${payloads.length === 1 ? '' : 's'}…`;
+  try {
+    const data = await callMediaFn({ action: 'upload', source: $miSrc.value, caption: $miCap.value.trim() || null, files: payloads });
+    const added = data.media || [];
+    mediaItems = added.concat(mediaItems);
+    $miCap.value = '';
+    renderMediaChips();
+    renderMediaGallery();
+    updateInboxCount();
+    renderPullStrip();
+    $miSummary.className = 'result-summary success';
+    $miSummary.textContent = `Added ${added.length} image${added.length === 1 ? '' : 's'}.` + (data.errors && data.errors.length ? ` (${data.errors.length} skipped)` : '');
+    $miSummary.style.display = '';
+  } catch (e) {
+    $miSummary.className = 'result-summary error';
+    $miSummary.textContent = 'Upload failed: ' + e.message;
+    $miSummary.style.display = '';
+  } finally {
+    $miConvert.style.display = 'none';
+  }
+}
+
+$miFile.addEventListener('change', (e) => { miAddFiles(e.target.files); e.target.value = ''; });
+['dragenter', 'dragover'].forEach(ev => $miDrop.addEventListener(ev, (e) => { e.preventDefault(); $miDrop.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(ev => $miDrop.addEventListener(ev, (e) => { e.preventDefault(); $miDrop.classList.remove('dragover'); }));
+$miDrop.addEventListener('drop', (e) => { miAddFiles(e.dataTransfer.files); });
+
+// Shared lightbox
+const $lightbox = document.getElementById('lightbox');
+const $lightboxImg = document.getElementById('lightbox-img');
+const $lightboxCap = document.getElementById('lightbox-cap');
+function openLightbox(url, cap) { $lightboxImg.src = url; $lightboxCap.textContent = cap || ''; $lightbox.classList.add('open'); }
+function closeLightbox() { $lightbox.classList.remove('open'); $lightboxImg.src = ''; }
+document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+$lightbox.addEventListener('click', (e) => { if (e.target === $lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+requireAdminLogin().then(async () => {
+  await loadBusinesses();
+  await loadMedia();
+});
 </script>
 </body>
 </html>

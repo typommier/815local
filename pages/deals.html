@@ -94,6 +94,24 @@ a { color: inherit; text-decoration: none; }
 .deal-example-text { font-size: .85rem; color: var(--ink-soft); line-height: 1.5; }
 .cta-pair { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
+/* DEAL CARDS */
+.deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.deal-card { display: flex; flex-direction: column; gap: 10px; background: var(--surface); border-radius: var(--r-md); box-shadow: var(--shadow-sm); padding: 24px 24px 22px; border: 1px solid var(--line); transition: transform 0.15s, box-shadow 0.15s; }
+a.deal-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.deal-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.deal-cat { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--orange); }
+.deal-badge { flex-shrink: 0; background: var(--orange); color: #fff; font-size: .8rem; font-weight: 700; padding: 5px 12px; border-radius: var(--r-pill); line-height: 1.2; }
+.deal-card-title { font-family: var(--serif); font-size: 1.35rem; font-weight: var(--hw); letter-spacing: var(--ht); color: var(--ink); line-height: 1.2; }
+.deal-card-desc { font-size: .9rem; color: var(--ink-soft); line-height: 1.6; }
+.deal-card-biz { font-size: .88rem; font-weight: 700; color: var(--ink); }
+.deal-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 6px; }
+.deal-expiry { font-size: .78rem; font-weight: 600; color: var(--muted); }
+.deal-link { font-size: .82rem; font-weight: 700; color: var(--orange); }
+.deal-terms { font-size: .74rem; color: var(--muted); line-height: 1.5; padding-top: 10px; border-top: 1px solid var(--line); }
+.deals-loading, .deals-filter-empty { padding: 48px 20px; text-align: center; color: var(--muted); font-size: .95rem; }
+.deals-filter-empty { background: var(--paper); border-radius: var(--r-md); }
+.deals-count { font-size: .82rem; color: var(--muted); margin-bottom: 20px; }
+
 /* SIDEBAR */
 .sidebar { display: flex; flex-direction: column; gap: 22px; }
 .sidebar-card { background: var(--surface); border: none; border-radius: var(--r-md); box-shadow: var(--shadow-sm); padding: 26px; }
@@ -154,6 +172,7 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
         <a class="nav-link" href="/">Explore</a>
         <a class="nav-link" href="/pages/directory.html">Browse</a>
         <a class="nav-link" href="/pages/events.html">Events</a>
+        <a class="nav-link active" href="/pages/deals.html">Deals</a>
         <a class="nav-link" href="/pages/blog.html">Blog</a>
         <a class="nav-link" href="/pages/about.html">About</a>
       </div>
@@ -176,12 +195,13 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
 <!-- FILTER BAR -->
 <div class="filter-bar">
   <div class="container">
-    <div class="filter-bar-inner">
-      <div class="filter-pill active">All Deals</div>
-      <div class="filter-pill">🍔 Food &amp; Drink</div>
-      <div class="filter-pill">💆 Health &amp; Wellness</div>
-      <div class="filter-pill">🛍️ Retail</div>
-      <div class="filter-pill">🔧 Home Services</div>
+    <div class="filter-bar-inner" id="filter-bar">
+      <div class="filter-pill active" data-cat="">All Deals</div>
+      <div class="filter-pill" data-cat="Food &amp; Drink">🍔 Food &amp; Drink</div>
+      <div class="filter-pill" data-cat="Health &amp; Wellness">💆 Health &amp; Wellness</div>
+      <div class="filter-pill" data-cat="Retail &amp; Shops">🛍️ Retail &amp; Shops</div>
+      <div class="filter-pill" data-cat="Home Services">🔧 Home Services</div>
+      <div class="filter-pill" data-cat="Arts &amp; Events">🎭 Arts &amp; Events</div>
     </div>
   </div>
 </div>
@@ -191,8 +211,19 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
   <div class="container">
     <div class="deals-layout">
 
-      <!-- EMPTY STATE -->
-      <div>
+      <!-- MAIN COLUMN -->
+      <div id="deals-main">
+        <div class="deals-loading" id="deals-loading">Loading deals…</div>
+
+        <!-- LIVE DEALS (filled from the database) -->
+        <div id="deals-live" style="display:none;">
+          <div class="deals-count" id="deals-count"></div>
+          <div class="deals-grid" id="deals-grid"></div>
+          <div class="deals-filter-empty" id="deals-filter-empty" style="display:none;">No deals in this category right now. Try another filter.</div>
+        </div>
+
+        <!-- EMPTY STATE (shown only when there are no active deals at all) -->
+        <div id="deals-empty" style="display:none;">
         <div class="empty-state">
           <div class="empty-icon">🏷️</div>
           <h2>Deals are on the way</h2>
@@ -220,6 +251,7 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
             <a href="/pages/directory.html" class="btn btn-outline">Browse the Directory</a>
           </div>
           <p style="font-size:12px;color:var(--gray);margin-top:12px;">Deals are posted from your business listing page. Find your listing, then click <strong>Post a Deal</strong>.</p>
+        </div>
         </div>
       </div>
 
@@ -310,11 +342,117 @@ footer { background: var(--paper); border-top: 1px solid var(--line); margin-top
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+  let db;
+  try { const { createClient } = supabase; db = createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) {}
+
+  const catEmoji = {
+    'Food & Drink':'🍔','Coffee':'☕','Bars & Nightlife':'🍺',
+    'Health & Wellness':'💆','Beauty & Salons':'💇','Retail & Shops':'🛍️',
+    'Home Services':'🔧','Arts & Events':'🎭','Other':'🏷️'
+  };
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function fmtExpiry(dateStr){
+    if(!dateStr) return '';
+    const p = String(dateStr).split('-');
+    if(p.length !== 3) return '';
+    const d = new Date(Number(p[0]), Number(p[1])-1, Number(p[2]));
+    if(isNaN(d.getTime())) return '';
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return 'Ends ' + months[d.getMonth()] + ' ' + d.getDate();
+  }
+
+  let allDeals = [];
+  let activeCat = '';
+
+  function cardHtml(dl){
+    const emoji = catEmoji[dl.category] || '🏷️';
+    const link = dl.business_id ? '/pages/business.html?id=' + encodeURIComponent(dl.business_id) : '';
+    const tag = link ? 'a' : 'div';
+    const href = link ? ' href="' + esc(link) + '"' : '';
+    const expiry = fmtExpiry(dl.expiry_date);
+    return '<' + tag + ' class="deal-card"' + href + '>' +
+      '<div class="deal-card-top">' +
+        '<span class="deal-cat">' + esc(emoji + ' ' + (dl.category || '')) + '</span>' +
+        (dl.discount ? '<span class="deal-badge">' + esc(dl.discount) + '</span>' : '') +
+      '</div>' +
+      '<h3 class="deal-card-title">' + esc(dl.title) + '</h3>' +
+      (dl.description ? '<p class="deal-card-desc">' + esc(dl.description) + '</p>' : '') +
+      '<div class="deal-card-biz">' + esc(dl.business_name) + '</div>' +
+      ((expiry || link) ? '<div class="deal-card-foot">' +
+        '<span class="deal-expiry">' + esc(expiry) + '</span>' +
+        (link ? '<span class="deal-link">View business →</span>' : '') +
+      '</div>' : '') +
+      (dl.terms ? '<div class="deal-terms">' + esc(dl.terms) + '</div>' : '') +
+    '</' + tag + '>';
+  }
+
+  function render(){
+    const grid = document.getElementById('deals-grid');
+    const filterEmpty = document.getElementById('deals-filter-empty');
+    const count = document.getElementById('deals-count');
+    const shown = activeCat ? allDeals.filter(d => (d.category || '') === activeCat) : allDeals;
+    grid.innerHTML = shown.map(cardHtml).join('');
+    grid.style.display = shown.length ? 'grid' : 'none';
+    filterEmpty.style.display = shown.length ? 'none' : 'block';
+    count.textContent = allDeals.length === 1 ? '1 active deal' : allDeals.length + ' active deals';
+  }
+
+  function wireFilters(){
+    document.querySelectorAll('#filter-bar .filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('#filter-bar .filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeCat = pill.getAttribute('data-cat') || '';
+        render();
+      });
+    });
+  }
+
+  async function load(){
+    const today = new Date().toISOString().slice(0,10);
+    let data = [];
+    try {
+      const res = await db.from('deals')
+        .select('id,business_id,business_name,category,title,description,discount,expiry_date,terms,created_at')
+        .eq('is_active', true)
+        .or('expiry_date.is.null,expiry_date.gte.' + today)
+        .order('created_at', { ascending: false });
+      data = res.data || [];
+    } catch(e) { data = []; }
+
+    document.getElementById('deals-loading').style.display = 'none';
+    allDeals = data;
+    if(!data.length){
+      document.getElementById('deals-empty').style.display = 'block';
+      const fb = document.querySelector('.filter-bar');
+      if(fb) fb.style.display = 'none';
+      return;
+    }
+    document.getElementById('deals-live').style.display = 'block';
+    wireFilters();
+    render();
+  }
+
+  if(db){ load(); } else {
+    document.getElementById('deals-loading').style.display = 'none';
+    document.getElementById('deals-empty').style.display = 'block';
+    const fb = document.querySelector('.filter-bar');
+    if(fb) fb.style.display = 'none';
+  }
+})();
+</script>
 <script src="/assets/js/analytics-tracker.js"></script>
 <nav class="mobile-bottom-nav">
   <a href="/" class="mbn-item" data-page="home"><div class="mbn-icon">🏠</div><div class="mbn-label">Home</div></a>
   <a href="/pages/directory.html" class="mbn-item" data-page="browse"><div class="mbn-icon">🔍</div><div class="mbn-label">Browse</div></a>
   <a href="/pages/events.html" class="mbn-item" data-page="events"><div class="mbn-icon">📅</div><div class="mbn-label">Events</div></a>
+  <a href="/pages/deals.html" class="mbn-item active" data-page="deals"><div class="mbn-icon">🏷️</div><div class="mbn-label">Deals</div></a>
 </nav>
 </body>
 </html>
