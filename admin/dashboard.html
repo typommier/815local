@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Command Center | 815local Admin</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --orange:#C4622D; --orange-dark:#A44E20; --orange-pale:#F6E7DC;
+  --cream:#FBF6EA; --cream-dark:#F3ECDB; --bone:#FFFDF8;
+  --charcoal:#2B2420; --charcoal-mid:#4A413B; --charcoal-soft:#6E635B;
+  --gray:#948A80; --line:rgba(43,36,32,0.09); --line-strong:rgba(43,36,32,0.14);
+  --white:#FFFFFF;
+  --sage:#5B7A57; --sage-pale:rgba(91,122,87,0.12);
+  --teal:#0E7490; --teal-pale:rgba(14,116,144,0.11);
+  --forest:#2D6A4F; --forest-pale:rgba(45,106,79,0.12);
+  --amber:#B4741A; --amber-pale:rgba(180,116,26,0.14);
+  --red:#B23B3B; --red-pale:rgba(178,59,59,0.10);
+  --radius:16px; --radius-sm:11px; --radius-pill:100px;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --serif:Georgia,'Times New Roman',serif;
+}
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--sans); background: var(--cream); color: var(--charcoal);
+  -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+
+/* ---------- Shell ---------- */
+.shell { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+  width: 248px; flex-shrink: 0; background: var(--bone); border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh;
+}
+.brand { padding: 22px 22px 18px; display: flex; align-items: center; gap: 11px; }
+.brand-mark {
+  width: 34px; height: 34px; border-radius: 9px; background: var(--charcoal);
+  color: var(--cream); display: grid; place-items: center; font-family: var(--serif);
+  font-weight: 700; font-size: 15px; letter-spacing: -0.5px; flex-shrink: 0;
+}
+.brand-mark span { color: var(--orange); }
+.brand-text { line-height: 1.15; }
+.brand-name { font-family: var(--serif); font-size: 17px; font-weight: 700; }
+.brand-sub { font-size: 11px; color: var(--gray); letter-spacing: 0.04em; text-transform: uppercase; }
+
+.nav { padding: 6px 12px; flex: 1; overflow-y: auto; }
+.nav-group-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--gray); padding: 14px 10px 6px; }
+.nav-item {
+  display: flex; align-items: center; gap: 11px; padding: 9px 11px; border-radius: 9px;
+  font-size: 13.5px; font-weight: 500; color: var(--charcoal-mid); transition: background 0.12s, color 0.12s;
+  cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: var(--cream-dark); color: var(--charcoal); }
+.nav-item.active { background: var(--cream-dark); color: var(--charcoal); font-weight: 600; }
+.nav-ico { width: 17px; text-align: center; font-size: 14px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; min-width: 19px; height: 19px; padding: 0 6px; border-radius: var(--radius-pill);
+  background: var(--orange); color: #fff; font-size: 11px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+}
+.nav-badge.show { display: inline-flex; }
+.nav-ext::after { content: "\2197"; margin-left: auto; font-size: 12px; color: var(--gray); }
+.nav-ext:hover::after { color: var(--charcoal-mid); }
+
+.side-foot { padding: 12px; border-top: 1px solid var(--line); }
+.armed {
+  background: var(--sage-pale); border: 1px solid rgba(91,122,87,0.2); border-radius: var(--radius-sm);
+  padding: 11px 13px; margin-bottom: 10px;
+}
+.armed-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--forest); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); flex-shrink: 0; }
+.dot.live { box-shadow: 0 0 0 0 rgba(91,122,87,0.5); animation: pulse 2.2s infinite; }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(91,122,87,0.45);} 70%{box-shadow:0 0 0 7px rgba(91,122,87,0);} 100%{box-shadow:0 0 0 0 rgba(91,122,87,0);} }
+.armed-sub { font-size: 11.5px; color: var(--charcoal-soft); margin-top: 3px; line-height: 1.4; }
+.side-user { display: flex; align-items: center; gap: 10px; padding: 4px 4px 2px; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--orange); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+.side-user-name { font-size: 13px; font-weight: 600; }
+.side-user-role { font-size: 11px; color: var(--gray); }
+.side-signout { margin-left: auto; font-size: 11.5px; color: var(--gray); background: none; border: none; padding: 4px; }
+.side-signout:hover { color: var(--red); }
+
+/* Main */
+.main { flex: 1; min-width: 0; }
+.topbar {
+  display: flex; align-items: center; gap: 14px; padding: 16px 30px;
+  border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(251,246,234,0.86);
+  backdrop-filter: saturate(1.4) blur(8px); z-index: 40;
+}
+.topbar-status { font-size: 12.5px; color: var(--charcoal-soft); display: flex; align-items: center; gap: 7px; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.btn {
+  border-radius: var(--radius-pill); border: 1px solid var(--line-strong); background: var(--white);
+  color: var(--charcoal); font-size: 13px; font-weight: 600; padding: 8px 15px; transition: all 0.13s;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.btn:hover { border-color: var(--charcoal-soft); }
+.btn-primary { background: var(--charcoal); color: var(--cream); border-color: var(--charcoal); }
+.btn-primary:hover { background: #1c1712; }
+.btn:disabled { opacity: 0.55; cursor: default; }
+
+.content { padding: 26px 30px 60px; max-width: 1280px; }
+.greeting { font-family: var(--serif); font-size: 27px; font-weight: 700; letter-spacing: -0.3px; }
+.greeting-sub { font-size: 14.5px; color: var(--charcoal-soft); margin-top: 4px; }
+.greeting-sub b { color: var(--orange-dark); font-weight: 700; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.span-2 { grid-column: 1 / -1; }
+
+/* Card */
+.card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.card-pad { padding: 18px 20px; }
+.card-head { display: flex; align-items: center; gap: 10px; padding: 15px 20px; border-bottom: 1px solid var(--line); }
+.card-head.noborder { border-bottom: none; padding-bottom: 4px; }
+.card-title { font-size: 14.5px; font-weight: 700; letter-spacing: -0.1px; }
+.card-head .card-action { margin-left: auto; font-size: 12.5px; font-weight: 600; color: var(--orange-dark); }
+.card-head .card-action:hover { text-decoration: underline; }
+.card-ico { font-size: 15px; }
+.kicker { font-size: 10.5px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--gray); }
+
+/* Overview / 60-second card */
+.overview { background: linear-gradient(150deg, var(--bone), var(--cream-dark)); border: 1px solid var(--line-strong); }
+.overview-lead { font-size: 15.5px; line-height: 1.55; color: var(--charcoal-mid); margin-top: 8px; }
+.overview-lead b { color: var(--charcoal); font-weight: 700; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: var(--radius-pill);
+  background: var(--white); border: 1px solid var(--line-strong); font-size: 13px; font-weight: 600; color: var(--charcoal);
+  cursor: pointer; transition: all 0.12s;
+}
+.chip:hover { border-color: var(--charcoal-soft); transform: translateY(-1px); }
+.chip .n { font-weight: 800; }
+.chip.hot { background: var(--orange); border-color: var(--orange); color: #fff; }
+.chip.calm { color: var(--charcoal-soft); }
+
+/* Pills */
+.pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.pill-sage { background: var(--sage-pale); color: var(--forest); }
+.pill-teal { background: var(--teal-pale); color: var(--teal); }
+.pill-amber { background: var(--amber-pale); color: var(--amber); }
+.pill-red { background: var(--red-pale); color: var(--red); }
+.pill-orange { background: var(--orange-pale); color: var(--orange-dark); }
+.pill-gray { background: var(--cream-dark); color: var(--charcoal-soft); }
+
+/* Queue rows */
+.q-block { border-top: 1px solid var(--line); }
+.q-block:first-child { border-top: none; }
+.q-block-head { display: flex; align-items: center; gap: 9px; padding: 13px 20px 9px; }
+.q-block-title { font-size: 12.5px; font-weight: 700; }
+.q-block-head .count-pill { min-width: 20px; padding: 1px 7px; border-radius: var(--radius-pill); background: var(--charcoal); color: var(--cream); font-size: 11px; font-weight: 700; text-align: center; }
+.q-block-head .go { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--orange-dark); }
+.q-block-head .go:hover { text-decoration: underline; }
+.q-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 20px; border-top: 1px dashed var(--line); }
+.q-row:hover { background: var(--cream); }
+.q-idx { width: 20px; text-align: center; font-size: 12px; font-weight: 700; color: var(--gray); flex-shrink: 0; padding-top: 1px; }
+.q-body { min-width: 0; flex: 1; }
+.q-name { font-size: 13.5px; font-weight: 600; }
+.q-meta { font-size: 12px; color: var(--charcoal-soft); margin-top: 2px; overflow-wrap: anywhere; }
+.q-meta a { color: var(--teal); }
+.q-side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.q-time { font-size: 11.5px; color: var(--gray); white-space: nowrap; }
+
+.empty-good { display: flex; align-items: center; gap: 10px; padding: 22px 20px; color: var(--charcoal-soft); font-size: 13.5px; }
+.empty-good .em { font-size: 18px; }
+
+/* Stat tiles */
+.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border-top: 1px solid var(--line); }
+.stat { background: var(--white); padding: 15px 18px; }
+.stat-n { font-family: var(--serif); font-size: 26px; font-weight: 700; letter-spacing: -0.5px; line-height: 1; }
+.stat-l { font-size: 12px; color: var(--charcoal-soft); margin-top: 5px; }
+.stat.warn .stat-n { color: var(--amber); }
+.stat.good .stat-n { color: var(--forest); }
+.town-list { padding: 6px 20px 16px; }
+.town-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13px; }
+.town-row .tn { font-weight: 600; text-transform: capitalize; }
+.town-row .tbar { flex: 1; height: 6px; border-radius: 3px; background: var(--cream-dark); overflow: hidden; }
+.town-row .tbar > i { display: block; height: 100%; background: var(--orange); border-radius: 3px; }
+.town-row .tc { font-size: 12px; color: var(--charcoal-soft); font-weight: 600; width: 30px; text-align: right; }
+
+/* GitHub / list rows */
+.li { display: flex; align-items: flex-start; gap: 11px; padding: 11px 20px; border-top: 1px solid var(--line); }
+.li:first-of-type { border-top: none; }
+.li-ico { flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 12px; background: var(--cream-dark); }
+.li-body { min-width: 0; flex: 1; }
+.li-title { font-size: 13px; font-weight: 500; color: var(--charcoal); overflow: hidden; text-overflow: ellipsis; }
+.li-title.mono { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-size: 12px; }
+.li-meta { font-size: 11.5px; color: var(--gray); margin-top: 2px; }
+.li-right { flex-shrink: 0; font-size: 11.5px; color: var(--gray); white-space: nowrap; }
+
+/* Connect (integration off) state */
+.connect { padding: 20px; }
+.connect-row { display: flex; align-items: flex-start; gap: 12px; }
+.connect-ico { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; font-size: 19px; flex-shrink: 0; }
+.connect-title { font-size: 13.5px; font-weight: 700; }
+.connect-desc { font-size: 12.5px; color: var(--charcoal-soft); margin-top: 3px; line-height: 1.5; }
+.connect-desc code { font-family: ui-monospace,Menlo,monospace; font-size: 11.5px; background: var(--cream-dark); padding: 1px 5px; border-radius: 4px; }
+.secret-list { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 6px; }
+.secret { font-family: ui-monospace,Menlo,monospace; font-size: 11px; background: var(--cream-dark); color: var(--charcoal-mid); padding: 3px 8px; border-radius: 5px; }
+
+.mini-note { padding: 11px 20px; font-size: 12px; color: var(--gray); border-top: 1px solid var(--line); }
+.spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid var(--line-strong); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-row { padding: 20px; color: var(--gray); font-size: 13px; display: flex; align-items: center; gap: 9px; }
+.err-row { padding: 14px 20px; color: var(--red); font-size: 12.5px; background: var(--red-pale); }
+
+/* Mobile */
+.menu-btn { display: none; }
+.scrim { display: none; }
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .sidebar {
+    position: fixed; left: 0; top: 0; z-index: 90; transform: translateX(-100%);
+    transition: transform 0.22s ease; box-shadow: 0 0 40px rgba(0,0,0,0.18);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .scrim.show { display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 80; }
+  .menu-btn { display: inline-flex; }
+  .content { padding: 20px 16px 50px; }
+  .topbar { padding: 12px 16px; }
+  .greeting { font-size: 23px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">8<span>15</span></div>
+      <div class="brand-text">
+        <div class="brand-name">815local</div>
+        <div class="brand-sub">Command Center</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-scroll="overview"><span class="nav-ico">&#x1F3E0;</span> Today</button>
+      <button class="nav-item" data-scroll="queue"><span class="nav-ico">&#x1F4E5;</span> Onboarding<span class="nav-badge" id="nb-queue">0</span></button>
+      <button class="nav-item" data-scroll="directory"><span class="nav-ico">&#x1F4CA;</span> Directory health</button>
+      <button class="nav-item" data-scroll="site-health"><span class="nav-ico">&#x2699;&#xFE0F;</span> Site &amp; code</button>
+      <button class="nav-item" data-scroll="messages"><span class="nav-ico">&#x1F4AC;</span> Messages<span class="nav-badge" id="nb-msg">0</span></button>
+      <button class="nav-item" data-scroll="newsletter"><span class="nav-ico">&#x1F4EC;</span> Newsletter</button>
+
+      <div class="nav-group-label">Tools</div>
+      <a class="nav-item nav-ext" href="/admin/review-submissions.html"><span class="nav-ico">&#x2705;</span> Review submissions</a>
+      <a class="nav-item nav-ext" href="/admin/edit-business-photos.html"><span class="nav-ico">&#x1F5BC;&#xFE0F;</span> Photos &amp; media</a>
+      <a class="nav-item nav-ext" href="/admin/analytics.html"><span class="nav-ico">&#x1F4C8;</span> Analytics</a>
+      <a class="nav-item nav-ext" href="/"><span class="nav-ico">&#x1F310;</span> View site</a>
+    </nav>
+
+    <div class="side-foot">
+      <div class="armed">
+        <div class="armed-row"><span class="dot live"></span> Live data</div>
+        <div class="armed-sub" id="armed-sub">Pulled straight from Supabase, GitHub and your connected services.</div>
+      </div>
+      <div class="side-user">
+        <div class="avatar" id="user-avatar">T</div>
+        <div>
+          <div class="side-user-name" id="user-name">Signed in</div>
+          <div class="side-user-role">815local admin</div>
+        </div>
+        <button class="side-signout" id="signout-btn" title="Sign out">Sign out</button>
+      </div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <button class="btn menu-btn" id="menu-btn" aria-label="Menu">☰</button>
+      <div class="topbar-status"><span class="dot live"></span> <span id="updated-label">Loading…</span></div>
+      <div class="topbar-right">
+        <button class="btn" id="refresh-btn"><span id="refresh-ico">↻</span> Refresh</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="greeting" id="greeting">Welcome back</div>
+      <div class="greeting-sub" id="greeting-sub">Pulling the latest on your site…</div>
+
+      <!-- Overview / 60-second version -->
+      <div class="card overview span-2" id="overview" style="margin-top:20px;">
+        <div class="card-pad">
+          <div class="kicker">✦ The 60-second version</div>
+          <div class="overview-lead" id="overview-lead">
+            <span class="loading-row" style="padding:6px 0;"><span class="spinner"></span> Reading the directory…</span>
+          </div>
+          <div class="chip-row" id="overview-chips"></div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- Left column -->
+        <div class="col">
+
+          <div class="card" id="queue">
+            <div class="card-head">
+              <span class="card-ico">&#x1F4E5;</span>
+              <span class="card-title">Onboarding &amp; requests</span>
+              <a class="card-action" href="/admin/review-submissions.html">Review tool →</a>
+            </div>
+            <div id="queue-body">
+              <div class="loading-row"><span class="spinner"></span> Loading the queue…</div>
+            </div>
+          </div>
+
+          <div class="card" id="recent">
+            <div class="card-head">
+              <span class="card-ico">&#x1F195;</span>
+              <span class="card-title">Recently added businesses</span>
+            </div>
+            <div id="recent-body">
+              <div class="loading-row"><span class="spinner"></span> Loading…</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right column -->
+        <div class="col">
+
+          <div class="card" id="directory">
+            <div class="card-head noborder">
+              <span class="card-ico">&#x1F4CA;</span>
+              <span class="card-title">Directory health</span>
+              <a class="card-action" href="/">Open site →</a>
+            </div>
+            <div id="directory-body">
+              <div class="loading-row"><span class="spinner"></span> Loading…</div>
+            </div>
+          </div>
+
+          <div class="card" id="site-health">
+            <div class="card-head">
+              <span class="card-ico">&#x2699;&#xFE0F;</span>
+              <span class="card-title">Site &amp; code</span>
+              <a class="card-action" id="gh-link" href="https://github.com/typommier/815local" target="_blank" rel="noopener">GitHub →</a>
+            </div>
+            <div id="gh-body">
+              <div class="loading-row"><span class="spinner"></span> Checking GitHub…</div>
+            </div>
+          </div>
+
+          <div class="card" id="messages">
+            <div class="card-head">
+              <span class="card-ico">&#x1F4AC;</span>
+              <span class="card-title">Facebook</span>
+            </div>
+            <div id="fb-body">
+              <div class="loading-row"><span class="spinner"></span> Loading…</div>
+            </div>
+          </div>
+
+          <div class="card" id="cloudflare">
+            <div class="card-head">
+              <span class="card-ico">&#x2601;&#xFE0F;</span>
+              <span class="card-title">Cloudflare</span>
+            </div>
+            <div id="cf-body">
+              <div class="loading-row"><span class="spinner"></span> Loading…</div>
+            </div>
+          </div>
+
+          <div class="card" id="resend">
+            <div class="card-head">
+              <span class="card-ico">&#x1F4E7;</span>
+              <span class="card-title">Resend email</span>
+            </div>
+            <div id="resend-body">
+              <div class="loading-row"><span class="spinner"></span> Loading…</div>
+            </div>
+          </div>
+
+          <div class="card" id="newsletter">
+            <div class="card-head noborder">
+              <span class="card-ico">&#x1F4EC;</span>
+              <span class="card-title">815 Weekly newsletter</span>
+            </div>
+            <div id="newsletter-body">
+              <div class="loading-row"><span class="spinner"></span> Loading…</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
+const db = supabase.createClient(SUPABASE_URL, ANON_KEY);
+const FN_URL = SUPABASE_URL + '/functions/v1/admin-dashboard';
+const GH_REPO = 'typommier/815local';
+const BIZ_URL = function(id){ return '/pages/business.html?id=' + encodeURIComponent(id); };
+
+/* ---------- Admin auth gate (Supabase login + server email allowlist) ---------- */
+function adminAuthHeaders(token) {
+  return { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + token };
+}
+async function getAccessToken() {
+  const { data } = await db.auth.getSession();
+  return data && data.session ? data.session.access_token : null;
+}
+function renderLoginGate(onSuccess) {
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(20,16,12,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:system-ui,sans-serif;';
+  ov.innerHTML = '<form id="admin-login-form" style="background:#fff;padding:28px 26px;border-radius:14px;max-width:340px;width:90%;box-shadow:0 12px 44px rgba(0,0,0,0.3);">'
+    + '<h2 style="margin:0 0 4px;font-size:19px;font-family:Georgia,serif;">Command Center</h2>'
+    + '<p style="margin:0 0 16px;font-size:13px;color:#666;">Restricted to 815local admins.</p>'
+    + '<input id="admin-email" type="email" placeholder="Email" autocomplete="username" required style="width:100%;padding:11px;margin-bottom:10px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<input id="admin-pass" type="password" placeholder="Password" autocomplete="current-password" required style="width:100%;padding:11px;margin-bottom:14px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
+    + '<button type="submit" style="width:100%;padding:11px;border:0;border-radius:8px;background:#C4622D;color:#fff;font-weight:700;cursor:pointer;">Sign in</button>'
+    + '<div id="admin-login-err" style="color:#b00;font-size:13px;margin-top:10px;min-height:16px;"></div>'
+    + '</form>';
+  document.body.appendChild(ov);
+  const form = ov.querySelector('#admin-login-form');
+  const err = ov.querySelector('#admin-login-err');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    err.textContent = '';
+    const email = ov.querySelector('#admin-email').value.trim();
+    const password = ov.querySelector('#admin-pass').value;
+    const btn = form.querySelector('button');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    const { error } = await db.auth.signInWithPassword({ email: email, password: password });
+    btn.disabled = false; btn.textContent = 'Sign in';
+    if (error) { err.textContent = error.message; return; }
+    ov.remove();
+    onSuccess();
+  });
+}
+function requireAdminLogin() {
+  return new Promise(async function(resolve) {
+    const token = await getAccessToken();
+    if (token) { resolve(); return; }
+    renderLoginGate(resolve);
+  });
+}
+
+/* ---------- helpers ---------- */
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
+}
+function relTime(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '';
+  const secs = Math.round((Date.now() - d.getTime()) / 1000);
+  if (secs < 60) return 'just now';
+  const mins = Math.round(secs / 60);
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  const days = Math.round(hrs / 24);
+  if (days < 30) return days + 'd ago';
+  const months = Math.round(days / 30);
+  if (months < 12) return months + 'mo ago';
+  return Math.round(months / 12) + 'y ago';
+}
+function fmtDate(iso) {
+  if (!iso) return '';
+  const parts = String(iso).slice(0,10).split('-');
+  if (parts.length !== 3) return '';
+  const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+  if (isNaN(d.getTime())) return '';
+  const m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return m[d.getMonth()] + ' ' + d.getDate();
+}
+function nfmt(n) { return (n == null ? 0 : n).toLocaleString('en-US'); }
+function bytesFmt(b) {
+  if (!b) return '0 B';
+  const u = ['B','KB','MB','GB','TB']; let i = 0; let n = b;
+  while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  return (n < 10 ? n.toFixed(1) : Math.round(n)) + ' ' + u[i];
+}
+function $(id) { return document.getElementById(id); }
+
+/* ---------- edge-function call ---------- */
+async function callFn(payload) {
+  const token = await getAccessToken();
+  const res = await fetch(FN_URL, { method: 'POST', headers: adminAuthHeaders(token), body: JSON.stringify(payload || { action: 'summary' }) });
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  if (!res.ok || !data.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+/* ---------- GitHub (public repo, unauthenticated) ---------- */
+async function ghGet(path) {
+  const res = await fetch('https://api.github.com/repos/' + GH_REPO + path, { headers: { 'Accept': 'application/vnd.github+json' } });
+  if (!res.ok) throw new Error('GitHub HTTP ' + res.status);
+  return res.json();
+}
+
+/* ============================ RENDERERS ============================ */
+
+function setGreeting(name) {
+  const h = new Date().getHours();
+  const part = h < 12 ? 'Good morning' : (h < 18 ? 'Good afternoon' : 'Good evening');
+  $('greeting').textContent = part + (name ? ', ' + name : '');
+}
+
+function renderOverview(counts) {
+  const lead = $('overview-lead');
+  const action = counts.action_total || 0;
+  let msg;
+  if (action === 0) {
+    msg = 'Nothing is waiting on you right now. <b>' + nfmt(counts.active_businesses) + ' businesses</b> are live across the 815.';
+  } else {
+    const bits = [];
+    if (counts.pending_businesses) bits.push('<b>' + counts.pending_businesses + '</b> ' + (counts.pending_businesses === 1 ? 'business' : 'businesses') + ' awaiting review');
+    if (counts.pending_events) bits.push('<b>' + counts.pending_events + '</b> pending ' + (counts.pending_events === 1 ? 'event' : 'events'));
+    if (counts.pending_deals) bits.push('<b>' + counts.pending_deals + '</b> pending ' + (counts.pending_deals === 1 ? 'deal' : 'deals'));
+    if (counts.open_claims) bits.push('<b>' + counts.open_claims + '</b> claim ' + (counts.open_claims === 1 ? 'request' : 'requests'));
+    if (counts.open_studio_inquiries) bits.push('<b>' + counts.open_studio_inquiries + '</b> studio ' + (counts.open_studio_inquiries === 1 ? 'inquiry' : 'inquiries'));
+    if (counts.advertise_waitlist) bits.push('<b>' + counts.advertise_waitlist + '</b> on the advertise list');
+    if (counts.flagged_reviews) bits.push('<b>' + counts.flagged_reviews + '</b> flagged ' + (counts.flagged_reviews === 1 ? 'review' : 'reviews'));
+    const list = bits.length > 1 ? bits.slice(0, -1).join(', ') + ' and ' + bits[bits.length - 1] : bits[0];
+    msg = list + '. Everything else on the site is running on its own.';
+  }
+  lead.innerHTML = msg;
+
+  const gsub = $('greeting-sub');
+  gsub.innerHTML = action === 0
+    ? 'You are all caught up. Nothing needs a decision today.'
+    : '<b>' + action + '</b> ' + (action === 1 ? 'thing needs' : 'things need') + ' your attention today.';
+
+  const chips = [];
+  function chip(n, label, target, hot) {
+    if (!n) return;
+    chips.push('<button class="chip ' + (hot ? 'hot' : '') + '" data-scroll="' + target + '"><span class="n">' + n + '</span> ' + esc(label) + '</button>');
+  }
+  chip(counts.pending_businesses, counts.pending_businesses === 1 ? 'business' : 'businesses', 'queue', true);
+  chip(counts.pending_events, counts.pending_events === 1 ? 'event' : 'events', 'queue', false);
+  chip(counts.pending_deals, counts.pending_deals === 1 ? 'deal' : 'deals', 'queue', false);
+  chip(counts.open_claims, 'claims', 'queue', false);
+  chip(counts.open_studio_inquiries, 'studio', 'queue', false);
+  chip(counts.advertise_waitlist, 'advertisers', 'queue', false);
+  chip(counts.flagged_reviews, 'flagged', 'queue', false);
+  if (chips.length === 0) chips.push('<span class="chip calm">✓ Inbox zero</span>');
+  const el = $('overview-chips');
+  el.innerHTML = chips.join('');
+  wireScrolls(el);
+}
+
+function qBlock(title, items, opts) {
+  opts = opts || {};
+  const n = items.length;
+  const go = opts.go ? '<a class="go" href="' + opts.go + '">' + esc(opts.goLabel || 'Open') + ' →</a>' : '';
+  const rows = items.map(function(it, i) {
+    const side = it.pill ? '<span class="pill ' + it.pillClass + '">' + esc(it.pill) + '</span>' : '';
+    const time = it.time ? '<span class="q-time">' + esc(it.time) + '</span>' : '';
+    return '<div class="q-row">'
+      + '<div class="q-idx">' + (i + 1) + '</div>'
+      + '<div class="q-body"><div class="q-name">' + it.name + '</div>'
+      + (it.meta ? '<div class="q-meta">' + it.meta + '</div>' : '') + '</div>'
+      + '<div class="q-side">' + side + time + '</div>'
+      + '</div>';
+  }).join('');
+  return '<div class="q-block">'
+    + '<div class="q-block-head"><span class="q-block-title">' + esc(title) + '</span>'
+    + '<span class="count-pill">' + n + '</span>' + go + '</div>'
+    + rows + '</div>';
+}
+
+function renderQueue(data) {
+  const q = data.queue;
+  const blocks = [];
+
+  // Pending business submissions
+  if (q.pending_businesses.length) {
+    blocks.push(qBlock('Businesses awaiting review', q.pending_businesses.map(function(b) {
+      return {
+        name: esc(b.name || 'Untitled business'),
+        meta: [b.category, b.city].filter(Boolean).map(esc).join(' · ') + ' · not live yet',
+        time: relTime(b.created_at), pill: 'Pending', pillClass: 'pill-amber'
+      };
+    })));
+  }
+
+  // Claim requests (open only shown first)
+  const openClaims = q.claims.filter(function(c){ return c.open; });
+  if (openClaims.length) {
+    blocks.push(qBlock('Business claim requests', openClaims.map(function(c) {
+      const contact = [c.email, c.phone].filter(Boolean).map(esc).join(' · ');
+      return {
+        name: esc(c.claimant_name || 'Someone') + ' → ' + esc(c.business_name || 'a listing'),
+        meta: [c.role ? esc(c.role) : '', contact].filter(Boolean).join(' · '),
+        time: relTime(c.created_at), pill: 'Claim', pillClass: 'pill-teal'
+      };
+    })));
+  }
+
+  // Studio inquiries (web-design leads)
+  const openStudio = q.studio_inquiries.filter(function(s){ return s.open; });
+  if (openStudio.length) {
+    blocks.push(qBlock('Studio inquiries', openStudio.map(function(s) {
+      return {
+        name: esc(s.business_name || s.contact_name || 'New inquiry'),
+        meta: [s.goal ? esc(s.goal) : '', s.budget_range ? esc(s.budget_range) : '', s.email ? esc(s.email) : ''].filter(Boolean).join(' · '),
+        time: relTime(s.created_at), pill: 'Lead', pillClass: 'pill-sage'
+      };
+    })));
+  }
+
+  // Advertise waitlist
+  if (q.advertise.length) {
+    blocks.push(qBlock('Advertise waitlist', q.advertise.map(function(a) {
+      return {
+        name: esc(a.business || a.name || 'Waitlist signup'),
+        meta: [a.name ? esc(a.name) : '', a.email ? esc(a.email) : '', a.phone ? esc(a.phone) : ''].filter(Boolean).join(' · '),
+        time: relTime(a.created_at), pill: 'Interest', pillClass: 'pill-orange'
+      };
+    })));
+  }
+
+  // Pending events -> review tool
+  if (q.pending_events.length) {
+    blocks.push(qBlock('Events awaiting review', q.pending_events.map(function(e) {
+      return {
+        name: esc(e.title || 'Untitled event'),
+        meta: [fmtDate(e.event_date), e.city ? esc(e.city) : ''].filter(Boolean).join(' · '),
+        time: relTime(e.created_at), pill: 'Pending', pillClass: 'pill-amber'
+      };
+    }), { go: '/admin/review-submissions.html', goLabel: 'Approve' }));
+  }
+
+  // Pending deals -> review tool
+  if (q.pending_deals.length) {
+    blocks.push(qBlock('Deals awaiting review', q.pending_deals.map(function(d) {
+      return {
+        name: esc(d.title || 'Untitled deal'),
+        meta: esc(d.business_name || ''),
+        time: relTime(d.created_at), pill: 'Pending', pillClass: 'pill-amber'
+      };
+    }), { go: '/admin/review-submissions.html', goLabel: 'Approve' }));
+  }
+
+  // Flagged reviews
+  if (q.flagged_reviews.length) {
+    blocks.push(qBlock('Flagged reviews', q.flagged_reviews.map(function(r) {
+      return {
+        name: (r.rating ? '★'.repeat(r.rating) + ' ' : '') + esc(r.reviewer_name || 'Anonymous'),
+        meta: r.flag_reason ? 'Flagged: ' + esc(r.flag_reason) : 'Flagged for review',
+        time: relTime(r.created_at), pill: 'Flag', pillClass: 'pill-red'
+      };
+    })));
+  }
+
+  const body = $('queue-body');
+  if (blocks.length === 0) {
+    body.innerHTML = '<div class="empty-good"><span class="em">✅</span> No onboarding requests or submissions waiting. You are all caught up.</div>';
+  } else {
+    body.innerHTML = blocks.join('');
+  }
+}
+
+function renderRecent(data) {
+  const rows = data.recent_businesses || [];
+  const body = $('recent-body');
+  if (!rows.length) { body.innerHTML = '<div class="loading-row">No businesses yet.</div>'; return; }
+  body.innerHTML = rows.map(function(b) {
+    const tag = b.is_active
+      ? (b.is_locally_owned ? '<span class="pill pill-sage">Local</span>' : '<span class="pill pill-gray">Chain</span>')
+      : '<span class="pill pill-amber">Pending</span>';
+    const nameHtml = b.is_active
+      ? '<a href="' + BIZ_URL(b.id) + '" target="_blank" rel="noopener">' + esc(b.name) + '</a>'
+      : esc(b.name);
+    return '<div class="li">'
+      + '<div class="li-ico">\u{1F3EA}</div>'
+      + '<div class="li-body"><div class="li-title">' + nameHtml + '</div>'
+      + '<div class="li-meta">' + [b.category, b.city].filter(Boolean).map(esc).join(' · ') + '</div></div>'
+      + '<div class="li-right">' + tag + '<div style="margin-top:3px;">' + relTime(b.created_at) + '</div></div>'
+      + '</div>';
+  }).join('');
+}
+
+function renderDirectory(data) {
+  const c = data.counts;
+  const towns = data.towns || [];
+  const maxT = towns.reduce(function(m, t){ return Math.max(m, t.count); }, 1);
+  const townHtml = towns.slice(0, 6).map(function(t) {
+    return '<div class="town-row"><span class="tn" style="width:82px;">' + esc(t.city) + '</span>'
+      + '<span class="tbar"><i style="width:' + Math.round(t.count / maxT * 100) + '%;"></i></span>'
+      + '<span class="tc">' + t.count + '</span></div>';
+  }).join('');
+  $('directory-body').innerHTML =
+    '<div class="stat-grid">'
+    + '<div class="stat good"><div class="stat-n">' + nfmt(c.active_businesses) + '</div><div class="stat-l">Live businesses</div></div>'
+    + '<div class="stat' + (c.pending_businesses ? ' warn' : '') + '"><div class="stat-n">' + nfmt(c.pending_businesses) + '</div><div class="stat-l">Awaiting review</div></div>'
+    + '<div class="stat' + (c.missing_photos ? ' warn' : '') + '"><div class="stat-n">' + nfmt(c.missing_photos) + '</div><div class="stat-l">Missing photos</div></div>'
+    + '<div class="stat' + (c.missing_website ? ' warn' : '') + '"><div class="stat-n">' + nfmt(c.missing_website) + '</div><div class="stat-l">Missing website</div></div>'
+    + '<div class="stat' + (c.missing_phone ? ' warn' : '') + '"><div class="stat-n">' + nfmt(c.missing_phone) + '</div><div class="stat-l">Missing phone</div></div>'
+    + '<div class="stat"><div class="stat-n">' + nfmt(c.upcoming_events) + '</div><div class="stat-l">Upcoming events</div></div>'
+    + '</div>'
+    + (townHtml ? '<div class="town-list"><div class="kicker" style="margin-bottom:6px;">Live by town</div>' + townHtml + '</div>' : '');
+}
+
+function renderNewsletter(data) {
+  const c = data.counts;
+  const rs = data.integrations && data.integrations.resend;
+  let latest = '';
+  if (rs && rs.connected && Array.isArray(rs.broadcasts) && rs.broadcasts.length) {
+    const b = rs.broadcasts[0];
+    latest = '<div class="mini-note">Last Resend broadcast: <b>' + esc(b.name || 'Untitled') + '</b> · ' + esc(b.status || 'draft')
+      + (b.sent_at ? ' · ' + relTime(b.sent_at) : '') + '</div>';
+  }
+  $('newsletter-body').innerHTML =
+    '<div class="stat-grid">'
+    + '<div class="stat"><div class="stat-n">' + nfmt(c.newsletter_active) + '</div><div class="stat-l">Active subscribers</div></div>'
+    + '<div class="stat"><div class="stat-n">' + nfmt(c.newsletter_subs) + '</div><div class="stat-l">Total signups</div></div>'
+    + '</div>' + latest;
+}
+
+/* ----- integrations ----- */
+function connectState(icon, bg, title, desc, secrets) {
+  return '<div class="connect"><div class="connect-row">'
+    + '<div class="connect-ico" style="background:' + bg + ';">' + icon + '</div>'
+    + '<div><div class="connect-title">Not connected yet</div>'
+    + '<div class="connect-desc">' + desc + '</div>'
+    + (secrets ? '<div class="secret-list">' + secrets.map(function(s){ return '<span class="secret">' + esc(s) + '</span>'; }).join('') + '</div>' : '')
+    + '</div></div></div>';
+}
+
+function renderFacebook(fb) {
+  const body = $('fb-body');
+  if (!fb || !fb.connected) {
+    body.innerHTML = connectState('\u{1F4D8}', '#e7f0fb',
+      'Facebook',
+      'Add a Page access token and Page ID to this function’s secrets and your comments and messages show up here.',
+      ['FACEBOOK_PAGE_ID', 'FACEBOOK_PAGE_TOKEN']);
+    return;
+  }
+  if (fb.error) { body.innerHTML = '<div class="err-row">Facebook: ' + esc(fb.error) + '</div>'; return; }
+  const parts = [];
+  const convos = fb.conversations || [];
+  const comments = fb.comments || [];
+  if (fb.unread_total) {
+    parts.push('<div class="q-block-head" style="padding-top:14px;"><span class="q-block-title">Messages</span><span class="count-pill">' + fb.unread_total + ' unread</span></div>');
+  }
+  convos.slice(0, 4).forEach(function(m) {
+    parts.push('<div class="li"><div class="li-ico">\u{1F4E8}</div><div class="li-body">'
+      + '<div class="li-title">' + esc(m.name) + (m.unread_count ? ' <span class="pill pill-red">' + m.unread_count + '</span>' : '') + '</div>'
+      + '<div class="li-meta">' + esc((m.snippet || '').slice(0, 80)) + '</div></div>'
+      + '<div class="li-right">' + relTime(m.updated_time) + '</div></div>');
+  });
+  if (comments.length) {
+    parts.push('<div class="q-block-head" style="padding-top:14px;"><span class="q-block-title">Recent comments</span><span class="count-pill">' + comments.length + '</span></div>');
+    comments.slice(0, 4).forEach(function(cm) {
+      parts.push('<div class="li"><div class="li-ico">\u{1F4AC}</div><div class="li-body">'
+        + '<div class="li-title">' + esc(cm.from) + '</div>'
+        + '<div class="li-meta">' + esc((cm.message || '').slice(0, 90)) + '</div></div>'
+        + '<div class="li-right">' + relTime(cm.created_time) + '</div></div>');
+    });
+  }
+  if (!parts.length) parts.push('<div class="empty-good"><span class="em">\u{1F44B}</span> No new messages or comments.</div>');
+  body.innerHTML = parts.join('');
+  // Messages nav badge
+  const nb = $('nb-msg');
+  if (fb.unread_total) { nb.textContent = fb.unread_total; nb.classList.add('show'); }
+}
+
+function renderCloudflare(cf) {
+  const body = $('cf-body');
+  if (!cf || !cf.connected) {
+    body.innerHTML = connectState('\u{2601}\u{FE0F}', '#fdeee0',
+      'Cloudflare',
+      'Add a Cloudflare API token (plus account, zone and Pages project) to see traffic and deploy status.',
+      ['CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_ZONE_ID', 'CLOUDFLARE_PAGES_PROJECT']);
+    return;
+  }
+  if (cf.error) { body.innerHTML = '<div class="err-row">Cloudflare: ' + esc(cf.error) + '</div>'; return; }
+  const parts = [];
+  const t = cf.traffic_7d;
+  if (t) {
+    parts.push('<div class="stat-grid">'
+      + '<div class="stat"><div class="stat-n">' + nfmt(t.requests) + '</div><div class="stat-l">Requests (7d)</div></div>'
+      + '<div class="stat"><div class="stat-n">' + nfmt(t.uniques) + '</div><div class="stat-l">Unique visitors</div></div>'
+      + '<div class="stat"><div class="stat-n">' + nfmt(t.pageViews) + '</div><div class="stat-l">Page views</div></div>'
+      + '<div class="stat' + (t.threats ? ' warn' : '') + '"><div class="stat-n">' + nfmt(t.threats) + '</div><div class="stat-l">Threats blocked</div></div>'
+      + '</div>');
+  } else if (cf.traffic_error) {
+    parts.push('<div class="mini-note">Traffic analytics: ' + esc(cf.traffic_error) + '</div>');
+  }
+  if (cf.deploy) {
+    const d = cf.deploy;
+    const ok = (d.status || '').toLowerCase() === 'success';
+    const cls = ok ? 'pill-sage' : ((d.status || '').toLowerCase() === 'failure' ? 'pill-red' : 'pill-amber');
+    parts.push('<div class="li"><div class="li-ico">\u{1F680}</div><div class="li-body">'
+      + '<div class="li-title">' + esc(d.commit || 'Latest deploy') + '</div>'
+      + '<div class="li-meta">' + esc(d.environment || 'production') + ' · ' + relTime(d.created_on) + '</div></div>'
+      + '<div class="li-right"><span class="pill ' + cls + '">' + esc(d.stage || d.status || 'deploy') + '</span></div></div>');
+  }
+  if (!parts.length) parts.push('<div class="loading-row">Connected. No data returned.</div>');
+  body.innerHTML = parts.join('');
+}
+
+function renderResend(rs) {
+  const body = $('resend-body');
+  if (!rs || !rs.connected) {
+    body.innerHTML = connectState('\u{1F4E7}', '#e9e6fb',
+      'Resend',
+      'Add your Resend API key to this function’s secrets to see sending domains and recent 815 Weekly broadcasts.',
+      ['RESEND_API_KEY']);
+    return;
+  }
+  if (rs.error) { body.innerHTML = '<div class="err-row">Resend: ' + esc(rs.error) + '</div>'; return; }
+  const parts = [];
+  (rs.domains || []).forEach(function(d) {
+    const ok = (d.status || '').toLowerCase() === 'verified';
+    parts.push('<div class="li"><div class="li-ico">\u{1F310}</div><div class="li-body">'
+      + '<div class="li-title mono">' + esc(d.name) + '</div>'
+      + '<div class="li-meta">Sending domain</div></div>'
+      + '<div class="li-right"><span class="pill ' + (ok ? 'pill-sage' : 'pill-amber') + '">' + esc(d.status || 'pending') + '</span></div></div>');
+  });
+  const bc = rs.broadcasts || [];
+  if (bc.length) {
+    parts.push('<div class="q-block-head" style="padding-top:14px;"><span class="q-block-title">Recent broadcasts</span><span class="count-pill">' + bc.length + '</span></div>');
+    bc.forEach(function(b) {
+      const sent = (b.status || '').toLowerCase() === 'sent';
+      parts.push('<div class="li"><div class="li-ico">\u{1F4E8}</div><div class="li-body">'
+        + '<div class="li-title">' + esc(b.name || 'Untitled') + '</div>'
+        + '<div class="li-meta">' + (b.sent_at ? 'Sent ' + relTime(b.sent_at) : 'Created ' + relTime(b.created_at)) + '</div></div>'
+        + '<div class="li-right"><span class="pill ' + (sent ? 'pill-sage' : 'pill-gray') + '">' + esc(b.status || 'draft') + '</span></div></div>');
+    });
+  }
+  if (!parts.length) parts.push('<div class="loading-row">Connected. No domains or broadcasts found.</div>');
+  body.innerHTML = parts.join('');
+}
+
+/* ----- GitHub ----- */
+async function loadGitHub() {
+  const body = $('gh-body');
+  try {
+    const results = await Promise.all([
+      ghGet('/actions/runs?per_page=1').catch(function(){ return null; }),
+      ghGet('/commits?per_page=4').catch(function(){ return null; }),
+      ghGet('/pulls?state=open&per_page=5').catch(function(){ return null; })
+    ]);
+    const runs = results[0], commits = results[1], pulls = results[2];
+    const parts = [];
+
+    if (runs && runs.workflow_runs && runs.workflow_runs.length) {
+      const r = runs.workflow_runs[0];
+      let cls = 'pill-amber', label = r.status;
+      if (r.status === 'completed') {
+        if (r.conclusion === 'success') { cls = 'pill-sage'; label = 'passing'; }
+        else { cls = 'pill-red'; label = r.conclusion || 'failed'; }
+      } else { label = 'running'; }
+      parts.push('<div class="li"><div class="li-ico">\u{1F9EA}</div><div class="li-body">'
+        + '<div class="li-title">CI · ' + esc(r.name || 'workflow') + '</div>'
+        + '<div class="li-meta">' + esc((r.head_commit && r.head_commit.message ? r.head_commit.message.split('\n')[0] : '').slice(0, 60)) + '</div></div>'
+        + '<div class="li-right"><a href="' + esc(r.html_url) + '" target="_blank" rel="noopener"><span class="pill ' + cls + '">' + esc(label) + '</span></a></div></div>');
+    }
+    if (pulls && pulls.length) {
+      parts.push('<div class="q-block-head" style="padding-top:14px;"><span class="q-block-title">Open pull requests</span><span class="count-pill">' + pulls.length + '</span></div>');
+      pulls.slice(0, 3).forEach(function(p) {
+        parts.push('<div class="li"><div class="li-ico">\u{1F500}</div><div class="li-body">'
+          + '<div class="li-title"><a href="' + esc(p.html_url) + '" target="_blank" rel="noopener">' + esc(p.title) + '</a></div>'
+          + '<div class="li-meta">#' + p.number + ' · ' + esc(p.user ? p.user.login : '') + ' · ' + relTime(p.created_at) + '</div></div></div>');
+      });
+    }
+    if (commits && commits.length) {
+      parts.push('<div class="q-block-head" style="padding-top:14px;"><span class="q-block-title">Latest commits</span></div>');
+      commits.slice(0, 4).forEach(function(c) {
+        const msg = (c.commit && c.commit.message ? c.commit.message.split('\n')[0] : '').slice(0, 62);
+        parts.push('<div class="li"><div class="li-ico">\u{1F4DD}</div><div class="li-body">'
+          + '<div class="li-title">' + esc(msg) + '</div>'
+          + '<div class="li-meta">' + esc(c.commit && c.commit.author ? c.commit.author.name : '') + ' · ' + relTime(c.commit && c.commit.author ? c.commit.author.date : '') + '</div></div>'
+          + '<div class="li-right"><a href="' + esc(c.html_url) + '" target="_blank" rel="noopener" class="li-title mono">' + esc((c.sha || '').slice(0, 7)) + '</a></div></div>');
+      });
+    }
+    if (!parts.length) { body.innerHTML = '<div class="loading-row">No GitHub activity found.</div>'; return; }
+    body.innerHTML = parts.join('');
+  } catch (e) {
+    body.innerHTML = '<div class="mini-note">Could not reach GitHub (rate limit or offline). It refreshes on reload.</div>';
+  }
+}
+
+/* ============================ LOAD ============================ */
+let lastLoaded = null;
+function tickUpdated() {
+  if (!lastLoaded) return;
+  $('updated-label').textContent = 'Updated ' + relTime(lastLoaded);
+}
+
+async function loadDashboard() {
+  const btn = $('refresh-btn'), ico = $('refresh-ico');
+  btn.disabled = true; ico.outerHTML = '<span class="spinner" id="refresh-ico"></span>';
+  try {
+    const data = await callFn({ action: 'summary' });
+    renderOverview(data.counts);
+    renderQueue(data);
+    renderRecent(data);
+    renderDirectory(data);
+    renderNewsletter(data);
+    renderFacebook(data.integrations.facebook);
+    renderCloudflare(data.integrations.cloudflare);
+    renderResend(data.integrations.resend);
+
+    const nbq = $('nb-queue');
+    if (data.counts.action_total) { nbq.textContent = data.counts.action_total; nbq.classList.add('show'); }
+    else nbq.classList.remove('show');
+
+    lastLoaded = data.generated_at || new Date().toISOString();
+    tickUpdated();
+  } catch (e) {
+    $('overview-lead').innerHTML = '<span style="color:var(--red);">Could not load: ' + esc(e.message) + '</span>';
+    $('updated-label').textContent = 'Failed to load';
+    if (/unauthorized/i.test(e.message)) {
+      $('overview-lead').innerHTML += '<br><span class="q-meta">Your login is valid but not on the admin allowlist (ADMIN_EMAILS on the admin-dashboard function).</span>';
+    }
+  } finally {
+    const b = $('refresh-btn'); b.disabled = false;
+    const i = $('refresh-ico'); if (i) i.outerHTML = '<span id="refresh-ico">↻</span>';
+  }
+}
+
+/* ---------- nav / UI wiring ---------- */
+function wireScrolls(root) {
+  (root || document).querySelectorAll('[data-scroll]').forEach(function(el) {
+    if (el.dataset.wired) return; el.dataset.wired = '1';
+    el.addEventListener('click', function() {
+      const t = document.getElementById(el.dataset.scroll);
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      closeSidebar();
+      if (el.classList.contains('nav-item')) {
+        document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+        el.classList.add('active');
+      }
+    });
+  });
+}
+function openSidebar(){ $('sidebar').classList.add('open'); $('scrim').classList.add('show'); }
+function closeSidebar(){ $('sidebar').classList.remove('open'); $('scrim').classList.remove('show'); }
+
+$('menu-btn').addEventListener('click', openSidebar);
+$('scrim').addEventListener('click', closeSidebar);
+$('refresh-btn').addEventListener('click', loadDashboard);
+$('signout-btn').addEventListener('click', async function() {
+  await db.auth.signOut();
+  location.reload();
+});
+
+wireScrolls(document);
+setInterval(tickUpdated, 30000);
+
+/* ---------- boot ---------- */
+requireAdminLogin().then(async function() {
+  const { data } = await db.auth.getSession();
+  const email = data && data.session ? (data.session.user.email || '') : '';
+  const name = email ? email.split('@')[0] : 'Ty';
+  const pretty = name.charAt(0).toUpperCase() + name.slice(1);
+  setGreeting(pretty);
+  $('user-name').textContent = email || 'Signed in';
+  $('user-avatar').textContent = (pretty[0] || 'T').toUpperCase();
+  loadDashboard();
+  loadGitHub();
+});
+</script>
+</body>
+</html>

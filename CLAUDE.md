@@ -195,6 +195,8 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 │       └── claim-business.html         ← business owner claim request
 │
 ├── admin/                               ← internal tools, noindex, not linked from the public site
+│   ├── dashboard.html                  ← command center: onboarding queue + site/code/FB/CF/Resend insights
+│   ├── review-submissions.html         ← approve/reject pending deals + events
 │   ├── edit-business-photos.html       ← pick a business, upload/reorder/delete photos, set focal points
 │   ├── import-photos.html
 │   └── analytics.html
@@ -205,6 +207,9 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 │
 ├── supabase/
 │   ├── functions/                      ← edge function source (committing does NOT deploy)
+│   │   ├── admin-dashboard/            ← command-center summary (main project, admin-gated)
+│   │   ├── manage-submissions/         ← approve/reject pending deals + events
+│   │   ├── manage-media/               ← admin media inbox writes
 │   │   ├── manage-business-photos/     ← admin photo writes
 │   │   ├── import-from-website/
 │   │   ├── fetch-google-photos/
@@ -224,7 +229,8 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
     │   ├── nav-search.spec.js
     │   ├── newsletter-link.spec.js
     │   ├── photo-crop.spec.js          ← focal-point rule across every surface
-    │   ├── admin-photo-tool.spec.js    ← the only admin coverage
+    │   ├── admin-photo-tool.spec.js    ← admin photo tool coverage
+    │   ├── admin-dashboard.spec.js     ← command center render + connect states
     │   └── fixtures/
     │       └── supabase-mock.js
     └── concierge/                      ← Scout logic harness (offline + live)
@@ -247,6 +253,39 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
 - `fetch_photos.py` / `fetch_photos_local.py` - Google Places photo scrapers. Run locally from Ty's machine because the scraper API key cannot be used server-side and the sandboxed environment can't reach `places.googleapis.com`.
 
 ### Admin tooling (`/admin/`)
+- `admin/dashboard.html` is the **command center** (built Aug 2026), a single at-a-glance
+  ops view styled after a clean SaaS dashboard but in the site's Warm Sage palette
+  (system-sans + Georgia, no external fonts). It reads everything through one
+  admin-gated call to the `admin-dashboard` edge function (main project
+  `kyneaettrynagavewefi`) and renders:
+  - **Onboarding & requests queue**: pending business submissions
+    (`businesses.is_active = false`), open claim requests, studio inquiries,
+    advertise waitlist, pending events/deals (deep-links to `review-submissions.html`
+    for the ones with an approve/reject UI), and flagged reviews. This is the core
+    "what needs Ty" list. Note `businesses` has no `updated_at`, so "recently added"
+    is by `created_at`; there is no true edit feed.
+  - **Directory health** stat tiles (live count, awaiting review, missing
+    photos/phones/websites, upcoming events) + a by-town bar list.
+  - **Site & code**: live GitHub data pulled **client-side** from the public repo
+    `typommier/815local` (unauthenticated, 60 req/hr/IP), latest CI run, open PRs,
+    recent commits.
+  - **Facebook / Cloudflare / Resend**: each renders a "connect this" state until
+    its secret is set on the `admin-dashboard` function, then lights up on the next
+    load. No fake numbers, ever (operating principle #1). Integration secrets:
+    `FACEBOOK_PAGE_ID` + `FACEBOOK_PAGE_TOKEN` (Page comments + Messenger unread);
+    `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_ZONE_ID` +
+    `CLOUDFLARE_PAGES_PROJECT` (7-day traffic via GraphQL analytics + latest Pages
+    deploy); `RESEND_API_KEY` (verified sending domains + recent 815 Weekly
+    broadcasts). Set them in Supabase dashboard → project `kyneaettrynagavewefi` →
+    Edge Functions → `admin-dashboard` → Manage secrets. Facebook needs a long-lived
+    Page token with `pages_messaging` + `pages_read_engagement` (app review).
+  - Same auth model as every other admin surface: on-page Supabase login proves you
+    are a real user; the **real gate** is the `ADMIN_EMAILS` allowlist checked
+    server-side in the function (fails closed). Committing the function does not
+    deploy it (deploy via Supabase MCP `deploy_edge_function` or CLI); currently at
+    version 1.
+- `admin/review-submissions.html` approves/rejects the pending deals and events in
+  the `is_active = false` queue, via the `manage-submissions` edge function.
 - `admin/edit-business-photos.html` is the tool for managing a business's photos: pick the business from a dropdown, drag-drop or camera-roll upload (HEIC converted client-side), reorder, delete, star a hero, and set a per-photo focal point via a 3x3 grid plus an **Auto** chip. Posts to the `manage-business-photos` edge function. Ty uses it on his phone, so mobile rendering is the priority, not desktop.
   - **Hero means photo 1.** The star moves a photo to index 0 and sets `image_url` to match. `pages/business.html` builds its hero from `photos[0]` and only falls back to `image_url` when `photos` is empty, so a star that only set `image_url` did nothing visible (fixed July 2026).
   - **Previews are the real cells**, labeled and sized with `aspect-ratio`, rendered through the same `PhotoCrop` module the public pages use. Photo 1 shows Listing hero 16:9 + Directory card 5:4; photos 2+ show Listing thumb 1:1 + Listing on a phone 5:4. On Auto the two can legitimately differ (see the per-surface fallback above); picking a focal point collapses them.
