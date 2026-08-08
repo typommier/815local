@@ -166,6 +166,17 @@ button { font: inherit; cursor: pointer; }
 .q-meta a { color: var(--teal); }
 .q-side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .q-time { font-size: 11.5px; color: var(--gray); white-space: nowrap; }
+.q-acts { display: flex; gap: 6px; margin-top: 8px; }
+.qbtn { font-size: 12px; font-weight: 700; padding: 5px 13px; border-radius: var(--radius-pill); border: 1px solid var(--line-strong); background: var(--white); color: var(--charcoal); transition: all 0.13s; display: inline-flex; align-items: center; gap: 5px; }
+.qbtn-approve { background: var(--forest); color: #fff; border-color: var(--forest); }
+.qbtn-approve:hover:not(:disabled) { background: #245A42; }
+.qbtn-reject { color: var(--red); }
+.qbtn-reject:hover:not(:disabled) { border-color: var(--red); background: var(--red-pale); }
+.qbtn:disabled { opacity: 0.5; cursor: default; }
+
+.toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(16px); background: var(--charcoal); color: var(--cream); padding: 11px 20px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity 0.22s, transform 0.22s; z-index: 9998; box-shadow: 0 10px 34px rgba(0,0,0,0.28); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.err { background: var(--red); }
 
 .empty-good { display: flex; align-items: center; gap: 10px; padding: 22px 20px; color: var(--charcoal-soft); font-size: 13.5px; }
 .empty-good .em { font-size: 18px; }
@@ -275,6 +286,7 @@ button { font: inherit; cursor: pointer; }
     </div>
   </aside>
   <div class="scrim" id="scrim"></div>
+  <div class="toast" id="toast"></div>
 
   <!-- Main -->
   <div class="main">
@@ -405,6 +417,7 @@ const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
 const db = supabase.createClient(SUPABASE_URL, ANON_KEY);
 const FN_URL = SUPABASE_URL + '/functions/v1/admin-dashboard';
+const MS_URL = SUPABASE_URL + '/functions/v1/manage-submissions';
 const GH_REPO = 'typommier/815local';
 const BIZ_URL = function(id){ return '/pages/business.html?id=' + encodeURIComponent(id); };
 
@@ -500,6 +513,25 @@ async function callFn(payload) {
   return data;
 }
 
+/* ---------- approve / reject (via manage-submissions) ---------- */
+async function moderate(type, id, act) {
+  const token = await getAccessToken();
+  const res = await fetch(MS_URL, { method: 'POST', headers: adminAuthHeaders(token), body: JSON.stringify({ action: act, type: type, id: id }) });
+  let data = {};
+  try { data = await res.json(); } catch (e) {}
+  if (!res.ok || !data.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+let toastTimer = null;
+function showToast(msg, isError) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' err' : '');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.className = 'toast' + (isError ? ' err' : ''); }, 2600);
+}
+
 /* ---------- GitHub (public repo, unauthenticated) ---------- */
 async function ghGet(path) {
   const res = await fetch('https://api.github.com/repos/' + GH_REPO + path, { headers: { 'Accept': 'application/vnd.github+json' } });
@@ -561,15 +593,20 @@ function renderOverview(counts) {
 function qBlock(title, items, opts) {
   opts = opts || {};
   const n = items.length;
+  const act = opts.actionType || '';
   const go = opts.go ? '<a class="go" href="' + opts.go + '">' + esc(opts.goLabel || 'Open') + ' →</a>' : '';
   const rows = items.map(function(it, i) {
     const side = it.pill ? '<span class="pill ' + it.pillClass + '">' + esc(it.pill) + '</span>' : '';
     const time = it.time ? '<span class="q-time">' + esc(it.time) + '</span>' : '';
-    return '<div class="q-row">'
+    const buttons = act
+      ? '<div class="q-acts"><button type="button" class="qbtn qbtn-reject" data-act="reject">Reject</button>'
+        + '<button type="button" class="qbtn qbtn-approve" data-act="approve">Approve</button></div>'
+      : '';
+    return '<div class="q-row"' + (act ? ' data-type="' + act + '" data-id="' + esc(it.id || '') + '"' : '') + '>'
       + '<div class="q-idx">' + (i + 1) + '</div>'
       + '<div class="q-body"><div class="q-name">' + it.name + '</div>'
       + (it.meta ? '<div class="q-meta">' + it.meta + '</div>' : '') + '</div>'
-      + '<div class="q-side">' + side + time + '</div>'
+      + '<div class="q-side">' + side + time + buttons + '</div>'
       + '</div>';
   }).join('');
   return '<div class="q-block">'
@@ -586,11 +623,12 @@ function renderQueue(data) {
   if (q.pending_businesses.length) {
     blocks.push(qBlock('Businesses awaiting review', q.pending_businesses.map(function(b) {
       return {
+        id: b.id,
         name: esc(b.name || 'Untitled business'),
         meta: [b.category, b.city].filter(Boolean).map(esc).join(' · ') + ' · not live yet',
         time: relTime(b.created_at), pill: 'Pending', pillClass: 'pill-amber'
       };
-    })));
+    }), { actionType: 'business' }));
   }
 
   // Claim requests (open only shown first)
@@ -629,26 +667,28 @@ function renderQueue(data) {
     })));
   }
 
-  // Pending events -> review tool
+  // Pending events (inline approve/reject)
   if (q.pending_events.length) {
     blocks.push(qBlock('Events awaiting review', q.pending_events.map(function(e) {
       return {
+        id: e.id,
         name: esc(e.title || 'Untitled event'),
         meta: [fmtDate(e.event_date), e.city ? esc(e.city) : ''].filter(Boolean).join(' · '),
         time: relTime(e.created_at), pill: 'Pending', pillClass: 'pill-amber'
       };
-    }), { go: '/admin/review-submissions.html', goLabel: 'Approve' }));
+    }), { actionType: 'event' }));
   }
 
-  // Pending deals -> review tool
+  // Pending deals (inline approve/reject)
   if (q.pending_deals.length) {
     blocks.push(qBlock('Deals awaiting review', q.pending_deals.map(function(d) {
       return {
+        id: d.id,
         name: esc(d.title || 'Untitled deal'),
         meta: esc(d.business_name || ''),
         time: relTime(d.created_at), pill: 'Pending', pillClass: 'pill-amber'
       };
-    }), { go: '/admin/review-submissions.html', goLabel: 'Approve' }));
+    }), { actionType: 'deal' }));
   }
 
   // Flagged reviews
@@ -667,6 +707,28 @@ function renderQueue(data) {
     body.innerHTML = '<div class="empty-good"><span class="em">✅</span> No onboarding requests or submissions waiting. You are all caught up.</div>';
   } else {
     body.innerHTML = blocks.join('');
+    body.querySelectorAll('.qbtn').forEach(function(b){ b.addEventListener('click', onModerate); });
+  }
+}
+
+const TYPE_LABEL = { business: 'Business', event: 'Event', deal: 'Deal' };
+async function onModerate(e) {
+  const btn = e.currentTarget;
+  const row = btn.closest('.q-row');
+  const type = row.dataset.type, id = row.dataset.id, act = btn.dataset.act;
+  const label = TYPE_LABEL[type] || 'Item';
+  if (act === 'reject' && !confirm('Reject and permanently delete this ' + label.toLowerCase() + '? This cannot be undone.')) return;
+  row.querySelectorAll('.qbtn').forEach(function(x){ x.disabled = true; });
+  const orig = btn.textContent;
+  btn.innerHTML = '<span class="spinner"></span>';
+  try {
+    await moderate(type, id, act);
+    showToast(label + (act === 'approve' ? ' published' : ' removed'), false);
+    await loadDashboard();
+  } catch (err) {
+    row.querySelectorAll('.qbtn').forEach(function(x){ x.disabled = false; });
+    btn.textContent = orig;
+    showToast((act === 'approve' ? 'Approve' : 'Reject') + ' failed: ' + err.message, true);
   }
 }
 
