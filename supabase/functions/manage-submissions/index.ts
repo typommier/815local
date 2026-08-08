@@ -13,10 +13,15 @@
 // Request body (JSON), one of:
 //   { "action": "list" }
 //     -> { ok, deals: [ ...pending ], events: [ ...pending ] }
-//   { "action": "approve", "type": "deal" | "event", "id": "uuid" }
-//     -> { ok, type, id }                 // sets is_active = true
-//   { "action": "reject",  "type": "deal" | "event", "id": "uuid" }
+//   { "action": "approve", "type": "deal" | "event" | "business", "id": "uuid" }
+//     -> { ok, type, id }                 // sets is_active = true (publishes it)
+//   { "action": "reject",  "type": "deal" | "event" | "business", "id": "uuid" }
 //     -> { ok, type, id }                 // deletes the row
+//
+// "business" is here so the command-center dashboard can approve/reject the
+// pending business submissions (businesses.is_active = false) inline. It is not
+// in handleList (the review-submissions hub only lists deals + events); the
+// dashboard sources its pending-business list from the admin-dashboard summary.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -30,7 +35,7 @@ const ADMIN_EMAILS = (Deno.env.get("ADMIN_EMAILS") ?? "")
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
-const TABLE = { deal: "deals", event: "events" } as const;
+const TABLE = { deal: "deals", event: "events", business: "businesses" } as const;
 type Kind = keyof typeof TABLE;
 
 const DEAL_COLS = "id, business_id, business_name, category, title, description, discount, expiry_date, terms, contact_name, contact_email, contact_phone, created_at";
@@ -80,7 +85,7 @@ async function handleList(): Promise<Response> {
 }
 
 function resolveKind(type: unknown): Kind | null {
-  return (type === "deal" || type === "event") ? type : null;
+  return (type === "deal" || type === "event" || type === "business") ? type : null;
 }
 
 async function handleApprove(body: any): Promise<Response> {

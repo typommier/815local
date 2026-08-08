@@ -118,6 +118,44 @@ test.describe('Admin command center', () => {
     await expect(page.locator('#resend-body')).toContainText('RESEND_API_KEY');
   });
 
+  test('approving a pending business calls manage-submissions with the right payload', async ({ page }) => {
+    await openDashboard(page, SUMMARY);
+    let captured = null;
+    await page.route('**/functions/v1/manage-submissions', r => {
+      captured = r.request().postDataJSON();
+      r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, type: 'business', id: 'p1' }) });
+    });
+
+    const row = page.locator('.q-row[data-type="business"]').first();
+    await row.getByRole('button', { name: 'Approve' }).click();
+
+    await expect.poll(() => captured && captured.action).toBe('approve');
+    expect(captured.type).toBe('business');
+    expect(captured.id).toBe('p1');
+    await expect(page.locator('#toast')).toContainText('Business published');
+  });
+
+  test('rejecting asks for confirmation and only fires when confirmed', async ({ page }) => {
+    await openDashboard(page, SUMMARY);
+    let calls = 0;
+    await page.route('**/functions/v1/manage-submissions', r => {
+      calls += 1;
+      r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+    });
+
+    // Dismiss the confirm first -> no call.
+    page.once('dialog', d => d.dismiss());
+    const evtRow = page.locator('.q-row[data-type="event"]').first();
+    await evtRow.getByRole('button', { name: 'Reject' }).click();
+    await page.waitForTimeout(200);
+    expect(calls).toBe(0);
+
+    // Accept the confirm -> one reject call.
+    page.once('dialog', d => d.accept());
+    await evtRow.getByRole('button', { name: 'Reject' }).click();
+    await expect.poll(() => calls).toBe(1);
+  });
+
   test('an empty queue shows the caught-up state', async ({ page }) => {
     const clean = JSON.parse(JSON.stringify(SUMMARY));
     clean.counts.action_total = 0;

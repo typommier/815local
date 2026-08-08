@@ -260,10 +260,14 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
   `kyneaettrynagavewefi`) and renders:
   - **Onboarding & requests queue**: pending business submissions
     (`businesses.is_active = false`), open claim requests, studio inquiries,
-    advertise waitlist, pending events/deals (deep-links to `review-submissions.html`
-    for the ones with an approve/reject UI), and flagged reviews. This is the core
-    "what needs Ty" list. Note `businesses` has no `updated_at`, so "recently added"
-    is by `created_at`; there is no true edit feed.
+    advertise waitlist, pending events/deals, and flagged reviews. This is the core
+    "what needs Ty" list. Pending **businesses, events and deals have inline
+    Approve/Reject buttons** that POST to `manage-submissions` (approve sets
+    `is_active = true`, reject deletes the row, with a confirm); on success the
+    dashboard shows a toast and reloads. Claims/studio/advertise/flagged are
+    surfaced with contact details but have no one-click action yet. Note
+    `businesses` has no `updated_at`, so "recently added" is by `created_at`;
+    there is no true edit feed.
   - **Directory health** stat tiles (live count, awaiting review, missing
     photos/phones/websites, upcoming events) + a by-town bar list.
   - **Site & code**: live GitHub data pulled **client-side** from the public repo
@@ -286,6 +290,9 @@ The structure has been refactored since earlier sessions. Root-level `815local-*
     version 1.
 - `admin/review-submissions.html` approves/rejects the pending deals and events in
   the `is_active = false` queue, via the `manage-submissions` edge function.
+  `manage-submissions` handles `type` of `deal`, `event`, or `business` (business
+  support was added Aug 2026 for the dashboard's inline approve/reject; the
+  review-submissions hub itself still only lists deals + events).
 - `admin/edit-business-photos.html` is the tool for managing a business's photos: pick the business from a dropdown, drag-drop or camera-roll upload (HEIC converted client-side), reorder, delete, star a hero, and set a per-photo focal point via a 3x3 grid plus an **Auto** chip. Posts to the `manage-business-photos` edge function. Ty uses it on his phone, so mobile rendering is the priority, not desktop.
   - **Hero means photo 1.** The star moves a photo to index 0 and sets `image_url` to match. `pages/business.html` builds its hero from `photos[0]` and only falls back to `image_url` when `photos` is empty, so a star that only set `image_url` did nothing visible (fixed July 2026).
   - **Previews are the real cells**, labeled and sized with `aspect-ratio`, rendered through the same `PhotoCrop` module the public pages use. Photo 1 shows Listing hero 16:9 + Directory card 5:4; photos 2+ show Listing thumb 1:1 + Listing on a phone 5:4. On Auto the two can legitimately differ (see the per-surface fallback above); picking a focal point collapses them.
