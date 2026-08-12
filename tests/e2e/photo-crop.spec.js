@@ -83,6 +83,25 @@ test.describe('PhotoCrop module', () => {
     expect(style).toContain('background-position:top;');
     expect(style).toContain('background-size:cover;');
   });
+
+  test('src leaves URLs untouched off the production zone', async ({ page }) => {
+    const r = await page.evaluate(() => ({
+      http: PhotoCrop.src('https://kyneaettrynagavewefi.supabase.co/storage/v1/x.jpg', 640),
+      data: PhotoCrop.src('data:image/png;base64,AAAA', 640),
+      relative: PhotoCrop.src('/uploads/logo.png', 640),
+      empty: PhotoCrop.src(null, 640),
+      host: location.hostname,
+    }));
+    // Tests run on localhost, where Cloudflare image resizing does not exist.
+    // Every URL must come back untouched, never wrapped in /cdn-cgi/image/,
+    // which would 404 in dev, CI, and *.pages.dev previews.
+    expect(r.host).not.toBe('815local.com');
+    expect(r.http).toBe('https://kyneaettrynagavewefi.supabase.co/storage/v1/x.jpg');
+    expect(r.data).toBe('data:image/png;base64,AAAA');
+    expect(r.relative).toBe('/uploads/logo.png');
+    expect(r.empty).toBe('');
+    expect(r.http).not.toContain('/cdn-cgi/image/');
+  });
 });
 
 test.describe('Crop rule is the same on every surface', () => {

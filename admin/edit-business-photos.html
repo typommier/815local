@@ -512,7 +512,7 @@ function renderPhotos() {
       `<button type="button" class="position-cell${pos === item.position ? ' active' : ''}" data-action="position" data-idx="${idx}" data-pos="${pos}" title="${pos}">${POSITION_LABELS[pos]}</button>`
     ).join('')).join('');
     const previews = previewShapes(idx).map((shape, n) => `
-      <div class="photo-preview ${shape.cls}" data-preview-idx="${idx}" data-surface="${shape.surface}" style="${PhotoCrop.cellStyle(previewUrl, PhotoCrop.positionFor([item.position], 0, shape.surface))}">
+      <div class="photo-preview ${shape.cls}" data-preview-idx="${idx}" data-surface="${shape.surface}" style="${PhotoCrop.cellStyle(previewUrl, PhotoCrop.positionFor([item.position], 0, shape.surface), 500)}">
         <div class="photo-preview-shape">${shape.label}</div>
         ${n === 0 && item.isHero ? '<div class="photo-preview-label">★ HERO</div>' : ''}
         ${n === 0 && item.isNew ? '<div class="photo-preview-label" style="background:var(--green); right:6px; left:auto;">NEW</div>' : ''}

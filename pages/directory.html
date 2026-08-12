@@ -495,7 +495,7 @@ function renderCard(b) {
     : (open === false ? '<span class="blc-meta-item closed-pill">Closed</span>' : '');
   const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
   const photoHtml = photoSrc
-    ? `<div style="position:absolute;inset:0;${PhotoCrop.cellStyle(photoSrc, PhotoCrop.positionFor(b.photo_positions, 0, 'card'))}"></div>`
+    ? `<div style="position:absolute;inset:0;${PhotoCrop.cellStyle(photoSrc, PhotoCrop.positionFor(b.photo_positions, 0, 'card'), 640)}"></div>`
     : '';
   return `
     <a href="/pages/business.html?id=${b.id}" class="biz-list-card">
