@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Early connection hints: Supabase serves both the data API and photo storage from one host. -->
+<link rel="preconnect" href="https://kyneaettrynagavewefi.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="https://kyneaettrynagavewefi.supabase.co">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <title>815local | Find what's good, right around here</title>
 <meta name="description" content="815local is the go-to directory for businesses, events, and deals in the 815 area. Discover what's happening in your neighborhood.">
 <meta property="og:title" content="815local | Find what's good, right around here">
@@ -1296,7 +1301,7 @@ document.addEventListener('keydown', e => {
         const b = slidePhotos[i];
         const layer = layers[cur];
         if (!layer) return;
-        const src = b.image_url || (b.photos && b.photos[0]);
+        const src = PhotoCrop.src(b.image_url || (b.photos && b.photos[0]), 1200);
         layer.style.backgroundImage = `url('${src}')`;
         layer.style.backgroundPosition = heroPos(b.photo_positions);
         layers.forEach((l, n) => { if (l) l.classList.toggle('show', n === cur); });
@@ -1319,7 +1324,7 @@ document.addEventListener('keydown', e => {
     const picksPool = homeTownPicks.filter(b => hasPhoto(b) && !isChain(b));
     function bizCard(b, opts) {
       opts = opts || {};
-      const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null);
+      const photoSrc = PhotoCrop.src((b.photos && b.photos.length) ? b.photos[0] : (b.image_url || null), 640);
       const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
       const badge = opts.badge ? `<span class="biz-badge ${opts.badgeClass||''}">${opts.badge}</span>` : '';
       const photoBlock = photoSrc
@@ -1357,7 +1362,7 @@ document.addEventListener('keydown', e => {
       .slice(0, 4);
     if (newArrivals.length) {
       document.getElementById('new-arrivals-grid').innerHTML = newArrivals.map(b => {
-        const photoSrc = (b.photos && b.photos.length) ? b.photos[0] : b.image_url;
+        const photoSrc = PhotoCrop.src((b.photos && b.photos.length) ? b.photos[0] : b.image_url, 640);
         const sub = b.subcategory ? ' · ' + escapeHtml(b.subcategory) : '';
         return `
           <a class="fresh-card" href="/pages/business.html?id=${b.id}">
@@ -1470,7 +1475,7 @@ document.addEventListener('keydown', e => {
       ].filter(Boolean).map(a => `<span class="spot-attr">${a}</span>`).join('');
       document.getElementById('spotlight-attrs').innerHTML = attrs;
       const spotPhoto = document.getElementById('spotlight-photo');
-      const spotSrc = spotlight.image_url || (spotlight.photos && spotlight.photos[0]);
+      const spotSrc = PhotoCrop.src(spotlight.image_url || (spotlight.photos && spotlight.photos[0]), 900);
       if (spotSrc && spotPhoto) {
         spotPhoto.style.backgroundImage = `url('${spotSrc}')`;
         spotPhoto.style.backgroundSize = 'cover';

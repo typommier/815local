@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Early connection hints: Supabase serves both the data API and photo storage from one host. -->
+<link rel="preconnect" href="https://kyneaettrynagavewefi.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="https://kyneaettrynagavewefi.supabase.co">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <title>Business | 815local</title>
 <meta name="description" content="View business details, hours, and contact information on 815local, your local business directory.">
 <meta property="og:title" content="Business | 815local">
@@ -583,8 +588,8 @@ let lightboxIndex = 0;
 // Cover-crops the photo to fill its cell at the given focal point. `pos` comes
 // from PhotoCrop.positionFor, so the crop here, on the directory and homepage
 // cards, and in the admin tool's preview are all the same rule.
-function photoLayersHtml(url, pos) {
-  return `<div class="photo-cell-fg" style="${PhotoCrop.cellStyle(url, pos)}"></div>`;
+function photoLayersHtml(url, pos, width) {
+  return `<div class="photo-cell-fg" style="${PhotoCrop.cellStyle(url, pos, width)}"></div>`;
 }
 
 function openLightbox(index) {
@@ -604,7 +609,7 @@ function lightboxStep(delta) {
   renderLightbox();
 }
 function renderLightbox() {
-  const url = galleryPhotos[lightboxIndex];
+  const url = PhotoCrop.src(galleryPhotos[lightboxIndex], 1600);
   document.getElementById('lightbox-img').style.backgroundImage = `url('${url.replace(/'/g, "\\'")}')`;
   document.getElementById('lightbox-counter').textContent = `${lightboxIndex + 1} / ${galleryPhotos.length}`;
   const multi = galleryPhotos.length > 1;
@@ -805,7 +810,7 @@ function renderBusiness(b) {
         </div>
       </div>`;
   } else {
-    mainCell.innerHTML = photoLayersHtml(photos[0], photoPos(0))
+    mainCell.innerHTML = photoLayersHtml(photos[0], photoPos(0), 1200)
       + `<div class="gallery-all-btn" id="gallery-all-btn" onclick="openLightbox(0)">📷 View Photo</div>`;
 
     // Remaining photos scroll horizontally as square thumbnails, no hard cap needed
@@ -813,7 +818,7 @@ function renderBusiness(b) {
     const thumbsWrap = document.getElementById('gallery-thumbs');
     if (photos.length > 1) {
       thumbsWrap.innerHTML = photos.slice(1).map((url, idx) =>
-        `<div class="gallery-thumb" data-idx="${idx + 1}">${photoLayersHtml(url, photoPos(idx + 1))}</div>`
+        `<div class="gallery-thumb" data-idx="${idx + 1}">${photoLayersHtml(url, photoPos(idx + 1), 400)}</div>`
       ).join('');
       thumbsWrap.querySelectorAll('.gallery-thumb').forEach((el) => {
         const photoIdx = parseInt(el.dataset.idx, 10);
@@ -831,7 +836,7 @@ function renderBusiness(b) {
     const dots = document.getElementById('swipe-dots');
     const counter = document.getElementById('swipe-counter');
     track.innerHTML = photos.map((url, i) =>
-      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}">${photoLayersHtml(url, photoPos(i))}</div>`
+      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}">${photoLayersHtml(url, photoPos(i), 800)}</div>`
     ).join('');
     track.querySelectorAll('.swipe-slide').forEach((slide, i) => {
       slide.addEventListener('click', () => openLightbox(i));
@@ -1052,7 +1057,7 @@ async function loadNearby(category, excludeId) {
     const imgPos = PhotoCrop.positionFor(b.photo_positions, 0, 'card');
     return `
     <a href="/pages/business.html?id=${b.id}" class="nearby-card">
-      ${imgSrc ? `<div class="nearby-photo"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(b.name)}" style="width:100%;height:100%;object-fit:cover;object-position:${imgPos};display:block;"></div>` : ''}
+      ${imgSrc ? `<div class="nearby-photo"><img src="${escapeHtml(PhotoCrop.src(imgSrc, 640))}" alt="${escapeHtml(b.name)}" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:${imgPos};display:block;"></div>` : ''}
       <div class="nearby-info">
         <div class="nearby-cat">${escapeHtml(b.category)}</div>
         <div class="nearby-name">${escapeHtml(b.name)}</div>
