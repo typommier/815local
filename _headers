@@ -1,10 +1,16 @@
 # Cloudflare Pages headers.
-# Static assets are not content-hashed (no build step), so avoid `immutable`,
-# which would pin a stale file after an in-place edit. stale-while-revalidate
-# keeps things fast while still letting an edit propagate within a day.
+#
+# Assets here are not content-hashed (no build step), so they keep the same URL
+# across edits. A long max-age would strand visitors on a stale file after an
+# in-place edit (exactly what broke photos once: a cached photo-crop.js kept
+# running old logic for a day). Use no-cache so the browser revalidates every
+# time; unchanged files still return a cheap 304, so this stays fast while
+# guaranteeing an edit shows up on the next load.
 
 /assets/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: no-cache
 
+# /uploads holds brand images that rarely change and carry no logic, so a short
+# cache is safe. Keep it modest so a replaced logo still propagates quickly.
 /uploads/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
