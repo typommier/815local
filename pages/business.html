@@ -101,6 +101,14 @@ a { color:inherit; text-decoration:none; }
 /* Default (no manually-set photo_positions) crops from 'top' rather than 'center':
    a manually-set photo_positions value (via admin/edit-business-photos.html) overrides this. */
 .photo-cell-fg { position:absolute; inset:0; z-index:1; background-size:cover; background-repeat:no-repeat; }
+/* Hero "show the whole photo" treatment: the full image sits inside the frame
+   (background-size:contain, never cropped), and a blurred, zoomed copy of the
+   same photo fills the leftover space so tall or wide photos never leave bare
+   bars. Used on the big hero and the phone swiper; the small thumbnails and
+   cards keep their plain cover crop. */
+.photo-fill { position:absolute; inset:0; z-index:1; overflow:hidden; }
+.photo-fill-bg { position:absolute; inset:0; background-size:cover; background-position:center; background-repeat:no-repeat; filter:blur(22px) brightness(0.9); transform:scale(1.18); }
+.photo-fill-fg { position:absolute; inset:0; background-size:contain; background-position:center; background-repeat:no-repeat; }
 .gallery-thumb::after { content:''; position:absolute; inset:0; z-index:2; background:rgba(0,0,0,0); transition:background 0.15s; pointer-events:none; }
 .gallery-thumb:hover::after { background:rgba(0,0,0,0.18); }
 .gallery-all-btn { position:absolute; bottom:18px; right:18px; z-index:3; background:var(--surface); color:var(--ink); padding:10px 20px; border-radius:var(--r-pill); font-size:.82rem; font-weight:700; cursor:pointer; box-shadow:var(--shadow-sm); }
@@ -592,6 +600,15 @@ function photoLayersHtml(url, pos, width) {
   return `<div class="photo-cell-fg" style="${PhotoCrop.cellStyle(url, pos, width)}"></div>`;
 }
 
+// The hero shows the whole photo, never cropped: a contained foreground over a
+// blurred copy that fills the frame. No focal point needed since nothing is
+// trimmed. Used for the big hero and the phone swiper slides.
+function heroFillHtml(url, width) {
+  const u = PhotoCrop.src(url, width).replace(/'/g, "\\'");
+  const bg = `background-image:url('${u}')`;
+  return `<div class="photo-fill"><div class="photo-fill-bg" style="${bg}"></div><div class="photo-fill-fg" style="${bg}"></div></div>`;
+}
+
 function openLightbox(index) {
   if (!galleryPhotos.length) return;
   lightboxIndex = ((index % galleryPhotos.length) + galleryPhotos.length) % galleryPhotos.length;
@@ -810,7 +827,7 @@ function renderBusiness(b) {
         </div>
       </div>`;
   } else {
-    mainCell.innerHTML = photoLayersHtml(photos[0], photoPos(0), 1200)
+    mainCell.innerHTML = heroFillHtml(photos[0], 1400)
       + `<div class="gallery-all-btn" id="gallery-all-btn" onclick="openLightbox(0)">📷 View Photo</div>`;
 
     // Remaining photos scroll horizontally as square thumbnails, no hard cap needed
@@ -836,7 +853,7 @@ function renderBusiness(b) {
     const dots = document.getElementById('swipe-dots');
     const counter = document.getElementById('swipe-counter');
     track.innerHTML = photos.map((url, i) =>
-      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}">${photoLayersHtml(url, photoPos(i), 800)}</div>`
+      `<div class="swipe-slide" role="img" aria-label="Photo ${i+1} of ${photos.length}" data-idx="${i}">${heroFillHtml(url, 1000)}</div>`
     ).join('');
     track.querySelectorAll('.swipe-slide').forEach((slide, i) => {
       slide.addEventListener('click', () => openLightbox(i));

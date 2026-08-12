@@ -105,33 +105,39 @@ test.describe('PhotoCrop module', () => {
 });
 
 test.describe('Crop rule is the same on every surface', () => {
-  test('listing hero uses the auto fallback, thumbs use their own saved values', async ({ page }) => {
+  test('listing hero shows the whole photo; thumbs keep their saved crops', async ({ page }) => {
     await mock(page);
     // serve's cleanUrls strips .html, use the extension-free path with query params
     await page.goto('/pages/business?id=biz-001');
     await expect(page.locator('#biz-header-content')).toBeVisible({ timeout: 8000 });
 
-    const hero = page.locator('#gallery-main .photo-cell-fg');
-    await expect(hero).toHaveCSS('background-position', '50% 0%'); // top
+    // The hero is never cropped: the full photo is contained over a blurred fill.
+    const heroFg = page.locator('#gallery-main .photo-fill .photo-fill-fg');
+    await expect(heroFg).toHaveCount(1);
+    await expect(heroFg).toHaveCSS('background-size', 'contain');
+    await expect(page.locator('#gallery-main .photo-fill .photo-fill-bg')).toHaveCount(1);
+    // The hero no longer uses the cover-crop cell.
+    await expect(page.locator('#gallery-main .photo-cell-fg')).toHaveCount(0);
 
+    // Thumbnails still cover-crop and honor their own saved focal points.
     const thumbs = page.locator('#gallery-thumbs .gallery-thumb .photo-cell-fg');
     await expect(thumbs).toHaveCount(2);
     await expect(thumbs.nth(0)).toHaveCSS('background-position', '100% 100%'); // bottom right
     await expect(thumbs.nth(1)).toHaveCSS('background-position', '50% 50%');   // center
   });
 
-  test('phone swiper applies the same per-photo positions', async ({ page }) => {
+  test('phone swiper shows every photo in full, never cropped', async ({ page }) => {
     await mock(page);
     await page.setViewportSize({ width: 390, height: 844 });
     // serve's cleanUrls strips .html, use the extension-free path with query params
     await page.goto('/pages/business?id=biz-001');
     await expect(page.locator('#biz-header-content')).toBeVisible({ timeout: 8000 });
 
-    const slides = page.locator('#swipe-track .swipe-slide .photo-cell-fg');
+    const slides = page.locator('#swipe-track .swipe-slide .photo-fill .photo-fill-fg');
     await expect(slides).toHaveCount(3);
-    await expect(slides.nth(0)).toHaveCSS('background-position', '50% 0%');
-    await expect(slides.nth(1)).toHaveCSS('background-position', '100% 100%');
-    await expect(slides.nth(2)).toHaveCSS('background-position', '50% 50%');
+    await expect(slides.nth(0)).toHaveCSS('background-size', 'contain');
+    await expect(slides.nth(1)).toHaveCSS('background-size', 'contain');
+    await expect(slides.nth(2)).toHaveCSS('background-size', 'contain');
   });
 
   test('directory cards center on auto and honor a saved focal point', async ({ page }) => {
