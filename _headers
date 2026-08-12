@@ -1,0 +1,10 @@
+# Cloudflare Pages headers.
+# Static assets are not content-hashed (no build step), so avoid `immutable`,
+# which would pin a stale file after an in-place edit. stale-while-revalidate
+# keeps things fast while still letting an edit propagate within a day.
+
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/uploads/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
