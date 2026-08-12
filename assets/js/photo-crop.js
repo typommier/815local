@@ -40,6 +40,14 @@
   // What an unset (auto) photo_positions entry renders as, per surface.
   var FALLBACK = { hero: 'top', card: 'center' };
 
+  // DISABLED pending a working Cloudflare config: resizing Supabase's external
+  // origin through /cdn-cgi/image/ returned broken images on production, so this
+  // is off and every photo serves its original URL. Flip RESIZE_ENABLED back to
+  // true once external-origin resizing is confirmed working on the zone (or once
+  // we switch to the free re-process approach). The wiring below is intact so
+  // re-enabling is a one-line change.
+  var RESIZE_ENABLED = false;
+
   // Only the production zone has Cloudflare image resizing (Transformations)
   // turned on, so /cdn-cgi/image/ URLs 404 anywhere else (localhost, *.pages.dev
   // previews). Gate resizing on hostname so those environments serve originals.
@@ -50,9 +58,11 @@
   // fit=scale-down only ever shrinks, so the aspect ratio is preserved and the
   // existing cover-crop + focal-point (background/object-position) still frames
   // the cell. Returns the URL untouched for data:/relative/empty sources, when
-  // already wrapped, and off the production zone. Width is optional.
+  // already wrapped, off the production zone, and while resizing is disabled.
+  // Width is optional.
   function src(url, width) {
     var u = String(url == null ? '' : url);
+    if (!RESIZE_ENABLED) return u;
     if (u.slice(0, 4) !== 'http') return u;
     if (u.indexOf('/cdn-cgi/image/') !== -1) return u;
     var host = (global.location && global.location.hostname) || '';
