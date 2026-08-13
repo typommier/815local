@@ -111,11 +111,10 @@ test.describe('Crop rule is the same on every surface', () => {
     await page.goto('/pages/business?id=biz-001');
     await expect(page.locator('#biz-header-content')).toBeVisible({ timeout: 8000 });
 
-    // The hero is never cropped: the full photo is contained over a blurred fill.
+    // The hero is never cropped: the full photo is contained on a cream mat.
     const heroFg = page.locator('#gallery-main .photo-fill .photo-fill-fg');
     await expect(heroFg).toHaveCount(1);
     await expect(heroFg).toHaveCSS('background-size', 'contain');
-    await expect(page.locator('#gallery-main .photo-fill .photo-fill-bg')).toHaveCount(1);
     // The hero no longer uses the cover-crop cell.
     await expect(page.locator('#gallery-main .photo-cell-fg')).toHaveCount(0);
 
