@@ -36,8 +36,9 @@ Pages serves the repo).
 3. In the new file, find/replace `__ISSUE_DATE__` with `YYYY-MM-DD`, then set
    `__NN__`, the issue date in the masthead, and the preheader.
 4. Fill every `[SLOT]`. Delete any block marked `OPTIONAL` you are not using
-   (lead image, weather, day-by-day, good-to-know, sponsor). Add or remove
-   repeatable cards to match how many items you actually have.
+   (lead image, weather, day-by-day, good-to-know). Add or remove repeatable
+   cards to match how many items you actually have. The sponsor slot is
+   commented out by default; uncomment it only when a sponsor is sold.
 5. Commit and push. Cloudflare deploys the images so their URLs resolve.
 6. Paste the finished HTML into Resend and send. `{{{RESEND_UNSUBSCRIBE_URL}}}`
    in the footer is filled in by Resend automatically, leave it.
