@@ -1738,6 +1738,7 @@ async function doNewsletterSubscribe(e) {
     msg.style.color = '#fff0e8';
     msg.textContent = "You're already subscribed!";
   } else if (error) {
+    console.error('Newsletter subscribe failed:', error.code, error.message, error);
     msg.style.color = '#fff0e8';
     msg.textContent = 'Something went wrong. Try again shortly.';
   } else {
