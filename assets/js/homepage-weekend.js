@@ -14,7 +14,19 @@
   if (!document.getElementById('wk-poster-css')) {
     var st = document.createElement('style');
     st.id = 'wk-poster-css';
-    st.textContent = '.wk-card .wk-fallback{width:100%;height:280px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px 20px;gap:2px;position:relative;overflow:hidden;font-size:inherit;color:#fff;background:radial-gradient(120% 80% at 100% 0%,rgba(255,215,176,.22),transparent 55%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#3a322c,#141414)}.wk-card .wk-fallback::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:4px;background:#e05a12}.wk-fallback .wk-kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#ffd7b0;position:relative;z-index:1}.wk-fallback .wk-bigday{font-family:Georgia,serif;font-size:4.2rem;line-height:.9;font-weight:500;color:#fff;position:relative;z-index:1}.wk-fallback .wk-mon{font-size:13px;font-weight:700;letter-spacing:.18em;color:rgba(255,250,244,.7);position:relative;z-index:1}';
+    st.textContent = [
+      '.wk-card .wk-fallback{width:100%;height:280px;position:relative;overflow:hidden;',
+      'background:radial-gradient(120% 80% at 100% 0%,rgba(255,215,176,.22),transparent 55%),',
+      'repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),',
+      'linear-gradient(165deg,#3a322c,#141414)}',
+      '.wk-card .wk-fallback::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:4px;background:#e05a12}',
+      '.wk-t-sports{background:radial-gradient(90% 70% at 110% 10%,rgba(224,90,18,.35),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#3a2418,#141414)}',
+      '.wk-t-market{background:radial-gradient(90% 70% at 110% 10%,rgba(91,122,87,.4),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#243028,#141414)}',
+      '.wk-t-music,.wk-t-festival{background:radial-gradient(90% 70% at 110% 10%,rgba(176,70,80,.4),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#2c1820,#141414)}',
+      '.wk-t-food{background:radial-gradient(90% 70% at 110% 10%,rgba(224,90,18,.45),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#3a2014,#141414)}',
+      '.wk-t-arts{background:radial-gradient(90% 70% at 110% 10%,rgba(196,140,70,.4),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#2c2418,#141414)}',
+      '.wk-card .wk-type{display:block;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#ffd7b0;margin-bottom:8px}'
+    ].join('');
     document.documentElement.appendChild(st);
   }
 
@@ -55,7 +67,6 @@
     if (row) row.classList.add('weekend-row');
   }
 
-  var MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   var TYPE_SLUG = {
     music:'music', food:'food', arts:'arts', market:'market',
     community:'community', sports:'sports', sport:'sports',
@@ -76,15 +87,12 @@
     var slug = typeSlug(e.event_type);
     var media = e.image_url
       ? '<img class="wk-photo" src="' + esc(e.image_url) + '" alt="">'
-      : '<div class="wk-fallback wk-t-' + slug + '">' +
-          '<span class="wk-kicker">' + esc(typeLabel(e.event_type)) + '</span>' +
-          '<span class="wk-bigday">' + (d ? d.getDate() : '') + '</span>' +
-          '<span class="wk-mon">' + (d ? MONTHS[d.getMonth()] : '') + '</span>' +
-        '</div>';
+      : '<div class="wk-fallback wk-t-' + slug + '"></div>';
     return '<a class="wk-card" href="/pages/events.html?event=' + encodeURIComponent(e.id) + '">' +
       media +
       '<div class="wk-shade"></div>' +
       '<div class="wk-txt">' +
+        '<span class="wk-type">' + esc(typeLabel(e.event_type)) + '</span>' +
         (dateLabel ? '<span class="wk-date">' + esc(dateLabel) + (e.start_time ? ' \u00b7 ' + fmtTime(e.start_time) : '') + '</span>' : '') +
         '<h3>' + esc(e.title || 'Community event') + '</h3>' +
         (place ? '<p>' + esc(place) + '</p>' : '') +
