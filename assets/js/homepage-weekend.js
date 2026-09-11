@@ -80,6 +80,14 @@
     }
   }
 
+  function keepNewsletterFocus() {
+    if (window.location.hash !== '#newsletter') return;
+    var section = document.getElementById('newsletter');
+    var input = document.getElementById('newsletter-email');
+    if (section) section.classList.add('visible');
+    if (input) input.focus({ preventScroll: true });
+  }
+
   function boot() {
     document.body.classList.add('home');
     moveSection();
@@ -91,6 +99,12 @@
       setTimeout(function () { obs.disconnect(); fillEvents(); }, 4000);
     } else {
       setTimeout(fillEvents, 2500);
+    }
+    // The homepage also does a delayed smooth-scroll for hash targets.
+    // That scroll steals focus from #newsletter-email; put it back after.
+    if (window.location.hash === '#newsletter') {
+      setTimeout(keepNewsletterFocus, 900);
+      setTimeout(keepNewsletterFocus, 1200);
     }
   }
 
