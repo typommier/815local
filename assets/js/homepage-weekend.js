@@ -39,13 +39,32 @@
     if (row) row.classList.add('weekend-row');
   }
 
+  var MONTHS = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var TYPE_SLUG = {
+    music:'music', food:'food', arts:'arts', market:'market',
+    community:'community', sports:'sports', sport:'sports',
+    festival:'festival'
+  };
+  function typeSlug(t) {
+    return TYPE_SLUG[String(t || '').toLowerCase()] || 'other';
+  }
+  function typeLabel(t) {
+    var s = typeSlug(t);
+    return s === 'other' ? 'Event' : s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
   function cardHTML(e) {
     var d = e.event_date ? new Date(e.event_date + 'T00:00:00') : null;
     var place = e.location_name || e.city || '';
     var dateLabel = d ? (DAYS[d.getDay()] + ' ' + d.getDate()) : '';
+    var slug = typeSlug(e.event_type);
     var media = e.image_url
       ? '<img class="wk-photo" src="' + esc(e.image_url) + '" alt="">'
-      : '<div class="wk-fallback">' + (d ? d.getDate() : '') + '</div>';
+      : '<div class="wk-fallback wk-t-' + slug + '">' +
+          '<span class="wk-kicker">' + esc(typeLabel(e.event_type)) + '</span>' +
+          '<span class="wk-bigday">' + (d ? d.getDate() : '') + '</span>' +
+          '<span class="wk-mon">' + (d ? MONTHS[d.getMonth()] : '') + '</span>' +
+        '</div>';
     return '<a class="wk-card" href="/pages/events.html?event=' + encodeURIComponent(e.id) + '">' +
       media +
       '<div class="wk-shade"></div>' +
@@ -66,7 +85,7 @@
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk'
       );
       var today = new Date().toISOString().slice(0, 10);
-      var res = await client.from('events').select('id,title,event_date,start_time,location_name,city,image_url').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(3);
+      var res = await client.from('events').select('id,title,event_date,start_time,location_name,city,image_url,event_type').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).limit(3);
       var events = res.data || [];
       if (!events.length) return;
       row.classList.add('weekend-row');
@@ -100,8 +119,6 @@
     } else {
       setTimeout(fillEvents, 2500);
     }
-    // The homepage also does a delayed smooth-scroll for hash targets.
-    // That scroll steals focus from #newsletter-email; put it back after.
     if (window.location.hash === '#newsletter') {
       setTimeout(keepNewsletterFocus, 900);
       setTimeout(keepNewsletterFocus, 1200);
