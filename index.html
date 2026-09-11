@@ -58,12 +58,12 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* ── Warm Sage identity (matches assets/css/815local.css) ── */
-  --bg:#FBF6EA; --surface:#FFFFFF;
+  /* ── Hybrid identity (matches assets/css/815local.css) ── */
+  --bg:#fffaf4; --surface:#FFFFFF;
   --ink:#2B2420; --ink-soft:#4A3F37; --ink-faint:#7A6E62;
-  --paper:#F3ECDB; --paper-2:#F3ECDB; --paper-3:#FBF6EA;
-  --bone:#FBF6EA;
-  --orange:#C4622D; --orange-deep:#A44C1E; --ember:#E07A48; --orange-soft:#F3DCC7;
+  --paper:#f4eee3; --paper-2:#F3ECDB; --paper-3:#FBF6EA;
+  --bone:#fffaf4;
+  --orange:#E05A12; --orange-deep:#C44C10; --ember:#E07A48; --orange-soft:#F3DCC7;
   --river:#5B7A57; --river-deep:#435C40; --river-light:#8AA687;
   --teal:#5B7A57; --teal-soft:#DCE7D6;
   --gold:#D7A23E;
@@ -81,8 +81,8 @@
   --hw:400; --ht:-0.01em;
   /* ── legacy tokens retained for auth modal + inline styles ── */
   --orange-light:#E07A48; --orange-pale:#F3DCC7;
-  --cream:#FBF6EA; --cream-dark:#F3ECDB;
-  --charcoal:#2B2420; --charcoal-mid:#4A3F37; --charcoal-light:#7A6E62;
+  --cream:#fffaf4; --cream-dark:#f4eee3;
+  --charcoal:#141414; --charcoal-mid:#4A3F37; --charcoal-light:#7A6E62;
   --gray:#7A6E62; --gray-light:#D4C9C0; --white:#FFFFFF; --muted:#7A6E62;
   --radius:20px; --radius-sm:14px;
 }
@@ -456,7 +456,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
 <noscript><style>.fade-in { opacity: 1 !important; transform: none !important; transition: none !important; }</style></noscript>
 <script src="/assets/js/photo-crop.js?v=2"></script>
 </head>
-<body>
+<body class="home">
 
 <!-- ══════════ TOP UTILITY BAR ══════════ -->
 <div class="topbar">
@@ -479,7 +479,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
   <div class="container">
     <div class="nav-inner">
       <a href="/" class="nav-logo" aria-label="815 Local home">
-        <svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg>
+        <img src="/uploads/815local-logo.png" alt="815 Local" width="52" height="52">
       </a>
       <div class="nav-links">
         <a class="nav-link active" href="/">Explore</a>
@@ -509,80 +509,45 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
             <div onclick="signOut()" style="padding:12px 16px;font-size:13px;color:#c0392b;cursor:pointer;">Sign Out</div>
           </div>
         </div>
-        <a class="btn btn-primary" href="/pages/submit/business.html" style="font-size:13px; padding:10px 18px;">+ List Business</a>
+        <a class="btn btn-primary" href="/pages/submit/business.html" style="font-size:13px; padding:10px 18px;">List your business</a>
       </div>
     </div>
   </div>
 </nav>
 
 <!-- ══════════ HERO ══════════ -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-grid">
-      <!-- LEFT -->
-      <div class="hero-left">
-        <span class="eyebrow hero-eyebrow">Est. 2026 · The 815</span>
-        <h1 class="hero-title">
-          Find what's good,
-          <span class="line2"><span class="under"><em>right around here.</em><svg viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M2 8 C 60 2, 120 2, 180 6 S 260 10, 298 4" fill="none" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/></svg></span></span>
-        </h1>
-        <p class="hero-sub">
-          This weekend: Rock On Channahon Thursday, Minooka hosts Yorkville Friday, Shorewood garage sales and Sunday market. Heap's sunflowers through Sunday (farm stays open; pumpkins Sep 19). 
-        </p>
+<section class="hero hybrid">
+  <div class="hero-left">
+    <div class="hero-kicker" id="hero-stat-line">Minooka · Channahon · Shorewood</div>
+    <h1 class="hero-title">Find what's good, <em>right around here.</em></h1>
 
-        <div class="sg-wrap hero-sg-wrap">
-        <form class="searchbar" onsubmit="doHeroSearch(event)">
-          <div class="search-seg grow">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <div>
-              <label class="s-lab" for="hero-q">Find</label>
-              <input class="s-val" id="hero-q" type="text" autocomplete="off" placeholder="Pizza, plumbers, salons…" role="combobox" aria-expanded="false" aria-controls="hero-sg" aria-autocomplete="list" oninput="sgInput('hero')" onfocus="sgInput('hero')" onclick="sgInput('hero')" onkeydown="sgKey(event,'hero')">
-            </div>
+    <div class="sg-wrap hero-sg-wrap">
+      <form class="searchbar" onsubmit="doHeroSearch(event)">
+        <div class="search-seg grow">
+          <div>
+            <label class="s-lab" for="hero-q">Find</label>
+            <input class="s-val" id="hero-q" type="text" autocomplete="off" placeholder="Pizza, plumbers, salons…" role="combobox" aria-expanded="false" aria-controls="hero-sg" aria-autocomplete="list" oninput="sgInput('hero')" onfocus="sgInput('hero')" onclick="sgInput('hero')" onkeydown="sgKey(event,'hero')">
           </div>
-          <div class="search-seg" style="min-width:150px;">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-            <div>
-              <label class="s-lab" for="hero-town">Town</label>
-              <select class="s-val" id="hero-town">
-                <option value="">All 3 towns</option>
-                <option value="Minooka">Minooka</option>
-                <option value="Channahon">Channahon</option>
-                <option value="Shorewood">Shorewood</option>
-              </select>
-            </div>
+        </div>
+        <div class="search-seg" style="min-width:150px;">
+          <div>
+            <label class="s-lab" for="hero-town">Town</label>
+            <select class="s-val" id="hero-town">
+              <option value="">All 3 towns</option>
+              <option value="Minooka">Minooka</option>
+              <option value="Channahon">Channahon</option>
+              <option value="Shorewood">Shorewood</option>
+            </select>
           </div>
-          <button class="search-go" type="submit">Search <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-        </form>
-        <div class="sg-panel" id="hero-sg" role="listbox" aria-label="Search suggestions"></div>
         </div>
+        <button class="search-go" type="submit">Search</button>
+      </form>
+      <div class="sg-panel" id="hero-sg" role="listbox" aria-label="Search suggestions"></div>
+    </div>
 
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="/pages/directory.html">Browse Businesses</a>
-          <a class="btn btn-outline" href="/pages/submit/business.html">Add Your Business</a>
-        </div>
-
-        <p class="hero-statline"><span id="hero-stat-line">Covering Minooka, Channahon &amp; Shorewood</span></p>
-
-        <div class="hero-towns">
-          <span class="ht-lab">Pick a town:</span>
-          <a class="shield" href="/pages/directory.html?q=Minooka"><span class="s-top">EXIT 122</span><span class="s-name">MINOOKA</span></a>
-          <a class="shield" href="/pages/directory.html?q=Channahon"><span class="s-top">RTE 6</span><span class="s-name">CHANNAHON</span></a>
-          <a class="shield" href="/pages/directory.html?q=Shorewood"><span class="s-top">RTE 59</span><span class="s-name">SHOREWOOD</span></a>
-        </div>
-      </div>
-
-      <!-- RIGHT VISUAL: single cycling business photo -->
-      <div class="hero-media hero-visual">
-        <a class="hv-photo" id="hero-photo-link" href="/pages/directory.html" aria-label="Browse local businesses">
-          <div class="hv-slide" id="hero-slide-a"></div>
-          <div class="hv-slide" id="hero-slide-b"></div>
-          <div class="ph-fill" id="hero-photo-ph">
-            <svg class="ph-ico" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/></svg>
-            <span class="ph-cap">815 Local</span>
-          </div>
-          <div class="hv-cap" id="hero-photo-cap" style="display:none;"></div>
-        </a>
-      </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/pages/directory.html">Browse Businesses</a>
+      <a class="btn btn-outline" href="/pages/submit/business.html">Add Your Business</a>
     </div>
   </div>
 </section>
@@ -725,7 +690,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
   <div class="container">
     <div class="foot-grid">
       <div>
-        <div class="foot-logo"><svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg></div>
+        <div class="foot-logo"><img src="/uploads/815local-logo.png" alt="815 Local" width="52" height="52"></div>
         <p class="foot-tag">A local directory for Minooka, Channahon, Shorewood, and the wider 815.</p>
         <div class="foot-towns">
           <span class="shield"><span class="s-top">RTE</span><span class="s-name">MINOOKA</span></span>
@@ -805,7 +770,7 @@ footer { background: var(--paper); color: var(--ink); margin-top: 60px; padding:
 
 <script>
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accentColor": "#C4622D",
+  "accentColor": "#E05A12",
   "heroLayout": "split",
   "cardStyle": "border"
 }/*EDITMODE-END*/;
@@ -928,6 +893,7 @@ if (window.location.hash) {
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/js/util.js"></script>
+<script src="/assets/js/homepage-weekend.js"></script>
 
 <!-- ══════════ NAV + HERO SEARCH SUGGESTIONS ══════════ -->
 <script id="search-suggest">
@@ -1266,8 +1232,7 @@ document.addEventListener('keydown', e => {
       if (card) card.style.display = n === 0 ? 'none' : '';
     });
 
-    // ── HERO PHOTOS (Minooka/Channahon/Shorewood only, no chains) ──
-    // Eligible if image_url is set OR the first entry in photos[] exists.
+    // ── HERO PHOTOS (skipped on hybrid homepage — Heap's field is the hero) ──
     const HOME_TOWNS = new Set(['minooka','channahon','shorewood']);
     const hasPhoto = b => Boolean(b.image_url || (Array.isArray(b.photos) && b.photos[0]));
     const isChain = b => Array.isArray(b.features) && b.features.includes('Chain');
@@ -1284,18 +1249,19 @@ document.addEventListener('keydown', e => {
       if (HERO_EXCLUDE.has((b.name || '').trim().toLowerCase())) return false;
       return true;
     });
-    for (let i = withPhotos.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
-    }
-    // Single hero photo that cycles through real business images like a slideshow.
-    const slidePhotos = withPhotos;
-    if (slidePhotos.length) {
+    const slideA = document.getElementById('hero-slide-a');
+    const slideB = document.getElementById('hero-slide-b');
+    if (withPhotos.length && slideA && slideB) {
+      for (let i = withPhotos.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [withPhotos[i], withPhotos[j]] = [withPhotos[j], withPhotos[i]];
+      }
+      const slidePhotos = withPhotos;
       const ph = document.getElementById('hero-photo-ph');
       if (ph) ph.style.display = 'none';
       const link = document.getElementById('hero-photo-link');
       const cap = document.getElementById('hero-photo-cap');
-      const layers = [document.getElementById('hero-slide-a'), document.getElementById('hero-slide-b')];
+      const layers = [slideA, slideB];
       let idx = 0, cur = 0;
       function showSlide(i) {
         const b = slidePhotos[i];
@@ -1425,8 +1391,9 @@ document.addEventListener('keydown', e => {
           </div>
         </a>`);
       const upcomingCards = eventCards.concat(dealCards).slice(0, 4);
-      if (upcomingCards.length) {
-        document.getElementById('upcoming-row').innerHTML = upcomingCards.join('');
+      const upcomingRow = document.getElementById('upcoming-row');
+      if (upcomingCards.length && upcomingRow && !upcomingRow.classList.contains('weekend-row')) {
+        upcomingRow.innerHTML = upcomingCards.join('');
         document.getElementById('upcoming-section').style.display = '';
       }
     } catch (e) {
@@ -1785,7 +1752,7 @@ async function doNewsletterSubscribe(e) {
 
     <!-- SIGN IN VIEW -->
     <div id="auth-view-signin">
-      <div class="auth-logo"><svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg></div>
+      <div class="auth-logo"><img src="/uploads/815local-logo.png" alt="815 Local" width="52" height="52"></div>
       <div class="auth-title">Welcome back</div>
       <div class="auth-sub">Sign in to your 815local account</div>
       <div class="auth-error" id="signin-error"></div>
@@ -1807,7 +1774,7 @@ async function doNewsletterSubscribe(e) {
 
     <!-- SIGN UP VIEW -->
     <div id="auth-view-signup" style="display:none;">
-      <div class="auth-logo"><svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg></div>
+      <div class="auth-logo"><img src="/uploads/815local-logo.png" alt="815 Local" width="52" height="52"></div>
       <div class="auth-title">Business owner sign up</div>
       <div class="auth-sub">Create an account to claim your listing and manage your business profile.</div>
       <div class="auth-error" id="signup-error"></div>
@@ -1841,7 +1808,7 @@ async function doNewsletterSubscribe(e) {
 
     <!-- FORGOT PASSWORD VIEW -->
     <div id="auth-view-forgot" style="display:none;">
-      <div class="auth-logo"><svg viewBox="0 0 258 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="815 Local"><text x="0" y="62" font-family="Georgia,serif" font-weight="700" font-size="66" fill="#2B2420">815</text><text x="130" y="57" font-family="Arial,sans-serif" font-weight="800" font-size="30" letter-spacing="2" fill="#C4622D">LOCAL</text></svg></div>
+      <div class="auth-logo"><img src="/uploads/815local-logo.png" alt="815 Local" width="52" height="52"></div>
       <div class="auth-title">Reset your password</div>
       <div class="auth-sub">Enter your email and we'll send you a reset link</div>
       <div class="auth-error" id="forgot-error"></div>
