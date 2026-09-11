@@ -11,11 +11,11 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --orange:        #C4622D;
+  --orange:        #E05A12;
   --orange-pale:   #F5E6DC;
-  --cream:         #F7F1E3;
+  --cream:         #fffaf4;
   --cream-dark:    #EDE4CF;
-  --charcoal:      #1E1B18;
+  --charcoal:      #141414;
   --charcoal-mid:  #3D3530;
   --charcoal-light:#6B5E55;
   --gray:          #9B8C82;
@@ -34,8 +34,8 @@ h1,h2,h3 { font-family: 'Playfair Display', serif; }
 a { color: inherit; text-decoration: none; }
 
 #main-nav { background: var(--charcoal); border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 100; }
-.nav-inner { display: flex; align-items: center; height: 110px; padding: 0 32px; gap: 24px; }
-.nav-logo img { height: 104px; width: auto; filter: drop-shadow(0 2px 8px rgba(196,98,45,0.35)); }
+.nav-inner { display: flex; align-items: center; height: 68px; padding: 0 28px; gap: 18px; }
+.nav-logo img { height: 52px; width: 52px; border-radius: 50%; object-fit: cover; filter: none; }
 .nav-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: white; }
 .nav-subtitle { font-size: 13px; color: rgba(255,255,255,0.4); }
 .nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
@@ -84,7 +84,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 680px) {
   .dashboard { padding: 16px; }
   .nav-inner { height: 80px; }
-  .nav-logo img { height: 60px; }
+  .nav-logo img { height: 44px; width: 44px; }
   .form-row.inline { flex-direction: column; align-items: stretch; }
   .form-row.inline label { width: auto; }
 }
@@ -95,7 +95,7 @@ a { color: inherit; text-decoration: none; }
 <nav id="main-nav">
   <div class="nav-inner">
     <a href="/" class="nav-logo">
-      <picture><source srcset="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.webp" type="image/webp"><img src="/uploads/815_local_simplified_option_3_burnt_orange_charcoal_local_wider.png" alt="815 Local"></picture>
+      <img src="/uploads/815local-logo.png" alt="815 Local" width="52" height="52" style="height:52px;width:52px;border-radius:50%;object-fit:cover;filter:none;">
     </a>
     <div>
       <div class="nav-title">Photo Importer</div>
@@ -251,7 +251,7 @@ function renderLoginGate(onSuccess) {
     + '<p style="margin:0 0 16px;font-size:13px;color:#666;">Restricted to 815local admins.</p>'
     + '<input id="admin-email" type="email" placeholder="Email" autocomplete="username" required style="width:100%;padding:10px;margin-bottom:10px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
     + '<input id="admin-pass" type="password" placeholder="Password" autocomplete="current-password" required style="width:100%;padding:10px;margin-bottom:14px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box;">'
-    + '<button type="submit" style="width:100%;padding:10px;border:0;border-radius:8px;background:#C4622D;color:#fff;font-weight:600;cursor:pointer;">Sign in</button>'
+    + '<button type="submit" style="width:100%;padding:10px;border:0;border-radius:8px;background:#E05A12;color:#fff;font-weight:600;cursor:pointer;">Sign in</button>'
     + '<div id="admin-login-err" style="color:#b00;font-size:13px;margin-top:10px;min-height:16px;"></div>'
     + '</form>';
   document.body.appendChild(ov);

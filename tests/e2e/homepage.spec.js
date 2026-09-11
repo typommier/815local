@@ -22,7 +22,8 @@ test.describe('Homepage', () => {
 
   test('hero section renders', async ({ page }) => {
     await expect(page.locator('#hero-stat-line')).toBeVisible();
-    await expect(page.getByRole('link', { name: /browse businesses/i })).toBeVisible();
+    await expect(page.locator('#hero-q')).toBeVisible();
+    await expect(page.locator('.hero-title')).toContainText(/right around here/i);
   });
 
   test('trust stats update from mock data', async ({ page }) => {
