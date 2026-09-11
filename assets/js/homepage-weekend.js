@@ -1,11 +1,20 @@
-/* Homepage: this-week events as photo cards, right under the hero. */
+/* Homepage: weekend cards + UI stylesheet hook. */
+(function () {
+  if (!document.getElementById('815-ui')) {
+    var l = document.createElement('link');
+    l.id = '815-ui';
+    l.rel = 'stylesheet';
+    l.href = '/assets/css/815local-ui.css';
+    document.head.appendChild(l);
+  }
+})();
 (function () {
   var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   if (!document.getElementById('wk-poster-css')) {
     var st = document.createElement('style');
     st.id = 'wk-poster-css';
-    st.textContent = '.wk-card .wk-fallback{width:100%;height:280px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px 20px;gap:2px;position:relative;overflow:hidden;font-size:inherit;color:#fff;background:radial-gradient(120% 80% at 100% 0%,rgba(255,215,176,.22),transparent 55%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#3a322c,#141414)}.wk-card .wk-fallback::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:4px;background:#e05a12}.wk-fallback .wk-kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#ffd7b0;position:relative;z-index:1}.wk-fallback .wk-bigday{font-family:Georgia,serif;font-size:4.2rem;line-height:.9;font-weight:500;color:#fff;position:relative;z-index:1}.wk-fallback .wk-mon{font-size:13px;font-weight:700;letter-spacing:.18em;color:rgba(255,250,244,.7);position:relative;z-index:1}.wk-t-sports{background:radial-gradient(90% 70% at 110% 10%,rgba(224,90,18,.35),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#3a2418,#141414)}.wk-t-market{background:radial-gradient(90% 70% at 110% 10%,rgba(91,122,87,.4),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#243028,#141414)}.wk-t-music,.wk-t-festival{background:radial-gradient(90% 70% at 110% 10%,rgba(176,70,80,.4),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#2c1820,#141414)}.wk-t-food{background:radial-gradient(90% 70% at 110% 10%,rgba(224,90,18,.45),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#3a2014,#141414)}.wk-t-arts{background:radial-gradient(90% 70% at 110% 10%,rgba(196,140,70,.4),transparent 50%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#2c2418,#141414)}.list-event-card{box-shadow:none!important;border:1px solid #ebe1cc!important}.list-event-card:hover{transform:none!important}.list-event-card:not(:has(.lec-photo)) .lec-color{width:88px!important;position:relative;background-image:repeating-linear-gradient(-28deg,transparent 0 12px,rgba(255,255,255,.12) 12px 13px)!important}.lec-poster{width:108px;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:16px 14px;color:#fff;position:relative;overflow:hidden;background:radial-gradient(120% 80% at 100% 0%,rgba(255,215,176,.2),transparent 55%),repeating-linear-gradient(-28deg,transparent 0 12px,rgba(255,255,255,.06) 12px 13px),linear-gradient(180deg,#2c2622,#141414)}.lec-poster-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#ffd7b0;margin-bottom:6px}.lec-poster-day{font-family:Georgia,serif;font-size:2.4rem;line-height:.9}.lec-poster-mon{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,250,244,.65);margin-top:4px}';
+    st.textContent = '.wk-card .wk-fallback{width:100%;height:280px;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px 20px;gap:2px;position:relative;overflow:hidden;font-size:inherit;color:#fff;background:radial-gradient(120% 80% at 100% 0%,rgba(255,215,176,.22),transparent 55%),repeating-linear-gradient(-28deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px),linear-gradient(165deg,#3a322c,#141414)}.wk-card .wk-fallback::after{content:\"\";position:absolute;left:0;right:0;bottom:0;height:4px;background:#e05a12}.wk-fallback .wk-kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#ffd7b0;position:relative;z-index:1}.wk-fallback .wk-bigday{font-family:Georgia,serif;font-size:4.2rem;line-height:.9;font-weight:500;color:#fff;position:relative;z-index:1}.wk-fallback .wk-mon{font-size:13px;font-weight:700;letter-spacing:.18em;color:rgba(255,250,244,.7);position:relative;z-index:1}';
     document.documentElement.appendChild(st);
   }
 
@@ -76,7 +85,7 @@
       media +
       '<div class="wk-shade"></div>' +
       '<div class="wk-txt">' +
-        (dateLabel ? '<span class="wk-date">' + esc(dateLabel) + (e.start_time ? ' · ' + fmtTime(e.start_time) : '') + '</span>' : '') +
+        (dateLabel ? '<span class="wk-date">' + esc(dateLabel) + (e.start_time ? ' \u00b7 ' + fmtTime(e.start_time) : '') + '</span>' : '') +
         '<h3>' + esc(e.title || 'Community event') + '</h3>' +
         (place ? '<p>' + esc(place) + '</p>' : '') +
       '</div></a>';
