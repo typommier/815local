@@ -1,9 +1,10 @@
 // POST /api/listing-correction
 // Emails 815local@gmail.com when someone flags a listing mistake.
-// Uses RESEND_API_KEY from the Cloudflare Pages environment if set.
-// The page also calls the existing notify-submission function as a backup.
+// Tries Resend first (RESEND_API_KEY on Cloudflare Pages), then the
+// existing Supabase notify-submission function as a backup.
 
 const TO = '815local@gmail.com';
+const NOTIFY_URL = 'https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-submission';
 
 export async function onRequestPost(context) {
   const cors = {
@@ -41,31 +42,57 @@ export async function onRequestPost(context) {
     notes ? 'Notes:\n' + notes : '',
   ].filter(Boolean).join('\n');
 
+  let emailed = false;
+  const via = [];
+
   const key = context.env && context.env.RESEND_API_KEY;
-  if (!key) {
-    return json({ ok: true, emailed: false, reason: 'no_resend_key' }, 200, cors);
+  if (key) {
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + key,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: '815 Local <notifications@815local.com>',
+          to: [TO],
+          reply_to: email || undefined,
+          subject: 'Listing correction: ' + (biz || 'Unknown business'),
+          text,
+        }),
+      });
+      if (res.ok) {
+        emailed = true;
+        via.push('resend');
+      }
+    } catch (e) {}
   }
 
   try {
-    const res = await fetch('https://api.resend.com/emails', {
+    const notifyRes = await fetch(NOTIFY_URL, {
       method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + key,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: '815 Local <notifications@815local.com>',
-        to: [TO],
-        reply_to: email || undefined,
-        subject: 'Listing correction: ' + (biz || 'Unknown business'),
-        text,
+        type: 'claim',
+        business_id: body.business_id || null,
+        business_name: biz,
+        claimant_name: name,
+        role: role || 'Correction',
+        email,
+        phone,
+        verification_method: 'listing_correction',
+        notes: (issues.length ? 'Issues: ' + issues.join('; ') + '\n' : '') + (notes || ''),
+        to: TO,
       }),
     });
-    const emailed = res.ok;
-    return json({ ok: true, emailed }, emailed ? 200 : 502, cors);
-  } catch (e) {
-    return json({ ok: false, error: 'send_failed' }, 502, cors);
-  }
+    if (notifyRes.ok) {
+      emailed = true;
+      via.push('notify-submission');
+    }
+  } catch (e) {}
+
+  return json({ ok: true, emailed, via, to: TO }, 200, cors);
 }
 
 export async function onRequestOptions() {
