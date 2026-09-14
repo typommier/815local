@@ -1,5 +1,5 @@
-// Cloudflare Pages Function for /pages/business.html
-// Old ?id= URLs 301 to the clean /b/name-town URL.
+// Pretty URL /pages/business?id= (Cloudflare strips .html).
+// Same 301 as business.html.js.
 
 const SUPABASE_URL = 'https://kyneaettrynagavewefi.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk';
