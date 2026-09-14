@@ -30,7 +30,8 @@ const STATIC_URLS = [
   { path: '/pages/submit/business.html', changefreq: 'monthly', priority: '0.7' },
   { path: '/pages/submit/event.html', changefreq: 'monthly', priority: '0.7' },
   { path: '/pages/submit/deal.html', changefreq: 'monthly', priority: '0.7' },
-  { path: '/pages/submit/claim-business.html', changefreq: 'monthly', priority: '0.6' },
+  { path: '/pages/submit/claim-business.html', changefreq: 'monthly', priority: '0.4' },
+  { path: '/pages/submit/correction.html', changefreq: 'monthly', priority: '0.6' },
   { path: '/legal/privacy.html', changefreq: 'yearly', priority: '0.3' },
   { path: '/legal/terms.html', changefreq: 'yearly', priority: '0.3' }
 ];
