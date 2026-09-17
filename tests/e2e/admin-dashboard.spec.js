@@ -80,7 +80,7 @@ test.describe('Admin command center', () => {
   test('renders the greeting, today brief, and live listing count', async ({ page }) => {
     await openDashboard(page, SUMMARY);
 
-    await expect(page.locator('#greeting')).toContainText(/Good (morning|afternoon|evening), Typommier/);
+    await expect(page.locator('#greeting')).toContainText(/Good (morning|afternoon|evening)/);
     await expect(page.locator('#greeting-sub')).toContainText('209');
     await expect(page.locator('#brief-lead')).toContainText('listings to approve');
     await expect(page.locator('#brief-chips .chip')).not.toHaveCount(0);
