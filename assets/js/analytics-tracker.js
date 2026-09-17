@@ -20,10 +20,11 @@
   };
 
   function getStore() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null') || defaultStore(); }
-    catch(e) { return defaultStore(); }
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null') || defaultStore();
+    } catch(e) { return defaultStore(); }
   }
-  function saveStore(s) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch(e) {} }
+  function saveStore(s) { try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch(e) {}
+  }
   function defaultStore() {
     return {
       totalViews: 0,
@@ -106,6 +107,28 @@
     else if (href.indexOf('mailto:') === 0) track('click_email', href);
     else if (/google.com\/maps|maps.apple.com|destination=/.test(href)) track('click_directions', href);
   }, true);
+
+  function paintCorrectionCta() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id') || (window.__BIZ_ID || '');
+      var nameEl = document.getElementById('h-name');
+      var name = nameEl ? nameEl.textContent.trim() : '';
+      var href = '/pages/submit/correction.html' +
+        (id || name ? ('?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name)) : '');
+      document.querySelectorAll('a.claim-btn:not(.deal-btn)').forEach(function (a) {
+        a.href = href;
+        if (/claim/i.test(a.textContent)) a.textContent = 'Tell us what\'s wrong \u2192';
+      });
+      var title = document.querySelector('#claim-card .claim-title');
+      var sub = document.querySelector('#claim-card .claim-sub');
+      if (title) title.textContent = 'See a mistake?';
+      if (sub) sub.textContent = 'Wrong hours, phone, or photos? Tell us. We update the listing. No account needed.';
+    } catch (e) {}
+  }
+  paintCorrectionCta();
+  setTimeout(paintCorrectionCta, 400);
+  setTimeout(paintCorrectionCta, 1600);
 
   window._815analytics = {
     getStore,

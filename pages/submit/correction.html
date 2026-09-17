@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>See a Mistake? | 815local</title>
+<meta name="description" content="Spot a wrong hour, phone number, or photo on 815local? Tell us and we will fix the listing. No account needed.">
+<meta property="og:title" content="See a Mistake? | 815local">
+<meta property="og:description" content="Spot a wrong hour, phone number, or photo on 815local? Tell us and we will fix the listing.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://815local.com/pages/submit/correction.html">
+<meta property="og:image" content="https://815local.com/uploads/815local-logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="815local">
+<link rel="canonical" href="https://815local.com/pages/submit/correction.html">
+<link rel="icon" type="image/png" href="/uploads/815local-logo.png">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#fffaf4; --paper:#f4eee3; --surface:#FFFFFF;
+  --ink:#2B2420; --ink-soft:#4A3F37; --muted:#7A6E62;
+  --orange:#E05A12; --orange-deep:#C44C10; --orange-soft:#F3DCC7;
+  --line:#EBE1CC;
+  --shadow-sm:0 6px 18px rgba(43,36,32,.07);
+  --r-lg:28px; --r-md:20px; --r-sm:14px; --r-pill:999px;
+  --maxw:1180px;
+  --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --hw:400; --ht:-0.01em;
+}
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3 { font-family: var(--serif); font-weight: var(--hw); letter-spacing: var(--ht); line-height: 1.14; color: var(--ink); }
+a { color: inherit; text-decoration: none; }
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; border-radius: var(--r-pill); font-family: var(--sans); font-weight: 700; font-size: .92rem; cursor: pointer; border: none; }
+.btn-primary { background: var(--orange); color: #fff; }
+.btn-primary:hover { background: var(--orange-deep); }
+#main-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.nav-inner { display: flex; align-items: center; height: 84px; gap: 24px; }
+.nav-links { display: flex; align-items: center; gap: 30px; margin-right: auto; }
+.nav-link { font-size: .95rem; font-weight: 600; color: var(--ink); opacity: .75; }
+.nav-link:hover { opacity: 1; }
+.page-hero { padding: 56px 0 24px; }
+.hero-eyebrow { font-size: .8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--orange); margin-bottom: 10px; }
+.hero-title { font-size: clamp(2.1rem, 4vw, 3rem); margin-bottom: 14px; }
+.hero-title em { color: var(--orange); font-style: italic; }
+.hero-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7; }
+.claim-section { padding: 24px 0 80px; }
+.claim-layout { display: grid; grid-template-columns: 1fr 1.45fr; gap: 48px; align-items: start; max-width: 960px; margin: 0 auto; }
+.info-panel { position: sticky; top: 110px; }
+.info-panel h2 { font-size: 1.8rem; margin-bottom: 14px; }
+.info-panel p { font-size: .92rem; color: var(--muted); line-height: 1.7; margin-bottom: 22px; }
+.benefit-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.benefit-item { display: flex; gap: 12px; font-size: .88rem; color: var(--muted); line-height: 1.6; }
+.benefit-check { width: 28px; height: 28px; background: var(--orange-soft); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700; font-size: .78rem; }
+.info-note { background: var(--paper); border-radius: var(--r-md); padding: 20px 22px; font-size: .85rem; color: var(--muted); line-height: 1.7; }
+.info-note a { color: var(--orange); font-weight: 700; }
+.claim-form-card { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); padding: 40px; }
+.claim-form-card h3 { font-size: 1.5rem; margin-bottom: 8px; }
+.form-subtitle { font-size: .85rem; color: var(--muted); margin-bottom: 24px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); }
+input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+  width: 100%; padding: 13px 16px; border: 1.5px solid var(--line); border-radius: var(--r-sm);
+  font-family: var(--sans); font-size: .9rem; color: var(--ink); background: var(--surface); outline: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--orange); }
+input.readonly-field { background: var(--paper); }
+textarea { resize: vertical; min-height: 110px; }
+.checks { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.check { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: var(--r-sm); background: var(--surface); cursor: pointer; font-size: .9rem; color: var(--ink-soft); }
+.check:has(input:checked) { border-color: var(--orange); background: var(--orange-soft); color: var(--ink); font-weight: 600; }
+.check input { accent-color: var(--orange); }
+.submit-btn { width: 100%; padding: 15px 26px; background: var(--orange); color: #fff; border: none; border-radius: var(--r-pill); font-weight: 700; font-size: .95rem; cursor: pointer; }
+.submit-btn:hover { background: var(--orange-deep); }
+.submit-btn:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+#claim-error { display: none; color: #991B1B; background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--r-sm); padding: 12px 16px; font-size: .85rem; margin-bottom: 16px; }
+.back-link { display: inline-flex; gap: 6px; font-size: .85rem; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
+.back-link:hover { color: var(--orange); }
+#form-success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 32px 16px; gap: 12px; }
+#form-success h3 { font-size: 1.6rem; }
+#form-success p { font-size: .92rem; color: var(--muted); max-width: 360px; }
+footer { background: var(--paper); border-top: 1px solid var(--line); margin-top: 60px; padding: 40px 0; }
+.footer-copy { font-size: .82rem; color: var(--muted); }
+@media (max-width: 860px) {
+  .claim-layout { grid-template-columns: 1fr; }
+  .info-panel { position: static; }
+}
+@media (max-width: 700px) {
+  .container { padding: 0 20px; }
+  .nav-links { display: none !important; }
+  .nav-inner { height: 72px; }
+  .claim-form-card { padding: 28px 22px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+<link rel="stylesheet" href="/assets/css/815local.css">
+</head>
+<body>
+<nav id="main-nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="/uploads/815local-logo.png" alt="815 Local" width="52" height="52">
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="/">Explore</a>
+        <a class="nav-link" href="/pages/directory.html">Browse</a>
+        <a class="nav-link" href="/pages/events.html">Events</a>
+        <a class="nav-link" href="/pages/deals.html">Deals</a>
+        <a class="nav-link" href="/pages/about.html">About</a>
+      </div>
+      <a class="btn btn-primary" href="/pages/submit/business.html" style="font-size:.82rem;padding:10px 20px;">List your business</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="hero-eyebrow">Listing help</div>
+    <h1 class="hero-title">See a <em>mistake?</em></h1>
+    <p class="hero-sub">Check what is off, add a note, and we will update the listing. You do not need an account.</p>
+  </div>
+</div>
+
+<div class="claim-section">
+  <div class="container">
+    <div class="claim-layout">
+      <div class="info-panel">
+        <h2>We keep the directory current.</h2>
+        <p>Owners do not manage a dashboard. If something is wrong, send it here and we will fix it from Facebook, the business site, or Google.</p>
+        <div class="benefit-list">
+          <div class="benefit-item"><div class="benefit-check">1</div><div>Check the items that are wrong.</div></div>
+          <div class="benefit-item"><div class="benefit-check">2</div><div>Add the correct info if you have it.</div></div>
+          <div class="benefit-item"><div class="benefit-check">3</div><div>We get an email at 815local@gmail.com and update the page.</div></div>
+        </div>
+        <div class="info-note">Prefer to skip the form? Email <a href="mailto:815local@gmail.com">815local@gmail.com</a> with the business name and what to change.</div>
+      </div>
+
+      <div class="claim-form-card">
+        <div id="form-inner">
+          <a class="back-link" id="back-link" href="/pages/directory.html">Back to listing</a>
+          <h3>What needs fixing?</h3>
+          <p class="form-subtitle">This goes straight to 815local@gmail.com. No login.</p>
+          <div id="claim-error"></div>
+
+          <div class="form-group">
+            <label for="c-biz">Business</label>
+            <input type="text" id="c-biz" class="readonly-field" placeholder="Business name">
+          </div>
+
+          <div class="checks" id="issue-list">
+            <label class="check"><input type="checkbox" value="Wrong hours"> Wrong hours</label>
+            <label class="check"><input type="checkbox" value="Wrong phone"> Wrong phone</label>
+            <label class="check"><input type="checkbox" value="Wrong address"> Wrong address</label>
+            <label class="check"><input type="checkbox" value="Wrong photos"> Wrong or missing photos</label>
+            <label class="check"><input type="checkbox" value="Wrong name or category"> Wrong name or category</label>
+            <label class="check"><input type="checkbox" value="Closed or moved"> Business closed or moved</label>
+            <label class="check"><input type="checkbox" value="Other"> Something else</label>
+          </div>
+
+          <div class="form-group">
+            <label for="c-notes">Details</label>
+            <textarea id="c-notes" placeholder="What should it say instead? Hours, phone, address, a better photo link..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="c-name">Your name</label>
+              <input type="text" id="c-name" placeholder="Jane Smith">
+            </div>
+            <div class="form-group">
+              <label for="c-role">Who you are</label>
+              <select id="c-role">
+                <option value="Neighbor" selected>Neighbor / customer</option>
+                <option value="Owner">Owner</option>
+                <option value="Manager">Manager</option>
+                <option value="Staff">Staff</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="c-email">Email so we can follow up</label>
+              <input type="email" id="c-email" placeholder="you@email.com">
+            </div>
+            <div class="form-group">
+              <label for="c-phone">Phone optional</label>
+              <input type="tel" id="c-phone" placeholder="(815) 555-0100">
+            </div>
+          </div>
+
+          <button class="submit-btn" type="button" onclick="submitCorrection()">Send correction</button>
+        </div>
+
+        <div id="form-success">
+          <div style="font-size:48px;">Got it</div>
+          <h3>On its way.</h3>
+          <p>That note is going to 815local@gmail.com. We will update the listing after we check it.</p>
+          <a class="btn btn-primary" id="success-back-link" href="/pages/directory.html">Back to listing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-copy">2026 815local. Minooka, Channahon and Shorewood.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/analytics-tracker.js"></script>
+<script>
+let db = null;
+try {
+  const { createClient } = supabase;
+  db = createClient('https://kyneaettrynagavewefi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt5bmVhZXR0cnluYWdhdmV3ZWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2MTQyNjYsImV4cCI6MjA5MjE5MDI2Nn0.M0II61ANo67dJk-8kz4VCkiwaI4uxdtIFsLI0aR0uZk');
+} catch (e) {}
+
+const params = new URLSearchParams(window.location.search);
+const businessId = params.get('id') || null;
+const businessName = params.get('name') || '';
+if (businessName) document.getElementById('c-biz').value = decodeURIComponent(businessName);
+if (!businessName) document.getElementById('c-biz').classList.remove('readonly-field');
+
+const backLinkHref = businessId
+  ? '/pages/business.html?id=' + encodeURIComponent(businessId)
+  : '/pages/directory.html';
+document.getElementById('back-link').href = backLinkHref;
+document.getElementById('success-back-link').href = backLinkHref;
+
+function showErr(msg) {
+  const err = document.getElementById('claim-error');
+  err.textContent = msg;
+  err.style.display = 'block';
+}
+
+async function submitCorrection() {
+  const biz = document.getElementById('c-biz').value.trim();
+  const name = document.getElementById('c-name').value.trim();
+  const role = document.getElementById('c-role').value;
+  const email = document.getElementById('c-email').value.trim();
+  const phone = document.getElementById('c-phone').value.trim();
+  const notes = document.getElementById('c-notes').value.trim();
+  const issues = Array.from(document.querySelectorAll('#issue-list input:checked')).map(function(el) { return el.value; });
+  const err = document.getElementById('claim-error');
+  const btn = document.querySelector('.submit-btn');
+
+  err.style.display = 'none';
+  err.textContent = '';
+
+  if (!biz) { showErr('Please enter the business name.'); return; }
+  if (!issues.length && !notes) { showErr('Check at least one issue or add a short note.'); return; }
+  if (!name) { showErr('Please add your name so we know who to follow up with.'); return; }
+  if (!email || email.indexOf('@') < 0) { showErr('Please add an email so we can follow up.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  const payload = {
+    business_id: businessId,
+    business_name: biz,
+    claimant_name: name,
+    role: role,
+    email: email,
+    phone: phone,
+    issues: issues,
+    notes: notes,
+    verification_method: 'listing_correction'
+  };
+  const combinedNotes = (issues.length ? 'Issues: ' + issues.join('; ') + '\n' : '') + (notes || '');
+
+  try {
+    if (db) {
+      await db.from('claim_requests').insert([{
+        business_id: businessId || null,
+        business_name: biz,
+        claimant_name: name,
+        role: role,
+        email: email,
+        phone: phone || null,
+        verification_method: 'listing_correction',
+        notes: combinedNotes
+      }]);
+    }
+
+    await Promise.allSettled([
+      fetch('/api/listing-correction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }),
+      fetch('https://kyneaettrynagavewefi.supabase.co/functions/v1/notify-submission', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'claim',
+          to: '815local@gmail.com',
+          business_id: businessId,
+          business_name: biz,
+          claimant_name: name,
+          role: role,
+          email: email,
+          phone: phone,
+          verification_method: 'listing_correction',
+          notes: combinedNotes
+        })
+      })
+    ]);
+
+    document.getElementById('form-inner').style.display = 'none';
+    document.getElementById('form-success').style.display = 'flex';
+  } catch (e) {
+    showErr('Something went wrong. Email 815local@gmail.com and we will take it from there.');
+    btn.disabled = false;
+    btn.textContent = 'Send correction';
+  }
+}
+</script>
+</body>
+</html>
