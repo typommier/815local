@@ -5,9 +5,157 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
 <title>Command Center · 815local</title>
+<link rel="stylesheet" href="/assets/css/admin-command.css">
 </head>
 <body>
-<p>Loading full dashboard…</p>
-<script>location.replace('/admin/dashboard.html?v=cc');</script>
+<div class="banner" id="preview-banner">Preview with sample communications so you can click around. On the live site this signs in and reads Supabase.</div>
+<div class="app">
+  <aside class="side" id="sidebar">
+    <div class="brand">
+      <img class="logo" src="https://815local.com/uploads/815local-logo.png" alt="815local" width="42" height="42">
+      <div><b>815local</b><small>Command Center</small></div>
+    </div>
+    <nav class="snav">
+      <button class="si on" data-view="today"><svg class="ico" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg> Today</button>
+      <button class="si" data-view="inbox"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg> Inbox <span class="badge" id="b-inbox">0</span></button>
+      <button class="si" data-view="queue"><svg class="ico" viewBox="0 0 24 24"><path d="M5 6h14M5 12h14M5 18h10"/></svg> Queue <span class="badge" id="b-queue">0</span></button>
+      <button class="si" data-view="directory"><svg class="ico" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg> Directory</button>
+      <button class="si" data-view="newsletter"><svg class="ico" viewBox="0 0 24 24"><path d="M4 7h16v11H4zM8 7V5h8v2M8 12h8M8 16h5"/></svg> Newsletter</button>
+      <button class="si" data-view="site"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M3 12h18M12 4a14 14 0 0 1 0 16M12 4a14 14 0 0 0 0 16"/></svg> Site</button>
+      <div class="slbl">Tools</div>
+      <a class="si" href="/admin/review-submissions.html"><svg class="ico" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Review submissions</a>
+      <a class="si" href="/admin/edit-business-photos.html"><svg class="ico" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="11" r="1.5"/><path d="M7 17l4-4 3 3 3-4 3 5"/></svg> Photos & media</a>
+      <a class="si" href="/admin/analytics.html"><svg class="ico" viewBox="0 0 24 24"><path d="M4 18V8M10 18V4M16 18v-7M20 18H3"/></svg> Analytics</a>
+      <a class="si" href="/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg> View site</a>
+    </nav>
+    <div class="sfoot">
+      <div class="live"><span class="dot"></span> <span id="armed">Live data</span></div>
+      <div class="user">
+        <div class="av" id="user-avatar">T</div>
+        <div><b id="user-name">Signed in</b><small>815local admin</small></div>
+        <button class="so" id="signout-btn">Sign out</button>
+      </div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <div class="top">
+      <button class="btn menu" id="menu-btn">Menu</button>
+      <label class="search">
+        <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+        <input id="q" placeholder="Search inbox, listings, people…" autocomplete="off">
+      </label>
+      <span class="ghost" id="updated">—</span>
+      <span class="sp"></span>
+      <button class="btn" id="refresh-btn">Refresh</button>
+      <button class="btn btn-o" id="compose-btn">Write back</button>
+    </div>
+    <div class="stage">
+      <section class="view on" id="view-today">
+        <h1 id="greeting">Good morning</h1>
+        <div class="sub" id="greeting-sub">Loading the latest from the directory…</div>
+        <div class="brief">
+          <div class="kicker">The 60-second version</div>
+          <p id="brief-lead">Reading the directory…</p>
+          <div class="chips" id="brief-chips"></div>
+        </div>
+        <div class="g4" id="today-tiles"></div>
+        <div class="g2" style="margin-top:16px">
+          <div class="card">
+            <div class="hd"><h2>Do these next</h2><button class="go" data-view="inbox">Open inbox</button></div>
+            <div id="next-list"></div>
+          </div>
+          <div class="card">
+            <div class="hd"><h2>Just added</h2></div>
+            <div id="recent-list"></div>
+          </div>
+        </div>
+      </section>
+      <section class="view" id="view-inbox">
+        <div class="row">
+          <div>
+            <h1>Inbox</h1>
+            <div class="sub">Every person who reached out — claims, studio, ads, Facebook, flags — in one place.</div>
+          </div>
+        </div>
+        <div class="split">
+          <div class="ilist">
+            <div class="ifilters" id="inbox-filters"></div>
+            <div class="iscroll" id="inbox-list"></div>
+          </div>
+          <div class="detail" id="inbox-detail"></div>
+        </div>
+      </section>
+      <section class="view" id="view-queue">
+        <h1>Publish queue</h1>
+        <div class="sub">Approve what should go live. Reject deletes the row — that cannot be undone.</div>
+        <div class="g2" style="margin-top:16px">
+          <div class="card" id="queue-card"></div>
+          <div class="card" id="queue-side"></div>
+        </div>
+      </section>
+      <section class="view" id="view-directory">
+        <div class="row">
+          <div>
+            <h1>Directory</h1>
+            <div class="sub" id="dir-sub">Live listings you can jump into.</div>
+          </div>
+          <span class="sp"></span>
+          <select class="btn" id="dir-filter">
+            <option value="all">All live</option>
+            <option value="nophoto">Missing photos</option>
+            <option value="nophone">Missing phone</option>
+            <option value="noweb">Missing website</option>
+            <option value="pending">Pending review</option>
+          </select>
+        </div>
+        <div class="g4" id="dir-tiles" style="margin:16px 0"></div>
+        <div class="card" style="overflow:auto">
+          <table class="table">
+            <thead><tr><th>Business</th><th>Town</th><th>Category</th><th>Phone</th><th>Web</th><th>Photos</th><th></th></tr></thead>
+            <tbody id="dir-body"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="view" id="view-newsletter">
+        <h1>815 Weekly</h1>
+        <div class="sub">Subscribers, last broadcasts, and a place to start the next note.</div>
+        <div class="g3" style="margin:16px 0" id="nl-tiles"></div>
+        <div class="g2">
+          <div class="card">
+            <div class="hd"><h2>Recent broadcasts</h2></div>
+            <div id="nl-broadcasts"></div>
+          </div>
+          <div class="card">
+            <div class="hd"><h2>Draft the next one</h2></div>
+            <div class="pad composer" style="border:0;background:transparent;padding-top:8px">
+              <label>Subject</label>
+              <input id="nl-subj" placeholder="This week in the 815">
+              <label>Notes to yourself</label>
+              <textarea id="nl-notes" placeholder="Openings to mention, events, a photo to grab…"></textarea>
+              <div class="row" style="margin-top:10px">
+                <button class="btn" id="nl-save">Save draft on this device</button>
+                <a class="btn btn-p" href="/newsletters/" target="_blank" rel="noopener">Open archive</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="view" id="view-site">
+        <h1>Site & plumbing</h1>
+        <div class="sub">GitHub, Cloudflare, Resend, Facebook — only real numbers, or a connect state.</div>
+        <div class="g2" style="margin-top:16px">
+          <div class="card"><div class="hd"><h2>GitHub</h2><a class="go" href="https://github.com/typommier/815local" target="_blank" rel="noopener">Repo</a></div><div id="gh-body"></div></div>
+          <div class="card"><div class="hd"><h2>Cloudflare</h2></div><div id="cf-body"></div></div>
+          <div class="card"><div class="hd"><h2>Resend</h2></div><div id="rs-body"></div></div>
+          <div class="card"><div class="hd"><h2>Facebook</h2></div><div id="fb-body"></div></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/admin-command.js"></script>
 </body>
 </html>
