@@ -1,10 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
-// The admin command center (/admin/dashboard.html) pulls its whole payload from
-// one admin-gated edge function, then renders GitHub client-side and shows
-// "connect this" states for any integration whose secret is unset. These tests
-// stub all three network surfaces so the render logic is exercised offline, the
-// same approach as admin-photo-tool.spec.js.
+// /admin/dashboard pulls its payload from the admin-gated edge function.
+// Stub Supabase, the summary function, and GitHub so render logic is offline.
 
 const SUMMARY = {
   ok: true,
@@ -55,8 +52,6 @@ async function openDashboard(page, summary) {
     r.fulfill({ status: 200, contentType: 'text/javascript', body: '/* stub */' }));
   await page.route('**/functions/v1/admin-dashboard', r =>
     r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(summary) }));
-  // GitHub is unauthenticated + external; return empty so the panel renders its
-  // "no activity" state without a live call.
   await page.route('https://api.github.com/**', r =>
     r.fulfill({ status: 200, contentType: 'application/json', body: '[]' }));
 
@@ -65,11 +60,12 @@ async function openDashboard(page, summary) {
     window.supabase = {
       createClient: () => ({
         from: () => {
-          const q = { select: () => q, eq: () => q, order: () => q, is: () => q,
-            then: (f) => Promise.resolve({ data: [], error: null, count: 0 }).then(f) };
+          const q = {
+            select: () => q, eq: () => q, order: () => q, is: () => q,
+            then: (f) => Promise.resolve({ data: [], error: null, count: 0 }).then(f),
+          };
           return q;
         },
-        // Non-null session skips the login overlay; the real gate is server-side.
         auth: {
           getSession: () => Promise.resolve({ data: { session }, error: null }),
           signOut: () => Promise.resolve({ error: null }),
@@ -81,41 +77,42 @@ async function openDashboard(page, summary) {
 }
 
 test.describe('Admin command center', () => {
-  test('renders the greeting, overview and the onboarding queue from the summary', async ({ page }) => {
+  test('renders the greeting, today brief, and live listing count', async ({ page }) => {
     await openDashboard(page, SUMMARY);
 
-    // Greeting is time-of-day + the admin's name derived from their email.
     await expect(page.locator('#greeting')).toContainText(/Good (morning|afternoon|evening), Typommier/);
-    await expect(page.locator('#greeting-sub')).toContainText('4');
+    await expect(page.locator('#greeting-sub')).toContainText('209');
+    await expect(page.locator('#brief-lead')).toContainText('listings to approve');
+    await expect(page.locator('#brief-chips .chip')).not.toHaveCount(0);
+    await expect(page.locator('#recent-list')).toContainText('Newest Local Shop');
+    await expect(page.locator('#b-queue')).toHaveText('4');
+  });
 
-    // The 60-second overview summarizes what needs attention.
-    await expect(page.locator('#overview-lead')).toContainText('businesses awaiting review');
-    await expect(page.locator('#overview-chips .chip')).not.toHaveCount(0);
+  test('inbox lists claim requests that need a reply', async ({ page }) => {
+    await openDashboard(page, SUMMARY);
+    await page.locator('.si[data-view="inbox"]').click();
+    await expect(page.locator('#inbox-list')).toContainText('Jane Owner');
+    await expect(page.locator('#inbox-list')).toContainText('Taco Fixx');
+    await expect(page.locator('#inbox-detail')).toContainText('Jane Owner');
+  });
 
-    // The onboarding queue lists the real pending items by name.
-    const queue = page.locator('#queue-body');
-    await expect(queue).toContainText('Businesses awaiting review');
+  test('queue lists pending businesses and events by name', async ({ page }) => {
+    await openDashboard(page, SUMMARY);
+    await page.locator('.si[data-view="queue"]').click();
+    const queue = page.locator('#queue-card');
+    await expect(queue).toContainText('Businesses waiting');
     await expect(queue).toContainText('Pending Coffee Co');
-    await expect(queue).toContainText('Business claim requests');
-    await expect(queue).toContainText('Taco Fixx');
-    await expect(queue).toContainText('Events awaiting review');
+    await expect(queue).toContainText('Events waiting');
     await expect(queue).toContainText('Summer Market');
-
-    // Directory health stat tiles reflect the counts.
-    await expect(page.locator('#directory-body')).toContainText('Live businesses');
-    await expect(page.locator('#directory-body')).toContainText('209');
-
-    // The onboarding nav badge shows the action total.
-    await expect(page.locator('#nb-queue')).toHaveText('4');
   });
 
   test('integrations with no secret set show a connect state, not fake data', async ({ page }) => {
     await openDashboard(page, SUMMARY);
-
-    await expect(page.locator('#fb-body')).toContainText('Not connected yet');
-    await expect(page.locator('#fb-body')).toContainText('FACEBOOK_PAGE_TOKEN');
-    await expect(page.locator('#cf-body')).toContainText('CLOUDFLARE_API_TOKEN');
-    await expect(page.locator('#resend-body')).toContainText('RESEND_API_KEY');
+    await page.locator('.si[data-view="site"]').click();
+    await expect(page.locator('#fb-body')).toContainText('Facebook is off');
+    await expect(page.locator('#fb-body')).toContainText('FACEBOOK_PAGE');
+    await expect(page.locator('#cf-body')).toContainText('CLOUDFLARE');
+    await expect(page.locator('#rs-body')).toContainText('RESEND_API_KEY');
   });
 
   test('approving a pending business calls manage-submissions with the right payload', async ({ page }) => {
@@ -126,13 +123,14 @@ test.describe('Admin command center', () => {
       r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, type: 'business', id: 'p1' }) });
     });
 
-    const row = page.locator('.q-row[data-type="business"]').first();
+    await page.locator('.si[data-view="queue"]').click();
+    const row = page.locator('.task[data-type="business"]').first();
     await row.getByRole('button', { name: 'Approve' }).click();
 
     await expect.poll(() => captured && captured.action).toBe('approve');
     expect(captured.type).toBe('business');
     expect(captured.id).toBe('p1');
-    await expect(page.locator('#toast')).toContainText('Business published');
+    await expect(page.locator('#toast')).toContainText(/business published/i);
   });
 
   test('rejecting asks for confirmation and only fires when confirmed', async ({ page }) => {
@@ -143,14 +141,14 @@ test.describe('Admin command center', () => {
       r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
     });
 
-    // Dismiss the confirm first -> no call.
+    await page.locator('.si[data-view="queue"]').click();
+    const evtRow = page.locator('.task[data-type="event"]').first();
+
     page.once('dialog', d => d.dismiss());
-    const evtRow = page.locator('.q-row[data-type="event"]').first();
     await evtRow.getByRole('button', { name: 'Reject' }).click();
     await page.waitForTimeout(200);
     expect(calls).toBe(0);
 
-    // Accept the confirm -> one reject call.
     page.once('dialog', d => d.accept());
     await evtRow.getByRole('button', { name: 'Reject' }).click();
     await expect.poll(() => calls).toBe(1);
@@ -162,10 +160,14 @@ test.describe('Admin command center', () => {
     clean.counts.pending_businesses = 0;
     clean.counts.pending_events = 0;
     clean.counts.open_claims = 0;
-    clean.queue = { pending_businesses: [], claims: [], studio_inquiries: [], advertise: [], pending_events: [], pending_deals: [], flagged_reviews: [] };
+    clean.queue = {
+      pending_businesses: [], claims: [], studio_inquiries: [],
+      advertise: [], pending_events: [], pending_deals: [], flagged_reviews: [],
+    };
     await openDashboard(page, clean);
 
-    await expect(page.locator('#queue-body')).toContainText('all caught up');
-    await expect(page.locator('#nb-queue')).not.toHaveClass(/show/);
+    await page.locator('.si[data-view="queue"]').click();
+    await expect(page.locator('#queue-card')).toContainText('Queue is empty');
+    await expect(page.locator('#b-queue')).not.toHaveClass(/show/);
   });
 });
