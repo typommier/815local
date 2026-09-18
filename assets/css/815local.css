@@ -205,8 +205,18 @@ body.home .hero-left {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; color: #fff; padding: 48px 24px 56px;
 }
-body.home .hero-eyebrow, body.home .hero-sub, body.home .hero-actions,
+body.home .hero-eyebrow, body.home .hero-actions,
 body.home .hero-statline, body.home .hero-towns { display: none !important; }
+body.home .hero-sub {
+     display: block !important;
+     color: rgba(255,247,237,.92);
+     max-width: 640px;
+     margin: 14px auto 0;
+     font-size: 1rem;
+     line-height: 1.55;
+     text-shadow: 0 1px 10px rgba(0,0,0,.55);
+}
+body.home .hero-sub b { color: #fff; }
 body.home .hero-title {
   font-family: var(--serif); font-weight: 500; color: #fff;
   font-size: clamp(2.1rem, 5.2vw, 3.6rem); letter-spacing: -.03em; line-height: 1.05;
