@@ -1,27 +1,5 @@
 // Edge Function: manage-submissions
-//
-// Backs the admin submissions review hub (/admin/review-submissions.html):
-// list, approve, or reject the pending deals and events sitting in the
-// is_active = false queue.
-//
-// This must be a server-side function: the deals and events tables let the
-// anon key read only is_active = true rows and never update them, so pending
-// items can't be listed or approved from the browser. All access runs through
-// the service role here, gated on the ADMIN_EMAILS allowlist (fails closed),
-// the same model as manage-business-photos and manage-media.
-//
-// Request body (JSON), one of:
-//   { "action": "list" }
-//     -> { ok, deals: [ ...pending ], events: [ ...pending ] }
-//   { "action": "approve", "type": "deal" | "event" | "business", "id": "uuid" }
-//     -> { ok, type, id }                 // sets is_active = true (publishes it)
-//   { "action": "reject",  "type": "deal" | "event" | "business", "id": "uuid" }
-//     -> { ok, type, id }                 // deletes the row
-//
-// "business" is here so the command-center dashboard can approve/reject the
-// pending business submissions (businesses.is_active = false) inline. It is not
-// in handleList (the review-submissions hub only lists deals + events); the
-// dashboard sources its pending-business list from the admin-dashboard summary.
+// CORS locked to 815local.com. Deploy to take effect.
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -41,11 +19,21 @@ type Kind = keyof typeof TABLE;
 const DEAL_COLS = "id, business_id, business_name, category, title, description, discount, expiry_date, terms, contact_name, contact_email, contact_phone, created_at";
 const EVENT_COLS = "id, business_id, title, description, event_type, event_date, start_time, end_time, location_name, address, city, organizer, url, price, created_at";
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey",
-};
+const ALLOWED_ORIGINS = new Set([
+  "https://815local.com",
+  "https://www.815local.com",
+]);
+function corsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get("origin") || "";
+  const allow = ALLOWED_ORIGINS.has(origin) ? origin : "https://815local.com";
+  return {
+    "Access-Control-Allow-Origin": allow,
+    "Vary": "Origin",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, apikey",
+  };
+}
+const CORS = corsHeaders(new Request("https://815local.com"));
 
 function json(body: unknown, init: ResponseInit = {}) {
   return new Response(JSON.stringify(body), {
@@ -54,9 +42,6 @@ function json(body: unknown, init: ResponseInit = {}) {
   });
 }
 
-// Reject unless the caller's bearer token belongs to an allowlisted admin.
-// verify_jwt only proves the token is signed by the project (the anon key
-// passes too), so the email allowlist is the real gate.
 async function requireAdmin(req: Request): Promise<Response | null> {
   const authHeader = req.headers.get("Authorization") ?? "";
   if (!authHeader || ADMIN_EMAILS.length === 0) {
@@ -109,7 +94,7 @@ async function handleReject(body: any): Promise<Response> {
 }
 
 Deno.serve(async (req: Request) => {
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(req) });
   if (req.method !== "POST") return json({ ok: false, error: "method not allowed" }, { status: 405 });
 
   const denied = await requireAdmin(req);
