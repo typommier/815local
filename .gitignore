@@ -2,6 +2,15 @@ node_modules/
 playwright-report/
 test-results/
 
+# Secrets and local env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+service_role*
+google-service-account*.json
+
 # Local-only scrapers (run on Ty's machine, need server-side keys)
 fetch_photos.py
 fetch_photos_local.py

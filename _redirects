@@ -1,3 +1,17 @@
 /minooka    /pages/minooka.html    200
 /channahon  /pages/channahon.html  200
 /shorewood  /pages/shorewood.html  200
+
+# Do not serve internal / VCS / backup paths.
+/CLAUDE.md                 /404.html  404
+/_backups/*                /404.html  404
+/index-v1-backup           /404.html  404
+/index-v1-backup.html      /404.html  404
+/mockups/*                 /404.html  404
+/supabase/*                /404.html  404
+/.github/*                 /404.html  404
+/package.json              /404.html  404
+/package-lock.json         /404.html  404
+/playwright.config.js      /404.html  404
+/tests/*                   /404.html  404
+/.gitignore                /404.html  404
