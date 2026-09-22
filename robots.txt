@@ -1,9 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
-Disallow: /_backups/
-Disallow: /index-v1-backup.html
-Disallow: /mockups/
 Disallow: /supabase/
 Disallow: /functions/
 Disallow: /CLAUDE.md

@@ -2,12 +2,44 @@
 /channahon  /pages/channahon.html  200
 /shorewood  /pages/shorewood.html  200
 
+# Legacy root URLs (were HTML redirect stubs) -> real pages.
+/815local-about                   /pages/about.html  301
+/815local-about.html              /pages/about.html  301
+/815local-advertise               /pages/advertise.html  301
+/815local-advertise.html          /pages/advertise.html  301
+/815local-blog-origin-story       /pages/blog/origin-story.html  301
+/815local-blog-origin-story.html  /pages/blog/origin-story.html  301
+/815local-blog                    /pages/blog.html  301
+/815local-blog.html               /pages/blog.html  301
+/815local-business                /pages/business.html  301
+/815local-business.html           /pages/business.html  301
+/815local-claim-business          /pages/submit/claim-business.html  301
+/815local-claim-business.html     /pages/submit/claim-business.html  301
+/815local-cookie-settings         /legal/cookie-settings.html  301
+/815local-cookie-settings.html    /legal/cookie-settings.html  301
+/815local-deals                   /pages/deals.html  301
+/815local-deals.html              /pages/deals.html  301
+/815local-directory               /pages/directory.html  301
+/815local-directory.html          /pages/directory.html  301
+/815local-events                  /pages/events.html  301
+/815local-events.html             /pages/events.html  301
+/815local-new-openings            /pages/directory.html?sort=newest  301
+/815local-new-openings.html       /pages/directory.html?sort=newest  301
+/815local-profile                 /  301
+/815local-profile.html            /  301
+/815local-submit-business         /pages/submit/business.html  301
+/815local-submit-business.html    /pages/submit/business.html  301
+/815local-submit-deal             /pages/submit/deal.html  301
+/815local-submit-deal.html        /pages/submit/deal.html  301
+/815local-submit-event            /pages/submit/event.html  301
+/815local-submit-event.html       /pages/submit/event.html  301
+/privacy                          /legal/privacy.html  301
+/privacy.html                     /legal/privacy.html  301
+/terms                            /legal/terms.html  301
+/terms.html                       /legal/terms.html  301
+
 # Do not serve internal / VCS / backup paths.
 /CLAUDE.md                 /404.html  404
-/_backups/*                /404.html  404
-/index-v1-backup           /404.html  404
-/index-v1-backup.html      /404.html  404
-/mockups/*                 /404.html  404
 /supabase/*                /404.html  404
 /.github/*                 /404.html  404
 /package.json              /404.html  404

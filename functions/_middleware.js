@@ -5,9 +5,6 @@
 
 const BLOCK = [
   /^\/CLAUDE\.md$/i,
-  /^\/_backups(\/|$)/i,
-  /^\/index-v1-backup(\.html)?$/i,
-  /^\/mockups(\/|$)/i,
   /^\/supabase(\/|$)/i,
   /^\/\.github(\/|$)/i,
   /^\/package(-lock)?\.json$/i,
