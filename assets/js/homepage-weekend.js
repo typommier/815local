@@ -85,8 +85,10 @@
     var place = e.location_name || e.city || '';
     var dateLabel = d ? (DAYS[d.getDay()] + ' ' + d.getDate()) : '';
     var slug = typeSlug(e.event_type);
-    var media = e.image_url
-      ? '<img class="wk-photo" src="' + esc(e.image_url) + '" alt="">'
+    var photo = window.eventPhoto ? window.eventPhoto(e) : (e.image_url ? { src: e.image_url, alt: '', pos: 'center' } : null);
+    var media = photo
+      ? '<img class="wk-photo" src="' + esc(photo.src) + '" alt="' + esc(photo.alt) + '"' +
+        (photo.pos !== 'center' ? ' style="object-position:' + photo.pos + '"' : '') + '>'
       : '<div class="wk-fallback wk-t-' + slug + '"></div>';
     return '<a class="wk-card" href="/pages/events.html?event=' + encodeURIComponent(e.id) + '">' +
       media +
