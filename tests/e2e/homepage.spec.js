@@ -23,7 +23,7 @@ test.describe('Homepage', () => {
   test('hero section renders', async ({ page }) => {
     await expect(page.locator('#hero-stat-line')).toBeVisible();
     await expect(page.locator('#hero-q')).toBeVisible();
-    await expect(page.locator('.hero-title')).toContainText(/right around here/i);
+    await expect(page.locator('.hero-title')).toContainText(/local guide to/i);
   });
 
   test('trust stats update from mock data', async ({ page }) => {
