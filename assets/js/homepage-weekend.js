@@ -59,8 +59,8 @@
     hero.parentNode.insertBefore(upcoming, hero.nextSibling);
     var eye = upcoming.querySelector('.eyebrow');
     var title = upcoming.querySelector('.sec-title');
-    if (eye) eye.textContent = 'This weekend';
-    if (title) title.innerHTML = "What's on <em>around here</em>";
+    if (eye) eye.textContent = 'Events';
+    if (title) title.innerHTML = "Coming up <em>in the 815</em>";
     upcoming.style.display = '';
     upcoming.classList.add('visible');
     var row = document.getElementById('upcoming-row');
