@@ -1,12 +1,12 @@
 /* ============================================================
    815local hybrid design system
    Charcoal header + circular badge · cream body · rust CTA
-   Display: Fraunces · Text: Source Sans 3
+   Display: Newsreader · Text: Source Sans 3
    Linked by every public page. Loads AFTER each page's inline
    <style>, so these tokens and chrome rules win.
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,600;1,6..72,600&family=Source+Sans+3:wght@400;500;600;700&display=swap");
 
 :root {
   --badge: #141414;
@@ -62,13 +62,13 @@
   --fast: 0.15s ease;
   --med: 0.22s ease;
 
-  --serif: "Fraunces", Georgia, "Iowan Old Style", serif;
+  --serif: "Newsreader", Georgia, "Iowan Old Style", serif;
   --sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: var(--serif);
   --font-text: var(--sans);
   --font-mono: var(--sans);
-  --hw: 500;
-  --ht: -0.03em;
+  --hw: 600;
+  --ht: -0.02em;
 }
 
 body {
@@ -218,8 +218,8 @@ body.home .hero-sub {
 }
 body.home .hero-sub b { color: #fff; }
 body.home .hero-title {
-  font-family: var(--serif); font-weight: 500; color: #fff;
-  font-size: clamp(2.1rem, 5.2vw, 3.6rem); letter-spacing: -.03em; line-height: 1.05;
+  font-family: var(--serif); font-weight: 600; color: #fff;
+  font-size: clamp(2.1rem, 5.2vw, 3.6rem); letter-spacing: -.02em; line-height: 1.05;
   text-shadow: 0 2px 18px rgba(0,0,0,.55); margin: 0;
 }
 body.home .hero-title em, body.home .hero-title .line2 { color: #ffd7b0; font-style: italic; }
@@ -260,7 +260,7 @@ body.home .search-go { height: auto; border-radius: 0; padding: 0 22px; }
   display: inline-block; background: #141414; color: #fff; border-radius: 6px;
   font-size: 11px; font-weight: 700; letter-spacing: .06em; padding: 5px 8px; margin-bottom: 8px;
 }
-.wk-card h3 { font-family: var(--serif); font-size: 1.35rem; font-weight: 500; line-height: 1.15; color: #fff; margin: 0; }
+.wk-card h3 { font-family: var(--serif); font-size: 1.35rem; font-weight: 600; line-height: 1.15; color: #fff; margin: 0; }
 .wk-card p { font-size: 13px; color: #e8dccb; margin-top: 4px; }
 .wk-card .wk-fallback {
   width: 100%; height: 280px;
@@ -405,7 +405,7 @@ body.home .cat-name { font-family: var(--sans); font-size: 12px; font-weight: 60
 .wk-card:hover { transform: none; box-shadow: none; }
 
 .search-hero { background: var(--bg) !important; }
-.search-hero-title, .page-hero-title { font-family: var(--serif); font-weight: 500; }
+.search-hero-title, .page-hero-title { font-family: var(--serif); font-weight: 600; }
 
 @media (max-width: 800px) {
   body.home .cat-grid { grid-template-columns: 1fr 1fr; }
