@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
+  <title>815 Local: The Weekly</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <!-- Google Fonts load as progressive enhancement only. Web-safe fallbacks carry the design. -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Progressive enhancement only. All critical styling is also inlined. */
+    body { margin: 0; padding: 0; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table { border-collapse: collapse; }
+    img { border: 0; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+    a { text-decoration: none; }
+    .stripe-band {
+      background-color: #C4622D;
+      background-image: repeating-linear-gradient(45deg, rgba(34,26,23,0.05) 0 2px, transparent 2px 12px);
+    }
+    @media only screen and (max-width: 620px) {
+      .container { width: 100% !important; }
+      .px { padding-left: 22px !important; padding-right: 22px !important; }
+      .stack { display: block !important; width: 100% !important; }
+      .h1 { font-size: 30px !important; }
+    }
+    @media (prefers-color-scheme: dark) {
+      /* Keep the cream canvas readable. Email dark-mode support is partial, so we
+         only nudge the body canvas and rely on the ink/bone blocks for contrast. */
+      .canvas { background-color: #2A211C !important; }
+      .card { background-color: #3A2F29 !important; }
+      .card-text { color: #FBF6EA !important; }
+      .card-muted { color: #D8C9B6 !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#F1E7D2;">
+  <!-- Preheader: hidden inbox preview text -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#F1E7D2; opacity:0;">
+    {{preheader_text}}
+    &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+  </div>
+
+  <!-- Outer canvas -->
+  <table role="presentation" class="canvas" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F1E7D2;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+
+        <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+        <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px;">
+
+          <!-- ============ MASTHEAD ============ -->
+          <tr>
+            <td class="px" style="background-color:#221A17; padding:26px 36px; border-radius:14px 14px 0 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="left" valign="middle" style="font-family:'Space Grotesk','Arial Black',Helvetica,Arial,sans-serif; font-weight:800; font-size:26px; letter-spacing:-0.5px; line-height:1;">
+                    <span style="color:#E07A48;">815</span><span style="color:#FBF6EA;">&nbsp;Local</span>
+                  </td>
+                  <td align="right" valign="middle" style="font-family:'Inter',Arial,Helvetica,sans-serif;">
+                    <div style="color:#E07A48; font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;">The Weekly</div>
+                    <div style="color:#A99A8E; font-size:12px; font-weight:500; margin-top:3px;">{{issue_date}}</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============ INTRO ============ -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:32px 36px 24px;">
+              <p class="card-text" style="margin:0 0 10px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:18px; font-weight:700; color:#221A17;">{{greeting_line}}</p>
+              <p class="card-muted" style="margin:0; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:15px; line-height:1.6; color:#4B3E38;">{{intro_line}}</p>
+            </td>
+          </tr>
+
+          <!-- ============ NEW ON THE DIRECTORY ============ -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:14px 36px 8px;">
+              <!-- Offset-shadow pill header (emulated for Outlook) -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding:0 0 2px 2px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#221A17" style="border-radius:100px;">
+                      <tr><td style="padding:2px 0 0 0;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#C4622D" style="border:2px solid #221A17; border-radius:100px;">
+                          <tr>
+                            <td style="padding:7px 16px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:#FBF6EA;">New on the directory</td>
+                          </tr>
+                        </table>
+                      </td></tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- repeat this row per business; populator excludes chains -->
+          <!-- BEGIN:new_spots -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:10px 36px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FBF6EA; border:2px solid #221A17; border-radius:12px;">
+                <tr>
+                  <td style="padding:18px 20px;">
+                    <p style="margin:0 0 4px; font-family:'Space Grotesk','Arial Black',Helvetica,Arial,sans-serif; font-size:19px; font-weight:800; color:#221A17;">{{business_category_emoji}} {{business_name}}</p>
+                    <p style="margin:0 0 10px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:13px; font-weight:600; color:#786A62;">{{business_town}} {{business_badge}}</p>
+                    <p style="margin:0 0 14px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:14px; line-height:1.55; color:#4B3E38;">{{business_blurb}}</p>
+                    <a href="https://815local.com/pages/business.html?id={{business_id}}" style="font-family:'Inter',Arial,Helvetica,sans-serif; font-size:13px; font-weight:700; color:#A44C1E; border-bottom:2px solid #A44C1E; padding-bottom:2px;">View listing &#8594;</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- END:new_spots -->
+
+          <!-- omit entire block, header included, when no active deals -->
+          <!-- BEGIN:deals_section -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:20px 36px 8px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding:0 0 2px 2px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#221A17" style="border-radius:100px;">
+                      <tr><td style="padding:2px 0 0 0;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#C4622D" style="border:2px solid #221A17; border-radius:100px;">
+                          <tr>
+                            <td style="padding:7px 16px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:#FBF6EA;">Deals this week</td>
+                          </tr>
+                        </table>
+                      </td></tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- repeat per deal -->
+          <!-- BEGIN:deals -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:10px 36px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FBF6EA; border:2px solid #221A17; border-radius:12px;">
+                <tr>
+                  <td width="6" style="background-color:#0E7490; border-radius:12px 0 0 12px;">&nbsp;</td>
+                  <td style="padding:16px 20px;">
+                    <p style="margin:0 0 4px; font-family:'Space Grotesk','Arial Black',Helvetica,Arial,sans-serif; font-size:17px; font-weight:800; color:#221A17;">{{deal_title}}</p>
+                    <p style="margin:0 0 6px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:14px; font-weight:700; color:#A44C1E;">{{deal_discount}}</p>
+                    <p style="margin:0; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:13px; font-weight:600; color:#786A62;">{{deal_business_name}}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- END:deals -->
+          <!-- END:deals_section -->
+
+          <!-- omit entire block when no upcoming events -->
+          <!-- BEGIN:events_section -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:20px 36px 8px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding:0 0 2px 2px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#221A17" style="border-radius:100px;">
+                      <tr><td style="padding:2px 0 0 0;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#C4622D" style="border:2px solid #221A17; border-radius:100px;">
+                          <tr>
+                            <td style="padding:7px 16px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:11px; font-weight:800; letter-spacing:2px; text-transform:uppercase; color:#FBF6EA;">This weekend</td>
+                          </tr>
+                        </table>
+                      </td></tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- repeat per event -->
+          <!-- BEGIN:events -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:10px 36px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FBF6EA; border:2px solid #221A17; border-radius:12px;">
+                <tr>
+                  <td width="58" valign="top" style="padding:14px 0 14px 14px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" bgcolor="#221A17" width="48" style="border-radius:8px;">
+                      <tr><td align="center" style="padding:8px 4px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:12px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#FBF6EA; line-height:1.2;">{{event_date_short}}</td></tr>
+                    </table>
+                  </td>
+                  <td valign="top" style="padding:14px 18px 14px 12px;">
+                    <p style="margin:0 0 4px; font-family:'Space Grotesk','Arial Black',Helvetica,Arial,sans-serif; font-size:16px; font-weight:800; color:#221A17;">{{event_title}}</p>
+                    <p style="margin:0; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:13px; font-weight:600; color:#786A62;">{{event_time}} &#183; {{event_location}}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- END:events -->
+          <tr>
+            <td class="px card" style="background-color:#F7EFDD; padding:8px 36px 4px;">
+              <a href="https://815local.com/pages/events.html" style="font-family:'Inter',Arial,Helvetica,sans-serif; font-size:13px; font-weight:700; color:#A44C1E; border-bottom:2px solid #A44C1E; padding-bottom:2px;">See the full events calendar &#8594;</a>
+            </td>
+          </tr>
+          <!-- END:events_section -->
+
+          <!-- spacer before CTA -->
+          <tr><td class="card" style="background-color:#F7EFDD; height:18px; line-height:18px; font-size:0;">&nbsp;</td></tr>
+
+          <!-- ============ CTA BAND ============ -->
+          <tr>
+            <td class="stripe-band px" align="center" bgcolor="#C4622D" style="background-color:#C4622D; padding:34px 36px;">
+              <p style="margin:0 0 18px; font-family:'Space Grotesk','Arial Black',Helvetica,Arial,sans-serif; font-size:22px; font-weight:800; color:#FBF6EA;">Find your next local spot.</p>
+              <!-- Bulletproof button -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                <tr>
+                  <td align="center" bgcolor="#221A17" style="border-radius:100px;">
+                    <!--[if mso]>
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://815local.com/pages/directory.html" style="height:48px;v-text-anchor:middle;width:268px;" arcsize="50%" strokecolor="#221A17" fillcolor="#221A17">
+                    <w:anchorlock/>
+                    <center style="color:#FBF6EA;font-family:Arial,sans-serif;font-size:15px;font-weight:bold;">Browse the directory &#8594;</center>
+                    </v:roundrect>
+                    <![endif]-->
+                    <!--[if !mso]><!-- -->
+                    <a href="https://815local.com/pages/directory.html" style="display:inline-block; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:15px; font-weight:800; color:#FBF6EA; padding:15px 30px; border-radius:100px; background-color:#221A17;">Browse the directory &#8594;</a>
+                    <!--<![endif]-->
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============ FOOTER (CAN-SPAM) ============ -->
+          <tr>
+            <td class="px" style="background-color:#221A17; padding:30px 36px 34px; border-radius:0 0 14px 14px;">
+              <p style="margin:0 0 14px; font-family:'Space Grotesk','Arial Black',Helvetica,Arial,sans-serif; font-size:18px; font-weight:800;">
+                <span style="color:#E07A48;">815</span><span style="color:#FBF6EA;">&nbsp;Local</span>
+              </p>
+              <p style="margin:0 0 12px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:#A99A8E;">
+                Minooka &#160;&#183;&#160; Channahon &#160;&#183;&#160; Shorewood
+              </p>
+              <p style="margin:0 0 14px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#A99A8E;">
+                You are getting this because you subscribed at <a href="https://815local.com" style="color:#E07A48; font-weight:600;">815local.com</a>.<br>
+                Questions? Reach us at <a href="mailto:815local@gmail.com" style="color:#E07A48; font-weight:600;">815local@gmail.com</a>.
+              </p>
+              <p style="margin:0 0 14px; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:12px; line-height:1.6; color:#786A62;">
+                {{mailing_address}}
+              </p>
+              <p style="margin:0; font-family:'Inter',Arial,Helvetica,sans-serif; font-size:13px; color:#A99A8E;">
+                <a href="{{unsubscribe_url}}" style="color:#FBF6EA; font-weight:700; border-bottom:1px solid #786A62; padding-bottom:1px;">Unsubscribe</a>
+                &#160;&#160;&#183;&#160;&#160;
+                <span style="color:#786A62;">&#169; {{year}} 815local.com</span>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+        <!--[if mso]></td></tr></table><![endif]-->
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
