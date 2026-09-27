@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>815 Local — Logo Files & Usage Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --char:#17110E; --char2:#241C14; --cream:#F6EFE3; --bone:#F4EDE2;
+    --orange:#D9743C; --orange-d:#BC5A22; --muted:#8A7B64; --line:#e4ddcf;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{ background:var(--cream); color:var(--char); font-family:'Hanken Grotesk',sans-serif; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:980px; margin:0 auto; padding:64px 32px 96px; }
+
+  /* header */
+  header{ display:flex; align-items:center; gap:20px; padding-bottom:28px; border-bottom:2px solid var(--char); }
+  header img{ height:74px; width:auto; display:block; }
+  header .htxt h1{ font-family:'DM Serif Display',serif; font-size:34px; margin:0; line-height:1; }
+  header .htxt p{ margin:8px 0 0; font-size:14px; color:var(--muted); font-weight:600; letter-spacing:.2px; }
+
+  .lead{ font-size:18px; line-height:1.6; margin:34px 0 10px; max-width:64ch; }
+  .lead b{ color:var(--orange-d); }
+
+  /* format primer */
+  .primer{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:30px 0 12px; }
+  .pcard{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px 24px; }
+  .pcard h3{ margin:0 0 6px; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:var(--orange-d); }
+  .pcard .big{ font-family:'DM Serif Display',serif; font-size:24px; margin:0 0 10px; }
+  .pcard p{ margin:0; font-size:14px; line-height:1.6; color:#5c5142; }
+  .pcard p+p{ margin-top:10px; }
+
+  h2.section{ font-family:'DM Serif Display',serif; font-size:26px; margin:54px 0 4px; }
+  .section-sub{ font-size:14px; color:var(--muted); margin:0 0 22px; }
+
+  /* asset rows */
+  .asset{ display:grid; grid-template-columns:240px 1fr; gap:28px; align-items:center;
+          background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px; margin-bottom:16px; }
+  .thumb{ height:150px; border-radius:11px; display:flex; align-items:center; justify-content:center; padding:18px; overflow:hidden; }
+  .thumb.light{ background:#efe9dd; }
+  .thumb.dark{ background:var(--char); }
+  .thumb.checker{ background:
+      linear-gradient(45deg,#e7e0d2 25%,transparent 25%),
+      linear-gradient(-45deg,#e7e0d2 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#e7e0d2 75%),
+      linear-gradient(-45deg,transparent 75%,#e7e0d2 75%);
+      background-size:18px 18px; background-position:0 0,0 9px,9px -9px,-9px 0; background-color:#f7f2e8; }
+  .thumb img{ max-width:100%; max-height:100%; display:block; }
+  .meta h3{ margin:0; font-size:19px; }
+  .meta .files{ display:flex; gap:8px; margin:10px 0 12px; flex-wrap:wrap; }
+  .chip{ font-size:11px; font-weight:800; letter-spacing:.5px; padding:4px 10px; border-radius:999px; }
+  .chip.svg{ background:#eadfce; color:#7a5a28; }
+  .chip.png{ background:#e3ecdf; color:#4a6b43; }
+  .chip.dim{ background:#efe9dd; color:var(--muted); }
+  .meta p{ margin:0; font-size:14px; line-height:1.6; color:#5c5142; }
+  .meta p b{ color:var(--char); }
+
+  /* color row */
+  .swatches{ display:flex; gap:14px; flex-wrap:wrap; margin:14px 0 0; }
+  .sw{ display:flex; align-items:center; gap:11px; background:#fff; border:1px solid var(--line); border-radius:11px; padding:10px 14px 10px 11px; }
+  .sw i{ width:34px; height:34px; border-radius:8px; display:block; border:1px solid rgba(0,0,0,.08); }
+  .sw .n{ font-size:13px; font-weight:800; }
+  .sw .h{ font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+
+  .note{ font-size:13px; color:var(--muted); line-height:1.6; margin-top:34px; padding-top:20px; border-top:1px solid var(--line); }
+  @media(max-width:680px){
+    .primer{ grid-template-columns:1fr; }
+    .asset{ grid-template-columns:1fr; }
+    .thumb{ height:120px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="png/lockup-editorial.png" alt="815 Local logo">
+    <div class="htxt">
+      <h1>Logo Files &amp; Usage Guide</h1>
+      <p>815 Local — the Pin direction · everything you need to drop the logo anywhere</p>
+    </div>
+  </header>
+
+  <p class="lead">Every logo below comes in <b>two formats</b>. The rule of thumb: reach for <b>SVG</b> wherever the tool accepts it (it stays razor-sharp at any size), and use <b>PNG</b> everywhere else. Both have transparent backgrounds unless noted.</p>
+
+  <div class="primer">
+    <div class="pcard">
+      <h3>SVG</h3>
+      <p class="big">For screens &amp; print</p>
+      <p>Infinitely scalable — never blurry, never pixelated. The brand fonts are <b>built into the file</b>, so it looks identical on any computer, even offline.</p>
+      <p><b>Use for:</b> your website &amp; favicon, anything going to a printer (signs, stickers, shirts), and design tools like Canva and Figma.</p>
+    </div>
+    <div class="pcard">
+      <h3>PNG</h3>
+      <p class="big">For everyday use</p>
+      <p>A standard image file that works everywhere with no fuss. These are exported at high resolution so they stay crisp.</p>
+      <p><b>Use for:</b> Google Docs &amp; Word, email signatures, slide decks, social posts, and anywhere "insert image" expects a photo.</p>
+    </div>
+  </div>
+
+  <!-- LOCKUPS -->
+  <h2 class="section">Primary logos</h2>
+  <p class="section-sub">Your default, go-to logo. Use the editorial version most of the time.</p>
+
+  <div class="asset">
+    <div class="thumb light"><img src="png/lockup-editorial.png" alt="815 Local editorial lockup"></div>
+    <div class="meta">
+      <h3>Editorial lockup — the main logo</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span></div>
+      <p>The pin + "815 Local" in the newsletter's serif. <b>This is your primary logo</b> — use it on the website header, email masthead, business cards, and the top of documents. Best on light/cream backgrounds.</p>
+    </div>
+  </div>
+
+  <div class="asset">
+    <div class="thumb light"><img src="png/lockup-horizontal-dark.png" alt="815 Local horizontal lockup"></div>
+    <div class="meta">
+      <h3>Horizontal lockup (LOCAL)</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span></div>
+      <p>The bolder, more compact alternative for tight spaces — nav bars, footers, sponsor strips. The "<b>dark</b>" file is for light backgrounds.</p>
+    </div>
+  </div>
+
+  <div class="asset">
+    <div class="thumb dark"><img src="png/lockup-horizontal-reversed.png" alt="815 Local reversed lockup"></div>
+    <div class="meta">
+      <h3>Horizontal lockup — reversed</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span></div>
+      <p>Same logo with cream text for <b>dark backgrounds</b> (charcoal headers, photos, dark email footers). Use this whenever the dark version would disappear.</p>
+    </div>
+  </div>
+
+  <!-- MARKS -->
+  <h2 class="section">The pin mark (icon only)</h2>
+  <p class="section-sub">Just the symbol — for when the full name doesn't fit or is already nearby.</p>
+
+  <div class="asset">
+    <div class="thumb checker"><img src="png/pin-mark-color.png" alt="Pin mark, color"></div>
+    <div class="meta">
+      <h3>Pin mark — color</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span></div>
+      <p>The signature icon. Use it as a profile picture, watermark, bullet/section marker, or "Featured on 815 Local" sticker. Works on light backgrounds and photos.</p>
+    </div>
+  </div>
+
+  <div class="asset">
+    <div class="thumb light"><img src="png/pin-mark-charcoal.png" alt="Pin mark, charcoal"></div>
+    <div class="meta">
+      <h3>Pin mark — charcoal &amp; one-color</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span><span class="chip dim">+ mono black</span></div>
+      <p>For when color isn't available — a charcoal version, plus a solid <b>one-color</b> version (the digits become a dot) for stamps, faxable flyers, or embroidery.</p>
+    </div>
+  </div>
+
+  <!-- DIGITAL -->
+  <h2 class="section">Ready-made for apps &amp; social</h2>
+  <p class="section-sub">Pre-built at the exact sizes these platforms ask for. These have solid backgrounds on purpose.</p>
+
+  <div class="asset">
+    <div class="thumb light"><img src="png/app-icon.png" alt="App icon" style="height:110px;border-radius:24px;"></div>
+    <div class="meta">
+      <h3>App icon — 1024×1024</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span></div>
+      <p>The square tile for an app store listing or phone home screen. Upload the PNG directly wherever an app icon is requested.</p>
+    </div>
+  </div>
+
+  <div class="asset">
+    <div class="thumb light"><img src="png/favicon.png" alt="Favicon" style="height:88px;border-radius:18px;"></div>
+    <div class="meta">
+      <h3>Favicon — 512×512</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span></div>
+      <p>The tiny icon in a browser tab. The "815" simplifies to a dot so it stays legible when shrunk. Most site builders accept the <b>SVG</b> or PNG here.</p>
+    </div>
+  </div>
+
+  <div class="asset">
+    <div class="thumb light"><img src="png/social-avatar.png" alt="Social avatar" style="height:110px;border-radius:50%;"></div>
+    <div class="meta">
+      <h3>Social avatar — 1024×1024</h3>
+      <div class="files"><span class="chip svg">SVG</span><span class="chip png">PNG</span></div>
+      <p>Square profile photo for Instagram, Facebook, etc. The full mark is centered so it survives being cropped into a circle.</p>
+    </div>
+  </div>
+
+  <!-- COLORS -->
+  <h2 class="section">Brand colors</h2>
+  <p class="section-sub">If you ever need to match the logo by hand (backgrounds, text, buttons).</p>
+  <div class="swatches">
+    <div class="sw"><i style="background:#17110E"></i><div><div class="n">Charcoal</div><div class="h">#17110E</div></div></div>
+    <div class="sw"><i style="background:#D9743C"></i><div><div class="n">Burnt Orange</div><div class="h">#D9743C</div></div></div>
+    <div class="sw"><i style="background:#F6EFE3"></i><div><div class="n">Cream</div><div class="h">#F6EFE3</div></div></div>
+    <div class="sw"><i style="background:#E0A957"></i><div><div class="n">Amber</div><div class="h">#E0A957</div></div></div>
+  </div>
+
+  <p class="note"><b>Where the files live:</b> the matching files are in the <b>svg/</b> and <b>png/</b> folders next to this page (e.g. <code>svg/lockup-editorial.svg</code>, <code>png/lockup-editorial.png</code>). To use one: in most apps choose <em>Insert → Image</em> and pick the file, or drag it straight in. Quick rule — <b>SVG if it's offered, PNG if not.</b></p>
+
+</div>
+</body>
+</html>
