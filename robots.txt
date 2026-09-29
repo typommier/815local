@@ -4,6 +4,7 @@ Disallow: /admin/
 Disallow: /_backups/
 Disallow: /index-v1-backup.html
 Disallow: /mockups/
+Disallow: /preview/
 Disallow: /supabase/
 Disallow: /functions/
 Disallow: /CLAUDE.md
