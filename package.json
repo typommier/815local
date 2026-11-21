@@ -18,6 +18,6 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.56.1",
-    "serve": "^14.2.6"
+    "serve": "^14.2.8"
   }
 }
